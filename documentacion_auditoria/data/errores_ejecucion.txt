@@ -1,0 +1,47 @@
+### sprint6_ocde_composicion.py
+   ^^^^^^^^^^^^^^^^^^^
+   File "C:\Users\InfoPersonal\OneDrive - Universidad Santo
+   Tom�s\Escritorio\consultoria\Observatorio_Ministerio_de_Ciencias_Grupo8\src\ingesta\__init__.py", line 45, in
+   cargar_produccion
+   raise FileNotFoundError(
+   FileNotFoundError: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
+
+### sprint6_sankey_categoria.py
+   in write_image
+   raise RuntimeError(KALEIDO_REQUIRED_MSG)
+   RuntimeError:
+   Image export requires the Kaleido package, v1.0.0 or greater,
+   which can be installed using pip:
+   $ pip install --upgrade "kaleido>=1"
+
+### sprint6_geografia_institucional.py
+   line 261, in main
+   print("\n[3/5] Construyendo tabla de flujos residencia \u2192 instituci�n...")
+   File "C:\Users\InfoPersonal\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
+   return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 48: character maps to <undefined>
+
+### sprint6_sankey_territorial.py
+   in write_image
+   raise RuntimeError(KALEIDO_REQUIRED_MSG)
+   RuntimeError:
+   Image export requires the Kaleido package, v1.0.0 or greater,
+   which can be installed using pip:
+   $ pip install --upgrade "kaleido>=1"
+
+### sprint5_produccion.py
+   ^^^^^^^^^^^^^^^^^^^
+   File "C:\Users\InfoPersonal\OneDrive - Universidad Santo
+   Tom�s\Escritorio\consultoria\Observatorio_Ministerio_de_Ciencias_Grupo8\src\ingesta\__init__.py", line 45, in
+   cargar_produccion
+   raise FileNotFoundError(
+   FileNotFoundError: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
+
+### sprint5_duckdb.py
+   ^^^^^^^^^^^^^^^^^^^
+   File "C:\Users\InfoPersonal\OneDrive - Universidad Santo
+   Tom�s\Escritorio\consultoria\Observatorio_Ministerio_de_Ciencias_Grupo8\src\ingesta\__init__.py", line 45, in
+   cargar_produccion
+   raise FileNotFoundError(
+   FileNotFoundError: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion

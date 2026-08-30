@@ -1,0 +1,35 @@
+{
+  "archivo": "notebooks/tarea_gran_tabla/codigo_analisis_univariado.py",
+  "lenguaje": "Python",
+  "lineas": 123,
+  "rol": "legacy",
+  "descripcion": "Análisis univariado de la gran tabla: revisa tipos de datos, describe() de las numéricas (NRO_ORDEN_FORM_PR, ORDEN_CLAS_PR, EDAD_ANOS_PR) con % de faltantes, histogramas y boxplots, value_counts de las categóricas, gráficos de barras de las principales variables y un bloque robusto de parsing de ANO_CONVO (texto dd/mm/aaaa o serial de Excel) para contar investigadores por año. Corresponde a la tarea de análisis univariado de la gran tabla.",
+  "logica": "pandas + seaborn + matplotlib: describe().T con missing_% agregada, sns.histplot/boxplot, value_counts(dropna=False), y parsing de fecha con doble estrategia: pd.to_datetime(dayfirst=True) y, como respaldo, pd.to_datetime(serial, unit='D', origin='1899-12-30'); barplot por año de convocatoria.",
+  "critica_fortalezas": [
+    "Parsing de fechas robusto con doble estrategia (texto y serial de Excel): buena práctica defensiva para datos heterogéneos",
+    "Reporta % de faltantes junto con los estadísticos descriptivos",
+    "Separa explícitamente variables numéricas, temporales y categóricas antes de analizar",
+    "Análisis claro y estructurado, fácil de seguir"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada '/content/GRAN_TABLA(SIN ID).xlsx' (Colab), inexistente en el clon",
+    "Lee el Excel dos veces (todo el archivo y luego solo la columna ANO_CONVO): ineficiente y evidencia de parche sobre el dato original",
+    "Inconsistencia en el tratamiento de NA: las tablas usan value_counts(dropna=False) pero los gráficos usan el default dropna=True",
+    "Las columnas numéricas llegan como texto/object (heredado de la creación de la gran tabla con dtype='object' en codigo_creacion_gran_tabla_a_partir_del_modelo_estrella.py), obligando a conversiones ad hoc: síntoma de un problema de tipos aguas arriba",
+    "Sin pruebas estadísticas ni guardado de resultados"
+  ],
+  "mejoras": [
+    "Leer ANO_CONVO una sola vez y reutilizar el DataFrame",
+    "Uniformizar el tratamiento de NA entre tablas y gráficos",
+    "Corregir el dtype en el origen (creación de la gran tabla) en vez de parchear aquí",
+    "Parametrizar la ruta y guardar el resumen descriptivo en CSV"
+  ],
+  "ejecutabilidad": "NO. Falta '/content/GRAN_TABLA(SIN ID).xlsx' (no existe en el clon; es una ruta de Colab).",
+  "produce_esperado": "Correcto como EDA univariado: no hay errores metodológicos porque no realiza inferencia. El parsing defensivo de fechas es una buena práctica. El único riesgo es interpretar estadísticos de variables ordinales (NRO_ORDEN_FORM_PR) como continuas, pero el script no extrae conclusiones inferenciales.",
+  "bugs": [
+    "Doble lectura del Excel (desperdicio y riesgo de discrepancias entre lecturas)",
+    "value_counts con dropna=False en tablas vs dropna=True en gráficos (conteos inconsistentes)",
+    "Dependencia de parche: supone que ANO_CONVO viene mal tipada y la re-parsea"
+  ],
+  "recomendacion": "Mantener como referencia del EDA univariado de la gran tabla. No migrar: src/analisis/calidad.py y los scripts de sprint (sprint2_duckdb.py, sprint2_genero_ocde.py) ya cubren descriptivos y perfiles con datos tipados correctamente."
+}

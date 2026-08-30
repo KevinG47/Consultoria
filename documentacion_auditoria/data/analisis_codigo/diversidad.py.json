@@ -1,0 +1,36 @@
+{
+  "archivo": "src/analisis/diversidad.py",
+  "lenguaje": "Python",
+  "lineas": 162,
+  "rol": "analisis",
+  "descripcion": "Análisis de variables de diversidad (Issue #20): cobertura temporal de ID_VICTIMA_CONFLICTO, TXT_GRUPO_ETNICO y TXT_POBLACION_DISCA, distribución por categoría, comparación de subrepresentación frente a DANE 2018/RUV 2021, cruce interseccional género x etnia y categorías por minoría. Entrada: DataFrame transformado (mayúsculas aplicadas por src/Transformacion.py); salida: DataFrames exportados a evidencias/diversidad_*.csv.",
+  "logica": "Define DANE_REFERENCIA (constantes poblacionales) y VALORES_NULOS por variable. cobertura_por_convocatoria() calcula % NO REGISTRA/NO DISPONIBLE y cobertura por año. comparar_dane() (diseñada para df_2021) mapea nombres MinCiencias -> DANE con regex y calcula la razón de subrepresentación. interseccional_genero_etnia() y categoria_por_minoria() cruzan con género y categoría académica. El script sprint4_diversidad.py filtra df_2021 antes de llamar a comparar_dane.",
+  "critica_fortalezas": [
+    "Hallazgo central documentado en el propio módulo: las variables solo se capturaron desde 2021 — honestidad metodológica.",
+    "Razón de subrepresentación (DANE/MinCiencias) correcta y con manejo de división por cero (None).",
+    "Constantes de referencia (DANE 2018 / RUV 2021) centralizadas y comentadas."
+  ],
+  "critica_debilidades": [
+    "Contrato frágil: comparar_dane, interseccional_genero_etnia y categoria_por_minoria asumen que el caller ya filtró la convocatoria 2021; si se pasa el df completo, los resultados mezclan años sin advertencia.",
+    "ACOPLAMIENTO ROTO CON Transformacion.py: éste convierte NaN categórico en 'NO REPORTADO', pero diversidad espera 'NO REGISTRA'/'NO DISPONIBLE'; los faltantes reales etiquetados 'NO REPORTADO' no se cuentan como nulos -> cobertura inflada.",
+    "Bug metodológico en comparar_dane(): el comentario (línea 78) dice excluir 'NINGUN GRUPO ETNICO' del denominador, pero el código (línea 79) solo excluye 'NO DISPONIBLE'; 'NINGUN GRUPO ETNICO' queda en el denominador y diluye la subrepresentación de las minorías (verificado: comentario vs código).",
+    "Comparación 'SÍ' con tilde (línea 121): funciona con los datos actuales porque transformar() pone en mayúsculas 'Sí' -> 'SÍ', pero es frágil ante variantes sin tilde ('Si'/'SI') — el catálogo documenta 'Si'.",
+    "interseccional_genero_etnia() puede lanzar KeyError 'FEMENINO' si algún grupo étnico no tiene mujeres (la columna no existe tras unstack)."
+  ],
+  "mejoras": [
+    "Que las funciones filtren internamente por ANO_CONVO_INT == 2021 (parametrizado) para hacer la API autónoma.",
+    "Alinear los valores nulos entre Transformacion y diversidad (constante compartida) o contar también 'NO REPORTADO' como faltante.",
+    "Excluir de verdad 'NINGUN GRUPO ETNICO' del denominador (alinear comentario y código) y documentar el impacto en las razones de subrepresentación.",
+    "Normalizar 'SÍ'/'SI'/'Si' con strip + upper antes de comparar (o eliminar acentos).",
+    "Usar .reindex(columns=['FEMENINO', 'MASCULINO'], fill_value=0) tras el unstack en interseccional_genero_etnia."
+  ],
+  "ejecutabilidad": "Sí en el clon: solo DataFrame transformado (XLSX presente); las funciones de 2021 requieren que el caller filtre (sprint4_diversidad.py lo hace). Sin datos/raw ni .duckdb.",
+  "produce_esperado": "Sí: evidencias/diversidad_cobertura_por_convocatoria.csv, diversidad_comparacion_dane.csv, diversidad_distribucion_*.csv, diversidad_interseccional_genero_etnia.csv y diversidad_categorias_por_etnia.csv existen, junto con artifacts/sprint4_diversidad/fig01-03.png — consistente con el README (Issue #20, hallazgos 4-6).",
+  "bugs": [
+    "src/analisis/diversidad.py:78-79: contradicción comentario-código sobre 'NINGUN GRUPO ETNICO' en el denominador de comparar_dane() — diluye la subrepresentación de minorías (verificado por lectura directa).",
+    "src/analisis/diversidad.py:145: d['FEMENINO'] puede lanzar KeyError si el unstack no crea la columna (grupo étnico sin mujeres) — crash en caso límite.",
+    "src/analisis/diversidad.py:44-46: los NaN convertidos a 'NO REPORTADO' por Transformacion.py no se cuentan como nulos -> pct_no_registra subestimado y cobertura sobreestimada para registros con faltante real.",
+    "src/analisis/diversidad.py:121: comparación 'SÍ' sensible a acentos; no es un bug activo (los datos traen 'Sí' y transformar() lo pone en mayúsculas), pero fallaría si la fuente usara 'Si' sin tilde."
+  ],
+  "recomendacion": "mejorar — hallazgos valiosos y bien enmarcados; prioridad alta: corregir el denominador de comparar_dane(), alinear valores nulos con Transformacion.py y robustecer comparaciones de cadenas."
+}

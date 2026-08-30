@@ -1,0 +1,33 @@
+{
+  "archivo": "src/Transformacion.py",
+  "lenguaje": "Python",
+  "lineas": 222,
+  "rol": "transformacion",
+  "descripcion": "Núcleo de limpieza y normalización del dataset consolidado de investigadores (77.237 registros). Aplica limpieza de texto (strip + mayúsculas), parseo robusto del año de convocatoria (fecha, serial de Excel o regex de 4 dígitos), estandarización de género y tratamiento de faltantes (mediana para numéricas, 'NO REPORTADO' para categóricas). Entrada: DataFrame crudo de ingesta.cargar_consolidado(); salida: DataFrame transformado listo para análisis.",
+  "logica": "Flujo en transformar(): limpiar_texto -> parsear_ano_convocatoria -> estandarizar_genero -> tratar_faltantes. Usa constantes COLS_NUMERICAS y COLS_CATEGORICAS; funciones puras que copian el df. En __main__ inserta ROOT/src en sys.path y llama cargar_consolidado() + transformar(). Se conecta con el resto del pipeline porque todos los scripts sprint* ejecutan df = transformar(cargar_consolidado()) antes de llamar a analisis.*.",
+  "critica_fortalezas": [
+    "Funciones puras con docstrings claros y operaciones idempotentes (strip + upper).",
+    "Parseo de año multiestrategia (fecha, serial Excel, regex) — robusto frente a formatos heterogéneos de ANO_CONVO.",
+    "Centraliza la lógica de limpieza en un solo módulo consumido por todos los scripts."
+  ],
+  "critica_debilidades": [
+    "Imputa con mediana global sin crear columna indicadora de imputación: para un observatorio de calidad de datos, destruye la señal de 'missingness' (el propio proyecto reporta faltantes como hallazgo).",
+    "No corrige la anomalía documentada de la convocatoria 833 (ANO_CONVO=2019-12-06, año nominal 2018): ANO_CONVO_INT quedará en 2019 para esa convocatoria.",
+    "Imputar mediana en columnas ordinales (ORDEN_CLAS_PR, NRO_ORDEN_FORM_PR) puede producir valores no enteros que contaminan agrupaciones posteriores.",
+    "Docstring dice 'Grupo 7' y 'generado por ingesta.py' mientras el repo es Grupo 8 y el módulo de carga es ingesta/__init__.py (desactualización cosmética)."
+  ],
+  "mejoras": [
+    "Añadir columna flag (ej. *_imputado) por variable imputada y comparar análisis con/sin imputación.",
+    "Aplicar corrección de año nominal para la conv. 833 según datos/catalogo.yaml (campo ano_convo_campo).",
+    "Validar shape/nulos contra catálogo (77.237 x 30) y loguear filas descartadas.",
+    "Escribir tests para parsear_ano_convocatoria con casos: '2013', serial 41739, '2019-12-06', NaN."
+  ],
+  "ejecutabilidad": "Sí, ejecutable tal cual en el clon para el dataset de investigadores: __main__ carga vía ingesta.cargar_consolidado(), que cae al fallback datos/tarea_join/investigadores_consolidado.xlsx (existe, 8 MB) porque datos/raw/ solo tiene .gitkeep (sin CSV crudo). Requiere pandas, numpy (declarados) y openpyxl (solo en requirements.txt, no en pyproject.toml). NO depende de datos/raw ni de .duckdb.",
+  "produce_esperado": "No escribe archivos (solo devuelve DataFrame y print de shape); el volcado a CSV lo hacen los scripts sprint*. Su output alimenta todos los análisis del README; consistente con lo documentado.",
+  "bugs": [
+    "Transformacion.py:107-109: la regex r'\\b(20[0-9]{2})\\b' solo captura años 2000-2099; correcto para el dominio, pero un año fuera de rango quedaría como NaT sin aviso.",
+    "Transformacion.py:99-100: pd.to_datetime(s, dayfirst=True) sobre un texto numérico tipo '640' (id de convocatoria) produciría NaT; depende del contenido real de ANO_CONVO, que el catálogo documenta como año o timestamp.",
+    "Transformacion.py:140-141: si una columna numérica fuera 100% NaN, mediana=NaN y fillna(NaN) no corrige nada (caso límite no manejado)."
+  ],
+  "recomendacion": "mejorar — núcleo correcto y bien estructurado; debe mejorarse la trazabilidad de imputaciones y la corrección del año nominal 2018 antes de seguir usándolo en un informe de calidad de datos."
+}

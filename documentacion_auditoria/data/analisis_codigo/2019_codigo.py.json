@@ -1,0 +1,38 @@
+{
+  "archivo": "notebooks/tarea_anlisis_bases_de_datos/2019_codigo.py",
+  "lenguaje": "Python",
+  "lineas": 174,
+  "rol": "legacy",
+  "descripcion": "EDA descriptivo de la convocatoria 2019 (Investigadores_Reconocidos_por_convocatoria_20250909.csv): calcula el % de faltantes por variable, conteos y gráficos de barras para género, región/departamento de nacimiento y residencia, histogramas de variables numéricas y tablas cruzadas (género x región, gran área x género). Es un script exportado de Colab y corresponde a la tarea de análisis de bases de datos.",
+  "logica": "pandas + matplotlib: lectura con pd.read_csv, limpieza de nombres de columnas, df.isna().sum() con % de faltantes ordenado, value_counts y pd.crosstab(normalize='index') para proporciones por fila, detección de columnas clave por subcadena ('GENER', 'REGION', 'DEPARTAMENTO'), histogramas y heatmap con imshow. No usa librerías de inferencia estadística; es puramente descriptivo.",
+  "critica_fortalezas": [
+    "Reporta faltantes por variable con porcentaje ordenado, práctica correcta de EDA",
+    "Usa crosstab con proporciones por fila (composición de género dentro de cada gran área), lectura adecuada para comparar grupos",
+    "Detecta columnas de forma defensiva por subcadena en el nombre, tolerante a cambios de esquema",
+    "Excluye columnas tipo ID/código de los histogramas (evita describir claves)"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada de Colab '/content/Investigadores_Reconocidos_por_convocatoria_20250909.csv', inexistente en el clon y en cualquier equipo local",
+    "Usa display() de IPython/Colab; como script Python estándar lanza NameError",
+    "Bloque de cálculo de faltantes duplicado (falt y faltantes): código muerto",
+    "El heatmap de proporciones no está acompañado de ninguna prueba de independencia (chi-cuadrado)",
+    "Etiquetas de porcentaje con desplazamiento fijo 'v + 50' sobre conteos absolutos, frágil si cambia la escala",
+    "Las proporciones se calculan sobre n total incluyendo NaN en el denominador; sin documentar",
+    "No guarda figuras ni resultados; sin estructura de función o parámetros"
+  ],
+  "mejoras": [
+    "Parametrizar la ruta (Pathlib/argumentos) en vez de hardcodear /content",
+    "Reemplazar display() por print() para que corra como script",
+    "Eliminar el bloque duplicado de faltantes",
+    "Añadir chi2_contingency a las tablas cruzadas y reportar residuos",
+    "Guardar figuras y tablas en una carpeta de salida"
+  ],
+  "ejecutabilidad": "NO. Falta el input '/content/Investigadores_Reconocidos_por_convocatoria_20250909.csv' (ruta de Colab, no existe en el clon) y además usa display() de IPython, que falla fuera de un entorno de notebook.",
+  "produce_esperado": "Metodología descriptiva correcta para el objetivo (EDA por convocatoria): no hay errores estadísticos graves porque no realiza inferencia. Único matiz: las proporciones usan el total con NaN y no se prueba la asociación en los cruces, por lo que los heatmaps son solo exploratorios.",
+  "bugs": [
+    "display() no existe en scripts Python estándar (NameError)",
+    "Cálculo de faltantes duplicado (falt y faltantes) sin uso del primero",
+    "plt.text(pct + 0.5, ...) asume coordenadas de barras horizontales con holgura fija"
+  ],
+  "recomendacion": "Mantener como referencia histórica del EDA inicial de la convocatoria 2019. No migrar: el pipeline moderno (src/ingesta/minciencias.py, src/analisis/calidad.py) ya sistematiza faltantes y perfiles descriptivos; este script no aporta lógica reutilizable."
+}

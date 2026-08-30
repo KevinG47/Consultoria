@@ -1,0 +1,36 @@
+{
+  "archivo": "scripts/sprint2_duckdb.py",
+  "lenguaje": "Python",
+  "lineas": 127,
+  "rol": "orquestacion",
+  "descripcion": "Construye el modelo dimensional estrella (7 dimensiones + fact_clasificacion + bridge_hecho_institucion) en datos/processed/observatorio.duckdb a partir del dataset consolidado transformado, y lo valida con 6 consultas de negocio (investigadores por convocatoria, distribución de categorías, top-10 instituciones, gran área, concentración Bogotá/Medellín/Cali, edad promedio por categoría y año). Usa src/ingesta.cargar_consolidado, src/Transformacion.transformar y src/modelo/dimensional (cargar_en_duckdb, resumen_modelo, DB_PATH). Salidas: la base DuckDB y evidencias/duckdb_resumen_modelo.txt.",
+  "logica": "main() encadena [1/3] transformar(cargar_consolidado()), [2/3] cargar_en_duckdb(df, path=DB_PATH, verbose=True) + resumen_modelo(con) y [3/3] ejecución de CONSULTAS (dict nombre→SQL) con con.execute(sql).fetchdf(), imprimiendo cada resultado y acumulando lineas_reporte que se escriben al final en evidencias/duckdb_resumen_modelo.txt (encoding utf-8). La construcción del esquema y el DROP/CREATE idempotente viven en src/modelo/dimensional.py, no en el script; este solo orquesta carga, validación y persistencia del reporte. Cierra la conexión al final.",
+  "critica_fortalezas": [
+    "Modelo estrella explícito y bien documentado en el docstring (dims, fact, bridge N:N con dim_institucion), coherente con src/modelo/dimensional.py.",
+    "Las consultas de validación son preguntas de negocio reales (concentración territorial, edad por categoría, distribución OCDE), no solo conteos triviales; funcionan como smoke test del modelo.",
+    "Idempotente gracias al DROP TABLE IF EXISTS + CREATE en cargar_en_duckdb: permite re-ejecución sin estado corrupto acumulado.",
+    "El reporte de texto en evidencias es verificable y de hecho existe en el clon con el formato exacto que genera este script."
+  ],
+  "critica_debilidades": [
+    "Usa duckdb fetchdf(), API deprecada desde duckdb 0.9.0 en favor de df(); con el pin duckdb ^1.0 del pyproject, una instalación reciente puede emitir DeprecationWarning o directamente fallar (riesgo de ejecutabilidad futura).",
+    "resumen_modelo(con) solo imprime en stdout: el resumen del modelo estrella (conteos por tabla) NO queda en el reporte de evidencias, que solo captura las 6 consultas.",
+    "Sin try/finally: si una consulta o la construcción falla, la conexión duckdb queda abierta y no hay mensaje de error contextual.",
+    "No valida el total de registros (esperado 77.237) contra fact_clasificacion ni reporta duplicados de id_persona_pr por convocatoria.",
+    "DB_PATH está fijado en src/modelo/dimensional.py y no hay parámetro CLI; el script no permite apuntar a otra base ni modo --solo-consultas."
+  ],
+  "mejoras": [
+    "Reemplazar fetchdf() por df() (línea 110) y también en src/modelo/dimensional.py:283.",
+    "Incluir el output de resumen_modelo() en lineas_reporte para que la evidencia contenga el esquema completo.",
+    "Envolver el flujo en try/finally con con.close() y capturar excepción con mensaje accionable.",
+    "Añadir una consulta de sanidad: COUNT(*) de fact_clasificacion ≈ 77.237 y verificar que ninguna dim tenga claves NULL usadas por los JOINs.",
+    "Parametrizar DB_PATH vía argparse/entorno para reutilizar el script en entornos CI."
+  ],
+  "ejecutabilidad": "Ejecutable en el clon solo tras instalar dependencias: pyproject declara duckdb ^1.0, pero el .venv del clon está vacío (solo pip/setuptools) y requirements.txt no incluye duckdb. El input sí existe: cargar_consolidado() prioriza datos/raw/investigadores_consolidado.csv (NO existe, gitignored) y cae al fallback datos/tarea_join/investigadores_consolidado.xlsx (SÍ existe). La base datos/processed/observatorio.duckdb no existe en el clon (solo .gitkeep) y el script la crea. Riesgo adicional: fetchdf() deprecado según la versión de duckdb instalada.",
+  "produce_esperado": "SÍ, con matiz: evidencias/duckdb_resumen_modelo.txt existe en el clon y su contenido (encabezado 'Modelo estrella — observatorio.duckdb' + las 6 consultas con sus to_string) coincide exactamente con lo que genera el script, lo que demuestra que se ejecutó al menos una vez con datos. El archivo observatorio.duckdb NO está en el clon (gitignored, datos/processed solo contiene .gitkeep), por lo que esa salida no es reproducible sin re-ejecución. Coincidencia declarado-vs-generado: OK para el reporte.",
+  "bugs": [
+    "scripts/sprint2_duckdb.py:110 — con.execute(sql).fetchdf(): fetchdf() está deprecado desde duckdb 0.9.0 (reemplazado por .df()); con duckdb ^1.0 en pyproject.toml una versión reciente puede eliminarlo, rompiendo el script en runtime.",
+    "scripts/sprint2_duckdb.py:104 — resumen_modelo(con) imprime a stdout pero su salida no se agrega a lineas_reporte: la evidencia guardada (duckdb_resumen_modelo.txt) omite el resumen del modelo estrella que el propio docstring describe como parte de la validación.",
+    "scripts/sprint2_duckdb.py:97-123 — sin try/finally: cualquier excepción entre [2/3] y [3/3] deja la conexión duckdb sin cerrar y sin reporte parcial."
+  ],
+  "recomendacion": "mantener — es la base del modelo dimensional del observatorio y sus consultas de validación son valiosas; solo requiere la migración fetchdf()→df(), incluir el resumen en el reporte y robustecer el manejo de conexión."
+}

@@ -1,0 +1,100 @@
+% ============ 03. Entendimiento del objetivo del repositorio ============
+
+\section{Entendimiento del objetivo del repositorio}
+
+\subsection{Objetivo declarado}
+
+El repositorio declara su objetivo en dos documentos con alcances distintos:
+
+\begin{itemize}
+  \item \texttt{informe\_final.md} (visión temprana): \emph{``Consolidar, validar y
+        analizar los datos de investigadores reconocidos de las convocatorias 2017,
+        2019 y 2021 del Minciencias, y producir un modelo dimensional y un conjunto
+        de análisis descriptivos y multivariados para facilitar su uso en el
+        observatorio institucional''}.
+  \item \texttt{README.md} (visión final): observatorio crítico del sistema de
+        reconocimiento con análisis longitudinal de \textbf{6 convocatorias
+        (2013--2021)}, con foco en calidad de los datos, concentración territorial,
+        brecha de género, redes de co-filiación, diversidad, productividad cruzada
+        con el dataset de producción de grupos y tabla maestra de IES.
+\end{itemize}
+
+\begin{tcolorbox}[nota]
+El objetivo \textbf{evolucionó durante la construcción del proyecto}: de 3
+convocatorias (2017/2019/2021) se pasó a las 6 históricas (2013--2021) y se
+incorporaron ejes nuevos (producción, diversidad, redes). Esta ampliación es
+coherente con la naturaleza exploratoria de un observatorio, pero implica que las
+métricas de las primeras fases (p.~ej. matrices de transición 2017--2019) deben
+reinterpretarse a la luz del alcance ampliado.
+\end{tcolorbox}
+
+\subsection{Preguntas de investigación que el repositorio responde}
+
+\begin{enumerate}
+  \item ¿Qué tan confiable es la información que MinCiencias publica? ¿Permite
+        analizar el sistema de manera comparable entre convocatorias?
+  \item ¿El sistema retiene a los investigadores reconocidos entre convocatorias?
+        ¿Qué porcentaje sube, baja o desaparece?
+  \item ¿La capacidad investigativa está distribuida equitativamente o concentrada?
+        (comparación per cápita con población DANE 2018)
+  \item ¿Hay paridad de género por gran área OCDE? ¿La brecha en STEM se ha cerrado?
+  \item ¿Cómo se conectan las instituciones a través de investigadores con doble
+        afiliación? ¿Hay universidades-puente?
+  \item ¿La composición del padrón refleja la diversidad poblacional de Colombia
+        (etnia, discapacidad, víctimas del conflicto)?
+  \item ¿Quién firma realmente la producción que MinCiencias mide? ¿La brecha de
+        género se replica en outputs?
+\end{enumerate}
+
+\subsection{Evaluación del planteamiento del objetivo}
+
+\begin{itemize}
+  \item \textbf{Claridad}: el objetivo es comprensible y medible a través de las
+        preguntas de investigación; cada pregunta mapea a un módulo de análisis
+        (ver Tabla~\ref{tab:mapa_objetivo}).
+  \item \textbf{Idoneidad del diseño}: el proyecto adopta el ciclo CRISP-DM y el
+        patrón ``Pregunta $\rightarrow$ Hallazgo $\rightarrow$ Caveat'', alineado con
+        la evaluación responsable de la ciencia (Principios de Leiden; Hicks et
+        al., 2015).
+  \item \textbf{Debilidad}: no existe un documento único de ``teoría de cambio'' o
+        ``marco de indicadores'' que defina formalmente cada indicador, su fórmula,
+        su umbral de alerta y su fuente de comparación; la formalización se
+        recomienda como entregable de esta consultoría.
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\caption{Mapa objetivo $\rightarrow$ módulos del repositorio}
+\label{tab:mapa_objetivo}
+\small
+\begin{tabularx}{\linewidth}{p{6.2cm}X}
+\toprule
+\textbf{Pregunta de investigación} & \textbf{Módulo que la responde} \\
+\midrule
+Fiabilidad y comparabilidad de los datos &
+\texttt{src/analisis/calidad.py}, \texttt{src/Transformacion.py}, tab 1 del dashboard \\
+Retención y transición entre convocatorias &
+\texttt{src/analisis/longitudinal.py}, \texttt{scripts/sprint2\_matrices\_transicion.py} \\
+Concentración territorial &
+\texttt{src/analisis/territorial.py} (HHI, cuotas), \texttt{sprint2\_territorial.py} \\
+Brecha de género por área OCDE &
+\texttt{src/analisis/genero.py}, \texttt{sprint2\_genero\_ocde.py} \\
+Redes de co-filiación institucional &
+\texttt{src/analisis/redes.py}, \texttt{sprint3\_redes.py}, \texttt{sprint3\_grafo\_interactivo.py} \\
+Diversidad vs DANE/RUV &
+\texttt{src/analisis/diversidad.py}, \texttt{sprint4\_diversidad.py} \\
+Productividad cruzada &
+\texttt{src/analisis/produccion.py}, \texttt{sprint5\_produccion.py}, \texttt{sprint5\_duckdb.py} \\
+Ajustes de calidad, IES y geografía &
+\texttt{sprint6\_*}, \texttt{src/analisis/calidad.py} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Conclusión de la sección}
+
+El objetivo del repositorio está \textbf{bien entendido y correctamente
+descompuesto} en preguntas de investigación que los módulos efectivamente
+responden. La principal recomendación es \textbf{formalizar el marco de
+indicadores} (definición operativa, fórmula, fuente y límites de cada métrica)
+para garantizar que la entrega final sea auditable y reproducible.

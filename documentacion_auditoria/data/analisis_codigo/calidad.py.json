@@ -1,0 +1,31 @@
+{
+  "archivo": "src/analisis/calidad.py",
+  "lenguaje": "Python",
+  "lineas": 105,
+  "rol": "analisis",
+  "descripcion": "Validación documentada de la calidad de los datos del padrón, con foco en atípicos de edad (EDAD_ANOS_PR). Documenta explícitamente la decisión metodológica (eliminación frente a imputación por mediana del grupo) para que cualquier auditor pueda reproducirla y discutirla. Expone detectar_atipicos_edad, resumen_tratamiento, filtrar (método elegido) e imputar_mediana (alternativa comparativa).",
+  "logica": "Umbral UMBRAL_EDAD_MAX=100. detectar_atipicos_edad devuelve los registros con edad>100 (mínimas columnas de identificación). resumen_tratamiento produce el reporte antes/después con justificación. filtrar aplica eliminación (decisión por defecto). imputar_mediana reemplaza los atípicos por la mediana del grupo (gran área, clasificación, género) como alternativa reproducible. El docstring documenta el razonamiento: 22 casos sobre 77.237 (0.028%), sesgo despreciable, eliminación preferida por trazabilidad.",
+  "critica_fortalezas": [
+    "Decisión metodológica documentada y justificada en el propio código (transparencia auditable).",
+    "Ofrece comparación explícita entre eliminación e imputación (análisis de sensibilidad).",
+    "Funciones puras y pequeñas, sin efectos laterales.",
+    "El filtro se aplica solo donde el análisis depende de la edad."
+  ],
+  "critica_debilidades": [
+    "Docstring dice 'diez registros' (10) mientras el conteo real documentado en README y evidencias es 22 — inconsistencia documental verificada.",
+    "Umbral fijo (100) sin parametrización.",
+    "imputar_mediana usa apply fila a fila (lento con 77k filas).",
+    "El resto de anomalías (NO DISPONIBLE 5.2%, NO REPORTADO 2.7%, conv. 833 etiquetada 2019) se documenta en el docstring pero no se instrumenta como funciones."
+  ],
+  "mejoras": [
+    "Corregir el docstring a 22 casos y parametrizar el umbral.",
+    "Vectorizar imputar_mediana (groupby transform en vez de apply).",
+    "Instrumentar también las otras dimensiones de calidad (completitud, consistencia, unicidad) como funciones."
+  ],
+  "ejecutabilidad": "Sí, verificada empíricamente: sprint6_validacion_calidad.py (que lo usa) ejecutado en clon fresco con EXIT=0 en 61.6 s. Requiere el XLSX consolidado (presente).",
+  "produce_esperado": "Sí: evidencias/calidad_atipicos_edad.csv, calidad_comparacion.csv y calidad_resumen.json existen en el clon y coinciden con el tratamiento documentado (22 atípicos, eliminación).",
+  "bugs": [
+    "Docstring (línea ~10): 'diez registros' vs 22 reales — inconsistencia que puede confundir al lector del informe."
+  ],
+  "recomendacion": "mejorar — lógica correcta y bien documentada; corregir la inconsistencia documental y ampliar la instrumentación de calidad."
+}

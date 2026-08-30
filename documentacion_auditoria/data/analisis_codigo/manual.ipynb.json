@@ -1,0 +1,42 @@
+{
+  "archivo": "docs/manual.ipynb",
+  "lenguaje": "Notebook",
+  "lineas": 805,
+  "rol": "documentacion",
+  "descripcion": "Manual reproducible de 49 celdas (23 markdown + 26 codigo) generado por scripts/generar_manual.py (no ejecutado: todas las celdas tienen execution_count null). 14 secciones que reproducen los hallazgos del observatorio: calidad (atipicos de edad), trayectoria y matrices de transicion, Sankeys de categoria, concentracion territorial (HHI), tabla maestra de IES, geografia institucional (residencia vs institucion), brecha de genero, diversidad vs DANE/RUV, productividad por categoria, brecha de genero en productividad, composicion OCDE y recomendaciones de politica publica.",
+  "logica": "Celda 1: ROOT = pathlib.Path.cwd() con fallback a ROOT.parent si (ROOT/src) no existe (funciona desde la raiz del repo o desde docs/); inserta src/ en sys.path. Celda 2: inv = transformar(cargar_consolidado()) y prod = normalizar_produccion(cargar_produccion()). Secciones 2-3: funciones de src/analisis/calidad.py y longitudinal.py (construir_panel, comparar_periodo, matriz_transicion, matrices_todos_periodos). Secciones 4, 7, 8 y 13: subprocess.run(['python3', 'scripts/sprint6_*.py'], cwd=ROOT). Secciones 6-8 y 13: pd.read_csv de evidencias/*.csv. IFrame apunta a artifacts/sprint6_sankey/*.html. Todo el codigo del manual reutiliza los modulos reales de src/ (no duplica logica).",
+  "critica_fortalezas": [
+    "Intencion didactica y reproducible clara: cada hallazgo con su codigo minimo y su caveat",
+    "Reutiliza el codigo real (src/ingesta, src/Transformacion, src/analisis/*): el manual no inventa logica paralela",
+    "Los insumos que referencia existen en el repo: evidencias/tabla_maestra_ies.csv, mapping_inst_filia_to_ies.csv, geografia_*.csv, ocde_*.csv, scripts/sprint6_*.py y artifacts/sprint6_sankey/*.html",
+    "Caveats de alta calidad (Eméritos vitalicios, comparacion contra poblacion con educacion superior, captura de doble afiliacion solo en 2021)",
+    "Resolucion de ROOT con fallback (mejor que la del EDA)"
+  ],
+  "critica_debilidades": [
+    "Dos celdas con bugs de API que crashean: m['conteos'] (matrices_todos_periodos devuelve tuplas) y columna= en hhi_por_convocatoria (la firma es col_geo=)",
+    "subprocess hardcodea 'python3', no portable a Windows (el repo vive en Windows)",
+    "Depende de datos/raw/produccion_grupos.csv (~1,2 GB) que NO esta en el repo: la celda 2 de carga crashea y las secciones 11-13 no tienen prod",
+    "Inconsistencias numericas entre el texto del manual y el codigo real: '22 registros con edad >100 (0,03%)' vs src/analisis/calidad.py '10 registros (0,013%)'; '211 IES canonicas / 91%' vs celda '258 strings mapeados'",
+    "Nunca ejecutado de punta a punta (execution_count null en las 26 celdas de codigo): el manual no tiene evidencia de reproducibilidad",
+    "El generador scripts/generar_manual.py contiene los mismos bugs (los hereda el notebook)"
+  ],
+  "mejoras": [
+    "Corregir la celda de matrices: m es una tupla (conteos, probs) -> iterar con for periodo, (conteos, probs) in matrices.items()",
+    "Corregir la celda HHI: hhi_por_convocatoria(inv_clean, col_geo='NME_DEPARTAMENTO_RES_PR')",
+    "Usar 'python' o sys.executable en subprocess para portabilidad a Windows",
+    "Anadir celda condicional que avise si falta el dataset de produccion y permita continuar con las secciones que no lo necesitan",
+    "Armonizar cifras con src/analisis/calidad.py y scripts/sprint6_tabla_maestra_ies.py, y regenerar con generar_manual.py",
+    "Ejecutar el notebook completo y commitear los outputs como evidencia de reproducibilidad"
+  ],
+  "ejecutabilidad": "Parcial y no reproducible de punta a punta tal cual. Con `poetry run jupyter notebook docs/manual.ipynb` (README) la carga de inv funciona (XLSX existe; openpyxl en lock/requirements), pero: (1) cargar_produccion() lanza FileNotFoundError (datos/raw/produccion_grupos.csv ausente) -> la celda 2 crashea y las secciones 11-13 carecen de prod; (2) la celda de matrices lanza TypeError (m['conteos'] sobre una tupla); (3) la celda HHI lanza TypeError (kwarg columna= inexistente); (4) los 4 subprocess con 'python3' fallan en Windows. Las secciones 6-10 (tabla maestra, geografia, sankeys, genero, diversidad) leerian archivos que sí existen en el repo y funcionarian si se superan las anteriores.",
+  "produce_esperado": "El manual documenta los 12 hallazgos y sus rutas de evidencias/artifacts existen, pero NO es ejecutable tal cual: 3 celdas fallan por API incorrecta y 1 por dependencia de datos ausente. No contradice al dashboard (usa las mismas funciones de src/), pero la cifra '22 atipicos de edad' contradice a src/analisis/calidad.py ('10'), indicando que el texto del manual no se actualizo con el codigo final. El placeholder app/streamlit_app.py es irrelevante para este notebook.",
+  "bugs": [
+    "Celda seccion 3: `print(m['conteos'])` - matrices_todos_periodos devuelve {periodo: (conteos, probs)} (tupla, segun docstring y codigo de src/analisis/longitudinal.py linea 164-179); m es una tupla -> TypeError: tuple indices must be integers",
+    "Celda seccion 5: `hhi_por_convocatoria(inv_clean, columna='NME_DEPARTAMENTO_RES_PR')` - la firma es (df, col_geo, col_year) -> TypeError: unexpected keyword argument 'columna'",
+    "Celda 2: `cargar_produccion()` -> FileNotFoundError porque datos/raw/produccion_grupos.csv no existe en el repo (hay que descargarlo, ~1,2 GB)",
+    "4 celdas usan subprocess.run(['python3', ...]): en Windows no existe python3.exe -> FileNotFoundError (portabilidad rota)",
+    "Texto vs codigo: '22 registros con edad superior a 100 (0,03%)' vs src/analisis/calidad.py 'diez registros (0,013%)'; '211 IES canonicas que mapean el 91%' vs celda que reporta '258 strings mapeados' (scripts/sprint6_tabla_maestra_ies.py)"
+  ],
+  "recomendacion": "refactorizar: el manual es valioso como documentacion de los hallazgos pero no es reproducible tal cual. Corregir los 2 bugs de API (m['conteos'], col_geo), hacer portable el subprocess, documentar el prerequisito del dataset de produccion (o leer muestras de evidencias/) y armonizar las cifras con src/. Los mismos cambios deben aplicarse en scripts/generar_manual.py para que el notebook se pueda regenerar.",
+  "cifras_verificadas": "49 celdas totales: 23 markdown + 26 codigo (grep de 'cell_type'). 22 celdas markdown estan comentadas en las secciones 1-14 del generador. IFrame ../artifacts/sprint6_sankey/sankey_2019_2021.html y sankey_territorial.html existen en el repo."
+}

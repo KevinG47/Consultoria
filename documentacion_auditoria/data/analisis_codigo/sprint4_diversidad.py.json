@@ -1,0 +1,37 @@
+{
+  "archivo": "scripts/sprint4_diversidad.py",
+  "lenguaje": "Python",
+  "lineas": 172,
+  "rol": "orquestacion",
+  "descripcion": "Analiza las variables de diversidad (víctima de conflicto, grupo étnico, discapacidad) comparando a los investigadores reconocidos en la convocatoria 2021 con proporciones poblacionales de referencia DANE 2018 / RUV 2021. Usa src/analisis/diversidad (cobertura_por_convocatoria, distribucion_categoria, comparar_dane, interseccional_genero_etnia, categoria_por_minoria) sobre transformar(cargar_consolidado()). Salidas: 3 figuras PNG en artifacts/sprint4_diversidad/ y 7 CSVs en evidencias/ (uno más que los 6 del docstring).",
+  "logica": "main() calcula la cobertura temporal de las 3 variables (solo se capturan desde 2021, hallazgo crítico documentado en el docstring), filtra df_2021 = df[ANO_CONVO_INT == 2021], imprime las distribuciones excluyendo NO DISPONIBLE/NO REGISTRA, ejecuta comparar_dane (subrepresentación de minorías vs DANE/RUV con razón pct_dane/pct_minc) y genera 3 figuras + exporta 7 CSVs. fig_categorias_por_minoria apila la distribución de categorías académicas por grupo étnico minoritario.",
+  "critica_fortalezas": [
+    "El hallazgo metodológico central está bien documentado: las variables de diversidad solo existen desde la convocatoria 894 (2021), por lo que todo el análisis se acota honestamente a 2021.",
+    "La comparación con DANE 2018 / RUV 2021 con razón de subrepresentación es metodológicamente apropiada y da un resultado de política pública accionable.",
+    "Exporta evidencia completa: cobertura, distribuciones por variable, comparación DANE, cruce interseccional género×etnia y categorías por etnia.",
+    "Salidas verificadas: las 3 figuras y los 7 CSVs existen en el clon."
+  ],
+  "critica_debilidades": [
+    "Drift docstring-código: el docstring declara 6 CSVs pero el código escribe 7 (agrega diversidad_distribucion_victimas_2021.csv en la línea 158, no listado).",
+    "Bug metodológico heredado de src/analisis/diversidad.comparar_dane (líneas 78-80): el comentario afirma 'excluir NINGUN GRUPO ETNICO del denominador para ver minorias', pero el código solo excluye NO DISPONIBLE; quienes respondieron 'NINGUN GRUPO ETNICO' permanecen en el denominador, diluyendo los porcentajes de minorías y la razón de subrepresentación.",
+    "Categorías académicas hardcodeadas con tildes ('INVESTIGADOR SÉNIOR', 'INVESTIGADOR EMÉRITO', línea 105): si la normalización de NME_CLASIFICACION_PR usa otro casing/acentuación, la figura puede salir vacía (el filtro cats_disponibles lo mitiga pero no avisa).",
+    "El filtro 'NING' (línea 103) elimina cualquier valor que contenga esas tres letras (p. ej. un grupo 'NINGUNA' mal codificado) sin validación del vocabulario real.",
+    "No hay intervalos de confianza ni tests de significancia para las diferencias vs DANE; la 'subrepresentación' se reporta sin incertidumbre."
+  ],
+  "mejoras": [
+    "Actualizar el docstring para incluir diversidad_distribucion_victimas_2021.csv (o eliminar esa exportación si no es entregable).",
+    "Corregir comparar_dane para excluir 'NINGUN GRUPO ETNICO' del denominador (como dice su comentario) y añadir un test que verifique denominador y suma de pct.",
+    "Derivar las categorías de las columnas reales del DataFrame (p. ej. de un catálogo) en lugar de hardcodear strings con acentos.",
+    "Añadir IC (binomial) a los porcentajes vs DANE y una nota sobre el tamaño muestral de 2021.",
+    "Reportar n de 'NINGUN GRUPO ETNICO' y NO DISPONIBLE para que el lector vea la cobertura real del denominador."
+  ],
+  "ejecutabilidad": "Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib, seaborn; .venv del clon vacío, requirements.txt incompleto). El input existe: datos/tarea_join/investigadores_consolidado.xlsx vía cargar_consolidado(). Requiere que Transformacion genere ANO_CONVO_INT == 2021 para la convocatoria 894 (no verificado en el script). No requiere duckdb ni datos/raw. Con poetry install, corre de punta a punta.",
+  "produce_esperado": "SÍ: existen artifacts/sprint4_diversidad/fig01_cobertura_temporal.png, fig02_comparacion_dane.png, fig03_categorias_por_minoria.png y los 7 CSVs de evidencias (diversidad_cobertura_por_convocatoria.csv, diversidad_distribucion_etnia_2021.csv, diversidad_distribucion_discapacidad_2021.csv, diversidad_distribucion_victimas_2021.csv, diversidad_comparacion_dane.csv, diversidad_interseccional_genero_etnia.csv, diversidad_categorias_por_etnia.csv). Coincide con el código; difiere del docstring en 1 CSV (victimas_2021 no declarado), lo que confirma que se ejecutó una versión del script y hubo drift documental.",
+  "bugs": [
+    "src/analisis/diversidad.py:78-80 — comentario vs código: 'excluir NINGUN GRUPO ETNICO del denominador' pero el código filtra solo 'NO DISPONIBLE' (etnia = df_2021[TXT_GRUPO_ETNICO != 'NO DISPONIBLE']; n_etnia_resp = len(etnia) incluye NINGUN GRUPO ETNICO): los pct_minciencias y las razones de subrepresentación de minorías quedan diluidos por el denominador inflado. Bug metodológico que afecta la figura fig02 y evidencias/diversidad_comparacion_dane.csv.",
+    "scripts/sprint4_diversidad.py:105 — lista hardcodeada con tildes ['INVESTIGADOR SÉNIOR', 'INVESTIGADOR EMÉRITO']: depende del casing/acentuación exacta que produzca Transformacion en NME_CLASIFICACION_PR; si difiere, la figura 03 muestra categorías faltantes en silencio.",
+    "scripts/sprint4_diversidad.py:103 — cat_etnia[...].str.contains('NING', case=False, na=False) es un filtro de subcadena: eliminaría también valores como 'NINGUNA...' si el vocabulario de la variable cambiara.",
+    "scripts/sprint4_diversidad.py:158 — exporta diversidad_distribucion_victimas_2021.csv sin declararlo en el docstring (líneas 12-22), generando evidencia no documentada."
+  ],
+  "recomendacion": "mejorar — el análisis es el más sensible metodológicamente (comparación con DANE/RUV) y tiene salidas verificadas, pero el denominador incorrecto en comparar_dane compromete la cifra central de subrepresentación; corregir ese bug antes de publicar y alinear docstring-código."
+}

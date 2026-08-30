@@ -1,0 +1,31 @@
+{
+  "archivo": "scripts/sprint2_panel_longitudinal.py",
+  "lenguaje": "Python",
+  "lineas": 229,
+  "rol": "orquestacion",
+  "descripcion": "Orquesta el análisis longitudinal del Sprint 2 (Issue #11): carga el consolidado (cargar_consolidado + transformar), construye el panel de investigadores por convocatoria con src/analisis/longitudinal.py, genera 7 figuras (evolución total, por género, por gran área, categorías, nuevos ingresos, tracking por periodo, tasas de retención) y exporta 4+ CSVs de evidencias.",
+  "logica": "main() en 4 pasos: [1/4] carga y transforma; [2/4] genera figuras descriptivas (funciones fig_* con matplotlib/seaborn, backend Agg); [3/4] construye el panel (construir_panel), calcula tracking (tracking_todos_periodos) y retención (tasa_retencion_por_periodo); [4/4] exporta resumen, ingresos, tasas y tracking por categoría a evidencias/. Patrón claro: una función por figura, salidas documentadas en el docstring.",
+  "critica_fortalezas": [
+    "Docstring con uso y lista explícita de salidas (artifacts/ y evidencias/).",
+    "Delega la lógica en src/analisis/longitudinal.py (separación de responsabilidades correcta).",
+    "Usa matplotlib.use('Agg') (headless, reproducible).",
+    "Maneja los 5 periodos consecutivos de las 6 convocatorias de forma genérica (zip de años)."
+  ],
+  "critica_debilidades": [
+    "Estilo global de seaborn/matplotlib aplicado al módulo (efecto secundario al importar).",
+    "Sin tests ni manejo de errores (si cargar_consolidado fallara, crash sin mensaje claro).",
+    "Figuras con tamaños fijos (figsize) poco adaptables a distintos formatos de reporte.",
+    "No guarda los DataFrames intermedios (panel) para reutilización."
+  ],
+  "mejoras": [
+    "Extraer la configuración de estilo a una función o archivo de tema.",
+    "Añadir un pequeño test de humo (panel con datos sintéticos).",
+    "Permitir configurar figsize por parámetro y guardar el panel en evidencias/."
+  ],
+  "ejecutabilidad": "Sí, verificada empíricamente en la auditoría 2026: ejecutado en un clon fresco (venv Python, pandas 3.0.5) con EXIT=0 en 108.4 s. Requiere el XLSX de datos/tarea_join (presente). NOTA: al correr sobre el XLSX versionado (3 convocatorias) genera solo 2 periodos de tracking, frente a los 5 periodos de las evidencias versionadas — consecuencia del consolidado incompleto, no del script.",
+  "produce_esperado": "Sí: genera las 7 figuras en artifacts/sprint2_longitudinal/ (versionadas en el clon) y los CSVs en evidencias/ (panel_longitudinal_resumen_todos_periodos.csv, ingresos_por_convocatoria, tasas_retencion, panel_longitudinal_cat_*.csv). Los artefactos existentes coinciden con lo declarado, pero con 6 convocatorias (los regenerados con el clon tienen 3).",
+  "bugs": [
+    "Ninguno crítico; dependencia implícita de que el consolidado tenga las 6 convocatorias para reproducir los 5 periodos del README (problema de datos, no de código)."
+  ],
+  "recomendacion": "mantener — bien estructurado y verificable; solo requiere el consolidado completo de 6 convocatorias para reproducir los resultados del README."
+}

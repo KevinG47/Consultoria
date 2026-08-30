@@ -1,0 +1,37 @@
+{
+  "archivo": "notebooks/tarea_tabla/arreglar_base_consultoria_7.R",
+  "lenguaje": "R",
+  "lineas": 125,
+  "rol": "legacy",
+  "descripcion": "Depura Investigadores_Consolidado: diagnostica duplicados de ID_PERSONA_PR, deduplica conservando una fila por persona con prioridad de convocatoria (21 > 20 > 19) mediante slice(1), y audita las diferencias de edad entre registros duplicados (dif_edad > 4.1) revisando casos anómalos de forma manual con View. Corresponde a la tarea de arreglo de la base (preparación para análisis a nivel de persona).",
+  "logica": "readxl + dplyr: duplicated() y sum(table(...) > 1) para diagnóstico, group_by(ID_PERSONA_PR) + mutate(prioridad = case_when(ID_CONVOCATORIA == 21 ~ 3, ...)) + arrange(desc(prioridad)) + slice(1) + ungroup() para deduplicar, y mutate(dif_edad = EDAD_ANOS_PR - dplyr::lag(EDAD_ANOS_PR)) dentro de group_by para auditar la coherencia temporal de la edad entre convocatorias.",
+  "critica_fortalezas": [
+    "Enfoque de calidad de datos correcto: detecta duplicados, elige el registro con una jerarquía de convocatoria explícita y verificable, y valida la unicidad después de slice(1)",
+    "Control de calidad interesante: calcula la diferencia de edad entre registros duplicados de la misma persona (debería ser ~2-4 años entre convocatorias) y detecta inconsistencias (dif_edad > 4.1)",
+    "Decisión documentada en el código (comentarios con los casos revisados y sus diferencias)",
+    "Reporta la proporción de filas retenidas tras la deduplicación"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada 'Downloads/Investigadores_Consolidado.xlsx', inexistente en el clon",
+    "write.xlsx() sin cargar library(openxlsx) (solo readxl y dplyr están cargados) y sin extensión en el nombre ('Base_sin_duplicados'): error en ejecución y archivo sin formato",
+    "La prioridad por convocatoria crea un snapshot heterogéneo: los investigadores que aparecen en varias convocatorias quedan representados con sus datos del año más reciente, mientras que los singletons conservan el único año que tienen; la edad, formación y clasificación de distintas personas provienen de años distintos (sesgo de selección de año)",
+    "Los casos con dif_edad > 4.1 se inspeccionan visualmente pero NO se decide ni se registra su tratamiento (no se excluyen, no se corrigen): auditoría incompleta",
+    "slice(1) sin desempate: si la misma persona tiene dos registros con la misma prioridad (duplicado dentro de la misma convocatoria), se elige una fila arbitraria (no determinista)",
+    "No valida el resultado contra el total esperado ni contra la base original más allá de nrow ratio"
+  ],
+  "mejoras": [
+    "Cargar openxlsx y escribir 'Base_sin_duplicados.xlsx' con ruta explícita",
+    "Documentar y aplicar una política para los casos con dif_edad > 4.1 (excluir, imputar o marcar)",
+    "Añadir un orden determinista dentro de slice(1) (p. ej., arrange por año o por nivel de formación)",
+    "Evaluar el sesgo del snapshot mixto: reportar cuántos registros provienen de cada convocatoria tras la deduplicación",
+    "Comparar la edad imputada vs la declarada entre convocatorias como control adicional"
+  ],
+  "ejecutabilidad": "NO. Falta 'Downloads/Investigadores_Consolidado.xlsx' en el clon y write.xlsx() falla por no tener cargado openxlsx (además el nombre de archivo carece de extensión).",
+  "produce_esperado": "La deduplicación con jerarquía es una decisión válida para análisis a nivel persona, pero introduce un sesgo de selección de año (mezcla de snapshots temporales). El análisis de dif_edad es un buen control de calidad incompleto: identifica anomalías pero no las resuelve ni documenta la decisión. La base resultante solo se valida por conteo, no por contenido.",
+  "bugs": [
+    "write.xlsx() sin library(openxlsx) y con nombre sin extensión (error de ejecución y archivo sin formato)",
+    "slice(1) sin orden determinista ante empates de prioridad (resultado no reproducible)",
+    "Caso de auditoría (dif_edad > 4.1) revisado manualmente sin decisión ni registro del tratamiento"
+  ],
+  "recomendacion": "Mantener como referencia del proceso de limpieza y deduplicación. No migrar: la limpieza moderna está en src/ingesta/minciencias.py y src/analisis/calidad.py; si se necesita la base persona-nivel, reimplementar con política de año explícita, desempate determinista y registro de decisiones de calidad."
+}

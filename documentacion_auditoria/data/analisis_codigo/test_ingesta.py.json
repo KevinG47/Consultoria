@@ -1,0 +1,28 @@
+{
+  "archivo": "tests/test_ingesta.py",
+  "lenguaje": "Python",
+  "lineas": 8,
+  "rol": "testing",
+  "descripcion": "Suite de tests del módulo de ingesta. Contiene un único test (test_catalogo_exists) que verifica que datos/catalogo.yaml existe.",
+  "logica": "test_catalogo_exists usa Path('datos/catalogo.yaml').exists() y assert. Configuración de testpaths en pyproject.toml apunta a tests/.",
+  "critica_fortalezas": [
+    "Estructura de tests creada y ejecutable con pytest.",
+    "Configuración en pyproject.toml (testpaths) correcta."
+  ],
+  "critica_debilidades": [
+    "Cobertura insuficiente: 1 test trivial; no prueba descargar/guardar/transformar ni ninguna función de análisis.",
+    "pandera declarado en dev-dependencies pero sin uso (no hay contratos de esquema).",
+    "El test depende del cwd (Path relativo): falla si pytest se ejecuta desde otra carpeta."
+  ],
+  "mejoras": [
+    "Añadir tests de humo para cargar_consolidado (shape, columnas, unicidad de ID_PERSONA_PR).",
+    "Añadir contratos de esquema con pandera (completitud, tipos, codificación).",
+    "Usar rutas relativas al proyecto (pathlib con __file__)."
+  ],
+  "ejecutabilidad": "Sí (pytest); verificado que el único test pasa si el catálogo existe. No se ejecutó pytest en la auditoría por prioridad, pero no hay dependencias externas más allá de pathlib.",
+  "produce_esperado": "Parcial: valida solo la existencia del catálogo, no el comportamiento de la ingesta — no cumple el objetivo de 'probar' el pipeline.",
+  "bugs": [
+    "Path relativo frágil (depende del directorio de ejecución)."
+  ],
+  "recomendacion": "mejorar — ampliar la cobertura a transformación y análisis; es la acción de mayor impacto en la deuda técnica de pruebas."
+}

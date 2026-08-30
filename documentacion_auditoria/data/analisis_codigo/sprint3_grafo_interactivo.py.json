@@ -1,0 +1,33 @@
+{
+  "archivo": "scripts/sprint3_grafo_interactivo.py",
+  "lenguaje": "Python",
+  "lineas": 72,
+  "rol": "orquestacion",
+  "descripcion": "Genera dos visualizaciones interactivas HTML (Pyvis) del grafo de co-filiación institucional: el grafo completo y un subgrafo filtrado con grado >= 2. Usa src/analisis/redes (construir_pares, construir_grafo, subgrafo_grado_minimo, generar_html_pyvis, metricas_grafo) sobre transformar(cargar_consolidado()). Salidas: hallazgos/sprint3_grafo_completo.html (docstring: 498 nodos) y hallazgos/sprint3_grafo_filtrado.html (146 nodos).",
+  "logica": "main() construye los pares de doble afiliación (construir_pares sin filtro de año), el grafo global (construir_grafo con anio=None), el subgrafo de grado mínimo, imprime las métricas de ambos y genera los dos HTML con generar_html_pyvis, que en src/analisis/redes.py calcula betweenness (weight='weight'), escala tamaño por grado ponderado y color por betweenness. No exporta CSVs ni figuras estáticas; sus únicos artefactos son los dos HTML en hallazgos/.",
+  "critica_fortalezas": [
+    "Entrega un artefacto de alto valor de comunicación (grafo interactivo navegable) y lo versiona en hallazgos/ como entregable, no como figura estática.",
+    "Delega toda la lógica de red en src/analisis/redes (normalización de instituciones, pesos, betweenness), manteniendo el script mínimo y legible.",
+    "El filtrado por grado >= 2 elimina nodos hoja y produce un subgrafo interpretable; las métricas de ambos grafos se imprimen para contraste.",
+    "Salidas verificadas: ambos HTML existen en el clon y están versionados en git."
+  ],
+  "critica_debilidades": [
+    "Los títulos de los HTML hardcodean '(2019)' (líneas 53 y 62) pero el grafo se construye con TODAS las convocatorias (construir_pares(df) sin filtro de año y construir_grafo con anio=None): la etiqueta contradice el dato real (co-filiación global 2013-2021) y es engañosa para quien abre el HTML.",
+    "Los conteos '498 nodos' y '146 nodos' del docstring son literales de una corrida puntual; al re-ejecutar con datos actualizados el docstring queda desactualizado (drift documental).",
+    "No genera evidencias tabulares (pares, métricas) propias: quien quiera verificar los 498/146 nodos debe re-ejecutar o abrir el HTML.",
+    "Sin parámetro de año: no permite generar el grafo por convocatoria (p. ej. solo 2019) aunque la capa analitica lo soporta (construir_grafo acepta anio)."
+  ],
+  "mejoras": [
+    "Eliminar el año hardcodeado de los títulos o calcularlo dinámicamente (p. ej. '2013-2021' derivado del rango real del panel) para no contradecir los datos.",
+    "Derivar los conteos de nodos del docstring dinámicamente o quitar los números literales.",
+    "Exportar además evidencias/redes_grafo_metricas.csv (m completo y m filtrado) para trazabilidad de los 498/146 nodos.",
+    "Añadir un flag --anio para reproducir la etiqueta 2019 de forma honesta (filtrando el grafo por convocatoria)."
+  ],
+  "ejecutabilidad": "Ejecutable en el clon solo tras instalar dependencias: pyproject declara networkx ^3.2 y pyvis ^0.3, pero el .venv del clon está vacío (solo pip/setuptools) y requirements.txt no los lista. El input existe: datos/tarea_join/investigadores_consolidado.xlsx vía cargar_consolidado(). No requiere duckdb. Con poetry install, corre de punta a punta y sobrescribe los HTML existentes.",
+  "produce_esperado": "SÍ: hallazgos/sprint3_grafo_completo.html y hallazgos/sprint3_grafo_filtrado.html existen en el clon (rutas exactas del docstring y del README, que documenta 'hallazgos/ — HTMLs interactivos (grafos Pyvis)'), lo que confirma ejecución previa. Los conteos 498/146 nodos no son verificables por análisis estático sin abrir los HTML, pero la existencia y el versionado de ambos archivos es coherente con una corrida exitosa. El script no declara ni produce figuras PNG ni CSVs, y así es.",
+  "bugs": [
+    "scripts/sprint3_grafo_interactivo.py:53 y 62 — títulos hardcodeados 'Co-filiacion institucional — Grafo completo (2019)' y '(2019)': el grafo se construye con todas las convocatorias (construir_pares(df) línea 39 y construir_grafo(pares) línea 40 con anio=None en src/analisis/redes.py:83-90), por lo que la etiqueta 2019 es incorrecta y contradice el alcance real del grafo.",
+    "scripts/sprint3_grafo_interactivo.py:10-11 — el docstring fija '498 nodos' y '146 nodos' como constantes; si el dataset cambia, el docstring y los HTML pueden divergir sin ningún aviso."
+  ],
+  "recomendacion": "mantener — el entregable interactivo es valioso y está versionado; corregir el año hardcodeado en los títulos (el bug más visible) y desacoplar los conteos del docstring para evitar drift documental."
+}

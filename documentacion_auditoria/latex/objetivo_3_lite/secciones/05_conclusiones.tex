@@ -1,0 +1,5 @@
+% ============ Conclusiones ============
+\section{Conclusiones y recomendaciones del criterio}
+
+El código está bien construido en general (modular, documentado, trazable): 10/16 scripts corren en un clon fresco y los artefactos versionados demuestran que el equipo los ejecutó con los datos completos. Los hallazgos críticos de calidad: bug del HHI en el dashboard (ValueError tragado), denominador de minorías en comparar\_dane() (comentario vs código), redes.py pierde pares de 3+ afiliaciones (split n=1), mojibake en el CSV, CI/CD rota (módulos inexistentes), Dockerfile con placeholder, tests insuficientes (1 test) y kaleido no declarado. La crítica de cada archivo es constructiva: cuando un archivo está bien construido se dice explícitamente.
+

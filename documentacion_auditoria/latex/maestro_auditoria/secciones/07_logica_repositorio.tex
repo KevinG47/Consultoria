@@ -1,0 +1,142 @@
+% ============ 07. Lógica de construcción del repositorio ============
+
+\section{Lógica de construcción del repositorio y cumplimiento del objetivo}
+
+\subsection{Cómo se construyó el repositorio}
+
+El repositorio evolucionó en dos grandes etapas (ver línea de tiempo en la
+Sección~\ref{sec:timeline}):
+
+\begin{enumerate}
+  \item \textbf{Etapa académica inicial (ago--oct 2025)}: carpetas
+        \texttt{notebooks/tarea\_*} con análisis por convocatoria (EDA en R y
+        Python), unión de bases (\texttt{codigo\_join.py}), verificación de
+        unicidad de IDs, construcción de dimensiones/hechos y ``gran tabla'',
+        análisis univariado/multivariado y clustering. En esta etapa el proyecto
+        se gestionaba como tareas independientes, sin pipeline unificado.
+  \item \textbf{Etapa de ingeniería de datos (oct 2025 -- may 2026)}: adopción de
+        CRISP-DM, creación de \texttt{src/} (ingesta, transformación, análisis,
+        modelo dimensional), \texttt{scripts/sprint*\_*.py} como orquestadores,
+        DuckDB como almacén, dashboard Streamlit, documentación (LaTeX,
+        Reveal.js, manual) y CI/CD. Se amplió el alcance de 3 a 6 convocatorias y
+        se integró el dataset de producción (Sprint 5) y los ajustes del director
+        (Sprint 6).
+\end{enumerate}
+
+\subsection{¿La lógica de construcción es correcta?}
+
+\begin{tcolorbox}[hallazgo]
+La \textbf{arquitectura final es correcta y apropiada} para el objetivo: el
+flujo ingesta $\rightarrow$ transformación $\rightarrow$ modelo dimensional
+$\rightarrow$ análisis por sprint $\rightarrow$ visualización sigue el estándar
+de un observatorio de datos (Kimball; CRISP-DM). La separación de responsabilidades
+en \texttt{src/} es limpia y la orquestación por sprints es trazable.
+\end{tcolorbox}
+
+\subsection{Flujos, herramientas y pasos incorrectos o no óptimos}
+
+\begin{enumerate}
+  \item \celdanok{CI/CD rota}: el workflow de GitHub Actions referencia módulos
+        inexistentes; la ingesta automatizada mensual nunca podría completarse.
+  \item \celdanok{Dockerfile con placeholder}: el contenedor desplegaría la app
+        vacía \texttt{app/streamlit\_app.py} en lugar del dashboard real.
+  \item \celdanok{Duplicación de apps}: \texttt{streamlit\_app.py} (raíz, 983
+        líneas, dashboard real) vs \texttt{app/streamlit\_app.py} (17 líneas,
+        placeholder) — fuente de confusión en despliegues.
+  \item \celdanok{Legacy no integrado}: el clustering y el análisis multivariado
+        viven en R fuera del pipeline; scikit-learn está declarado en
+        \texttt{pyproject.toml} pero no se usa.
+  \item \celdanok{Versionado de datos incompleto}: los datos crudos y procesados
+        están gitignored sin DVC; la reproducibilidad end-to-end depende de la
+        disponibilidad de la API Socrata.
+  \item \celdanok{Testing insuficiente}: un solo test; \texttt{pandera} sin uso;
+        sin tests de contrato ni de funciones analíticas.
+  \item \celdanok{Codificación}: el CSV canónico con mojibake no fue detectado por
+        ningún control automático.
+  \item \celdanok{Artefactos duplicados}: variantes de matrices de transición sin
+        documentación de diferencias.
+  \item \celdanok{Referencias desactualizadas}: Grupo7/Grupo8, ramas y repos
+        antiguos en el README.
+  \item \celdanok{Rutas hardcodeadas} en los scripts legacy (\texttt{Downloads/...})
+        que impiden su re-ejecución.
+\end{enumerate}
+
+\subsection{¿La ejecución cumplió el objetivo principal?}
+
+\begin{tcolorbox}[hallazgo]
+\textbf{Sí, en lo esencial.} Los entregables declarados existen y son
+consistentes entre sí: 14 hallazgos críticos documentados, 79 CSVs de evidencias,
+56 figuras, dashboard de 7 capítulos, informe LaTeX (~30 págs.), presentación y
+manual ejecutable. Los hallazgos responden las 7 preguntas de investigación y su
+narrativa es coherente (patrón Pregunta $\rightarrow$ Hallazgo $\rightarrow$ Caveat).
+La ejecución fue \textbf{correcta en la lógica analítica} pero \textbf{no óptima
+en la industrialización} (reproducibilidad, automatización, pruebas), lo que se
+recomienda corregir en la fase de entrega.
+\end{tcolorbox}
+
+\subsection{Verificación empírica de ejecutabilidad (auditoría 2026)}
+
+Como parte de esta consultoría se ejecutaron los 16 scripts de orquestación
+del repositorio en un entorno limpio (venv Python, clon fresco con el XLSX
+versionado). Resultados:
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{6.0cm} r c >{\raggedright\arraybackslash}p{6.0cm}}
+\caption{Ejecución real de los scripts del repositorio}
+\label{tab:ejecucion}\\
+\toprule
+\textbf{Script} & \textbf{Exit} & \textbf{Tiempo} & \textbf{Resultado} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Script} & \textbf{Exit} & \textbf{Tiempo} & \textbf{Resultado} \\
+\midrule
+\endhead
+sprint2\_panel\_longitudinal.py & 0 & 108\,s & \celdaok{OK} \\
+sprint2\_matrices\_transicion.py & 0 & 74\,s & \celdaok{OK} \\
+sprint2\_territorial.py & 0 & 0.4\,s & \celdaok{OK} \\
+sprint2\_genero\_ocde.py & 0 & 61\,s & \celdaok{OK} \\
+sprint2\_duckdb.py & 0 & 68\,s & \celdaok{OK} \\
+sprint3\_redes.py & 0 & 64\,s & \celdaok{OK} \\
+sprint3\_grafo\_interactivo.py & 0 & 54\,s & \celdaok{OK} \\
+sprint4\_diversidad.py & 0 & 82\,s & \celdaok{OK} \\
+sprint6\_validacion\_calidad.py & 0 & 62\,s & \celdaok{OK} \\
+sprint6\_tabla\_maestra\_ies.py & 0 & 1.9\,s & \celdaok{OK} \\
+sprint6\_ocde\_composicion.py & 1 & 58\,s & \celdanok{ERROR} — falta \texttt{datos/raw/produccion\_grupos.csv} (gitignored) \\
+sprint6\_sankey\_categoria.py & 1 & 56\,s & \celdanok{ERROR} — \texttt{kaleido} no declarado (requisito de \texttt{write\_image}) \\
+sprint6\_geografia\_institucional.py & 1 & 38\,s & \celdanok{ERROR} — \texttt{UnicodeEncodeError} (\texttt{$\rightarrow$} en \texttt{print}, Windows cp1252) \\
+sprint6\_sankey\_territorial.py & 1 & 2.7\,s & \celdanok{ERROR} — \texttt{kaleido} no declarado \\
+sprint5\_produccion.py & 1 & 50\,s & \celdanok{ERROR} — falta dataset de producción (gitignored) \\
+sprint5\_duckdb.py & 1 & 2.2\,s & \celdanok{ERROR} — falta dataset de producción (gitignored) \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{tcolorbox}[hallazgo]
+\textbf{10 de 16 scripts (62\,\%) se ejecutan correctamente en un clon
+fresco.} Los 6 fallos se explican por: (i) datos de producción gitignored
+(4 scripts), (ii) dependencia no declarada \texttt{kaleido} (2 scripts) y
+(iii) un \texttt{print} con el carácter \texttt{$\rightarrow$} que falla en
+consolas Windows (1 script). Además, los 10 que corren lo hacen sobre el XLSX
+de 3 convocatorias (50\,891 filas), por lo que \textbf{producen resultados
+distintos a las evidencias versionadas}: p.~ej. el panel longitudinal
+regenerado solo tiene 2 periodos (2017--2019, 2019--2021) frente a los 5
+periodos (2013--2021) del archivo versionado. Esto demuestra empíricamente
+que \textbf{un clon fresco no reproduce los hallazgos del README}.
+\end{tcolorbox}
+
+\subsection{Recomendaciones de mejora de la lógica}
+
+\begin{enumerate}
+  \item Corregir CI/CD y Dockerfile; alinear el despliegue al dashboard real.
+  \item Normalizar codificación UTF-8 en el pipeline y añadir contratos de esquema.
+  \item Migrar el análisis multivariado/clustering a \texttt{src/} con validación
+        formal (silhouette, Calinski--Harabasz) o documentarlo como histórico.
+  \item Versionar datos críticos (DVC o Git LFS) y documentar la ingesta de
+        producción.
+  \item Ampliar tests a funciones de transformación y análisis.
+  \item Unificar nomenclatura (Grupo 8, rama \texttt{main}) y eliminar artefactos
+        duplicados.
+\end{enumerate}

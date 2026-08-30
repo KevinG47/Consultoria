@@ -1,0 +1,155 @@
+Auditoría Integral del Repositorio
+Observatorio MinCiencias — Investigadores
+Reconocidos
+Documento maestro · Entendimiento, datos, código, estadística, lógica de construcción
+y línea de tiempo
+Consultor Estadístico Senior · Auditoría de Proyectos de Datos
+Universidad Santo Tomás · Ustadistica · 2026-I
+Repositorio auditado: Observatorio_Ministerio_de_Ciencias_Grupo8
+Versión 1.0 · 29 de agosto de 2026
+Documento generado de forma reproducible a partir de la auditoría del repositorio. La construcción de
+este documento está documentada en documentacion_auditoria.
+
+1
+RESUMEN EJECUTIVO
+1 Resumen ejecutivo
+1.1 Objeto de la auditoría
+Este documento presenta la auditoría integral del repositorio Observatorio_Ministerio_de_Ciencias_Grupo8
+(https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8), que
+materializa un observatorio crítico del sistema de reconocimiento de investigadores
+del Ministerio de Ciencia, Tecnología e Innovación de Colombia (MinCiencias).
+El análisis cubre 236 archivos (51 de código), 133 commits (2025-08-24 a 2026-05-14), 12
+autores y un pipeline que procesa 77 237 registros del padrón de investigadores (6 convocatorias,
+2013–2021) y 3 166 629 filas de producción de grupos de investigación.
+1.2 Veredicto general
+Hallazgo
+El repositorio cumple su objetivo declarado: consolidar, validar y analizar el padrón de investigado-
+res reconocidos y producir un observatorio con 14 hallazgos críticos documentados, dashboard de
+7 capítulos, informe LaTeX y presentación. La arquitectura y la lógica estadística de nivel
+descriptivo-exploratorio son sólidas; la deuda técnica (CI/CD rota, Dockerfile desalineado,
+codificación mojibake en el CSV canónico, tests mínimos, legacy R no reproducible, versionado
+de datos incompleto) compromete la reproducibilidad end-to-end, pero no la validez de los
+hallazgos ya generados.
+1.3 Principales fortalezas verificadas
+Documentación de nivel profesional: README exhaustivo, catálogo YAML con
+diccionario de datos y llaves de cruce, decisiones metodológicas documentadas en el
+propio código (p. ej. tratamiento de atípicos en src/analisis/calidad.py).
+Modularización correcta: separación ingesta / transformación / análisis / modelado /
+orquestación con lógica reutilizable en src/.
+Modelo dimensional adecuado: esquema estrella en DuckDB con tabla puente N:N
+para la relación investigador–institución.
+Evidencias trazables: 79 CSVs y 56 PNG/HTML con convención de nombres consis-
+tente por sprint.
+Enfoque crítico alineado con la evaluación responsable de la ciencia (patrón
+Pregunta →Hallazgo →Caveat).
+1.4 Principales brechas detectadas
+1. CI/CD rota: .github/workflows/etl_update.yml ejecuta src.ingesta.main y src.transformacion
+módulos que no existen (los reales son src.ingesta.minciencias/produccion y src/Transformacion.p
+2. Dockerfile desalineado: ejecuta app/streamlit_app.py (placeholder de 17 líneas) en
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+4
+4
+
+7
+LÍNEA DE TIEMPO DE LA CONSTRUCCIÓN DEL REPOSITORIO
+7 Línea de tiempo de la construcción del repositorio
+7.1 Resumen general
+El repositorio fue construido con 133 commits entre 2025-08-24 y 2026-05-14 por 12
+identidades de autor (12 personas/roles distintos). La construcción muestra dos etapas claras:
+una fase académica inicial (tareas de análisis por convocatoria, ago–oct 2025) y una fase de
+ingeniería de datos (pipelines, sprints 2–6, oct 2025 – may 2026).
+7.2 Distribución de autoría
+Autor
+Correo
+Commits
+%
+camiloacr1322
+camilocast2213@gmail.com
+46
+34.6 %
+Victor-Diaz-Usta
+darksite65@gmail.com
+34
+25.6 %
+Maria Amaya
+paulaamaya012@gmail.com
+13
+9.8 %
+Paula
+64102754+PaulaGuevara@users.noreply.github.com
+11
+8.3 %
+JulianMendez27
+julianmendez0420@gmail.com
+11
+8.3 %
+Victor-Diaz-Usta
+Victordiazb@usantotomas.edu.co
+5
+3.8 %
+PaulaGuevara
+paulaximenag2@gmail.com
+4
+3.0 %
+Julian Mendez
+julianmendez0420@gmail.com
+3
+2.3 %
+copilot-swe-
+agent[bot]
+198982749+Copilot@users.noreply.github.com
+3
+2.3 %
+Camilo Castillo
+camilocast2213@gmail.com
+1
+0.8 %
+Ustadistica Bot
+ustadistica@usantotomas.edu.co
+1
+0.8 %
+Paula Betancour
+paulagonzalezoh@gmail.com
+1
+0.8 %
+Tabla 4. Commits por autor
+7.3 Actividad por mes
+Mes
+Commits
+2025-08
+9
+2025-09
+46
+2025-10
+15
+2025-11
+6
+2026-02
+1
+2026-03
+17
+2026-04
+35
+2026-05
+4
+Tabla 5. Commits por mes
+7.4 Tabla completa de commits
+Tabla 6. Línea de tiempo completa de commits (orden cronológico)
+#
+Fecha
+Autor
+Hash
+Asunto
+1
+2025-08-24
+Paula
+1bc40e1b
+Initial commit
+2
+2025-08-24
+JulianMendez27
+ed99fc3c
+Update README.md
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+96
+96

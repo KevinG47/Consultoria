@@ -1,0 +1,35 @@
+{
+  "archivo": "scripts/sprint6_sankey_territorial.py",
+  "lenguaje": "Python",
+  "lineas": 135,
+  "rol": "orquestacion",
+  "descripcion": "Materializa el Sankey territorial residencia del investigador → departamento de su institución, usando como entrada directa evidencias/geografia_flujo_completo.csv (generado por sprint6_geografia_institucional.py), sin recargar el padrón. Respuesta visual a la pregunta del director sobre los flujos de departamentos pequeños hacia Meta/Bogotá. Salidas: sankey_territorial.html (interactivo) y sankey_territorial.png (estático).",
+  "logica": "construir_sankey(): selecciona top 12 departamentos de residencia por volumen total, top 10 de institución y flujos con n_investigadores ≥ 15; construye nodos 'X (res.)' e 'Y (inst.)' con colores de PALETA por residencia (nodos de institución en gris); flujos con alpha 0.40 si el flujo es local (residencia == institución) y 0.65 si es transversal; figura go.Sankey con arrangement='snap' y hovertemplate con formato de miles. Exporta HTML (plotly CDN) y PNG vía write_image a 2x.",
+  "critica_fortalezas": [
+    "Diseño de pipeline limpio: consume el CSV ya generado por el script de geografía (una sola fuente de verdad, sin duplicar la lógica de cruce).",
+    "Parámetros de saturación explícitos (top_res, top_inst, umbral_min) que evitan un diagrama ilegible con miles de flujos.",
+    "Distinción visual local vs. transversal (alpha) y paleta estable.",
+    "Artefactos verificados: sankey_territorial.html y sankey_territorial.png existen en el clon."
+  ],
+  "critica_debilidades": [
+    "write_image requiere kaleido (dependencia no declarada): el PNG falla en entornos sin esa librería aunque el HTML se escriba bien.",
+    "HTML con include_plotlyjs='cdn': requiere internet para renderizar.",
+    "Los tops y el umbral están fijos en main() sin interfaz CLI para explorar variantes.",
+    "No exporta el subconjunto de flujos usados en el diagrama (CSV), limitando la reproducibilidad del gráfico exacto.",
+    "Depende de que geografia_flujo_completo.csv use los strings normalizados; si ese script cambia de normalización, este se rompe sin mensaje claro."
+  ],
+  "mejoras": [
+    "Declarar kaleido o envolver write_image en try/except para degradar a solo HTML con aviso.",
+    "Exportar el CSV de los flujos filtrados usados en la figura.",
+    "Parametrizar top_res/top_inst/umbral_min por argparse para iterar rápido.",
+    "Añadir validación de columnas esperadas (DPTO_RESIDENCIA, DPTO_INSTITUCION, n_investigadores) al leer el CSV."
+  ],
+  "ejecutabilidad": "SÍ, ejecutable tal cual con el clon: la entrada evidencias/geografia_flujo_completo.csv existe; requiere plotly y kaleido instalados (sin kaleido falla solo la escritura del PNG). No depende de datos/raw ni del padrón.",
+  "produce_esperado": "SÍ: artifacts/sprint6_sankey/sankey_territorial.html y sankey_territorial.png existen, completando el set de 6 sankeys del sprint 6 (5 de categoría + 1 territorial). La lógica produce exactamente el flujo solicitado (residencia → institución con umbral de ruido).",
+  "bugs": [
+    "scripts/sprint6_sankey_territorial.py:125-129 — write_image sin comprobación de kaleido: dependencia implícita; en un entorno sin kaleido el script aborta tras haber generado el HTML (comportamiento no degradable).",
+    "scripts/sprint6_sankey_territorial.py:69-70 — top_residencias.index(row['DPTO_RESIDENCIA']) asume que toda fila de sub está en la lista top; correcto por el filtro isin previo (línea 56-58), pero si top_residencias tuviera duplicados (no los tiene, viene de nlargest), el index() devolvería la primera aparición.",
+    "scripts/sprint6_sankey_territorial.py:56-58 — el filtro por umbral_min ≥ 15 es absoluto, no proporcional al total del departamento: un flujo pequeño de VICHADA (dpto de pocos investigadores) puede quedar excluido justo donde el director quiere verlo; convendría umbral relativo por origen."
+  ],
+  "recomendacion": "mantener — script simple, enfocado y con artefactos verificados que completan el entregable del director; mejoras menores (kaleido declarado, CSV de flujos filtrados, umbral relativo para departamentos pequeños) aumentan su robustez y utilidad."
+}

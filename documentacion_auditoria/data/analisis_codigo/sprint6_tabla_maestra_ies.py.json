@@ -1,0 +1,36 @@
+{
+  "archivo": "scripts/sprint6_tabla_maestra_ies.py",
+  "lenguaje": "Python",
+  "lineas": 635,
+  "rol": "orquestacion",
+  "descripcion": "Construye el borrador de la tabla maestra canónica de IES a partir de evidencias/instituciones_unicas_raw.csv (dump de strings únicos de INST_FILIA con frecuencias), aplicando un diccionario MAPEO hardcodeado de ~250 claves string → (nombre_canonico, sigla, departamento_sede, naturaleza). Solo usa pandas, sin tocar el padrón ni producción. Salidas: tabla_maestra_ies.csv, mapping_inst_filia_to_ies.csv e ies_pendientes_revision.csv.",
+  "logica": "aplicar_mapeo(row): si inst_filia_str ∈ MAPEO devuelve la tupla canónica con estado 'asignado'; si no, NA con estado 'pendiente_revision'. main(): lee el dump, aplica el mapeo fila a fila (apply axis=1), calcula cobertura sobre apariciones (asignadas/total), agrupa las asignadas por (nombre_canonico, sigla, naturaleza) con agregados (departamentos únicos, apariciones, variantes) ordenadas por apariciones desc, y exporta los 3 archivos, imprimiendo cobertura y top 20.",
+  "critica_fortalezas": [
+    "Borrador transparente y auditable: el mapeo completo es legible, con comentarios por pasadas y objetivo de cobertura (>90%).",
+    "Reporta cobertura real sobre apariciones del padrón y separa explícitamente las entradas pendientes de revisión.",
+    "Cero dependencias externas más allá de pandas y ejecutable con el clon (el input instituciones_unicas_raw.csv existe, 2763 filas).",
+    "Decisiones de negocio explícitas: una IES por sede/razón social con departamento_sede por ubicación física."
+  ],
+  "critica_debilidades": [
+    "Mapeo 100% manual y hardcodeado (~250 de 2763 strings): frágil ante variantes nuevas (acentos, guiones, 'SAS', 'LTDA') y costoso de mantener; es una solución de 'borrador', no un componente de datos.",
+    "La columna 'sedes_registradas' en realidad cuenta departamentos distintos (nunique de departamento_sede), no sedes físicas: nombre engañoso.",
+    "Coincidencia exacta por mayúsculas-sin-acentos: si el dump cambia de normalización (p. ej. conservara tildes), todo el mapeo se rompe en silencio y la cobertura cae sin error.",
+    "Variantes duplicadas sin mapear (p. ej. 'UNIVERSIDAD NACIONAL DE COLOMBIA' sin sede) asumen Bogotá por defecto sin validación.",
+    "apply(axis=1) con función Python es lento, aunque tolerable para ~2.8k filas."
+  ],
+  "mejoras": [
+    "Externalizar el MAPEO a un CSV/JSON versionado (fuente de datos, no código) con validación de unicidad de claves.",
+    "Añadir normalización difusa o reglas (contiene 'UNIVERSIDAD NACIONAL DE COLOMBIA' → UNAL) para cubrir variantes no listadas, reportando la confianza.",
+    "Renombrar 'sedes_registradas' a 'departamentos_sede' o contar sedes reales.",
+    "Añadir un test que falle si la cobertura baja de un umbral (p. ej. 85%) ante cambios del dump."
+  ],
+  "ejecutabilidad": "SÍ, ejecutable tal cual con el clon: solo necesita pandas y evidencias/instituciones_unicas_raw.csv (existente, columnas inst_filia_str, n_apariciones, pct, pct_acum — coinciden con lo que lee el script). No depende de datos/raw ni de observatorio.duckdb.",
+  "produce_esperado": "SÍ: evidencias/tabla_maestra_ies.csv, evidencias/mapping_inst_filia_to_ies.csv e evidencias/ies_pendientes_revision.csv existen. El mapping tiene las columnas esperadas (inst_filia_str, nombre_canonico, sigla, departamento_sede, naturaleza, estado) y es el insumo que consumen sprint6_geografia_institucional.py y la app.",
+  "bugs": [
+    "scripts/sprint6_tabla_maestra_ies.py:607 — 'sedes_registradas' = nunique de departamento_sede: dos sedes en el mismo departamento (p. ej. dos campus de la UNAL en Bogotá) cuentan como 1, mientras dos sedes en departamentos distintos cuentan como 2; la métrica no es número de sedes.",
+    "scripts/sprint6_tabla_maestra_ies.py:38-562 — claves hardcodeadas sin validación de duplicados ni de normalización: si instituciones_unicas_raw.csv se regenera con otro case/acentos, la cobertura cae sin ninguna señal de error.",
+    "scripts/sprint6_tabla_maestra_ies.py:592 — pd.concat([raw, asignaciones], axis=1) asume que aplicar_mapeo devuelve una Series por fila alineada por índice; correcto aquí, pero frágil si se reordenara raw antes.",
+    "scripts/sprint6_tabla_maestra_ies.py:620-623 — ies_pendientes_revision.csv incluye todas las entradas sin mapeo, pero el script no imprime las 10 pendientes más frecuentes para facilitar la revisión manual (solo cobertura agregada)."
+  ],
+  "recomendacion": "refactorizar — como borrador cumple y sus productos existen, pero un catálogo canónico de IES no debería vivir en código: externalizar el mapeo a datos versionados, renombrar métricas y añadir cobertura mínima garantizada antes de que otros scripts (geografía, app) dependan de él en producción."
+}

@@ -1,0 +1,34 @@
+{
+  "archivo": "scripts/sprint3_redes.py",
+  "lenguaje": "Python",
+  "lineas": 134,
+  "rol": "orquestacion",
+  "descripcion": "Análisis de redes de co-filiación institucional: grafo donde nodo = institución y arista = investigadores con doble afiliación, a nivel global (2013-2021) y por convocatoria. Usa src/analisis/redes (construir_pares, construir_grafo, metricas_grafo, tabla_nodos, tabla_aristas, metricas_por_convocatoria) sobre transformar(cargar_consolidado()). Salidas: 3 figuras PNG en artifacts/sprint3_redes/ (distribución de grado, evolución de aristas/nodos, top-20 instituciones por grado ponderado) y 4 CSVs en evidencias/ (pares, nodos, aristas, métricas por convocatoria).",
+  "logica": "main() extrae los pares de doble afiliación (solo INST_FILIA con '|'), construye el grafo global con peso = investigadores compartidos, imprime métricas (nodos, aristas, densidad, componentes, hub), genera 3 figuras con funciones dedicadas y exporta 4 CSVs. metricas_por_convocatoria reutiliza construir_grafo(pares, anio) para la evolución anual. La normalización de instituciones (colapsar sedes/seccionales) ocurre en src/analisis/redes.normalizar_institucion.",
+  "critica_fortalezas": [
+    "Cobertura completa del análisis de red: grafo global, evolución por convocatoria, top instituciones y exportación tabular de nodos/aristas para reproducibilidad.",
+    "El uso de grado ponderado (weight) en nodos y aristas refleja correctamente el conteo de investigadores compartidos.",
+    "La normalización de instituciones (sedes, paréntesis, mayúsculas) está delegada y documentada en la capa analitica, evitando duplicados espurios.",
+    "Salidas verificadas: las 3 figuras y los 4 CSVs existen en el clon en las rutas declaradas."
+  ],
+  "critica_debilidades": [
+    "Línea 102: 'instituciones mencionadas' = nunique(inst_a) + nunique(inst_b) cuenta dos veces toda institución que aparece en ambas columnas; la cifra impresa está sobreestimada (debería ser la unión).",
+    "fig_distribucion_grado dibuja una barra por nodo sin etiquetas de eje X legibles: con cientos de nodos la figura es poco informativa; un histograma log-log del grado sería más analítico.",
+    "No reporta métricas de comunidad (modularidad, componentes gigantes) pese a imprimir n_componentes; el análisis de 'poder institucional' queda en grado/betweenness solamente.",
+    "Depende de la columna INST_FILIA con separador '|': si Transformacion cambia el formato (p. ej. ';'), construir_pares devuelve un DataFrame vacío sin advertencia."
+  ],
+  "mejoras": [
+    "Corregir el conteo de instituciones con pd.unique(concat(inst_a, inst_b)) o una unión de conjuntos.",
+    "Sustituir las barras por nodo por un histograma de distribución de grado (escala log-log) y anotar el grado medio.",
+    "Añadir detección de comunidad (nx.community.louvain_communities) y tamaño del componente gigante al resumen.",
+    "Validar en construir_pares que INST_FILIA contenga '|' y advertir si el número de pares es 0 o anómalo."
+  ],
+  "ejecutabilidad": "Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib, seaborn, networkx; .venv del clon vacío, requirements.txt no los lista pero pyproject sí). El input existe: datos/tarea_join/investigadores_consolidado.xlsx vía cargar_consolidado(). No requiere duckdb. Con poetry install, corre de punta a punta.",
+  "produce_esperado": "SÍ, coincidencia total: existen artifacts/sprint3_redes/fig01_distribucion_grado.png, fig02_evolucion_aristas.png, fig03_top_instituciones.png y evidencias/redes_pares_cofiliacion.csv, redes_nodos_global.csv, redes_aristas_global.csv, redes_metricas_por_convocatoria.csv, con los nombres exactos del docstring y del README; confirma ejecución previa exitosa.",
+  "bugs": [
+    "scripts/sprint3_redes.py:102 — pares['inst_a'].nunique() + pares['inst_b'].nunique() sobreestima 'instituciones mencionadas' al sumar cardinalidades de columnas que comparten elementos; la cifra impresa en consola no es el número real de instituciones.",
+    "scripts/sprint3_redes.py:48-57 — fig_distribucion_grado genera una barra por nodo (len(grados) barras) sin eje X útil: con cientos de instituciones la figura se vuelve ilegible y aporta poco frente a un histograma de la distribución de grado.",
+    "scripts/sprint3_redes.py:100 — construir_pares(df) asume implícitamente el separador '|' en INST_FILIA (src/analisis/redes.py:61-64); si la transformación cambia el formato, el grafo queda vacío sin ningún warning."
+  ],
+  "recomendacion": "mantener — es el análisis de redes estándar del observatorio con salidas verificadas y evidencia completa; corregir el doble conteo impreso y mejorar la figura de distribución de grado."
+}

@@ -1,0 +1,34 @@
+{
+  "archivo": "scripts/sprint6_validacion_calidad.py",
+  "lenguaje": "Python",
+  "lineas": 121,
+  "rol": "orquestacion",
+  "descripcion": "Valida y documenta el tratamiento de valores atípicos de la variable EDAD_ANOS_PR del padrón: detecta los casos > 100 (máximo observado 956, error de digitación), compara tres estrategias (original, eliminación, imputación por mediana de grupo) y genera evidencia auditable. Usa src/ingesta.cargar_consolidado, src/Transformacion.transformar y src/analisis/calidad (detectar_atipicos_edad, resumen_tratamiento, filtrar, imputar_mediana, UMBRAL_EDAD_MAX). Salidas: 2 CSVs, 1 JSON y 1 figura.",
+  "logica": "Flujo 1→4: (1) transformar(cargar_consolidado()); (2) detectar_atipicos_edad devuelve los registros con EDAD_ANOS_PR > 100 ordenados desc; (3) resumen_tratamiento calcula n_total/n_atipicos/n_validos y justificación, y se construye un DataFrame comparativo edad_stats con media/mediana/desv/max para original, filtrar() (eliminación) e imputar_mediana(); (4) histogramas antes/después con umbral trazado como axvline, y exportación de atipicos a CSV, comparación a CSV y resumen a JSON.",
+  "critica_fortalezas": [
+    "Metodología explícita y auditable: umbral documentado (100), justificación cuantitativa (10/77.237 = 0.013%) y decisión adoptada (eliminación) con alternativa de imputación comparada.",
+    "La evidencia confirma los números esperados: n=77.237 registros, máx original 956.25 → 100 tras filtro (evidencias/calidad_comparacion.csv).",
+    "Script pequeño, legible y sin dependencias exóticas (pandas, matplotlib, seaborn).",
+    "Reutiliza funciones de negocio de src/analisis/calidad.py con docstrings de decisión metodológica."
+  ],
+  "critica_debilidades": [
+    "n_registros usa len(df) (cuenta filas, incluidas las de EDAD NaN) mientras media/mediana/std ignoran NaN: unidades de conteo mixtas en la misma tabla comparativa.",
+    "La mediana se deja sin redondear mientras media y desv_estandar se redondean a 2 decimales (formato inconsistente).",
+    "El script solo valida edad; otros problemas documentados en calidad.py (departamento NO DISPONIBLE 5.2%, género NO REPORTADO 2.7%, convocatoria 833 con año 2019) se citan pero no se verifican ni exportan.",
+    "La figura compara 'original' vs 'filtrado' pero no muestra el efecto de la imputación, pese a que se calcula en el DataFrame comparativo."
+  ],
+  "mejoras": [
+    "Calcular n_registros como count no-NA de EDAD_ANOS_PR para consistencia con las demás métricas.",
+    "Redondear mediana igual que media y documentar el criterio.",
+    "Ampliar la validación a duplicados, nulos por columna y distribución de tipos, exportando un perfil de calidad completo.",
+    "Fijar seed/versión del dataset en el JSON de resumen para trazabilidad."
+  ],
+  "ejecutabilidad": "SÍ, ejecutable tal cual con el clon: cargar_consolidado() resuelve desde datos/tarea_join/investigadores_consolidado.xlsx (no requiere raw Socrata); depende solo de pandas, matplotlib y seaborn. El único requisito no verificado es que transformar() produzca EDAD_ANOS_PR, lo cual confirman los artefactos existentes.",
+  "produce_esperado": "SÍ: evidencias/calidad_atipicos_edad.csv, evidencias/calidad_comparacion.csv, evidencias/calidad_resumen.json y artifacts/sprint6_calidad/fig_edad_antes_despues.png existen. El CSV de comparación confirma 77.237 registros, media 44.84 → 44.73, desv 13.23 → 10.04 y máx 956.25 → 100.0, coherente con la decisión de eliminación.",
+  "bugs": [
+    "scripts/sprint6_validacion_calidad.py:62-84 — edad_stats mezcla unidades: len(df) cuenta filas (incluye NaN en EDAD) mientras mean/median/std de pandas ignoran NaN; si hubiera filas con edad faltante, n_registros y las demás columnas no serían comparables.",
+    "scripts/sprint6_validacion_calidad.py:70-73 — df['EDAD_ANOS_PR'].median() sin round frente a round(..., 2) en media (formato inconsistente; en el CSV aparece 43.29 por coincidencia del valor).",
+    "scripts/sprint6_validacion_calidad.py:50-51 — detectar_atipicos_edad solo imprime, no informa el conteo de NaN de EDAD_ANOS_PR, que podría alterar la interpretación del umbral."
+  ],
+  "recomendacion": "mantener — cumple su propósito (decisión metodológica auditable) con evidencia verificada; requiere solo ajustes menores de consistencia de conteos y redondeo."
+}

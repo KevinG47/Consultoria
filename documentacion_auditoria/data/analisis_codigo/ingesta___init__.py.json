@@ -1,0 +1,33 @@
+{
+  "archivo": "src/ingesta/__init__.py",
+  "lenguaje": "Python",
+  "lineas": 53,
+  "rol": "ingesta",
+  "descripcion": "Punto de entrada de carga de datos del paquete ingesta. Expone cargar_consolidado() y cargar_produccion(), con prioridad de rutas (CSV crudo Socrata -> XLSX local para investigadores; CSV crudo obligatorio para producción), normaliza nombres de columnas a MAYÚSCULAS y reporta conteos cargados.",
+  "logica": "Define rutas absolutas ROOT/datos/raw y ROOT/datos/tarea_join. cargar_consolidado() prefiere datos/raw/investigadores_consolidado.csv (Socrata) y cae a datos/tarea_join/investigadores_consolidado.xlsx; cargar_produccion() exige datos/raw/produccion_grupos.csv y lanza FileNotFoundError si falta, sugiriendo python -m src.ingesta.produccion. Es el contrato de entrada que usan todos los scripts (from ingesta import cargar_consolidado, cargar_produccion).",
+  "critica_fortalezas": [
+    "Mecanismo de fallback raw -> tarea_join permite ejecutar análisis de investigadores sin datos crudos.",
+    "Uppercase centralizado de columnas: garantiza el contrato MAYÚSCULAS que exigen analisis/*.py y Transformacion.py.",
+    "Mensajes de error accionables que indican el comando de ingesta a ejecutar."
+  ],
+  "critica_debilidades": [
+    "cargar_consolidado() no valida el shape esperado (77.237 x 30) ni los tipos: con low_memory=True, id_persona_pr con ceros a la izquierda puede leerse de forma inconsistente (int vs str).",
+    "cargar_produccion() solo acepta el CSV crudo: no hay fallback ni lectura desde el modelo DuckDB; bloquea todo el análisis de producción en el clon.",
+    "Depende de openpyxl para read_excel, declarado solo en requirements.txt (no en pyproject.toml): una instalación vía poetry pura fallaría.",
+    "El comando sugerido python -m src.ingesta.minciencias no pagina (hace una sola llamada con limit=100.000) y puede truncar silenciosamente los 77.237 registros si Socrata limita la respuesta por petición (contraste con ingesta/produccion.py que sí pagina)."
+  ],
+  "mejoras": [
+    "Añadir validación de shape y conteo contra datos/catalogo.yaml (tamanio_registros).",
+    "Especificar dtypes en read_csv (id_persona_pr como str) para preservar ceros a la izquierda y garantizar el cruce con producción.",
+    "Declarar openpyxl y pyyaml en pyproject.toml.",
+    "Añadir fallback para cargar_produccion desde parquet o desde el modelo DuckDB si el CSV crudo no está."
+  ],
+  "ejecutabilidad": "cargar_consolidado(): SÍ en el clon — cae al XLSX datos/tarea_join/investigadores_consolidado.xlsx (existe, 8 MB) porque datos/raw/investigadores_consolidado.csv NO existe (solo .gitkeep). cargar_produccion(): NO — datos/raw/produccion_grupos.csv no existe (gitignored; requiere descarga de ~1,2 GB). El módulo en sí es importable sin datos.",
+  "produce_esperado": "No produce archivos; es capa de lectura. Sus salidas (DataFrames) alimentan transformar() y analisis.*. Cumple el contrato documentado en README (ingesta/ cargar_consolidado + cargar_produccion).",
+  "bugs": [
+    "src/ingesta/__init__.py:44-48: cargar_produccion() lanza FileNotFoundError sin alternativa; en el clon (sin datos/raw) todos los scripts sprint5/sprint6 de producción mueren en el arranque.",
+    "src/ingesta/__init__.py:26: read_csv(low_memory=False) + read_excel sin dtype explícito -> ID_PERSONA_PR puede inferirse como int en un lado y str en otro, rompiendo el cruce id_persona_pd <-> id_persona_pr.",
+    "src/ingesta/__init__.py:18-36: no verifica duplicados por (ID_PERSONA_PR, ID_CONVOCATORIA) pese a que el README define esa granularidad para el dataset."
+  ],
+  "recomendacion": "mejorar — diseño sólido de fallback, pero requiere validación de tipos/duplicados y dependencias declaradas (openpyxl/pyyaml) para que la instalación reproducible funcione."
+}

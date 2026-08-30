@@ -1,0 +1,230 @@
+# =====================================================================
+# Objetivos de la consultoría — CRITERIOS DE LA RÚBRICA (6)
+# =====================================================================
+# Cada criterio genera un PDF ENFOCADO (solo las secciones relevantes) y,
+# con --lite, una versión resumida. Secciones posibles en
+# "secciones_principales": entendimiento, datos, codigo, estadistica,
+# logica, timeline.
+# =====================================================================
+
+objetivos:
+  - id: 1
+    titulo: "Entendimiento del objetivo del repositorio"
+    resumen_simple: >
+      Este criterio evalúa si el equipo entendió qué se proponía el repositorio:
+      construir un observatorio crítico del sistema de reconocimiento de
+      investigadores de MinCiencias (2013-2021), responder 7 preguntas de
+      investigación y producir evidencia para un informe sobre las falencias
+      del sistema.
+    descripcion: >
+      Criterio 1 de la rúbrica: demostrar comprensión del objetivo del
+      repositorio — el observatorio crítico del sistema de reconocimiento de
+      investigadores de MinCiencias (convocatorias 2013-2021), sus preguntas de
+      investigación (7), su alcance declarado (README/informe_final.md) y cómo
+      cada módulo del repositorio responde a esas preguntas.
+    secciones_principales: ["entendimiento"]
+    entendimiento_observacion: >
+      El objetivo del repositorio es claro y bien documentado: consolidar,
+      validar y analizar el padrón de investigadores reconocidos por
+      MinCiencias y producir un observatorio crítico con evidencia sobre la
+      fiabilidad, comparabilidad y equidad del sistema de reconocimiento. La
+      documentación (README, informe_final.md, catálogo YAML) permite entender
+      sin ambigüedad qué se buscaba. Se observa una evolución del alcance: el
+      informe inicial trabajaba con 3 convocatorias (2017/2019/2021) y la
+      versión final del README cubre 6 (2013-2021), incorporando producción,
+      diversidad y redes; esta ampliación es coherente con un observatorio en
+      maduración, aunque obliga a reinterpretar las métricas de las primeras
+      fases. Punto de mejora: formalizar un marco de indicadores (definición
+      operativa, fórmula, fuente y límites de cada métrica) para que la entrega
+      sea auditable.
+    conclusiones: >
+      El objetivo del repositorio está bien entendido y correctamente
+      descompuesto en preguntas que los módulos efectivamente responden
+      (patrón Pregunta -> Hallazgo -> Caveat). Recomendaciones: (1) formalizar
+      un marco de indicadores; (2) documentar la evolución del alcance 3 -> 6
+      convocatorias en un único documento; (3) alinear README, catálogo y
+      artefactos versionados (el consolidado versionado solo cubre 3
+      convocatorias — ver criterio 2).
+
+  - id: 2
+    titulo: "Datos utilizados: suficiencia y corrección"
+    resumen_simple: >
+      Este criterio evalúa si los datos del proyecto eran suficientes y
+      correctos. Conclusión principal: los datos correctos existen y son
+      suficientes (30.086 investigadores únicos, 3.166.629 productos), pero el
+      archivo consolidado versionado en el repositorio está incompleto: solo
+      contiene 3 de las 6 convocatorias, por lo que un clon del repositorio no
+      reproduce todos los resultados del informe.
+    descripcion: >
+      Criterio 2 de la rúbrica: evaluar si los datos utilizados eran suficientes
+      y correctos para el objetivo — padrón de investigadores reconocidos
+      (Socrata bqtm-4y2h, 77.237 filas y 6 convocatorias declaradas) y
+      producción de grupos (33dq-ab5a, 3.166.629 filas), cruzados por
+      id_persona_pr <-> id_persona_pd.
+    secciones_principales: ["datos"]
+    datos_observacion: >
+      VERIFICADO EMPÍRICAMENTE: el consolidado versionado (XLSX y CSV en
+      datos/tarea_join/) contiene solo 50.891 filas y 3 convocatorias
+      (2017: 13.001, 2019: 16.796, 2021: 21.094), frente a las 77.237 filas y 6
+      convocatorias (2013-2021) declaradas en el README y el catálogo. Las
+      evidencias versionadas (p. ej. matrices de transición 2013-2014) sí
+      cubren las 6 convocatorias, lo que indica que el artefacto versionado es
+      un snapshot de la fase inicial de 3 convocatorias nunca actualizado.
+      Consecuencia verificada: ejecutar el pipeline en un clon fresco genera
+      solo 2 periodos de transición (2017-2019, 2019-2021) en vez de 5, y los
+      resultados no reproducen el README. El CSV paralelo además presenta
+      mojibake (UTF-8/Latin-1). El dataset de producción (~1.2 GB) está
+      gitignored y no es reproducible desde el clon. En cuanto a la corrección
+      de las fuentes: el padrón es la fuente oficial del sistema de
+      reconocimiento y el dataset de producción su complemento natural; la
+      elección de datos abiertos (datos.gov.co/Socrata) es apropiada y
+      verificable.
+    conclusiones: >
+      Veredicto: los datos correctos existen y son suficientes para el objetivo,
+      pero su versionado en el repositorio está incompleto (3 de 6
+      convocatorias) — un clon fresco no reproduce los hallazgos. Acciones
+      prioritarias: (1) reconstruir y versionar el consolidado de 6
+      convocatorias; (2) normalizar UTF-8 y añadir contratos de esquema
+      (pandera); (3) versionar el dataset de producción o documentar su ingesta
+      reproducible; (4) declarar en el README qué artefacto es canónico.
+
+  - id: 3
+    titulo: "Documentación y crítica por archivo de código"
+    resumen_simple: >
+      Este criterio evalúa la documentación de los archivos de código: qué hace
+      cada uno, cómo está construido, si está bien hecho y si al ejecutarse
+      produce lo que se buscaba. Conclusión: el código está bien construido en
+      general (modular y documentado); 10 de los 16 scripts principales se
+      ejecutan correctamente en un clon del repositorio y los 6 restantes
+      fallan por causas identificadas (datos no versionados y una dependencia
+      no declarada).
+    descripcion: >
+      Criterio 3 de la rúbrica: documentar CADA archivo de código del
+      repositorio (qué hace, lógica, crítica de calidad, mejoras) y verificar
+      si el código, al ser ejecutable, sirve y genera lo que buscaban los
+      investigadores. Este documento incluye las fichas de auditoría de los 51
+      archivos (Python, R y notebooks) y la verificación empírica de ejecución.
+    secciones_principales: ["codigo"]
+    todos_los_archivos: true
+    conclusiones: >
+      El código está bien construido en general (modular, documentado,
+      trazable): 10/16 scripts corren en un clon fresco y los artefactos
+      versionados demuestran que el equipo los ejecutó con los datos completos.
+      Los hallazgos críticos de calidad: bug del HHI en el dashboard (ValueError
+      tragado), denominador de minorías en comparar_dane() (comentario vs
+      código), redes.py pierde pares de 3+ afiliaciones (split n=1), mojibake en
+      el CSV, CI/CD rota (módulos inexistentes), Dockerfile con placeholder,
+      tests insuficientes (1 test) y kaleido no declarado. La crítica de cada
+      archivo es constructiva: cuando un archivo está bien construido se dice
+      explícitamente.
+
+  - id: 4
+    titulo: "Validación de la calidad de pruebas, tratamientos y lógica estadística"
+    resumen_simple: >
+      Este criterio evalúa el rigor estadístico: cómo se limpiaron los datos
+      (atípicos, faltantes) y si los métodos usados (matrices de transición,
+      índices de concentración, comparaciones de género y diversidad, redes,
+      agrupamientos) son correctos. Conclusión: la estadística descriptiva es
+      sólida y transparente; la principal debilidad es la falta de inferencia
+      formal (intervalos de confianza, pruebas de supuestos, modelos ajustados).
+    descripcion: >
+      Criterio 4 de la rúbrica: validar la calidad de las pruebas, los
+      tratamientos de datos y la lógica estadística utilizada en el repositorio,
+      por eje metodológico (longitudinal, territorial, género, diversidad,
+      redes, productividad, clustering) y en los tratamientos (atípicos,
+      faltantes, codificación).
+    secciones_principales: ["estadistica"]
+    estadistica_observacion: >
+      Tratamientos: eliminación de 22 atípicos de edad (>100 años) con
+      justificación documentada (0.028% del padrón, sesgo despreciable) y
+      comparación con imputación por mediana del grupo; imputación por mediana
+      en numéricas (reduce varianza; aplicada a ordinales — cuestionable);
+      etiqueta NO REPORTADO en categóricas; verificación de unicidad de IDs por
+      coherencia de edad (+-4 años) y género (heurística razonable sin
+      formalizar). Veredicto por eje: (a) longitudinal: matrices de Markov
+      empíricas correctas, pero sin test de markovianidad ni homogeneidad
+      temporal, y sin supervivencia (Kaplan-Meier/Cox) para el tiempo hasta la
+      salida; (b) territorial: HHI correcto pero sin IC bootstrap ni
+      Gini/Theil; (c) género/diversidad: proporciones y representación relativa
+      vs DANE correctas en concepto, pero sin modelos ajustados y con el bug
+      del denominador 'NINGUN GRUPO ETNICO' (comentario vs código, diluye la
+      subrepresentación); (d) redes: métricas sin modelos nulos, red = corte
+      transversal (captura solo 2019); (e) clustering legacy: k-prototypes con
+      k=3 fijo sin validación (silhouette/Calinski-Harabasz) y pérdida del
+      8.4% de la muestra; (f) pruebas: chi-cuadrado mencionado sin verificar
+      frecuencias esperadas. La estadística descriptiva es sólida; la
+      inferencia formal es la principal debilidad.
+    conclusiones: >
+      La calidad de tratamientos y la lógica descriptiva son adecuadas y
+      transparentes; la inferencia formal requiere ampliación. Acciones
+      prioritarias: (1) test de markovianidad + modelos de supervivencia;
+      (2) IC bootstrap en HHI y Gini/Theil; (3) modelos logísticos ajustados
+      para brechas; (4) modelos nulos de red; (5) validación formal de clusters
+      y migración del legacy R al pipeline Python; (6) corregir el denominador
+      de comparar_dane() y unificar el conteo de atípicos (10 vs 22).
+
+  - id: 5
+    titulo: "Lógica de creación del repositorio y cumplimiento del objetivo principal"
+    resumen_simple: >
+      Este criterio evalúa cómo se construyó el repositorio y si la ejecución
+      fue correcta. Conclusión: la arquitectura y la lógica general son
+      correctas y los entregables cumplen el objetivo; la ejecución fue buena
+      en lo analítico pero no óptima en la industrialización (automatización,
+      despliegue y pruebas), con varios flujos concretos que conviene corregir.
+    descripcion: >
+      Criterio 5 de la rúbrica: entender la lógica de creación del repositorio y
+      del cumplimiento del objetivo principal, y evaluar si la ejecución fue
+      correcta o si se usaron herramientas, pasos o flujos de trabajo
+      incorrectos o no óptimos.
+    secciones_principales: ["logica"]
+    logica_observacion: >
+      La construcción siguió dos etapas: (1) fase académica inicial (ago-oct
+      2025): notebooks tarea_* con análisis por convocatoria, join, dimensiones
+      y gran tabla, sin pipeline unificado; (2) fase de ingeniería (oct 2025 -
+      may 2026): CRISP-DM, src/ (ingesta, transformación, análisis, modelo
+      dimensional DuckDB), scripts/sprint*_*.py, dashboard Streamlit, CI/CD y
+      documentación (LaTeX, Reveal.js, manual). El alcance creció de 3 a 6
+      convocatorias e integró producción (Sprint 5) y ajustes del director
+      (Sprint 6). La arquitectura final es correcta (ingesta -> transformación
+      -> modelo dimensional -> análisis por sprint -> visualización) y la
+      separación de responsabilidades en src/ es limpia. Flujos INCORRECTOS o
+      NO ÓPTIMOS detectados: (1) CI/CD rota (GitHub Actions referencia módulos
+      inexistentes src.ingesta.main / src.transformacion.main); (2) Dockerfile
+      ejecuta app/streamlit_app.py (placeholder) en lugar del dashboard real y
+      no copia hallazgos/; (3) duplicación de apps (raíz vs app/); (4) legacy R
+      (clustering/multivariado) fuera del pipeline con rutas hardcodeadas
+      Downloads/; (5) scikit-learn y pandera declarados sin uso; (6) datos
+      crudos sin versionar (sin DVC); (7) consolidado versionado incompleto (3
+      de 6 convocatorias); (8) artefactos duplicados (matriz_* vs *_ext vs
+      *_obs); (9) nomenclatura desactualizada (Grupo7/Grupo8). La ejecución
+      real verificada: 10 de 16 scripts corren OK en clon fresco.
+    conclusiones: >
+      La lógica de creación es correcta en lo esencial y los entregables
+      cumplen el objetivo declarado; la ejecución fue correcta en lo analítico
+      pero no óptima en la industrialización (reproducibilidad, automatización,
+      pruebas). Acciones: corregir CI/CD y Dockerfile, unificar apps, migrar el
+      legacy, versionar datos y ampliar tests.
+
+  - id: 6
+    titulo: "Línea de tiempo de commits y construcción del repositorio"
+    resumen_simple: >
+      Este criterio documenta cómo se construyó el repositorio a lo largo del
+      tiempo: 133 commits entre agosto de 2025 y mayo de 2026, con la autoría
+      de cada uno. Se distinguen tres fases: académica inicial, de ingeniería
+      de datos y de cierre con los ajustes del director.
+    descripcion: >
+      Criterio 6 de la rúbrica: línea de tiempo con cada commit y su autor para
+      entender cómo se construyó el repositorio a lo largo del tiempo. Incluye
+      la tabla completa de los 133 commits (fecha, autor, hash, asunto) y su
+      lectura por fases y por autor.
+    secciones_principales: ["timeline"]
+    timeline_completa: true
+    conclusiones: >
+      La línea de tiempo confirma las dos grandes etapas de construcción y el
+      rol de cada autor: los estudiantes (Paula, JulianMendez27, camiloacr1322,
+      Maria Amaya) en la fase académica y el responsable de pipeline
+      (Victor-Diaz-Usta) en la fase de ingeniería, con revisión del director.
+      El patrón de mensajes de commit evolucionó de mensajes genéricos a
+      convenciones feat:/docs:/chore:, evidencia de la adopción progresiva de
+      buenas prácticas. La tabla completa (133 filas) se incluye en la sección
+      3 de este documento.

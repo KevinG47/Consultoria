@@ -1,0 +1,30 @@
+{
+  "archivo": "src/ingesta/minciencias.py",
+  "lenguaje": "Python",
+  "lineas": 70,
+  "rol": "ingesta",
+  "descripcion": "Descarga el dataset consolidado de investigadores reconocidos de MinCiencias desde datos.gov.co (API Socrata, sodapy; recurso bqtm-4y2h) y lo guarda en datos/raw/investigadores_consolidado.csv. Actualiza el campo ultimo_pull del catálogo YAML. CLI con --limit (muestra de pruebas) y --token (app token Socrata).",
+  "logica": "descargar() crea el cliente Socrata, trae hasta limit (por defecto 100.000) registros y construye un DataFrame. guardar() persiste a CSV UTF-8 en datos/raw. actualizar_catalogo() reescribe el YAML con la fecha de hoy. main() orquesta y, si no hay límite, actualiza el catálogo. Logging con formato estándar.",
+  "critica_fortalezas": [
+    "CLI limpia y documentada (--limit para pruebas evita descargas completas).",
+    "Separación descargar/guardar/actualizar_catalogo permite reutilización y tests.",
+    "Maneja app token Socrata para evitar throttling."
+  ],
+  "critica_debilidades": [
+    "Sin paginación para datasets grandes (el límite por defecto 100.000 cubre el padrón de 77k, pero es frágil si el dataset crece).",
+    "Escribe en datos/raw (gitignored): el artefacto no se versiona ni se valida.",
+    "actualizar_catalogo reescribe el YAML completo con yaml.dump, perdiendo comentarios y formato original del catálogo.",
+    "Sin control de calidad post-descarga (conteo de filas, codificación UTF-8) — el mojibake del CSV canónico no se detecta aquí."
+  ],
+  "mejoras": [
+    "Añadir paginación genérica (offset) para datasets >100k.",
+    "Validar el resultado (filas esperadas, codificación) tras la descarga.",
+    "Actualizar el catálogo conservando comentarios o con un campo separado."
+  ],
+  "ejecutabilidad": "Parcial: requiere red y API Socrata (no ejecutable offline); en la auditoría no se ejecutó porque los datos ya están en el clon (el XLSX versionado proviene de esta fuente). datos/raw está gitignored, por lo que el resultado no es visible en el repositorio.",
+  "produce_esperado": "Sí, en su momento: los 77.237 registros (según README/catálogo) se descargaron de esta fuente; el XLSX consolidado versionado es el derivado. No verificable en clon por gitignore.",
+  "bugs": [
+    "yaml.dump reescribe el catálogo y puede alterar su estructura/orden (riesgo de formato)."
+  ],
+  "recomendacion": "mantener — simple y funcional; mejorar la validación de codificación y el manejo del catálogo."
+}

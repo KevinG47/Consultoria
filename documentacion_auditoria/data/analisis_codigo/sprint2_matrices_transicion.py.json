@@ -1,0 +1,36 @@
+{
+  "archivo": "scripts/sprint2_matrices_transicion.py",
+  "lenguaje": "Python",
+  "lineas": 125,
+  "rol": "orquestacion",
+  "descripcion": "Calcula y visualiza las matrices de probabilidad de transición entre categorías (Junior/Asociado/Senior/Emérito) para los 5 periodos consecutivos de las 6 convocatorias (2013-2021), en dos variantes: observada (solo investigadores retenidos) y extendida (incluye el estado 'Desaparece'). Usa src/analisis/longitudinal (construir_panel, comparar_periodo, matriz_transicion, matrices_todos_periodos). Salidas: 2 figuras de heatmaps en artifacts/sprint2_transiciones/ y 20 CSVs (conteos y probabilidades × ext/obs × 5 periodos) en evidencias/.",
+  "logica": "main() construye el panel (ID_PERSONA_PR, año, categoria, orden), imprime las matrices por periodo en consola con un bucle comparar_periodo+matriz_transicion, y luego recalcula todo con matrices_todos_periodos para las figuras y la exportación. fig_heatmaps() dibuja un heatmap por periodo en una sola fila de subplots (1×n) con sns.heatmap(annot=True, fmt='.2f', vmin=0, vmax=1). Los nombres de archivo derivan del periodo reemplazando el guion largo '–' por '_' (p. ej. matriz_probabilidades_ext_2015_2017.csv).",
+  "critica_fortalezas": [
+    "Presenta explícitamente las dos variantes metodológicas (observada vs extendida con 'Desaparece'), lo que permite ver el sesgo de selección por deserción en lugar de ocultarlo.",
+    "La lógica estadística está delegada en src/analisis/longitudinal (crosstab, renormalización por fila), manteniendo el script como orquestador puro.",
+    "El manejo del guion largo '–' en nombres de archivo evita problemas de codificación de rutas en Windows.",
+    "Salidas verificadas: las 2 figuras y los 20 CSVs de la nomenclatura actual existen en el clon."
+  ],
+  "critica_debilidades": [
+    "Cómputo duplicado: el bucle de impresión (líneas 83-91) recalcula las matrices que matrices_todos_periodos vuelve a calcular en la línea 94-95; con 77.237 registros y 5 periodos es ineficiente y propenso a divergencias si cambia la lógica.",
+    "La matriz 'observada' renormaliza por fila excluyendo a los desaparecidos: sus probabilidades no suman a la población real y pueden sobreestimar la movilidad; el script no advierte de esta limitación interpretativa.",
+    "Evidencias con nomenclatura heredada: en evidencias/ coexisten archivos de una versión anterior (matriz_transicion_extendida_*.csv, matriz_probabilidades_extendida_*.csv y variantes sin prefijo ext/obs como matriz_transicion_2017_2019.csv) que este script ya no produce, duplicando y confundiendo la evidencia.",
+    "fig_heatmaps asume n>=1 periodo: con un solo par de años plt.subplots(1, n) devolvería un Axes escalar y zip() fallaría (robustez marginal).",
+    "Sin validación de que el panel contenga exactamente 6 convocatorias / 5 periodos ni de tamaños de celda mínimos."
+  ],
+  "mejoras": [
+    "Calcular matrices una sola vez (fuera del bucle de impresión) y reutilizarlas para print, figuras y exportación.",
+    "Añadir advertencia explícita cuando la matriz observada descarte >X% de la fila por deserción, y priorizar la lectura de la matriz extendida en el informe.",
+    "Eliminar o archivar los CSVs legacy (extendida_/sin prefijo) para dejar una sola convención de nombres.",
+    "Proteger fig_heatmaps para n==1 (ax = axes si escalar) y añadir un assert del número de periodos esperados.",
+    "Escribir un test que verifique que las filas de la matriz de probabilidades sumen 1.0 (obs) y 1.0 incluyendo Desaparece (ext)."
+  ],
+  "ejecutabilidad": "Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib, seaborn; .venv del clon vacío, requirements.txt incompleto). El input existe: datos/tarea_join/investigadores_consolidado.xlsx vía cargar_consolidado() (fallback del CSV raw inexistente). No requiere duckdb ni datos/raw. Con poetry install, corre de punta a punta.",
+  "produce_esperado": "SÍ: existen artifacts/sprint2_transiciones/fig01_heatmaps_ext.png y fig02_heatmaps_obs.png, y en evidencias/ los 20 CSVs con la nomenclatura actual (matriz_transicion_ext_/matriz_probabilidades_ext_/matriz_transicion_obs_/matriz_probabilidades_obs_ × 2013_2014, 2014_2015, 2015_2017, 2017_2019, 2019_2021), coincidiendo con lo declarado (evidencias/matriz_transicion_*.csv, matriz_probabilidades_*.csv). Adicionalmente hay 8 archivos de nomenclatura antigua (extendida_/sin prefijo) que evidencian ejecuciones previas con una versión distinta del script.",
+  "bugs": [
+    "scripts/sprint2_matrices_transicion.py:83-95 — las matrices se calculan dos veces (bucle de impresión y matrices_todos_periodos): doble costo de cómputo sobre 77.237 registros y riesgo de que las cifras impresas difieran de las exportadas si la función cambiara entre ambas llamadas.",
+    "scripts/sprint2_matrices_transicion.py:49 — plt.subplots(1, n) con n=1 devuelve un solo Axes (no iterable); el zip(axes, periodos) fallaría con TypeError si el panel tuviera un único periodo.",
+    "Evidencias/ legacy: los archivos matriz_transicion_extendida_2017_2019.csv, matriz_probabilidades_extendida_2019_2021.csv y matriz_transicion_2017_2019.csv (sin prefijo) ya no son generados por este script; quedan como evidencia huérfana que puede confundir la trazabilidad."
+  ],
+  "recomendacion": "mantener — es la entrega central del análisis longitudinal y produce evidencia verificable en el clon; requiere eliminar el cómputo duplicado, advertir el sesgo de la matriz observada y limpiar la nomenclatura legacy."
+}

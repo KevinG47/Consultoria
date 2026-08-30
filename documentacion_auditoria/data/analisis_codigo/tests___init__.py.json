@@ -1,0 +1,17 @@
+{
+  "archivo": "tests/__init__.py",
+  "lenguaje": "Python",
+  "lineas": 0,
+  "rol": "testing",
+  "descripcion": "Marcador de paquete Python para tests/ (vacío, 0 líneas).",
+  "logica": "Sin lógica.",
+  "critica_fortalezas": [
+    "Correcto por convención (permite descubrir tests con pytest)."
+  ],
+  "critica_debilidades": [],
+  "mejoras": [],
+  "ejecutabilidad": "N/A.",
+  "produce_esperado": "N/A.",
+  "bugs": [],
+  "recomendacion": "mantener — estándar de Python."
+}

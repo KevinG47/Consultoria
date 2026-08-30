@@ -1,0 +1,39 @@
+{
+  "archivo": "notebooks/tarea_gran_tabla/analisis2.ipynb",
+  "lenguaje": "Python",
+  "lineas": 294,
+  "rol": "legacy",
+  "descripcion": "Análisis bivariado de la GRAN_TABLA(SIN ID): matriz de correlación entre numéricas, countplots con porcentajes (género x convocatoria, clasificación x gran área, formación x clasificación), tablas de contingencia con pruebas chi-cuadrado y coeficiente de contingencia de Pearson (clasificación x región, formación x región, convocatoria x gran área), y Kruskal-Wallis + post-hoc de Dunn con Bonferroni para edad según gran área. NOTA: a pesar de la extensión .ipynb, el contenido es un script Python exportado de Colab (no es un notebook JSON), lo que sugiere una descarga mal nombrada.",
+  "logica": "pandas + seaborn + scipy: pd.crosstab, chi2_contingency, np.sqrt(chi2/(chi2+n)) para el coeficiente de contingencia, scipy.stats.kruskal y scikit_posthocs.posthoc_dunn(p_adjust='bonferroni'). Incluye anotación manual de porcentajes sobre barras apiladas y !pip install dentro del script.",
+  "critica_fortalezas": [
+    "Usa chi-cuadrado con coeficiente de contingencia de Pearson: medida de asociación adecuada para variables nominales",
+    "Elige Kruskal-Wallis (no paramétrico) para edad por gran área: robusto ante la no normalidad de la edad",
+    "Aplica post-hoc de Dunn con corrección Bonferroni tras Kruskal-Wallis: secuencia inferencial correcta",
+    "Ordena la tabla de contingencia por jerarquía de clasificación (ORDEN_CLAS_PR) para lectura sustantiva"
+  ],
+  "critica_debilidades": [
+    "La extensión .ipynb es engañosa: el archivo es un script .py exportado de Colab; no abre como notebook",
+    "Ruta hardcodeada '/content/GRAN_TABLA(SIN ID).xlsx', inexistente en el clon",
+    "!pip install scikit-posthocs dentro del código: magia de notebook que falla como script y rompe la reproducibilidad de dependencias",
+    "Chi-cuadrado sin verificación de frecuencias esperadas: las tablas región x clasificación y región x formación tienen celdas pequeñas ('Exterior', 'No disponible') que invalidan la aproximación asintótica",
+    "Correlación de Pearson sobre variables ordinales (NRO_ORDEN_FORM_PR, ORDEN_CLAS_PR) tratadas como continuas; lo adecuado es Spearman",
+    "El bloque de anotación de porcentajes usa aritmética frágil sobre ticks de matplotlib (código muerto 'categoria' y riesgo de división por cero)",
+    "No guarda resultados ni figuras; sin semilla (no aplica) ni control de múltiples comparaciones más allá de Bonferroni"
+  ],
+  "mejoras": [
+    "Renombrar el archivo a .py y eliminar la magia !pip install (declarar dependencia en requirements)",
+    "Parametrizar la ruta de lectura",
+    "Reportar la mínima frecuencia esperada o agrupar categorías raras antes del chi-cuadrado (o usar test exacto)",
+    "Usar Spearman para ordinales y simplificar las anotaciones de barras",
+    "Guardar tablas de resultados en CSV"
+  ],
+  "ejecutabilidad": "NO. Falta '/content/GRAN_TABLA(SIN ID).xlsx' y las magias de Colab (!pip install) fallan al ejecutarlo como script Python estándar.",
+  "produce_esperado": "Metodología inferencial mayormente correcta: chi-cuadrado para asociación de nominales y Kruskal-Wallis + Dunn para edad por grupo. Riesgo: celdas con frecuencias esperadas bajas debilitan el chi-cuadrado, y con n ~ 50.000 casi cualquier asociación resulta significativa, por lo que el coeficiente de contingencia (bien calculado) es la métrica realmente informativa.",
+  "bugs": [
+    "Extensión .ipynb con contenido de script .py (no es JSON de notebook)",
+    "!pip install dentro del archivo (falla fuera de notebook)",
+    "Lógica de anotación de barras dependiente del espaciado de xticks (puede dividir por cero o etiquetar mal con hue)",
+    "Pearson aplicado a variables ordinales"
+  ],
+  "recomendacion": "Mantener como referencia del análisis bivariado de la gran tabla. No migrar tal cual: los análisis equivalentes modernos están en src/analisis/ (genero.py, territorial.py, produccion.py); si se quiere conservar el chi-cuadrado, reimplementarlo en el pipeline con validación de supuestos y guardado de resultados."
+}

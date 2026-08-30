@@ -1,0 +1,13 @@
+% ============ Criterio: lógica ============
+\section{Lógica de creación del repositorio y cumplimiento del objetivo principal}
+
+La construcción siguió dos etapas: (1) fase académica inicial (ago-oct 2025): notebooks tarea\_* con análisis por convocatoria, join, dimensiones y gran tabla, sin pipeline unificado; (2) fase de ingeniería (oct 2025 - may 2026): CRISP-DM, src/ (ingesta, transformación, análisis, modelo dimensional DuckDB), scripts/sprint*\_*.py, dashboard Streamlit, CI/CD y documentación (LaTeX, Reveal.js, manual). El alcance creció de 3 a 6 convocatorias e integró producción (Sprint 5) y ajustes del director (Sprint 6). La arquitectura final es correcta (ingesta -> transformación -> modelo dimensional -> análisis por sprint -> visualización) y la separación de responsabilidades en src/ es limpia. Flujos INCORRECTOS o NO ÓPTIMOS detectados: (1) CI/CD rota (GitHub Actions referencia módulos inexistentes src.ingesta.main / src.transformacion.main); (2) Dockerfile ejecuta app/streamlit\_app.py (placeholder) en lugar del dashboard real y no copia hallazgos/; (3) duplicación de apps (raíz vs app/); (4) legacy R (clustering/multivariado) fuera del pipeline con rutas hardcodeadas Downloads/; (5) scikit-learn y pandera declarados sin uso; (6) datos crudos sin versionar (sin DVC); (7) consolidado versionado incompleto (3 de 6 convocatorias); (8) artefactos duplicados (matriz\_* vs *\_ext vs *\_obs); (9) nomenclatura desactualizada (Grupo7/Grupo8). La ejecución real verificada: 10 de 16 scripts corren OK en clon fresco.
+
+
+\begin{tcolorbox}[hallazgo]
+El repositorio se construyó en dos etapas: tareas académicas iniciales
+(notebooks, ago--oct 2025) y pipeline de ingeniería de datos (\texttt{src/} +
+\texttt{scripts/sprint*}, oct 2025 -- may 2026). La valoración detallada de
+flujos correctos e incorrectos está en el documento maestro (sección 7) y en
+el PDF del criterio 5.
+\end{tcolorbox}

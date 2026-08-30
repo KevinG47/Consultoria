@@ -1,0 +1,38 @@
+{
+  "archivo": "notebooks/tarea_anlisis_bases_de_datos/datos_2021.ipynb",
+  "lenguaje": "Notebook",
+  "lineas": 2338,
+  "rol": "legacy",
+  "descripcion": "Notebook Colab con el EDA de la convocatoria 2021 (Convocatoria 894): filtra Investigadores_Consolidado por año (21.094 registros x 30 variables), describe, analiza faltantes y duplicados, y gráfica género (pie), edad (histograma + detección de outliers >100 años), región de residencia, nivel de formación, gran área, área, clasificación (violinplot edad x clasificación) y proporciones de víctimas del conflicto, discapacidad y grupo étnico. Cierra con interpretaciones sustantivas en markdown.",
+  "logica": "pandas + matplotlib + seaborn: filtra con df['ANO_CONVO'].astype(str).str.contains('2021'), describe(), isnull().sum(), duplicated(), value_counts(), sns.histplot/countplot/violinplot, y crea df_2021_filtered (edad <= 100) para los gráficos posteriores. Todo descriptivo; sin pruebas de hipótesis.",
+  "critica_fortalezas": [
+    "Identifica y documenta el outlier de edad (máximo 956.25 años) y filtra edad <= 100 antes de las gráficas (decisión de limpieza explícita)",
+    "Revisa duplicados y faltantes por columna con interpretación",
+    "El violinplot edad x clasificación apoya una conclusión sustantiva correcta (Eméritos mayores, Junior más jóvenes)",
+    "Buena práctica de narrativa: cada gráfico va acompañado de interpretación en markdown"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada de Colab '/content/Investigadores_Consolidado.xlsx', inexistente en el clon",
+    "La celda del countplot de nivel de formación x género usa df_2021_gender_filtered, variable que NO está definida en ninguna celda del notebook (NameError al re-ejecutar; probablemente se borró la celda que la creaba)",
+    "describe() incluye IDs y códigos (media de ID_PERSONA_PR y COD_DANE sin sentido estadístico)",
+    "Pie chart para género con categorías de n=4-5 ('Intersexual', 'No disponible'): visualización poco informativa",
+    "Salidas embebidas en base64 inflan el archivo a 2338 líneas, dificultando el diff",
+    "Filtrado por str.contains('2021') sobre la fecha depende del formato de la columna (frágil si el Excel cambia el tipo)",
+    "Sin seed, sin guardado de resultados y sin checklist de calidad al final"
+  ],
+  "mejoras": [
+    "Definir df_2021_gender_filtered o eliminar la celda rota",
+    "Excluir IDs/códigos del describe()",
+    "Reemplazar el pie por barras horizontales",
+    "Limpiar salidas (Output -> Clear) antes de commitear",
+    "Parametrizar la lectura del Excel y extraer el año con dt.year en vez de str.contains"
+  ],
+  "ejecutabilidad": "NO. Falta '/content/Investigadores_Consolidado.xlsx' (no existe en el clon) y la celda de nivel de formación x género lanza NameError porque df_2021_gender_filtered no está definida en el notebook.",
+  "produce_esperado": "Metodología descriptiva correcta para el objetivo (EDA por convocatoria). No hay errores de inferencia porque no se realizan pruebas; el filtro edad <= 100 es razonable pero el umbral no se justifica y no se hace análisis de sensibilidad (cuántos registros y cómo cambian los perfiles).",
+  "bugs": [
+    "df_2021_gender_filtered usada sin definición (NameError en re-ejecución)",
+    "Filtro por str.contains('2021') sobre una columna de fecha: frágil ante cambios de formato",
+    "describe() sobre columnas ID/código produce estadísticos sin interpretación"
+  ],
+  "recomendacion": "Mantener como referencia del EDA de la convocatoria 2021 (documenta hallazgos de calidad como el outlier de edad). No migrar tal cual: los análisis equivalentes modernos están en src/analisis/ (produccion.py, genero.py, longitudinal.py) con datos ya depurados."
+}

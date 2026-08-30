@@ -1,0 +1,29 @@
+{
+  "archivo": "src/analisis/__init__.py",
+  "lenguaje": "Python",
+  "lineas": 80,
+  "rol": "orquestacion",
+  "descripcion": "Fachada del paquete analisis: re-exporta las funciones públicas de genero, territorial, redes, diversidad, longitudinal y produccion, y declara __all__. Define la API estable que consumen scripts/sprint*_*.py y streamlit_app.py.",
+  "logica": "Importa explícitamente cada función/constante de los 6 submódulos y las lista en __all__. No contiene lógica de negocio; su función es el contrato de importación (from analisis import pct_femenino_por_area, hhi, construir_grafo, comparar_dane, ...). Cualquier script que importe analisis dispara la importación de networkx (vía redes) y de longitudinal en el arranque.",
+  "critica_fortalezas": [
+    "API pública explícita y bien documentada para todos los análisis del proyecto.",
+    "__all__ completo y ordenado facilita autocompletado e inspección.",
+    "Permite a scripts y dashboard importar sin conocer la estructura interna del paquete."
+  ],
+  "critica_debilidades": [
+    "Importación eager de los 6 submódulos: importar 'analisis' carga networkx y longitudinal (peso y acoplamiento); si una dependencia opcional falta, todo el paquete falla al importar.",
+    "Duplicación de símbolos entre el bloque de imports y __all__ (mantenimiento manual: añadir una función exige tocar dos lugares).",
+    "No hay validación de esquema en la frontera: las funciones asumen columnas MAYÚSCULAS y ANO_CONVO_INT sin verificar (contrato implícito con Transformacion.py)."
+  ],
+  "mejoras": [
+    "Convertir redes (y pyvis) en import perezoso o submódulo opcional para no penalizar al dashboard.",
+    "Generar __all__ a partir de una sola lista de nombres para evitar duplicación.",
+    "Añadir una función validate_esquema(df) que verifique columnas requeridas antes de los análisis."
+  ],
+  "ejecutabilidad": "Sí, importable en el clon si las dependencias están instaladas (pandas, numpy, networkx; pyvis solo dentro de generar_html_pyvis). No lee archivos: la carga la hace ingesta. El fallo de cargar_produccion en el clon no afecta el import, pero sí a las funciones de .produccion al ejecutarlas.",
+  "produce_esperado": "No produce outputs; habilita el resto del pipeline. Coincide con la estructura documentada en el README (src/analisis como 'lógica reutilizable').",
+  "bugs": [
+    "src/analisis/__init__.py:4-36: importa funciones que no usa directamente; si analisis/longitudinal.py fallara al importar (dependencias), derriba también genero/territorial, que son independientes (acoplamiento innecesario)."
+  ],
+  "recomendacion": "mantener — fachada correcta; refactorizar a imports perezosos o dividir el paquete para reducir el acoplamiento del dashboard."
+}

@@ -1,0 +1,36 @@
+{
+  "archivo": "src/analisis/redes.py",
+  "lenguaje": "Python",
+  "lineas": 225,
+  "rol": "analisis",
+  "descripcion": "Análisis de redes de co-filiación institucional (Issues #15/#16): normaliza nombres de instituciones, extrae pares de instituciones de INST_FILIA (separador '|'), construye grafos NetworkX, calcula métricas (grado, betweenness, densidad, componentes) y genera HTML interactivo con Pyvis. Entrada: DataFrame transformado con INST_FILIA; salida: DataFrames de pares/nodos/aristas (evidencias/redes_*.csv) y HTML en hallazgos/.",
+  "logica": "normalizar_institucion() aplica heurística de paréntesis (si el paréntesis contiene una institución madre, lo usa; si no, lo elimina), elimina sufijos SEDE/SECCIONAL y normaliza mayúsculas. construir_pares() filtra filas con '|', divide en 2 partes (n=1), normaliza, elimina self-loops y ordena pares para que (A,B)==(B,A). construir_grafo() agrega pesos por grupo (a,b). metricas_grafo(), tabla_nodos(), tabla_aristas(), metricas_por_convocatoria() y subgrafo_grado_minimo() componen el resto. generar_html_pyvis() pinta nodos por grado ponderado y betweenness.",
+  "critica_fortalezas": [
+    "Normalización institucional con reglas documentadas y heurística de paréntesis — valor real frente a las 2.762 cadenas crudas de inst_filia.",
+    "Eliminación de self-loops tras normalizar y orden canónico de pares: evita aristas duplicadas (A,B)==(B,A).",
+    "Módulo completo (construcción, métricas, subgrafos, visualización) con lazy import de pyvis.",
+    "Artefactos versionados en evidencias/redes_*.csv y artifacts/sprint3_redes/."
+  ],
+  "critica_debilidades": [
+    "CRÍTICO: construir_pares() divide con n=1, capturando solo el PRIMER par de investigadores con 3+ instituciones; se pierden las combinaciones restantes (A,C), (B,C) -> el grafo subestima la co-filiación.",
+    "El grafo global (anio=None) pondera por filas investigador x convocatoria: un investigador con el mismo par en 2 convocatorias cuenta doble, inflando el peso de aristas 'investigadores compartidos'.",
+    "import networkx en mitad del archivo (línea 49) y un import networkx as nx_local sin uso dentro de generar_html_pyvis — estilo e higiene.",
+    "Si INST_FILIA termina en '|' (cadena vacía tras split), se crea un nodo con nombre '' en el grafo (no se filtra la cadena vacía, a diferencia de modelo/dimensional.py).",
+    "El bloque 'if G.has_edge' en construir_grafo es código muerto (cada grupo (a,b) es único en el groupby)."
+  ],
+  "mejoras": [
+    "Usar itertools.combinations sobre las instituciones separadas para generar todos los pares de investigadores multi-filiados.",
+    "Agregar peso por investigadores únicos (drop_duplicates por ID_PERSONA_PR antes de contar) en el grafo global.",
+    "Filtrar cadenas vacías y NaN después del split (strip + dropna + != '').",
+    "Mover los imports al inicio del módulo; eliminar nx_local no usado."
+  ],
+  "ejecutabilidad": "Sí en el clon (solo DataFrame transformado, XLSX presente); requiere networkx y, para generar_html_pyvis, pyvis (ambos declarados en pyproject.toml). Sin datos/raw ni .duckdb.",
+  "produce_esperado": "Sí: evidencias/redes_pares_cofiliacion.csv, redes_nodos_global.csv, redes_aristas_global.csv y redes_metricas_por_convocatoria.csv existen, junto con artifacts/sprint3_redes/fig01-03.png; los HTML Pyvis los genera sprint3_grafo_interactivo.py. Coincide con el README (Issues #15/#16).",
+  "bugs": [
+    "src/analisis/redes.py:62-64: str.split('|', n=1) descarta afiliaciones 3+; red incompleta (subestimación de aristas y nodos).",
+    "src/analisis/redes.py:74-79: sorted() sobre pares que contienen '' (de 'A | ') crea un nodo vacío en el grafo; con tipos no comparables podría lanzar TypeError.",
+    "src/analisis/redes.py:93-98: el peso del grafo global cuenta filas investigador x convocatoria, no investigadores únicos: 'investigadores compartidos' queda inflado entre años.",
+    "src/analisis/redes.py:16-48: normalizar_institucion devuelve el valor original (posiblemente sin estandarizar) en el caso base."
+  ],
+  "recomendacion": "refactorizar — análisis con buen valor analítico, pero la pérdida de pares multi-filiación y el conteo duplicado de pesos comprometen las métricas publicadas (n_aristas, peso de aristas); corregir antes de citar resultados de red."
+}

@@ -1,0 +1,37 @@
+{
+  "archivo": "notebooks/tarea_dimensiones_y_hechos/dimensiones.ipynb",
+  "lenguaje": "Notebook",
+  "lineas": 289,
+  "rol": "legacy",
+  "descripcion": "Notebook Colab que construye tres dimensiones del modelo estrella a partir de Investigadores_Consolidado: Dim_Universidad (INST_FILIA con clave sustituta 'Universidad'), Dim_Formacion (ID_NIV_FORMACION_PR, NME_NIV_FORM_PR, NRO_ORDEN_FORM_PR) y Dim_Residencia (COD_DANE_RES_PR + país/región/departamento/municipio), y las exporta a dimensiones_investigadores.xlsx (3 hojas) con descarga vía files.download. Es la implementación de dimensiones que luego consume tabla_hechos_codigo.R.",
+  "logica": "pandas + openpyxl + google.colab.files: dropna().drop_duplicates().reset_index(drop=True) por dimensión, insert(0, 'Universidad', range(1, len+1)) para la clave sustituta, pd.ExcelWriter con una hoja por dimensión y files.download().",
+  "critica_fortalezas": [
+    "Agrega clave sustituta a Dim_Universidad (buena práctica de modelado dimensional)",
+    "Separa dimensiones por tema y las exporta en un único workbook con hojas nombradas",
+    "Conserva la jerarquía de formación en NRO_ORDEN_FORM_PR (ordinal), lo que permite ordenar después",
+    "Salida estructurada y lista para el join de hechos"
+  ],
+  "critica_debilidades": [
+    "Ruta 'Investigadores_Consolidado (1).xlsx' (archivo subido a Colab), inexistente en el clon",
+    "INST_FILIA contiene LISTAS separadas por PIPE: drop_duplicates() trata 'UNIV A|UNIV B' como una 'universidad' falsa (dimension inflada) y dropna() elimina a los investigadores sin filiación",
+    "Dim_Residencia con dropna() elimina TODAS las filas con COD_DANE_RES_PR NA, es decir, todos los investigadores en el 'Exterior' quedan fuera de la dimensión: la tabla de hechos luego hace left_join y pierde esas claves",
+    "Sin clave sustituta para residencia y formación (solo claves naturales); la clave 'Universidad' no se usa en el join de hechos (une por INST_FILIA)",
+    "Modelo incompleto: no hay dimensión de nacimiento, de área de conocimiento ni de clasificación",
+    "El código está comentado en su versión de upload (files.upload) y no es reproducible fuera de Colab"
+  ],
+  "mejoras": [
+    "Splitear INST_FILIA por '|' (formato largo o primera institución documentado) antes de deduplicar",
+    "Incluir 'Exterior' como categoría explícita (p. ej., código 0/99999) en lugar de dropna()",
+    "Añadir claves sustitutas consistentes y dimensiones de nacimiento/área/clasificación",
+    "Documentar la granularidad de la fila de hechos (persona x convocatoria) y validar cardinalidad de la dimensión",
+    "Externalizar la lectura del Excel y la ruta de salida"
+  ],
+  "ejecutabilidad": "NO. Requiere subir el Excel en Colab (google.colab.files) y el archivo 'Investigadores_Consolidado (1).xlsx' no está en el clon; files.download() tampoco existe fuera de Colab.",
+  "produce_esperado": "Diseño de dimensiones razonable para un modelo estrella académico, pero con pérdida real de datos: el dropna() de Dim_Residencia excluye al 'Exterior' y la granularidad de INST_FILIA con pipes queda mal modelada. Estos defectos se propagan a la tabla de hechos (joins con NA).",
+  "bugs": [
+    "dropna() en Dim_Residencia elimina las filas 'Exterior' (COD_DANE NA), dejando hechos sin clave de residencia",
+    "INST_FILIA con pipes ('UNIV A|UNIV B') tratada como una sola institución en la dimensión",
+    "La clave sustituta 'Universidad' no se corresponde con el join de la tabla de hechos (que une por INST_FILIA)"
+  ],
+  "recomendacion": "Mantener como referencia del diseño dimensional académico. No migrar: src/modelo/dimensional.py es el reemplazo moderno; si se conserva la idea, corregir el manejo de pipes y de 'Exterior'."
+}

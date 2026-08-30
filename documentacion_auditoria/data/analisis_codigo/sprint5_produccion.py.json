@@ -1,0 +1,37 @@
+{
+  "archivo": "scripts/sprint5_produccion.py",
+  "lenguaje": "Python",
+  "lineas": 251,
+  "rol": "orquestacion",
+  "descripcion": "Análisis integral de producción de grupos: cobertura de reconocimiento (autores únicos y por convocatoria), productividad por categoría, brecha de género × gran área OCDE, concentración territorial, mix de tipologías y reconocidos sin producción. Usa src/ingesta (cargar_consolidado, cargar_produccion), src/Transformacion.transformar y 10 funciones de src/analisis/produccion. Entradas: investigadores consolidados + producción Socrata; salidas: 6 figuras PNG y 8 evidencias (7 CSVs + 1 JSON).",
+  "logica": "Flujo 1→8: (1) carga y transforma; (2) cobertura_autores_unicos devuelve dict de solape de IDs; (3) cobertura_reconocidos agrupa por ANO_CONVO_INT marcando es_reconocido = ID_PERSONA_PD ∈ set(ID_PERSONA_PR del padrón EN CUALQUIER convocatoria); (4) productividad_por_categoria agrupa producción por (persona, convocatoria), hace left merge con el padrón y agrega por (año, NME_CLASIFICACION_PR) media/mediana/pct con ≥1 producto; (5) brecha_productividad_genero pivotea promedios F/M por área OCDE; (6) productividad_territorial calcula % productos vs % investigadores y ratio; (7) mix_tipologias y tipologias_por_categoria (porcentajes por año/categoría) y reconocidos_sin_produccion (intersección de sets por convocatoria); (8) genera 6 figuras matplotlib/seaborn y exporta CSVs y JSON.",
+  "critica_fortalezas": [
+    "Orquestación clara y progresiva [1/8]…[8/8] con impresión de resultados intermedios (auditable en consola).",
+    "Separación limpia entre lógica de análisis (src/analisis/produccion.py) y presentación (figuras), facilitando testing y reuso.",
+    "Salidas exhaustivas y documentadas en el docstring; las 6 figuras y las 8 evidencias existen en el clon.",
+    "Incluye indicador de calidad de captura (reconocidos sin producción) y métricas robustas (mediana además de media)."
+  ],
+  "critica_debilidades": [
+    "Definición de 'reconocido' inconsistente con sprint5_duckdb.py: cobertura_reconocidos marca como reconocido a quien lo fue en cualquier convocatoria (src/analisis/produccion.py:63-65), mientras la vista DuckDB exige la misma convocatoria; las coberturas resultantes (63.34% DuckDB vs. CSV) no son comparables.",
+    "Carga ~3.16M filas de producción en pandas y hace merges/grupos completos en memoria: alto consumo de RAM y sin streaming ni particionado.",
+    "normalizar_produccion convierte IDs a numérico Int64 (src/analisis/produccion.py:38-40): cualquier id con ceros a la izquierda se pierde, riesgo silencioso de cruces falsos si el padrón conserva el formato string.",
+    "El pct de la figura 1 se dibuja a total+5000 unidades fijas, escala que no se adapta a convocatorias pequeñas.",
+    "No hay validación de que el join producción↔padrón haya encontrado coincidencias (una caída de cobertura se reporta como hallazgo, no como error)."
+  ],
+  "mejoras": [
+    "Unificar la definición de 'reconocido' entre scripts (recomendado: misma convocatoria) y documentarla en un único lugar.",
+    "Validar tipos y solape de IDs antes de los merges (advertir si el match < umbral).",
+    "Reducir memoria: leer solo columnas necesarias de producción o procesar por convocatoria.",
+    "Añadir tests sobre produccion_productividad_por_categoria.csv (p. ej. productos_promedio Senior > Junior en todas las convocatorias).",
+    "Hacer la posición de la etiqueta de % proporcional al total (ax.text con offset relativo)."
+  ],
+  "ejecutabilidad": "NO ejecutable tal cual con el clon: cargar_produccion() lanza FileNotFoundError porque datos/raw/produccion_grupos.csv está gitignored y ausente. cargar_consolidado() sí funciona (cae a datos/tarea_join/investigadores_consolidado.xlsx). Dependencias: pandas, numpy, matplotlib, seaborn (todas estándar del proyecto). Con el CSV de producción en datos/raw, el script corre completo.",
+  "produce_esperado": "SÍ: las 6 figuras de artifacts/sprint5_produccion/ y las 8 evidencias (produccion_cobertura_por_convocatoria.csv, produccion_productividad_por_categoria.csv, produccion_brecha_genero.csv, produccion_concentracion_territorial.csv, produccion_mix_tipologias.csv, produccion_tipologias_por_categoria.csv, produccion_reconocidos_sin_produccion.csv, produccion_resumen_cobertura.json) existen. El CSV de productividad muestra Junior 9.9-17.9 y Senior 39.0-50.1 productos promedio según convocatoria, coherente con el hallazgo 'Senior produce más'. Nota: la cifra 30/65/121 mencionada en el encargo corresponde a la métrica acumulada de sprint5_duckdb.py, no a este CSV (que es por convocatoria).",
+  "bugs": [
+    "src/analisis/produccion.py:63-65 (invocado desde sprint5_produccion.py:203) — cobertura_reconocidos marca es_reconocido sin condicionar la convocatoria: un producto de 2013 firmado por alguien reconocido solo en 2021 cuenta como 'firmado por reconocido', sobreestimando la cobertura frente a la definición por convocatoria del DuckDB (documentado en el docstring de la función como decisión, pero no advertido en el script orquestador).",
+    "scripts/sprint5_produccion.py:75-78 — la etiqueta de porcentaje se posiciona en total+5000 y el bucle itera zip(n_reconocidos, n_productos, pct_reconocidos): si n_productos < 5000 la etiqueta queda fuera del rango visible del eje (cosmético).",
+    "scripts/sprint5_produccion.py:243-244 — import json dentro de main() (estilo menor; debería ir al tope con los demás imports).",
+    "src/analisis/produccion.py:38-40 — pd.to_numeric(errors='coerce') convierte IDs no numéricos a NA silenciosamente; si ID_PERSONA_PD tiene formatos mixtos, filas completas se pierden del análisis sin reporte."
+  ],
+  "recomendacion": "mantener — es el script central del sprint 5, con salidas verificadas y documentadas; las mejoras prioritarias son unificar la definición de 'reconocido' entre scripts y validar la calidad del join antes de interpretar coberturas."
+}

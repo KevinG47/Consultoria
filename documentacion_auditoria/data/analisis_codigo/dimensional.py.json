@@ -1,0 +1,36 @@
+{
+  "archivo": "src/modelo/dimensional.py",
+  "lenguaje": "Python",
+  "lineas": 286,
+  "rol": "modelado",
+  "descripcion": "Construye el modelo dimensional (Issue #14) en DuckDB: 7 dimensiones (convocatoria, investigador, categoría, área, territorio, formación, institución) + fact_clasificacion (investigador x convocatoria) + tabla puente N:N bridge_hecho_institucion. Entrada: DataFrame transformado; salida: datos/processed/observatorio.duckdb (gitignored).",
+  "logica": "Construye cada dimensión con drop_duplicates sobre su clave natural y SK solo para territorio/institucion; construir_fact_clasificacion() une la SK de territorio por columnas geográficas e inserta sk_hecho; construir_bridge_institucion() descompone inst_filia con un dict sk y un loop de filas. cargar_en_duckdb() crea el archivo (mkdir parents) y hace DROP + CREATE TABLE AS SELECT por tabla; resumen_modelo() lista tablas y conteos. Importa normalizar_categoria/ORDEN_CATEGORIAS desde analisis.longitudinal (requiere ROOT/src en sys.path).",
+  "critica_fortalezas": [
+    "Esquema claro y documentado (asociación dimensión -> hecho, más bridge para la relación N:N de instituciones).",
+    "SK para territorio e institución y ordenamiento determinista antes de drop_duplicates en varias dimensiones.",
+    "DB_PATH centralizado y carga idempotente (DROP + CREATE).",
+    "La tabla puente resuelve correctamente la granularidad N:N que una dimensión plana no podría representar."
+  ],
+  "critica_debilidades": [
+    "LA 'PRIMERA APARICIÓN' NO ES CRONOLÓGICA: construir_dim_investigador() ordena solo por ID_PERSONA_PR (no por ANO_CONVO_INT) y luego keep='first'; el snapshot de atributos no corresponde realmente a la primera convocatoria del investigador.",
+    "El fact referencia claves naturales (id_convocatoria, id_persona_pr, id_clas_pr, id_area_con_pr, id_niv_formacion_pr) sin SK: las dimensiones (salvo territorio/institucion) carecen de clave sustituta y no hay FKs/constraints — es más un conjunto de tablas de referencia que un modelo estrella estricto.",
+    "_drop_and_create() es código muerto (definido y nunca llamado), sugiriendo una intención de DDL con constraints que no se implementó.",
+    "construir_bridge_institucion() itera las ~77.237 filas con iterrows: lento y sin vectorización.",
+    "El archivo .duckdb es gitignored y NO existe en el clon: el modelo no es reproducible sin volver a ejecutar (requiere duckdb >= 1.0 y el XLSX)."
+  ],
+  "mejoras": [
+    "Ordenar por [ANO_CONVO_INT, ID_PERSONA_PR] en construir_dim_investigador() para que 'primera aparición' sea real.",
+    "Añadir SK (surrogate) a todas las dimensiones y referenciarlas en el fact; definir PK/FK con ALTER TABLE o CREATE TABLE con constraints.",
+    "Vectorizar el bridge (explode + map) en lugar de iterrows.",
+    "Documentar el modelo como 'tablas de referencia + hecho' si no se van a imponer FKs, para no sobrevender el término 'estrella'."
+  ],
+  "ejecutabilidad": "Sí para la parte de investigadores en el clon: requiere duckdb, pandas y el XLSX de tarea_join (presente); escribe datos/processed/observatorio.duckdb (gitignored; en el clon solo hay .gitkeep, el archivo NO está). No requiere datos/raw. NOTA: para incorporar producción (sprint5_duckdb.py) sí haría falta el CSV crudo.",
+  "produce_esperado": "Sí (con datos): genera las tablas documentadas y evidencias/duckdb_resumen_modelo.txt existe como evidencia de ejecución del equipo; el README reporta el modelo estrella como completado (Issue #14). El .duckdb final no está versionado por diseño (.gitignore: *.duckdb).",
+  "bugs": [
+    "src/modelo/dimensional.py:69-74: sort solo por ID_PERSONA_PR -> 'keep first' no es la primera aparición temporal; los atributos del snapshot (género, región) pueden pertenecer a una convocatoria posterior.",
+    "src/modelo/dimensional.py:41-44: _drop_and_create nunca se usa (código muerto).",
+    "src/modelo/dimensional.py:192-197: el merge por columnas geográficas con NaN (código DANE ausente) no empareja en pandas (NaN != NaN) -> fact con sk_territorio NULL para filas sin geografía, sin contarlas ni advertirlo.",
+    "src/modelo/dimensional.py:52-56: construir_dim_convocatoria conserva ANO_CONVO_INT = 2019 para la convocatoria id 20 (año nominal 2018), propagando la anomalía de datos documentada al modelo."
+  ],
+  "recomendacion": "mejorar — modelo útil y correcto en granularidad, pero necesita SK/constraints para ser un 'modelo estrella' real y corregir el snapshot cronológico del investigador antes de citarlo como modelo dimensional canónico."
+}

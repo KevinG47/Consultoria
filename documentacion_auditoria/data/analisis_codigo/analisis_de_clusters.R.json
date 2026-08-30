@@ -1,0 +1,39 @@
+{
+  "archivo": "notebooks/tarea_gran_tabla/analisis_de_clusters.R",
+  "lenguaje": "R",
+  "lineas": 94,
+  "rol": "legacy",
+  "descripcion": "Clustering k-prototypes sobre la GRAN_TABLA(SIN ID) para datos mixtos: convierte las categóricas en factor/ordinal, elimina casos incompletos con cc(), aplica kproto(k = 3) con set.seed(123) y describe los clusters con tablas de proporción por variable (gran área, género, región de nacimiento/residencia, formación, clasificación, discapacidad) y medias de edad. Corresponde a la tarea de análisis multivariado de la gran tabla.",
+  "logica": "klaR + clustMixType + factoextra + dplyr: mutate(across(c(1:10,16:23), factor) y ordered() para formación/clasificación), cc() para casos completos (retiene el 91.6% de la base), kproto(GT_NA, k = 3), filter por cluster y table()/mean() por grupo para perfilado.",
+  "critica_fortalezas": [
+    "Elección correcta del método: k-prototypes (clustMixType) es el algoritmo apropiado para datos mixtos categórico-numérico",
+    "Fija semilla (set.seed(123)): el resultado del kproto es reproducible",
+    "Reporta explícitamente la proporción de datos retenidos tras eliminar casos incompletos (91.6%)",
+    "Perfilado de clusters con proporciones por variable y media de edad: enfoque descriptivo adecuado para interpretar grupos"
+  ],
+  "critica_debilidades": [
+    "k = 3 fijado sin validación: no hay curva de withinss/silhouette, ni comparación de varios k, ni análisis del lambda (importancia de variables) de kproto",
+    "cc() (función de casos completos del paquete mice) elimina el 8.4% de las filas sin evaluar sesgo: los registros faltantes pueden ser sistemáticos (p. ej., 'Exterior', sin filiación, sin código DANE)",
+    "mice NO está cargado en este script (solo readxl, klaR, dplyr, factoextra, clustMixType): cc() solo existe si se ejecutó antes analisis_multivariado_base_gran_table.R en la misma sesión: no reproducible",
+    "Incluye el outlier de edad (956 años) en el clusterizado sin filtrar (los análisis previos sí lo descartaban)",
+    "Categorías 'No disponible'/'Exterior' dominantes distorsionan las distancias mixtas del kproto (el algoritmo estandariza categorías de forma uniforme)",
+    "El perfilado es solo inspección visual de proporciones: sin chi-cuadrado/ANOVA por variable vs cluster ni tamaño de clusters reportado",
+    "Ruta hardcodeada 'Downloads/GRAN_TABLA(SIN ID).xlsx', inexistente en el clon"
+  ],
+  "mejoras": [
+    "Validar k con varios valores (p. ej., k = 2..8) usando métricas de clustMixType (lambda, withinss) o silhouette para datos mixtos",
+    "Cargar mice (o definir casos completos con complete.cases()) y documentar el sesgo de la eliminación; evaluar imputación como alternativa",
+    "Filtrar edad > 100 antes de clusterizar (coherencia con la limpieza previa)",
+    "Reportar el lambda de cada variable (contribución al clustering) y validar perfiles con pruebas formales",
+    "Documentar la granularidad y el número de filas por cluster"
+  ],
+  "ejecutabilidad": "NO. Falta 'Downloads/GRAN_TABLA(SIN ID).xlsx' en el clon y, en una sesión limpia, cc() no existe porque mice no está cargado (depende de ejecutar antes el script multivariado en la misma sesión R).",
+  "produce_esperado": "El método (k-prototypes) es el adecuado para datos mixtos, pero la selección de k sin validación y la eliminación de NA por casos completos sin evaluar sesgo son errores metodológicos: los clusters pueden ser artefactos del número de grupos impuesto y de la pérdida de 8.4% de la muestra. Los perfiles por proporción son descriptivos y no validan la estructura encontrada.",
+  "bugs": [
+    "cc() (mice) usado sin cargar mice en el script: dependencia oculta de sesión previa",
+    "k = 3 fijo sin justificación ni validación (no hay análisis de sensibilidad a k)",
+    "Outlier de edad (956 años) incluido en el clusterizado",
+    "Eliminación de casos incompletos (8.4%) sin análisis de sesgo"
+  ],
+  "recomendacion": "Mantener como referencia académica de la tarea (muestra el uso correcto de k-prototypes para datos mixtos). No migrar: el pipeline moderno no incluye clustering; si se reintroduce, hacerlo con validación de k, manejo de NA documentado y datos depurados."
+}

@@ -1,0 +1,36 @@
+{
+  "archivo": "notebooks/tarea_dimensiones_y_hechos/codigo_dimensiones_C.R",
+  "lenguaje": "R",
+  "lineas": 40,
+  "rol": "legacy",
+  "descripcion": "Crea tablas de dimensiones del modelo estrella a partir de Investigadores_Consolidado: dimensión investigador (solo ID_PERSONA_PR), dimensión municipio de nacimiento (COD_DANE_NAC_PR + país/región/departamento/municipio) y dimensión convocatoria (ID_CONVOCATORIA + nombre + fecha de convocatoria), exportadas a tres xlsx. Corresponde a la tarea de dimensiones y hechos.",
+  "logica": "readxl + openxlsx + dplyr: unique() sobre la columna de ID, distinct(COD_DANE_NAC_PR, .keep_all = TRUE) para el municipio, distinct(ID_CONVOCATORIA, .keep_all = TRUE) para la convocatoria, y write.xlsx() por dimensión. Sin joins; solo extracción de claves y descriptores.",
+  "critica_fortalezas": [
+    "Separa claves naturales (IDs) de atributos descriptivos, enfoque correcto de modelado dimensional",
+    "Usa distinct() sobre la clave para garantizar unicidad en las dimensiones",
+    "Genera artefactos accionables (xlsx) consumibles por la tabla de hechos"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada 'Downloads/Investigadores_Consolidado.xlsx', inexistente en el clon",
+    "Dimensión investigador sin atributos (solo ID_PERSONA_PR): tabla sin valor analítico y sin vínculo a institución/universidad",
+    "distinct(COD_DANE_NAC_PR, .keep_all = TRUE) toma la PRIMERA fila por código: si el mismo código aparece con nombres distintos o con NA (investigadores en el 'Exterior'), la dimensión es no determinista",
+    "No maneja NA: los códigos DANE faltantes (Exterior) entran como fila NA en la dimensión",
+    "Nombres de salida con errores de tipeo (Dimension_invetigadores.xlsx, Dimension_municipos_de_naciminetos.xlsx) que NO coinciden con los nombres que consume la tabla de hechos (dimensiones_investigadores.xlsx del notebook): dos implementaciones paralelas de dimensiones incompatibles entre sí",
+    "Sin claves sustitutas para municipio y convocatoria; sin validación de cardinalidad",
+    "No hay dimensión de formación, clasificación, área ni residencia aquí (la residencia se hace en el notebook, no en este script)"
+  ],
+  "mejoras": [
+    "Unificar con las dimensiones del notebook dimensiones.ipynb (una sola implementación)",
+    "Añadir claves sustitutas y atributos a todas las dimensiones (incluida la de investigador)",
+    "Decidir y documentar el tratamiento de 'Exterior'/NA antes de construir la dimensión",
+    "Corregir nombres de archivo y validar la cardinalidad de la dimensión contra la tabla de hechos"
+  ],
+  "ejecutabilidad": "NO. Falta 'Downloads/Investigadores_Consolidado.xlsx' en el clon.",
+  "produce_esperado": "El diseño (claves naturales + descriptores) es conceptualmente correcto para un modelo estrella, pero incompleto: la dimensión investigador no tiene atributos, la de municipio depende del orden de filas (.keep_all = TRUE) y no se resuelve el caso 'Exterior'. Riesgo de claves inconsistentes entre dimensiones de archivos distintos.",
+  "bugs": [
+    "Typos en los nombres de archivo de salida (invetigadores, municipos de naciminetos) que rompen la trazabilidad con la tabla de hechos",
+    "distinct() con .keep_all = TRUE: resultado dependiente del orden de filas en la base",
+    "Filas con COD_DANE_NAC_PR = NA ('Exterior') entran como clave NA en la dimensión"
+  ],
+  "recomendacion": "Mantener como referencia histórica del modelado dimensional académico. No migrar: el modelo moderno está en src/modelo/dimensional.py; además conviene consolidar con el notebook de dimensiones para eliminar la duplicación incompatible."
+}

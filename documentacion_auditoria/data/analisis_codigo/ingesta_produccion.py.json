@@ -1,0 +1,35 @@
+{
+  "archivo": "src/ingesta/produccion.py",
+  "lenguaje": "Python",
+  "lineas": 106,
+  "rol": "ingesta",
+  "descripcion": "Descarga paginada del dataset de Producción de Grupos (Socrata 33dq-ab5a, 3.166.629 filas) a datos/raw/produccion_grupos.csv, con modo --limit para pruebas y actualización de metadatos en datos/catalogo.yaml. Es la única ingesta del proyecto con paginación real.",
+  "logica": "Usa sodapy.Socrata con timeout=300; descargar() pagina con $offset/$limit de 50.000 y order=':id' hasta que un chunk venga vacío o con menos de PAGE_SIZE; con --limit hace una sola llamada. guardar() escribe CSV UTF-8; actualizar_catalogo() actualiza ultimo_pull y tamanio_registros de la fuente 33dq-ab5a en catalogo.yaml; main() orquesta y omite el catálogo en modo prueba.",
+  "critica_fortalezas": [
+    "Paginación robusta con orden estable (:id) y condición de corte doble (chunk vacío o < PAGE_SIZE).",
+    "CLI argparse con modo limit para pruebas sin descargar 1,2 GB.",
+    "Cierra el cliente Socrata explícitamente y loguea progreso por página.",
+    "Actualiza el catálogo de metadatos automáticamente tras la descarga completa."
+  ],
+  "critica_debilidades": [
+    "Importa yaml en el módulo pero PyYAML NO está declarado en pyproject.toml ni requirements.txt (sodapy no lo trae) -> ImportError en un entorno limpio.",
+    "Descarga todas las columnas sin proyección (select), incluyendo títulos largos (nme_producto_pd) -> payload y tiempo innecesarios en 3,2 M de filas.",
+    "Sin reintentos/backoff ante errores de red ni validación del conteo final contra el catálogo (3.166.629).",
+    "yaml.dump reescribe catalogo.yaml reformateándolo (indentación y comillas), generando diffs ruidosos en un archivo versionado con formato manual.",
+    "if limit: con limit=0 ejecutaría la descarga completa (valor falsy no contemplado)."
+  ],
+  "mejoras": [
+    "Añadir select de columnas analíticas (id_persona_pd, id_convocatoria, ano_convo, nme_tipo_medicion_pd, cod_grupo_gr, etc.).",
+    "Declarar pyyaml en pyproject.toml y requirements.txt.",
+    "Verificar len(df) contra catalogo['tamanio_registros'] y reintentar páginas fallidas con backoff exponencial.",
+    "Guardar en parquet con tipos explícitos (id_persona_pd como str de 10 caracteres)."
+  ],
+  "ejecutabilidad": "Ejecutable con red: python -m src.ingesta.produccion (completa) o --limit N. Requiere sodapy, pandas y PyYAML (este último no declarado en el proyecto). Escribe en datos/raw/ (gitignored; en el clon el directorio existe con .gitkeep y es escribible localmente, pero la salida NO está versionada ni presente en el clon).",
+  "produce_esperado": "Produce datos/raw/produccion_grupos.csv (gitignored, ~1,2 GB), el input que exige cargar_produccion(). No genera evidencias/ ni artifacts/ directamente; coincide con lo documentado en README (ingesta por API Socrata paginada, Sprint 5).",
+  "bugs": [
+    "src/ingesta/produccion.py:26: import yaml no cubierto por pyproject.toml -> falla en instalación reproducible (probablemente ejecutado ad-hoc con PyYAML instalado manualmente).",
+    "src/ingesta/produccion.py:47-53: en modo limit main() igualmente guarda el DataFrame como CSV 'completo' en SALIDA: si alguien corre --limit sin querer, sobrescribe el archivo crudo con una muestra.",
+    "src/ingesta/produccion.py:59-65: si la última página devuelve exactamente PAGE_SIZE y la siguiente viene vacía, el loop hace una petición extra vacía (ineficiencia menor, no error)."
+  ],
+  "recomendacion": "mantener/mejorar — única ingesta con paginación correcta del proyecto; corregir la dependencia PyYAML declarada y el sobrescrito en modo limit para producción segura."
+}

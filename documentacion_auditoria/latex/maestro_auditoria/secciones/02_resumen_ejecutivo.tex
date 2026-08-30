@@ -1,0 +1,89 @@
+% ============ 02. Resumen ejecutivo ============
+
+\section{Resumen ejecutivo}
+
+\subsection{Objeto de la auditoría}
+
+Este documento presenta la auditoría integral del repositorio
+\texttt{Observatorio\_Ministerio\_de\_Ciencias\_Grupo8}
+(\url{https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8}),
+que materializa un \textbf{observatorio crítico del sistema de reconocimiento de
+investigadores del Ministerio de Ciencia, Tecnología e Innovación de Colombia
+(MinCiencias)}. El análisis cubre 236 archivos (51 de código), 133 commits
+(2025-08-24 a 2026-05-14), 12 autores y un pipeline que procesa 77\,237 registros
+del padrón de investigadores (6 convocatorias, 2013--2021) y 3\,166\,629 filas de
+producción de grupos de investigación.
+
+\subsection{Veredicto general}
+
+\begin{tcolorbox}[hallazgo]
+El repositorio cumple su objetivo declarado: consolidar, validar y analizar el
+padrón de investigadores reconocidos y producir un observatorio con 14 hallazgos
+críticos documentados, dashboard de 7 capítulos, informe LaTeX y presentación.
+La \textbf{arquitectura y la lógica estadística de nivel descriptivo-exploratorio
+son sólidas}; la \textbf{deuda técnica} (CI/CD rota, Dockerfile desalineado,
+codificación mojibake en el CSV canónico, tests mínimos, legacy R no reproducible,
+versionado de datos incompleto) compromete la \textbf{reproducibilidad end-to-end},
+pero no la validez de los hallazgos ya generados.
+\end{tcolorbox}
+
+\subsection{Principales fortalezas verificadas}
+
+\begin{itemize}
+  \item \celdaok{Documentación de nivel profesional}: README exhaustivo, catálogo
+        YAML con diccionario de datos y llaves de cruce, decisiones metodológicas
+        documentadas en el propio código (p.~ej. tratamiento de atípicos en
+        \texttt{src/analisis/calidad.py}).
+  \item \celdaok{Modularización correcta}: separación ingesta / transformación /
+        análisis / modelado / orquestación con lógica reutilizable en \texttt{src/}.
+  \item \celdaok{Modelo dimensional adecuado}: esquema estrella en DuckDB con
+        tabla puente N:N para la relación investigador--institución.
+  \item \celdaok{Evidencias trazables}: 79 CSVs y 56 PNG/HTML con convención de
+        nombres consistente por sprint.
+  \item \celdaok{Enfoque crítico alineado con la evaluación responsable de la
+        ciencia} (patrón \emph{Pregunta $\rightarrow$ Hallazgo $\rightarrow$ Caveat}).
+\end{itemize}
+
+\subsection{Principales brechas detectadas}
+
+\begin{enumerate}
+  \item \celdanok{CI/CD rota}: \texttt{.github/workflows/etl\_update.yml} ejecuta
+        \texttt{src.ingesta.main} y \texttt{src.transformacion.main}, módulos que no
+        existen (los reales son \texttt{src.ingesta.minciencias}/\texttt{produccion} y
+        \texttt{src/Transformacion.py}).
+  \item \celdanok{Dockerfile desalineado}: ejecuta \texttt{app/streamlit\_app.py}
+        (placeholder de 17 líneas) en lugar de \texttt{streamlit\_app.py} (dashboard real).
+  \item \celdanok{Mojibake en el CSV canónico}: \texttt{investigadores\_consolidado.csv}
+        presenta caracteres corruptos (p.~ej. \texttt{FÃ­sica} por \emph{Física}),
+        indicativo de un desajuste UTF-8/Latin-1 en la exportación.
+  \item \celdanok{Testing insuficiente}: 1 test funcional; \texttt{pandera} declarado
+        pero sin uso; sin contratos de esquema.
+  \item \celdanok{Legacy no reproducible}: scripts R/Python con rutas hardcodeadas
+        (\texttt{Downloads/...}) y entradas no versionadas.
+  \item \celdanok{Versionado de datos incompleto}: \texttt{datos/raw} y
+        \texttt{datos/processed} gitignored sin DVC; la ingesta de producción
+        (\texttt{33dq-ab5a}, ~1.2\,GB) no es reproducible desde el repositorio.
+  \item \celdanok{Componente ML vacío}: \texttt{models/} sin contenido; el clustering
+        (k-prototypes) vive en R legacy fuera del pipeline.
+  \item \celdanok{Duplicidad de artefactos}: variantes \texttt{matriz\_*},
+        \texttt{matriz\_*\_ext} y \texttt{matriz\_*\_obs} sin documentación de diferencias.
+  \item \celdanok{Inconsistencia documental}: atípicos de edad reportados como 10 en
+        un docstring y 22 en el README (el conteo real es 22).
+  \item \celdanok{Nomenclatura desactualizada}: referencias a Grupo7, ramas y repos
+        antiguos en el README.
+\end{enumerate}
+
+\subsection{Recomendaciones de máximo impacto}
+
+\begin{enumerate}
+  \item Corregir el workflow de GitHub Actions y el Dockerfile (reproducibilidad de
+        la cadena de despliegue).
+  \item Normalizar la codificación del CSV consolidado y añadir un contrato de
+        esquema (pandera) en ingesta y transformación.
+  \item Ampliar la cobertura de tests a las funciones analíticas y de transformación.
+  \item Migrar los análisis legacy (R) al pipeline Python en \texttt{src/} o
+        documentarlos formalmente como material de referencia histórica.
+  \item Complementar la inferencia estadística: intervalos de confianza en índices
+        de concentración, modelos de supervivencia para retención, modelos nulos
+        para redes y validación formal de clusters.
+\end{enumerate}

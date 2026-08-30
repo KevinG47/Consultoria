@@ -1,0 +1,37 @@
+{
+  "archivo": "scripts/sprint5_duckdb.py",
+  "lenguaje": "Python",
+  "lineas": 193,
+  "rol": "orquestacion",
+  "descripcion": "Extiende el modelo dimensional en observatorio.duckdb (creado por scripts/sprint2_duckdb.py) con fact_produccion, dim_producto, dim_grupo y la vista vw_investigador_x_produccion. Usa src/ingesta.cargar_produccion y src/analisis/produccion.normalizar_produccion. Entradas: datos/raw/produccion_grupos.csv y la DB previa. Salida: DB ampliada + reporte evidencias/duckdb_resumen_sprint5.txt con 5 consultas de validación.",
+  "logica": "Carga y normaliza producción (IDs a Int64, extrae ANO_CONVO_INT), registra el DataFrame como tabla temporal 'prod_raw' y crea fact_produccion (una fila por id_persona_pd × id_convocatoria × id_producto_pd), dim_producto y dim_grupo con SELECT DISTINCT. Crea la vista vw_investigador_x_produccion con LEFT JOIN fact_clasificacion fc ON f.id_persona_pd = fc.id_persona_pr AND f.id_convocatoria = fc.id_convocatoria, definiendo es_reconocido = (fc.id_persona_pr IS NOT NULL). Luego ejecuta 5 consultas: productos por convocatoria; cobertura por año con pct_reconocido; productividad por categoría = COUNT(*) / COUNT(DISTINCT id_persona_pd) unida a dim_categoria (cat.categoria_normalizada / orden_normalizado); top 10 grupos por n_productos; y tipologías dominantes con ventana SUM(COUNT(*)) OVER () para el porcentaje. El reporte se escribe concatenando los to_string() de cada DataFrame.",
+  "critica_fortalezas": [
+    "Modelado dimensional limpio: separa hechos (fact_produccion) de dimensiones (dim_producto, dim_grupo) y expone una vista lista para análisis cruzados, reutilizable por otros scripts o la app.",
+    "Idempotente: DROP TABLE/VIEW IF EXISTS antes de cada CREATE, permitiendo re-ejecución sin corrupción acumulada.",
+    "Validación integrada al pipeline: imprime conteos de filas por tabla y ejecuta consultas de negocio que verifican el resultado en el mismo run.",
+    "Los artefactos declarados existen en el clon y el reporte reproduce exactamente las métricas esperadas (ver produce_esperado)."
+  ],
+  "critica_debilidades": [
+    "La vista asume que el id_convocatoria del dataset de producción es el mismo dominio que el de fact_clasificacion; si no coinciden (p. ej. tipos str vs int o convocatorias de grupos vs de clasificación), el LEFT JOIN degrada silenciosamente a es_reconocido = False sin ningún aviso.",
+    "No reporta la cobertura del join (cuántos productos quedan sin clasificación asociada), clave para interpretar el pct_reconocido.",
+    "La definición de 'reconocido' aquí es 'reconocido en esa misma convocatoria', distinta de la usada en sprint5_produccion.py (cualquier convocatoria), lo que produce cifras de cobertura no comparables entre scripts del mismo sprint.",
+    "No hay validación de tipos entre id_persona_pd (Int64) y id_persona_pr de fact_clasificacion (depende de sprint2); un desajuste de tipo en DuckDB rompe el join en runtime, no en validación.",
+    "La modificación de la DB no es transaccional: si falla a mitad del script, la DB queda con un subconjunto de objetos nuevos."
+  ],
+  "mejoras": [
+    "Agregar validación post-join: COUNT productos sin match en fact_clasificacion y advertir si supera un umbral.",
+    "Añadir CAST/verificación explícita de tipos de id_persona e id_convocatoria antes de construir la vista.",
+    "Escribir un test de humo que verifique n_investigadores ≈ 77.237 y que prom_productos por categoría esté en el rango esperado (Junior ~30, Asociado ~65, Senior ~121).",
+    "Parametrizar DB_PATH y permitir --solo-validacion para no reconstruir tablas.",
+    "Documentar el supuesto de que fact_produccion.id_convocatoria es el id de la convocatoria de clasificación del grupo."
+  ],
+  "ejecutabilidad": "NO ejecutable tal cual con el clon: falta datos/processed/observatorio.duckdb (solo hay .gitkeep; requiere ejecutar scripts/sprint2_duckdb.py antes, que a su vez necesita el raw de investigadores) y datos/raw/produccion_grupos.csv (gitignored, ~1.2 GB). Requiere la dependencia duckdb instalada. El resto (pathlib, sys) es estándar. Con el dataset y la DB presentes, el script corre de punta a punta.",
+  "produce_esperado": "SÍ: evidencias/duckdb_resumen_sprint5.txt existe y contiene las 5 consultas. La consulta productividad_por_categoria reproduce Junior 29.99, Asociado 65.36, Senior 121.49, Emérito 33.75 (redondeando: 30/65/121), que es exactamente la métrica que los investigadores buscaban. La cobertura por año va de 51.88% (2013) a 63.34% (2021). No hay discrepancias entre lo declarado y lo generado.",
+  "bugs": [
+    "scripts/sprint5_duckdb.py:155-157 — el LEFT JOIN a fact_clasificacion no valida que f.id_convocatoria = fc.id_convocatoria tenga coincidencias; si los dominios de convocatoria difieren (producción vs clasificación), toda la columna es_reconocido queda en False y la cobertura reportada (51-63%) sería espuria sin ningún error visible.",
+    "scripts/sprint5_duckdb.py:59 — COUNT(*)::DOUBLE es sintaxis válida en DuckDB, pero el SUM(CASE WHEN es_reconocido THEN 1 ELSE 0 END) de la consulta cobertura_reconocimiento devuelve tipo DOUBLE (visible como '123683.0' en el reporte) frente a COUNT(*) entero; inconsistencia de tipos menor en el output.",
+    "scripts/sprint5_duckdb.py:162 — valida COUNT(*) de fact_produccion/dim_producto/dim_grupo pero nunca valida la vista vw_investigador_x_produccion (el objeto más usado después).",
+    "scripts/sprint5_duckdb.py:96-136 — DROP TABLE IF EXISTS sin transacción; una excepción entre DROPs deja la DB parcialmente actualizada (riesgo de estado inconsistente)."
+  ],
+  "recomendacion": "mantener — es el núcleo del modelo DuckDB del sprint 5, bien estructurado y con resultados verificados; requiere solo las mejoras de validación de join y tipos para blindar la cobertura reportada."
+}

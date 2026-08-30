@@ -1,0 +1,45 @@
+{
+  "archivo": "streamlit_app.py",
+  "lenguaje": "Python",
+  "lineas": 983,
+  "rol": "visualizacion",
+  "descripcion": "Dashboard Streamlit principal del Observatorio MinCiencias con 7 pestañas tipo capítulo (Calidad, Trayectoria, Territorio, Diversidad, Redes, Productividad, Datos crudos). Lee el consolidado vía src/ingesta.cargar_consolidado (XLSX de respaldo en datos/tarea_join), lo transforma con src/Transformacion.transformar y lo cruza con ~30 funciones de src/analisis/*. Cada sección sigue el patrón pregunta -> evidencia -> hallazgo -> caveat, con filtros globales en la barra lateral.",
+  "logica": "Estructura: constantes (COORDENADAS_DEPTO, POBLACION_DANE_2018, CAT_CORTA) -> cargar_datos() con @st.cache_data (aplica transformar y crea edad_valida) -> sidebar_filtros() (año, género, gran área, depto top-15, categoría, checkbox excluir calidad) -> cabecera() con 6 métricas -> 7 tabs que llaman a una funcion seccion_* cada una. Caches: cargar_datos, panel_completo(len(df), df) y cargar_produccion_normalizada. Conexion con src/: sys.path.insert(ROOT/src) e imports de ingesta, Transformacion y analisis.{longitudinal, territorial, genero, diversidad, redes, produccion}. La seccion 5 embebe hallazgos/sprint3_grafo_filtrado.html (existe) y la 6 depende de datos/raw/produccion_grupos.csv (NO existe en el repo).",
+  "critica_fortalezas": [
+    "Arquitectura limpia por secciones con una funcion por capitulo; facil de auditar",
+    "Narrativa critica consistente (pregunta/hallazgo/caveat) con caveats metodologicos muy buenos (p. ej. subrepresentacion vs poblacion con educacion superior, Eméritos vitalicios)",
+    "Manejo defensivo: try/except que degrada con st.info en vez de crashear (HHI, genero, DANE, longitudinal)",
+    "Reutiliza las funciones reales de src/analisis; no duplica logica de analisis en la UI",
+    "Filtros globales coherentes entre secciones y metricas de cabecera bien elegidas",
+    "Imports y rutas verificados: todos los modulos src/analisis importados existen con las firmas usadas"
+  ],
+  "critica_debilidades": [
+    "La seccion 6 (Productividad, capitulo 6 del informe) queda vacia en esta maquina: falta datos/raw/produccion_grupos.csv (~1,2 GB); solo muestra un warning",
+    "El grafico HHI de la seccion 3 esta roto por un bug de shape y degrada silenciosamente a 'HHI no disponible'",
+    "Numeros hardcodeados en texto y logica: '30.086 investigadores unicos', fallback 16796 para la anomalia de convocatoria, '6 convocatorias (2013-2021)' en la caption",
+    "Caché de panel_completo con clave debil (len(df)): filtros con el mismo tamaño colisionan y pueden devolver paneles obsoletos",
+    "Docstring dice '6 secciones tipo capitulos' pero hay 7 tabs (desincronizacion interna)",
+    "Seccion 6 no cubierta por try/except: si el CSV de produccion existiera vacio, cov.iloc[0]/iloc[-1] lanzarian IndexError sin captura",
+    "Metricas de cabecera usan df_full mientras las secciones usan df filtrado: el texto 'global' mezcla poblaciones"
+  ],
+  "mejoras": [
+    "Corregir el bug del HHI: eliminar el .reset_index() o renombrar usando las columnas reales (ANO_CONVO_INT, hhi)",
+    "Documentar el prerequisito del dataset de produccion en la UI (ya hay warning) o agregar fallback a evidencias/produccion_*.csv",
+    "Calcular en runtime los numeros hardcodeados (unicos, convocatorias) en vez de fijarlos",
+    "Cachear panel_completo con un hash real del filtro (tupla de selecciones) en vez de len(df)",
+    "Envolver la seccion 6 completa en try/except para evitar IndexError con produccion vacia",
+    "Sincronizar docstring (6 -> 7 secciones) y caption"
+  ],
+  "ejecutabilidad": "Parcial. `streamlit run streamlit_app.py` desde la raiz funciona con streamlit, pandas, numpy, plotly y openpyxl (requirements.txt los declara). cargar_consolidado cae al XLSX datos/tarea_join/investigadores_consolidado.xlsx (existe; datos/raw/investigadores_consolidado.csv no existe). Con ese insumo, las secciones 1, 2, 3 (sin HHI), 4, 5 y 7 deberian renderizar. La seccion 6 (productividad) no se ejecuta: requiere descargar datos/raw/produccion_grupos.csv con `python -m src.ingesta.produccion`; la app lo maneja con st.warning y return. En entorno poetry (Docker) openpyxl figura en poetry.lock (grupo main) aunque pyproject.toml no lo declara: riesgo de lock desincronizado.",
+  "produce_esperado": "Sí, el dashboard implementa los 7 capitulos del informe y coincide con el README ('streamlit_app.py # Dashboard - 7 tabs'). Sin embargo, el capitulo 6 (productividad) no produce nada sin el dataset de produccion, y el HHI (parte del capitulo 3) nunca dibuja por el bug de shape. El placeholder app/streamlit_app.py no contradice a este archivo en local ni en Streamlit Cloud (el README apunta a este), pero sí en el despliegue Docker.",
+  "bugs": [
+    "Seccion 3: hhi_por_convocatoria(df, col_geo=col).reset_index() devuelve 5 columnas (index + ANO_CONVO_INT + hhi + n_total + n_territorios) y luego hhi_df.columns = ['Año', 'HHI'] lanza ValueError 'Length mismatch'; el except lo captura y el grafico HHI nunca se muestra (lineas 434-435)",
+    "Seccion 6: depende de datos/raw/produccion_grupos.csv que no esta en el repo; toda la seccion (4 metricas + 6 graficos) se degrada a un warning",
+    "Seccion 1: fallback hardcodeado `else 16796` y umbral magico ID_CONVOCATORIA == 20 sin validacion -> numero potencialmente incorrecto en silencio",
+    "panel_completo(len(df), df) usa len(df) como hash de cache -> colisiones entre filtros del mismo tamano (linea 347)",
+    "Si el CSV de produccion existiera pero vacio, cov.iloc[0]/cov.iloc[-1] (lineas 761-762) lanzarian IndexError no capturado y crashearia la app",
+    "Caption y docstring desincronizados: '6 secciones' en el header (linea 7) vs 7 tabs reales"
+  ],
+  "recomendacion": "mejorar: es la pieza central del proyecto, bien estructurada y con 5 de 7 secciones funcionales con el XLSX actual. Corregir el bug del HHI, robustecer la cache, documentar/proveer el dataset de produccion y eliminar los hardcodes antes de considerar un refactor.",
+  "cifras_verificadas": "CSV paralelo datos/tarea_join/investigadores_consolidado.csv tiene 30 columnas (header verificado: ID_CONVOCATORIA, ANO_CONVO, ID_PERSONA_PR, INST_FILIA, etc.) y ~50.891 filas; el XLSX es la fuente real de cargar_consolidado (no se pudo verificar su conteo, binario). hallazgos/sprint3_grafo_filtrado.html existe."
+}

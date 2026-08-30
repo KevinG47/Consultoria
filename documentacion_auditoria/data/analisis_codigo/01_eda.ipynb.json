@@ -1,0 +1,38 @@
+{
+  "archivo": "notebooks/01_eda.ipynb",
+  "lenguaje": "Notebook",
+  "lineas": 240,
+  "rol": "eda",
+  "descripcion": "EDA exploratorio de 16 celdas (6 markdown + 10 codigo) sobre el dataset consolidado de investigadores reconocidos (77.237 registros, 30 variables, 6 convocatorias 2013-2021). Carga con src/ingesta.cargar_consolidado, transforma con src/Transformacion.transformar y produce: tipos y faltantes, estadisticas de 3 variables numericas, frecuencias de 5 categoricas y 4 visualizaciones (genero, gran area OCDE, edad por convocatoria, top 15 departamentos). Es el punto de entrada analitico del proyecto, anterior a los sprint 2-6.",
+  "logica": "Celda 1: ROOT = pathlib.Path().resolve().parent (comentario: 'raiz del repo (notebooks/../)', asume cwd = notebooks/); sys.path.insert(0, ROOT/src); imports de pandas/numpy/matplotlib/seaborn y `from ingesta import cargar_consolidado`, `from Transformacion import transformar`. Celda 2: df_raw = cargar_consolidado(); df = transformar(df_raw); print shape y head. Celdas siguientes analizan df directamente: dtypes, faltantes (isnull().mean()), heatmap de NaN, describe de EDAD_ANOS_PR/NRO_ORDEN_FORM_PR/ORDEN_CLAS_PR, histogramas, value_counts de 5 categoricas, pie de genero, barh de areas, boxplot de edad por convocatoria, barplot de top departamentos. Sin cache ni subprocesos; input unico: el consolidado.",
+  "critica_fortalezas": [
+    "Sencillo y autocontenido: funciona sin el dataset de produccion (solo necesita el consolidado)",
+    "Usa el pipeline real de ingesta+transformacion, misma fuente que el dashboard (consistencia de datos)",
+    "Estructura EDA estandar y legible: carga, calidad, numericas, categoricas, visualizaciones",
+    "Todas las columnas que referencia (EDAD_ANOS_PR, NRO_ORDEN_FORM_PR, ORDEN_CLAS_PR, NME_REGION_RES_PR, etc.) existen en el header del CSV consolidado (30 columnas, verificado)"
+  ],
+  "critica_debilidades": [
+    "Resolucion de ROOT fragil: depende de que el cwd del kernel sea notebooks/; si JupyterLab arranca el kernel desde la raiz del repo, ROOT apunta al padre del repo y `from ingesta import ...` lanza ModuleNotFoundError (a diferencia de manual.ipynb, no tiene fallback a ROOT.parent)",
+    "El analisis de faltantes se hace sobre df YA transformado: transformar imputa mediana en numericas y 'NO REPORTADO' en categoricas (tratar_faltantes), asi que el heatmap de NaN y los % de faltantes quedan vacios o minimos (solo sobreviven COD_DANE_* y ANO_CONVO_FECHA); la seccion 'Calidad de datos' del EDA es poco informativa",
+    "Nomenclatura inconsistente: el titulo dice 'Grupo 7' (la carpeta del repo es Grupo 8; Transformacion.py tambien dice Grupo 7)",
+    "Usa palette= en sns.boxplot/sns.barplot (deprecacion en seaborn >= 0.14; cosmético, no rompe)",
+    "No documenta como se lanza (cwd requerido) ni fija versiones de seaborn"
+  ],
+  "mejoras": [
+    "Adoptar el patron de ROOT del manual.ipynb: Path.cwd() con fallback a ROOT.parent (o derivar de la ubicacion del notebook) para funcionar desde cualquier cwd",
+    "Correr el analisis de calidad sobre df_raw (antes de transformar) o documentar que los faltantes ya fueron imputados/etiquetados",
+    "Unificar la nomenclatura de grupo (Grupo 7 vs Grupo 8) en titulo y docstrings",
+    "Quitar palette= o fijar seaborn<0.14 en pyproject",
+    "Anadir celda que confirme shape == (77237, 30) como asercion de insumo"
+  ],
+  "ejecutabilidad": "Sí, con una condicion de entorno: se ejecuta tal cual si el kernel arranca con cwd = notebooks/ (p. ej. `jupyter notebook notebooks/01_eda.ipynb` desde la raiz, que en el cliente clasico pone el cwd en notebooks/). Entrada: datos/tarea_join/investigadores_consolidado.xlsx via cargar_consolidado (existe; el CSV de datos/raw no existe, se cae al XLSX). Requiere pandas, numpy, matplotlib, seaborn y openpyxl. No requiere el dataset de produccion. Si el cwd del kernel es la raiz del repo, el import de ingesta falla (ModuleNotFoundError).",
+  "produce_esperado": "Cumple su rol de EDA: carga y describe el consolidado y genera las 4 visualizaciones sin errores bajo la condicion de cwd correcta. Nota de verificacion: el CSV paralelo datos/tarea_join/investigadores_consolidado.csv tiene ~50.891 filas (no 77.237): conviene confirmar que el XLSX (fuente real de cargar_consolidado) tenga las 77.237 filas y que no haya divergencia entre formatos. La seccion de faltantes es casi vacia por la imputacion previa de transformar. No contradice al dashboard (misma fuente de datos).",
+  "bugs": [
+    "ROOT = pathlib.Path().resolve().parent (celda 1): si el cwd del kernel no es notebooks/, ROOT no apunta a la raiz del repo y `from ingesta import cargar_consolidado` lanza ModuleNotFoundError; no hay fallback (a diferencia de docs/manual.ipynb que sí lo tiene)",
+    "Analisis de calidad sobre df transformado: transformar (tratar_faltantes) imputa mediana en numericas y 'NO REPORTADO' en categoricas, por lo que df.isnull() queda casi sin NaN; el mapa de calor y los % de faltantes de la seccion 2 no muestran la calidad real del dato crudo",
+    "Titulo 'Grupo 7' vs carpeta 'Grupo 8' (y Transformacion.py tambien dice Grupo 7): inconsistencia de nomenclatura del proyecto",
+    "sns.boxplot/palette y sns.barplot/palette: deprecacion de palette en seaborn>=0.14 (aviso, no falla)"
+  ],
+  "recomendacion": "mejorar (mantener): el EDA es valido y util como punto de entrada; endurecer la resolucion de rutas con el patron del manual.ipynb, mover el analisis de calidad a df_raw (o aclarar que los faltantes ya fueron tratados), unificar la nomenclatura de grupo y fijar/eliminar palette=.",
+  "cifras_verificadas": "16 celdas: 6 markdown + 10 codigo (grep de 'cell_type'). Header del CSV consolidado verificado con 30 columnas exactas (ID_CONVOCATORIA ... INST_FILIA). datos/tarea_join/investigadores_consolidado.csv tiene 50.892 lineas (header + ~50.891 filas)."
+}

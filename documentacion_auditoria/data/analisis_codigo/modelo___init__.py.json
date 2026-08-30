@@ -1,0 +1,17 @@
+{
+  "archivo": "src/modelo/__init__.py",
+  "lenguaje": "Python",
+  "lineas": 2,
+  "rol": "modelado",
+  "descripcion": "Marcador de paquete Python para src/modelo/ (módulo del modelo dimensional).",
+  "logica": "Sin lógica: archivo de marcador.",
+  "critica_fortalezas": [
+    "Correcto por convención."
+  ],
+  "critica_debilidades": [],
+  "mejoras": [],
+  "ejecutabilidad": "N/A.",
+  "produce_esperado": "N/A.",
+  "bugs": [],
+  "recomendacion": "mantener — estándar de Python."
+}

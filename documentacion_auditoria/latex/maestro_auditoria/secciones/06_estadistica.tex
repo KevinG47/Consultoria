@@ -1,0 +1,134 @@
+% ============ 06. Validación de la calidad estadística ============
+
+\section{Validación de la calidad de pruebas, tratamientos y lógica estadística}
+
+Esta sección evalúa críticamente el rigor estadístico de los análisis
+implementados, por eje metodológico.
+
+\subsection{Tratamiento de datos (preprocesamiento)}
+
+\begin{itemize}
+  \item \textbf{Normalización de texto y categorías} (\texttt{src/Transformacion.py}):
+        correcta y consistente (mayúsculas, \texttt{NO REPORTADO}).
+  \item \textbf{Imputación por mediana} en variables numéricas
+        (\texttt{NRO\_ORDEN\_FORM\_PR}, \texttt{ORDEN\_CLAS\_PR}, \texttt{EDAD\_ANOS\_PR}):
+        \celdanok{cuestionable}. Imputar la mediana reduce la varianza estimada y
+        puede sesgar análisis de dispersión; además \texttt{ORDEN\_*} son ordinales,
+        no continuas. Se recomienda imputación múltiple o modelos que manejen
+        faltantes (p.~ej. \texttt{mice}), o al menos documentar el impacto.
+  \item \textbf{Atípicos de edad} (\texttt{src/analisis/calidad.py}): decisión
+        \celdaok{correcta y bien documentada} (eliminación sobre imputación por
+        trazabilidad; 22 casos = 0.028\,\% del padrón; sesgo despreciable). Se
+        ofrece comparación con imputación por mediana del grupo.
+  \item \textbf{Parsing de años}: manejo robusto de 3 formatos (fecha, serial de
+        Excel, regex) — \celdaok{bien resuelto}.
+\end{itemize}
+
+\subsection{Análisis longitudinal}
+
+\begin{itemize}
+  \item \textbf{Matrices de transición de Markov} (\texttt{src/analisis/longitudinal.py}):
+        implementación \celdaok{correcta} (conteos normalizados por fila,
+        categorías ordenadas por escala ordinal, estado ``Desaparece'' opcional).
+  \item \textbf{Caveats no tratados}: la propiedad markoviana (la transición solo
+        depende del estado actual) y la homogeneidad temporal no se testean; con
+        intervalos irregulares entre convocatorias, las tasas no son directamente
+        comparables entre periodos. La literatura recomienda matrices de orden
+        superior o modelos de transición con covariables.
+  \item \textbf{Tasas de retención}: definición correcta (presentes en $t_0$ que
+        reaparecen en $t_1$); el hallazgo de los eméritos vitalicios (estado
+        absorbente por diseño) está bien documentado.
+  \item \textbf{Ausencias}: no se usa análisis de supervivencia (Kaplan--Meier/Cox)
+        para el tiempo hasta la salida, que es el complemento natural y de mayor
+        valor inferencial.
+\end{itemize}
+
+\subsection{Análisis territorial}
+
+\begin{itemize}
+  \item \textbf{Índice HHI}: \celdaok{correctamente implementado} y calculado por
+        convocatoria y por región (Tabla con HHI decreciente 0.190 $\rightarrow$ 0.146,
+        lo que sugiere leve desconcentración).
+  \item \textbf{Limitaciones}: HHI sin intervalos de confianza (bootstrap); no se
+        complementa con Gini/Lorenz/Theil; la comparación per cápita usa el censo
+        DANE 2018 como denominador fijo, lo que ignora la dinámica poblacional
+        (2013--2021).
+\end{itemize}
+
+\subsection{Análisis de género}
+
+\begin{itemize}
+  \item \textbf{Indicadores}: proporciones de participación femenina por gran área
+        OCDE y evolución temporal — \celdaok{correctos} y alineados con la literatura
+        (Larivière et al., 2013).
+  \item \textbf{Limitaciones}: no hay inferencia formal (intervalos de confianza,
+        pruebas de diferencia de proporciones o modelos logísticos ajustados por
+        área/cohorte); la variable género es auto-declarada y con 2.7\,\% de
+        ``NO REPORTADO''.
+\end{itemize}
+
+\subsection{Análisis de diversidad}
+
+\begin{itemize}
+  \item \textbf{Representación relativa vs DANE 2018 / RUV 2021}:
+        \celdaok{metodología correcta} (razón observado/esperado); hallazgos
+        coherentes (afro 3$\times$, indígena 7.9$\times$, discapacidad 8$\times$
+        subrepresentados).
+  \item \textbf{Caveats}: variables auto-declaradas y solo disponibles desde 2021
+        (0\% de cobertura antes), por lo que no hay serie temporal; los conteos de
+        subgrupos pequeños requieren IC bootstrap; la comparación con DANE 2018
+        mezcla años de referencia.
+\end{itemize}
+
+\subsection{Análisis de redes}
+
+\begin{itemize}
+  \item \textbf{Construcción del grafo} (co-filiación a partir de
+        \texttt{INST\_FILIA} con separador \texttt{|}): \celdaok{lógica correcta},
+        con normalización de nombres de institución y métricas por convocatoria.
+  \item \textbf{Limitaciones}: no se contrastan las métricas de centralidad contra
+        modelos nulos (grafos aleatorios de configuración); la captura selectiva
+        (solo 2019 con co-filiación múltiple) hace que la red sea un corte
+        transversal; falta análisis de robustez.
+\end{itemize}
+
+\subsection{Análisis de productividad (cruce con producción)}
+
+\begin{itemize}
+  \item \textbf{Cobertura}: 36.9\,\% de autores únicos en producción son
+        investigadores reconocidos — hallazgo relevante y correctamente calculado.
+  \item \textbf{Productividad por categoría}: conteos medios (Junior 30 /
+        Asociado 65 / Senior 121) — \celdaok{descriptivo correcto}; la literatura
+        recomienda contrastar la concentración con la ley de Lotka y normalizar
+        por área y ventana.
+  \item \textbf{Brecha de género en outputs}: 5 de 6 grandes áreas con brecha —
+        hallazgo válido; falta ajuste por composición de área.
+\end{itemize}
+
+\subsection{Clustering y análisis multivariado (legacy R)}
+
+\begin{itemize}
+  \item \textbf{CA/MCA} (\texttt{analisis\_multivariado\_base\_gran\_table.R}):
+        uso de correspondencia simple (CA) sobre tablas de contingencia (área
+        $\times$ género) — \celdaok{adecuado para 2 variables}; para más variables
+        habría requerido MCA/FAMD.
+  \item \textbf{k-prototypes} (\texttt{analisis\_de\_clusters.R}):
+        \celdaok{algoritmo apropiado para datos mixtos}; pero se fija $k=3$ sin
+        validación (silhouette/Calinski--Harabasz) y se eliminan casos con NA
+        (\texttt{cc()}), perdiendo 8.4\,\% de la muestra. No reproducible por
+        rutas hardcodeadas.
+  \item \textbf{Verificación de unicidad de IDs} (heurística edad $\pm$4 años +
+        género): razonable como primer filtro, pero sin formalización (no se
+        reportan tasas de conflicto ni revisiones manuales).
+\end{itemize}
+
+\subsection{Veredicto estadístico}
+
+\begin{tcolorbox}[hallazgo]
+La \textbf{lógica estadística descriptiva y exploratoria es sólida} y los
+hallazgos principales son válidos para el alcance planteado. La \textbf{inferencia
+formal es la principal debilidad}: faltan intervalos de confianza, pruebas de
+supuestos (markovianidad, independencia en paneles/redes), modelos de supervivencia
+y validación de clusters. Ninguno de estos vacíos invalida los hallazgos ya
+producidos, pero limita su generalización y su uso en decisiones de política.
+\end{tcolorbox}

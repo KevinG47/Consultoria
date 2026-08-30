@@ -1,0 +1,145 @@
+% ============ 04. Datos utilizados: suficiencia y corrección ============
+
+\section{Datos utilizados: suficiencia y corrección}
+
+\subsection{Inventario de fuentes de datos}
+
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{4.9cm}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{2.6cm}}
+\caption{Inventario de fuentes de datos del repositorio}
+\label{tab:fuentes}\\
+\toprule
+\textbf{Fuente} & \textbf{Descripción} & \textbf{Volumen} & \textbf{Estado en el clon} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Fuente} & \textbf{Descripción} & \textbf{Volumen} & \textbf{Estado en el clon} \\
+\midrule
+\endhead
+Padrón de investigadores & Dataset Socrata \texttt{bqtm-4y2h}: investigadores reconocidos por convocatoria, 6 convocatorias (2013--2021), 30 variables &
+77\,237 filas · 30\,086 únicos &
+Consolidado XLSX/CSV versionado en \texttt{datos/tarea\_join/} \\
+Producción de grupos & Dataset Socrata \texttt{33dq-ab5a}: una fila por producto-autor &
+3\,166\,629 filas · 77\,401 autores &
+\textbf{No presente} (gitignored, ~1.2\,GB) \\
+Catálogo & \texttt{datos/catalogo.yaml}: metadatos, diccionario de datos, llaves de cruce &
+308 líneas &
+Versionado \\
+Gran tabla (sin ID) & Tabla analítica sin identificadores personales &
+— (mencionada en \texttt{informe\_final.md}) &
+\textbf{No versionada} (solo referencias en notebooks legacy) \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{¿Los datos eran suficientes para el objetivo?}
+
+\begin{tcolorbox}[hallazgo]
+\textbf{Sí, los datos son suficientes} para el objetivo descriptivo-exploratorio
+planteado: 6 convocatorias permiten análisis longitudinal de retención y
+transición; 30\,086 investigadores únicos dan potencia suficiente para
+desagregaciones por área, género y región; y el cruce con 3\,166\,629 productos
+permite analizar productividad. La cobertura temporal (2013--2021) es adecuada
+para estudiar una década de reconocimiento científico en Colombia.
+\end{tcolorbox}
+
+Limitaciones de suficiencia (detalladas en la sección de alcance y riesgos):
+
+\begin{itemize}
+  \item \textbf{Subgrupos pequeños}: raizales, palenqueros, Rrom y personas con
+        discapacidad tienen conteos reducidos $\rightarrow$ estimaciones inestables,
+        intervalos amplios.
+  \item \textbf{Ventanas irregulares}: los intervalos entre convocatorias no son
+        constantes (2013, 2014, 2015, 2017, 2019, 2021), lo que complica la
+        comparación de tasas de transición entre periodos.
+  \item \textbf{Ausencia de convocatorias recientes}: no se incluye 2023; el
+        README lo señala como pendiente (Sprint 1).
+  \item \textbf{Producción no reproducible localmente}: el dataset de producción
+        no está versionado; su ingesta depende de la API Socrata (~1.2\,GB).
+\end{itemize}
+
+\subsection{¿Los datos eran los correctos para el objetivo?}
+
+\begin{tcolorbox}[hallazgo]
+\textbf{Los datos son los correctos} para el objetivo planteado: el padrón de
+investigadores reconocidos es la fuente oficial del sistema de reconocimiento de
+MinCiencias y el dataset de producción es el complemento natural para medir
+outputs. La elección de fuentes de datos abiertos (datos.gov.co, Socrata) es
+apropiada y verificable.
+\end{tcolorbox}
+
+Problemas de corrección detectados en la auditoría:
+
+\begin{enumerate}
+  \item \celdanok{Codificación (mojibake)}: el CSV canónico
+        \texttt{investigadores\_consolidado.csv} presenta caracteres corruptos
+        (\texttt{FÃ­sica} por \emph{Física}, \texttt{BogotÃ¡} por \emph{Bogotá}),
+        un desajuste UTF-8/Latin-1 en la cadena de exportación Socrata $\rightarrow$
+        CSV. El XLSX no se ve afectado.
+  \item \celdanok{Atípicos de edad}: 22 registros con edad $>100$ años (máximo 956),
+        tratados por eliminación documentada; inconsistencia documental 10 vs.\ 22.
+  \item \celdanok{Edad fraccionaria}: la variable \texttt{EDAD\_ANOS\_PR} contiene
+        valores decimales (p.~ej. 54.48), lo que sugiere edad calculada con
+        precisión de días y posterior redondeo inconsistente.
+  \item \celdanok{Faltantes estructurales}: \texttt{NME\_DEPARTAMENTO\_*}
+        ``NO DISPONIBLE'' 5.2\%; género ``NO REPORTADO'' 2.7\%; cobertura de
+        etnia/discapacidad/conflicto 0\% antes de 2021.
+  \item \celdanok{Etiquetado de convocatoria}: la convocatoria 833 (2018) registra
+        \texttt{ANO\_CONVO = 2019} (fecha de publicación de resultados); está
+        documentado en el catálogo, pero puede inducir a error si no se controla.
+  \item \celdanok{Consolidado versionado incompleto (3 de 6 convocatorias)}: tanto
+        \texttt{datos/tarea\_join/investigadores\_consolidado.xlsx} como el CSV
+        paralelo contienen \textbf{solo 50\,891 filas y 3 convocatorias}
+        (2017: 13\,001, 2019: 16\,796, 2021: 21\,094), frente a las 77\,237 filas
+        y 6 convocatorias (2013--2021) declaradas en el README y el catálogo.
+        Las evidencias (p.~ej. matrices de transición 2013--2014) sí cubren las
+        6 convocatorias, lo que indica que el artefacto versionado es un
+        \emph{snapshot} de la fase inicial de 3 convocatorias que nunca se
+        actualizó. Consecuencia: \textbf{un clon fresco que ejecute el pipeline
+        no reproduce los hallazgos del README} (faltan 2013, 2014 y 2015);
+        la fuente completa vive solo en \texttt{datos/raw} (gitignored).
+        Hallazgo verificado con conteo real (pandas 3.0) sobre ambos archivos.
+  \item \celdanok{Captura selectiva de co-filiación}: el campo \texttt{INST\_FILIA}
+        solo capturó múltiples instituciones en 2019 (569 casos), por lo que el
+        análisis de redes es un corte transversal, no una serie.
+  \item \celdanok{Identificadores}: se asumió la unicidad de \texttt{ID\_PERSONA\_PR}
+        con una heurística de coherencia de edad ($\pm$4 años) y género; no hay
+        validación formal contra fuentes externas.
+\end{enumerate}
+
+\subsection{Evaluación de la calidad de datos por dimensión (Wang \& Strong)}
+
+\begin{table}[htbp]
+\centering
+\caption{Estado de la calidad de datos por dimensión (Wang \& Strong, 1996)}
+\label{tab:calidad_dimensiones}
+\small
+\begin{tabularx}{\linewidth}{p{3.6cm}p{7.2cm}p{3.6cm}}
+\toprule
+\textbf{Dimensión} & \textbf{Observación} & \textbf{Estado} \\
+\midrule
+Exactitud & Cruce con fuentes oficiales no realizado; mojibake en CSV &
+\celdanok{Parcial} \\
+Completitud & Mapeada por convocatoria (heatmaps); faltantes estructurales declarados &
+\celdaok{Adecuada} \\
+Consistencia & Encodings inconsistentes; duplicidad de artefactos; etiquetas normalizadas en transformación &
+\celdanok{Parcial} \\
+Unicidad & Verificación de IDs por coherencia de edad y género; sin formalizar &
+\celdaok{Adecuada} \\
+Validez & Atípicos de edad documentados y tratados con justificación &
+\celdaok{Adecuada} \\
+Oportunidad & Datos de 2021 con pull 2026; convocatoria 2023 pendiente &
+\celdanok{Parcial} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Conclusión de la sección}
+
+Los datos son \textbf{correctos y suficientes} para el objetivo; sin embargo, la
+auditoría detecta \textbf{problemas de calidad corregibles} (codificación,
+faltantes, atípicos, captura selectiva) que deben documentarse explícitamente en
+cada entregable y corregirse en el pipeline de transformación (normalización
+UTF-8, contrato de esquema, imputaciones documentadas).

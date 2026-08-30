@@ -1,0 +1,31 @@
+{
+  "archivo": "src/analisis/longitudinal.py",
+  "lenguaje": "Python",
+  "lineas": 207,
+  "rol": "analisis",
+  "descripcion": "Núcleo del análisis longitudinal (Issue #11): construye el panel investigador×convocatoria a partir de ID_PERSONA_PR, compara trayectorias entre periodos consecutivos (sube/baja/se mantiene/desaparece), calcula matrices de transición de conteos y probabilidades, y tasas de retención con entrada de nuevos investigadores. Cubre las 6 convocatorias históricas (2013-2021).",
+  "logica": "ORDEN_CATEGORIAS define la escala ordinal (Junior=1 … Emérito=4) y normalizar_categoria mapea el texto libre a las 4 etiquetas canónicas. construir_panel deduplica (ID, año) conservando la categoría más alta. comparar_periodo hace left join desde t0 hacia t1 (los que desaparecen quedan representados) y clasifica el resultado. matriz_transicion calcula conteos (crosstab) y probabilidades normalizadas por fila, con opción de incluir 'Desaparece' como estado final. tasa_retencion_por_periodo computa retención (presentes en t0 que reaparecen) y nuevos en t1.",
+  "critica_fortalezas": [
+    "Implementación estadística correcta: crosstab normalizado por fila = matriz de Markov empírica; left join conserva la atrición.",
+    "Escala ordinal explícita para clasificar sube/baja/se mantiene.",
+    "Estado 'Desaparece' tratado como opción configurable.",
+    "Docstrings con interpretación metodológica (caveat eméritos vitalicios documentado en README/sprint6)."
+  ],
+  "critica_debilidades": [
+    "No se testea la propiedad markoviana ni la homogeneidad temporal; con intervalos irregulares (2013, 2014, 2015, 2017, 2019, 2021) las tasas no son directamente comparables entre periodos.",
+    "comparar_periodo usa apply con closure fila a fila (lento con 77k filas).",
+    "La 'desaparición' incluye a los eméritos vitalicios (diseño del sistema), que sesgan la interpretación si no se aísla (documentado en sprint6, no en el código).",
+    "No hay análisis de supervivencia (Kaplan-Meier/Cox) para el tiempo hasta la salida."
+  ],
+  "mejoras": [
+    "Añadir test de markovianidad y matrices condicionadas a historia.",
+    "Vectorizar la clasificación del tracking (np.select en vez de apply).",
+    "Complementar con modelos de supervivencia y reportar IC bootstrap de las tasas."
+  ],
+  "ejecutabilidad": "Sí, verificada empíricamente: usado por sprint2_panel_longitudinal.py (EXIT=0, 108 s) y sprint2_matrices_transicion.py (EXIT=0, 74 s) en clon fresco. Requiere XLSX consolidado (presente).",
+  "produce_esperado": "Sí: matrices de transición (evidencias/matriz_*.csv), paneles y tasas versionados coinciden con la lógica; los regenerados con el clon (3 convocatorias) cubren solo 2 periodos — limitación de datos, no de código.",
+  "bugs": [
+    "Ninguno crítico; riesgo metodológico: interpretar las transiciones como cadena de Markov sin validar la propiedad (caveat recomendado)."
+  ],
+  "recomendacion": "mantener con mejoras — lógica sólida para el alcance descriptivo; la ampliación inferencial (markovianidad, supervivencia) es la recomendación de mayor valor."
+}

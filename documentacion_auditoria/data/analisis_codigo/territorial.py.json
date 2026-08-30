@@ -1,0 +1,32 @@
+{
+  "archivo": "src/analisis/territorial.py",
+  "lenguaje": "Python",
+  "lineas": 107,
+  "rol": "analisis",
+  "descripcion": "Análisis de concentración territorial (Issue #13): índice Herfindahl-Hirschman (HHI) por convocatoria, top territorios y tabla de cuotas departamento x año. Entrada: DataFrame transformado; salida: DataFrames exportados a evidencias/territorial_*.csv.",
+  "logica": "hhi() normaliza conteos a cuotas y suma sus cuadrados (devuelve NaN si la suma es 0). hhi_por_convocatoria() filtra 'NO REPORTADO' y dropna, agrupa por año y reporta hhi, n_total y n_territorios. top_territorios() calcula conteos por (año, territorio) con pct sobre el total anual y filtra los n territorios más frecuentes del total acumulado. tabla_cuotas() pivotea departamento x año con las cuotas. sprint2_territorial.py los consume (HHI por departamento y por región).",
+  "critica_fortalezas": [
+    "HHI implementado correctamente (cuotas normalizadas, rango [0,1]) con docstring de interpretación.",
+    "Filtro explícito de 'NO REPORTADO' y dropna antes de calcular.",
+    "Métricas auxiliares (n_total, n_territorios) dan contexto al índice."
+  ],
+  "critica_debilidades": [
+    "top_territorios mezcla dos alcances: el 'top n' se calcula sobre el total acumulado del período, pero pct se calcula por año -> un territorio top en un año específico puede quedar excluido de la tabla (pérdida de información por año).",
+    "hhi() con una sola unidad devuelve 1.0 (concentración total), correcto matemáticamente pero debe interpretarse junto con n_territorios.",
+    "El filtro de 'NO REPORTADO' depende de que Transformacion.py haya etiquetado así los faltantes: acoplamiento implícito a un valor mágico.",
+    "Sin normalización adicional de nombres de departamentos (p.ej. 'Bogotá D.C.' vs 'Bogota') más allá del upper del pipeline."
+  ],
+  "mejoras": [
+        "Separar el alcance del top-n (por año o global) en parámetros explícitos.",
+        "Mover el filtro de 'NO REPORTADO' a una constante compartida (p.ej. en analisis/__init__) para evitar valores mágicos.",
+        "Añadir HHI normalizado (HHI*) para comparar entre años con distinto número de territorios.",
+        "Tests: serie de conteos, suma cero, una sola unidad."
+  ],
+  "ejecutabilidad": "Sí en el clon: solo requiere DataFrame transformado (XLSX presente). Sin datos/raw ni .duckdb.",
+  "produce_esperado": "Sí: evidencias/territorial_hhi_por_convocatoria.csv, territorial_hhi_region_por_convocatoria.csv y territorial_cuotas_departamento.csv existen, junto con artifacts/sprint2_territorial/fig01-03.png — consistente con el README (Issue #13).",
+  "bugs": [
+    "src/analisis/territorial.py:81-87: el top-n global combinado con pct anual puede producir tablas donde ningún año muestre el territorio #1 de ese año; no es error de cálculo, pero distorsiona el concepto de 'top territorios por convocatoria'.",
+    "src/analisis/territorial.py:44 y 71: si col_geo contuviera valores no-cadena (el NaN ya se dropea, pero p.ej. códigos numéricos), .str.strip() lanzaría AttributeError — depende del contrato de ingesta."
+  ],
+  "recomendacion": "mantener — análisis correcto y exportable; mejorar la semántica del top-n y centralizar el filtro de faltantes."
+}

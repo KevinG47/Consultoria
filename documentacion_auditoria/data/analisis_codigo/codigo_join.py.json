@@ -1,0 +1,34 @@
+{
+  "archivo": "notebooks/tarea_join/codigo_join.py",
+  "lenguaje": "Python",
+  "lineas": 26,
+  "rol": "legacy",
+  "descripcion": "Une verticalmente (concatenación) las bases por convocatoria 2017, 2019 y 2021 (Investigadores_Reconocidos_por_convocatoria_20250829*.csv) para crear Investigadores_Consolidado.xlsx y .csv y descargarlos. Corresponde a la tarea de join (unión de las bases por convocatoria en una base consolidada).",
+  "logica": "pandas: pd.concat([df_2017, df_2019, df_2021], ignore_index=True), to_excel() y to_csv(), y descarga con google.colab.files.download(). Operación de unión vertical (union all de registros persona x convocatoria).",
+  "critica_fortalezas": [
+    "Código simple y claro: hace exactamente lo que la tarea pide (unión vertical de las tres convocatorias)",
+    "Genera la base en ambos formatos (Excel y CSV) para consumo posterior"
+  ],
+  "critica_debilidades": [
+    "Rutas hardcodeadas de Colab '/content/Investigadores_Reconocidos_por_convocatoria_20250829*.csv', inexistentes en el clon",
+    "from google.colab import files: solo funciona en Colab; como script local falla",
+    "concat sin verificar que las tres bases tengan el mismo esquema (mismas columnas, mismo orden, mismos tipos): un cambio de esquema genera columnas NaN o tipos mezclados silenciosamente",
+    "Sin deduplicación ni control de calidad: los duplicados de ID_PERSONA_PR se manejan después en arreglar_base_consultoria_7.R (acoplamiento frágil entre scripts)",
+    "Versiones de archivo inconsistentes entre tareas: aquí 20250829, pero 2019_codigo.py usa 20250909 e inv_17_codigo_graficas.R usa 20250831: los análisis de distintas tareas NO se hicieron sobre el mismo snapshot de datos",
+    "Sin documentación de la granularidad resultante (fila = investigador x convocatoria)"
+  ],
+  "mejoras": [
+    "Verificar igualdad de columnas y tipos antes del concat (assert o comparación de listas)",
+    "Deduplicar con criterio documentado en el mismo script o validar en uno solo",
+    "Parametrizar rutas y fijar una única versión de archivos fuente para todo el proyecto",
+    "Registrar un manifiesto de versiones de inputs"
+  ],
+  "ejecutabilidad": "NO. Faltan los tres CSV en '/content/' (no existen en el clon) y google.colab.files no existe fuera de Colab.",
+  "produce_esperado": "El concat vertical es la operación correcta para unir convocatorias (no hay error metodológico en la unión en sí). El riesgo es la ausencia de control de esquema y de deduplicación, que genera inconsistencias aguas abajo (duplicados, tipos mezclados) que luego otros scripts deben parchear.",
+  "bugs": [
+    "Import de google.colab.files fuera de Colab (ImportError)",
+    "concat sin validación de esquema: si una convocatoria cambia de columnas, se crean NaN silenciosos",
+    "Versiones de archivo fuente distintas entre tareas (20250829 vs 20250909 vs 20250831): datos no comparables entre scripts"
+  ],
+  "recomendacion": "Mantener como referencia histórica de la tarea de join. No migrar: src/ingesta/minciencias.py hace la ingesta consolidada moderna con validación de esquema y versionado de datos."
+}

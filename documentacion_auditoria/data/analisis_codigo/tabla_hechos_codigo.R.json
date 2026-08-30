@@ -1,0 +1,34 @@
+{
+  "archivo": "notebooks/tarea_dimensiones_y_hechos/tabla_hechos_codigo.R",
+  "lenguaje": "R",
+  "lineas": 20,
+  "rol": "legacy",
+  "descripcion": "Construye la tabla de hechos del modelo estrella: hace left_join de Investigadores_Consolidado con Dim_Universidad (por INST_FILIA) y con Dim_genero (por NME_GENERO_PR), selecciona columnas por posición numérica y exporta Tabla_hechos.xlsx. Corresponde a la tarea de dimensiones y hechos.",
+  "logica": "readxl + openxlsx + dplyr: dos left_join con las dimensiones, subconjunto por índices c(1,4,5,14,15,18,21,26,27:29,31,32) y write.xlsx(). La granularidad resultante es persona x convocatoria.",
+  "critica_fortalezas": [
+    "Integra las claves de dimensiones a la fila de hechos mediante joins, enfoque correcto de modelo estrella",
+    "El join por INST_FILIA y NME_GENERO_PR es conceptualmente válido si las dimensiones son únicas por esas columnas"
+  ],
+  "critica_debilidades": [
+    "Investigadores_Consolidado NO se define en este archivo: depende de un objeto global de una sesión R anterior (probablemente creado en codigo_dimensiones_C.R). No reproducible en una sesión limpia",
+    "Selección de columnas por posición numérica (índices mágicos) sin documentar qué columnas son: frágil ante cualquier cambio de esquema",
+    "El join por INST_FILIA arrastra el problema de las dimensiones: investigadores sin filiación o con INST_FILIA en PIPE quedan con clave de universidad NA o mal asignada",
+    "No verifica cardinalidad: si la dimensión no es única por INST_FILIA, el left_join duplicaría filas silenciosamente",
+    "Rutas hardcodeadas 'Downloads/dimensiones_investigadores.xlsx' y 'Downloads/Dim_genero (1).csv', inexistentes en el clon",
+    "Nombre de salida sin carpeta explícita ('Tabla_hechos.xlsx' en el working directory)"
+  ],
+  "mejoras": [
+    "Leer el Excel al inicio del script (autocontenido)",
+    "Seleccionar columnas por nombre (dplyr::select) y documentar el diccionario de la tabla de hechos",
+    "Validar que nrow() no cambie tras cada join y reportar claves NA",
+    "Escribir con ruta explícita y verificable"
+  ],
+  "ejecutabilidad": "NO. Falta el objeto Investigadores_Consolidado (no definido en el archivo) y los inputs 'Downloads/dimensiones_investigadores.xlsx' y 'Downloads/Dim_genero (1).csv' no existen en el clon.",
+  "produce_esperado": "La lógica de hechos es correcta para un modelo estrella simple (fila persona x convocatoria con claves de dimensión), pero la selección por posición y la dependencia de objetos globales la hacen propensa a errores. Nota: la tabla de hechos no contiene medidas/indicadores, solo claves; aceptable como entregable académico pero de uso analítico limitado.",
+  "bugs": [
+    "Investigadores_Consolidado no definido en el script (error de objeto no encontrado)",
+    "Índices mágicos c(1,4,5,14,15,18,21,26,27:29,31,32) sin correspondencia verificable con el esquema",
+    "Sin control de cardinalidad tras los joins (riesgo de duplicación de filas)"
+  ],
+  "recomendacion": "Mantener como referencia del entregable de hechos. No migrar: src/modelo/dimensional.py genera el modelo estrella moderno; si se quisiera conservar, reescribir con joins por nombre, lectura autocontenida y validaciones."
+}

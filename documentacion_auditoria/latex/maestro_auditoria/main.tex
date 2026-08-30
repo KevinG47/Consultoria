@@ -1,0 +1,38 @@
+% =====================================================================
+% DOCUMENTO MAESTRO — Auditoría del repositorio
+% Observatorio MinCiencias · Investigadores Reconocidos
+% Universidad Santo Tomás · Ustadistica · 2026-I
+%
+% Proyecto Overleaf: subir esta carpeta completa (main.tex,
+% preambulo.tex, secciones/, refs.bib) a Overleaf y compilar con
+% pdfLaTeX (o XeLaTeX). Compilación local con TinyTeX:
+%     latexmk -pdf main.tex
+% =====================================================================
+
+\input{preambulo.tex}
+
+\renewcommand{\doctitulo}{Auditoría Integral del Repositorio\\Observatorio MinCiencias — Investigadores Reconocidos}
+\renewcommand{\docsubtitulo}{Documento maestro · Entendimiento, datos, código, estadística, lógica de construcción y línea de tiempo}
+\renewcommand{\docversion}{1.0}
+
+\begin{document}
+
+\input{secciones/01_portada.tex}
+\tableofcontents
+\newpage
+
+\input{secciones/02_resumen_ejecutivo.tex}
+\input{secciones/03_entendimiento_objetivo.tex}
+\input{secciones/04_datos.tex}
+\input{secciones/05_codigo.tex}
+\input{secciones/06_estadistica.tex}
+\input{secciones/07_logica_repositorio.tex}
+\input{secciones/08_timeline.tex}
+
+\appendix
+\input{secciones/09_apendice_inventario.tex}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

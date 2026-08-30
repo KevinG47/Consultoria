@@ -1,0 +1,35 @@
+{
+  "archivo": "scripts/sprint6_geografia_institucional.py",
+  "lenguaje": "Python",
+  "lineas": 302,
+  "rol": "orquestacion",
+  "descripcion": "Análisis geográfico institucional: cruza el departamento de residencia del investigador con el departamento de la sede de su institución principal (vía el mapping de la tabla maestra IES), respondiendo la pregunta del director sobre dónde se forman/afilian los investigadores de departamentos como Vichada (¿en Meta o Bogotá?). Usa src/ingesta.cargar_consolidado, src/Transformacion.transformar y evidencias/mapping_inst_filia_to_ies.csv. Salidas: 3 figuras y 3 CSVs.",
+  "logica": "asignar_institucion_principal(): toma la primera institución de INST_FILIA (split por '|'), la normaliza (upper/strip) y hace lookup en el mapping por inst_filia_str → (nombre_canonico, sigla, departamento_sede, naturaleza); normaliza departamentos con NORM_DPTO + eliminación de acentos (unicodedata); genera DPTO_INSTITUCION y DPTO_RESIDENCIA canónicos. tabla_flujos(): nunique de ID_PERSONA_PR por par (residencia, institución), excluyendo NO_MAPEADA/SIN_FILIA. resumen_por_residencia(): por departamento, total/local/fuera, % local y destino externo principal. Figuras: heatmap top 15×12 de flujos, % local por departamento (top 25) y destino de departamentos pequeños (VICHADA, GUAINIA, etc.).",
+  "critica_fortalezas": [
+    "Responde exactamente la pregunta del director con un indicador accionable (% local vs. destino externo principal) y foco explícito en departamentos pequeños.",
+    "Normalización consistente de departamentos (NORM_DPTO + quita acentos) que unifica el formato del padrón ('BOGOTÁ, D. C.') con el de la tabla maestra ('Bogotá D.C.').",
+    "Exporta el flujo completo (pares residencia→institución con conteos) y no solo resúmenes, permitiendo reproducir el análisis.",
+    "Artefactos verificados: 3 figuras y 3 CSVs existen; el resumen muestra resultados coherentes (BOGOTA 91.8% local, ANTIOQUIA 89.2%, destinos externos hacia BOGOTA)."
+  ],
+  "critica_debilidades": [
+    "El lookup depende de coincidencia exacta entre INST_FILIA (tras upper/strip, SIN quitar acentos) y las claves de mapping (mayúsculas sin acentos): un padrón con tildes ('UNIVERSIDAD TECNOLÓGICA') caería a NO_MAPEADA silenciosamente; el script solo reporta el % global de mapeados, no por string.",
+    "Tomar la primera institución cuando INST_FILIA trae varias (separadas por |) es una simplificación no documentada como limitación.",
+    "EXTRANJERO/EXTERIOR/NO IDENTIFICADO no se excluyen de los flujos y pueden ocupar lugares en los top (heatmap/top destinos).",
+    "Los tops (15×12, top 25, umbral) están hardcodeados sin parámetros CLI."
+  ],
+  "mejoras": [
+    "Quitar acentos (unicodedata) a INST_FILIA antes del lookup y reportar el % de match por grupo de error (NO_MAPEADA con top-10 strings).",
+    "Excluir EXTRANJERO/EXTERIOR/NO IDENTIFICADO de los flujos o tratarlos como categoría aparte en las figuras.",
+    "Documentar la regla de 'primera institución' y evaluar asignar por frecuencia/antigüedad en vez de orden textual.",
+    "Parametrizar top_n y umbrales por CLI."
+  ],
+  "ejecutabilidad": "SÍ, ejecutable tal cual con el clon: cargar_consolidado() resuelve vía datos/tarea_join/investigadores_consolidado.xlsx, el mapping existe (evidencias/mapping_inst_filia_to_ies.csv) y solo requiere pandas, numpy, matplotlib y seaborn.",
+  "produce_esperado": "SÍ: artifacts/sprint6_geografia/{fig_heatmap_residencia_institucion,fig_pct_local_por_dpto,fig_top_destinos_pequenos}.png y evidencias/{geografia_flujo_completo,geografia_resumen_por_dpto_residencia,geografia_top_flujos}.csv existen. El resumen confirma el hallazgo buscado (Bogotá 91.8% local, departamentos pequeños con destinos externos), y geografia_flujo_completo.csv alimenta el Sankey territorial.",
+  "bugs": [
+    "scripts/sprint6_geografia_institucional.py:81-88 — INST_FILIA solo se pasa a upper/strip, sin quitar acentos, mientras las claves del mapping (generadas desde MAPEO y el dump) son mayúsculas sin acentos; cualquier tilde en el dato fuente rompe el match y degrada a NO_MAPEADA sin aviso específico.",
+    "scripts/sprint6_geografia_institucional.py:88 — el reemplazo cubre '', 'NAN' y 'NO REPORTADO', pero si el padrón usa otro marcador de ausencia (p. ej. 'NO DISPONIBLE' o 'SIN INFORMACION') quedaría como institución ficticia y se contaría en los flujos.",
+    "scripts/sprint6_geografia_institucional.py:118-119 — se excluyen NO_MAPEADA/SIN_FILIA pero no 'EXTRANJERO'/'EXTERIOR'/'NO IDENTIFICADO': los flujos internacionales/desconocidos pueden dominar los top y desdibujar el mensaje territorial.",
+    "scripts/sprint6_geografia_institucional.py:141-145 — fuera.iloc[0] depende de que el grupo mantenga el orden descendente global por n_investigadores; correcto por construcción (flujo ya ordenado), pero frágil si tabla_flujos se reordenara."
+  ],
+  "recomendacion": "mantener — es el análisis estrella del sprint 6 (pregunta directa del director, evidencia verificada y reutilizable); requiere endurecer la normalización de strings y el manejo de categorías no territoriales para que la cobertura de mapeo no degrade silenciosamente."
+}

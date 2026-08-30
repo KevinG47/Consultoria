@@ -1,0 +1,19 @@
+{
+  "archivo": "src/__init__.py",
+  "lenguaje": "Python",
+  "lineas": 2,
+  "rol": "ingesta",
+  "descripcion": "Marcador de paquete Python para src/. Convierte la carpeta src/ en un paquete importable (los módulos se importan como 'from ingesta import ...' vía sys.path en los scripts).",
+  "logica": "Sin lógica: archivo vacío/de marcador (2 líneas).",
+  "critica_fortalezas": [
+    "Correcto por convención: permite imports del paquete."
+  ],
+  "critica_debilidades": [
+    "Ninguna relevante; es boilerplate estándar."
+  ],
+  "mejoras": [],
+  "ejecutabilidad": "N/A (marcador de paquete).",
+  "produce_esperado": "N/A.",
+  "bugs": [],
+  "recomendacion": "mantener — estándar de Python."
+}

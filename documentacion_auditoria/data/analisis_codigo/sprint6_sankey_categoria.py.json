@@ -1,0 +1,35 @@
+{
+  "archivo": "scripts/sprint6_sankey_categoria.py",
+  "lenguaje": "Python",
+  "lineas": 184,
+  "rol": "orquestacion",
+  "descripcion": "Genera diagramas de Sankey de transición de categoría (Junior/Asociado/Senior/Emérito + 'Desaparece') para cada par de convocatorias consecutivas 2013→2021 (5 pares). Usa src/ingesta.cargar_consolidado, src/Transformacion.transformar y src/analisis/longitudinal (construir_panel, comparar_periodo, matriz_transicion, ORDEN_CATEGORIAS). Salidas: 5 HTML interactivos + 5 PNG estáticos y evidencias/sankey_transiciones.csv con todos los flujos.",
+  "logica": "Construye el panel longitudinal por convocatoria, obtiene los años ordenados (2013, 2014, 2015, 2017, 2019, 2021) y sus pares consecutivos. Por par: comparar_periodo(panel, a, b) → matriz_transicion(comp, incluir_desaparece=True) devuelve (conteos, probs); reordena filas por ORDEN_CATEGORIAS; nodos = categoría+año (izquierda t, derecha t+1) con colores de COLOR_CAT; flujos = celdas > 0 con color rgba del origen; figura go.Sankey con arrangement='snap' y hovertemplate. Exporta HTML (plotly CDN) y PNG vía write_image, y consolida todos los flujos en sankey_transiciones.csv con clasificación Sube/Baja/Mantiene/Desaparece (_etiqueta_transicion) y resumen por periodo.",
+  "critica_fortalezas": [
+    "Respeta un orden canónico de categorías (ORDEN_CATEGORIAS) para filas y columnas, evitando ordenamientos arbitrarios en el diagrama.",
+    "Los flujos se exportan en formato largo (periodo, origen, destino, n), lo que permite reproducir el análisis sin el Sankey.",
+    "Estado 'Desaparece' explícito: mide retención/abandono real entre convocatorias.",
+    "Artefactos verificados: los 5 pares de HTML/PNG y sankey_transiciones.csv (76 líneas) existen en el clon."
+  ],
+  "critica_debilidades": [
+    "fig.write_image exige kaleido, dependencia no declarada en el docstring ni en requirements (si falta, el script muere en la primera iteración).",
+    "Los HTML usan include_plotlyjs='cdn': sin conexión a internet no renderizan.",
+    "Cualquier categoría del panel que no esté en ORDEN_CATEGORIAS se excluye silenciosamente de fila_orden (línea 54) y desaparece del Sankey sin warning, con la consiguiente pérdida de investigadores del total.",
+    "El título suma total_t incluyendo los que 'Desaparecen' (correcto como total en t, pero puede confundir si se lee como flujo completo).",
+    "Parámetros (top, umbral, altura) hardcodeados sin interfaz CLI."
+  ],
+  "mejoras": [
+    "Declarar kaleido en requirements/README o manejar su ausencia con un try/except que solo escriba HTML.",
+    "Validar que todas las categorías del panel estén en ORDEN_CATEGORIAS y advertir/fallar si no.",
+    "Escribir los PNG con un backend alternativo (p. ej. captura de HTML con playwright) o documentar el requisito kaleido.",
+    "Exportar también las probabilidades de transición (matriz) como evidencia complementaria."
+  ],
+  "ejecutabilidad": "SÍ en cuanto a datos desde el clon: cargar_consolidado() resuelve vía datos/tarea_join/investigadores_consolidado.xlsx. Requiere plotly Y kaleido instalados; sin kaleido, write_image (línea 146) lanza error y aborta. Con ambas librerías el script corre completo.",
+  "produce_esperado": "SÍ: artifacts/sprint6_sankey/sankey_2013_2014.{html,png} … sankey_2019_2021.{html,png} y evidencias/sankey_transiciones.csv existen. El CSV muestra flujos coherentes (2013-2014: Junior→Junior 1967, Junior→Desaparece 2823; Senior→Senior 591, etc.) y 5 periodos (2013-2014, 2014-2015, 2015-2017, 2017-2019, 2019-2021).",
+  "bugs": [
+    "scripts/sprint6_sankey_categoria.py:52-55 — fila_orden filtra las categorías presentes en ORDEN_CATEGORIAS, pero si construir_panel produce una categoría no mapeada (p. ej. variante con acento 'INVESTIGADOR SÉNIOR' vs 'Senior'), esa fila se elimina del Sankey y del conteo sin ningún mensaje; el total del título quedaría subestimado.",
+    "scripts/sprint6_sankey_categoria.py:105 — total_t = conteos.sum().sum() incluye la columna 'Desaparece'; el texto del título 'investigadores reconocidos en t' es correcto, pero si fila_orden ya excluyó categorías, total_t no coincide con el padrón de t.",
+    "scripts/sprint6_sankey_categoria.py:146-147 — write_image sin comprobación de kaleido: dependencia implícita que rompe la ejecución en entornos mínimos."
+  ],
+  "recomendacion": "mantener — produce el entregable de transiciones solicitado con evidencia verificada; la prioridad es declarar kaleido y validar el mapeo de categorías para no perder investigadores silenciosamente."
+}

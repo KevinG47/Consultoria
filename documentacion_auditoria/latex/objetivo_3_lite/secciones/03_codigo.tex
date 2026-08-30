@@ -1,0 +1,309 @@
+\section{Documentación y crítica por archivo de código}
+\noindent Archivos documentados en este documento: \textbf{18} de 95 auditados en total.
+
+\begin{tcolorbox}[nota]\textbf{Versión LITE:} esta versión documenta los archivos más representativos del proyecto en formato compacto. La documentación completa de los 51 archivos (descripción, lógica, fortalezas, debilidades, mejoras, ejecutabilidad) está en el documento maestro y en el PDF del criterio 3 completo.\end{tcolorbox}
+
+\subsubsection{scripts/sprint2\_matrices\_transicion.py}
+\textbf{Rol:} orquestacion · \textbf{Líneas:} 125
+
+\textbf{Qué hace:} Calcula y visualiza las matrices de probabilidad de transición entre categorías (Junior/Asociado/Senior/Emérito) para los 5 periodos consecutivos de las 6 convocatorias (2013-2021), en dos variantes: observada (solo investigadores retenidos) y extendida (incluye el estado 'Desaparece'). Usa src/analisis/longitudinal (construir\_panel, comparar\_periodo, matriz\_transicion, matrices\_todos\_periodos). Salidas: 2 figuras de heatmaps en artifacts/sprint2\_transiciones/ y 20 CSVs (conteos y probabilidades $\times$ ext/obs $\times$ 5 periodos) en evidencias/.
+
+\textbf{Valoración:} mantener --- es la entrega central del análisis longitudinal y produce evidencia verificable en el clon; requiere eliminar el cómputo duplicado, advertir el sesgo de la matriz observada y limpiar la nomenclatura legacy.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item scripts/sprint2\_matrices\_transicion.py:83-95 --- las matrices se calculan dos veces (bucle de impresión y matrices\_todos\_periodos): doble costo de cómputo sobre 77.237 registros y riesgo de que las cifras impresas difieran de las exportadas si la función cambiara entre ambas llamadas.
+  \item scripts/sprint2\_matrices\_transicion.py:49 --- plt.subplots(1, n) con n=1 devuelve un solo Axes (no iterable); el zip(axes, periodos) fallaría con TypeError si el panel tuviera un único periodo.
+  \item Evidencias/ legacy: los archivos matriz\_transicion\_extendida\_2017\_2019.csv, matriz\_probabilidades\_extendida\_2019\_2021.csv y matriz\_transicion\_2017\_2019.csv (sin prefijo) ya no son generados por este script; quedan como evidencia huérfana que puede confundir la trazabilidad.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{scripts/sprint2\_panel\_longitudinal.py}
+\textbf{Rol:} orquestacion · \textbf{Líneas:} 229
+
+\textbf{Qué hace:} Orquesta el análisis longitudinal del Sprint 2 (Issue \#11): carga el consolidado (cargar\_consolidado + transformar), construye el panel de investigadores por convocatoria con src/analisis/longitudinal.py, genera 7 figuras (evolución total, por género, por gran área, categorías, nuevos ingresos, tracking por periodo, tasas de retención) y exporta 4+ CSVs de evidencias.
+
+\textbf{Valoración:} mantener --- bien estructurado y verificable; solo requiere el consolidado completo de 6 convocatorias para reproducir los resultados del README.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item Ninguno crítico; dependencia implícita de que el consolidado tenga las 6 convocatorias para reproducir los 5 periodos del README (problema de datos, no de código).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{scripts/sprint5\_produccion.py}
+\textbf{Rol:} orquestacion · \textbf{Líneas:} 251
+
+\textbf{Qué hace:} Análisis integral de producción de grupos: cobertura de reconocimiento (autores únicos y por convocatoria), productividad por categoría, brecha de género $\times$ gran área OCDE, concentración territorial, mix de tipologías y reconocidos sin producción. Usa src/ingesta (cargar\_consolidado, cargar\_produccion), src/Transformacion.transformar y 10 funciones de src/analisis/produccion. Entradas: investigadores consolidados + producción Socrata; salidas: 6 figuras PNG y 8 evidencias (7 CSVs + 1 JSON).
+
+\textbf{Valoración:} mantener --- es el script central del sprint 5, con salidas verificadas y documentadas; las mejoras prioritarias son unificar la definición de 'reconocido' entre scripts y validar la calidad del join antes de interpretar coberturas.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/analisis/produccion.py:63-65 (invocado desde sprint5\_produccion.py:203) --- cobertura\_reconocidos marca es\_reconocido sin condicionar la convocatoria: un producto de 2013 firmado por alguien reconocido solo en 2021 cuenta como 'firmado por reconocido', sobreestimando la cobertura frente a la definición por convocatoria del DuckDB (documentado en el docstring de la función como decisión, pero no advertido en el script orquestador).
+  \item scripts/sprint5\_produccion.py:75-78 --- la etiqueta de porcentaje se posiciona en total+5000 y el bucle itera zip(n\_reconocidos, n\_productos, pct\_reconocidos): si n\_productos < 5000 la etiqueta queda fuera del rango visible del eje (cosmético).
+  \item scripts/sprint5\_produccion.py:243-244 --- import json dentro de main() (estilo menor; debería ir al tope con los demás imports).
+  \item src/analisis/produccion.py:38-40 --- pd.to\_numeric(errors='coerce') convierte IDs no numéricos a NA silenciosamente; si ID\_PERSONA\_PD tiene formatos mixtos, filas completas se pierden del análisis sin reporte.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{scripts/sprint6\_tabla\_maestra\_ies.py}
+\textbf{Rol:} orquestacion · \textbf{Líneas:} 635
+
+\textbf{Qué hace:} Construye el borrador de la tabla maestra canónica de IES a partir de evidencias/instituciones\_unicas\_raw.csv (dump de strings únicos de INST\_FILIA con frecuencias), aplicando un diccionario MAPEO hardcodeado de \textasciitilde{}250 claves string $\rightarrow$ (nombre\_canonico, sigla, departamento\_sede, naturaleza). Solo usa pandas, sin tocar el padrón ni producción. Salidas: tabla\_maestra\_ies.csv, mapping\_inst\_filia\_to\_ies.csv e ies\_pendientes\_revision.csv.
+
+\textbf{Valoración:} refactorizar --- como borrador cumple y sus productos existen, pero un catálogo canónico de IES no debería vivir en código: externalizar el mapeo a datos versionados, renombrar métricas y añadir cobertura mínima garantizada antes de que otros scripts (geografía, app) dependan de él en producción.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item scripts/sprint6\_tabla\_maestra\_ies.py:607 --- 'sedes\_registradas' = nunique de departamento\_sede: dos sedes en el mismo departamento (p. ej. dos campus de la UNAL en Bogotá) cuentan como 1, mientras dos sedes en departamentos distintos cuentan como 2; la métrica no es número de sedes.
+  \item scripts/sprint6\_tabla\_maestra\_ies.py:38-562 --- claves hardcodeadas sin validación de duplicados ni de normalización: si instituciones\_unicas\_raw.csv se regenera con otro case/acentos, la cobertura cae sin ninguna señal de error.
+  \item scripts/sprint6\_tabla\_maestra\_ies.py:592 --- pd.concat([raw, asignaciones], axis=1) asume que aplicar\_mapeo devuelve una Series por fila alineada por índice; correcto aquí, pero frágil si se reordenara raw antes.
+  \item scripts/sprint6\_tabla\_maestra\_ies.py:620-623 --- ies\_pendientes\_revision.csv incluye todas las entradas sin mapeo, pero el script no imprime las 10 pendientes más frecuentes para facilitar la revisión manual (solo cobertura agregada).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{scripts/sprint6\_validacion\_calidad.py}
+\textbf{Rol:} orquestacion · \textbf{Líneas:} 121
+
+\textbf{Qué hace:} Valida y documenta el tratamiento de valores atípicos de la variable EDAD\_ANOS\_PR del padrón: detecta los casos > 100 (máximo observado 956, error de digitación), compara tres estrategias (original, eliminación, imputación por mediana de grupo) y genera evidencia auditable. Usa src/ingesta.cargar\_consolidado, src/Transformacion.transformar y src/analisis/calidad (detectar\_atipicos\_edad, resumen\_tratamiento, filtrar, imputar\_mediana, UMBRAL\_EDAD\_MAX). Salidas: 2 CSVs, 1 JSON y 1 figura.
+
+\textbf{Valoración:} mantener --- cumple su propósito (decisión metodológica auditable) con evidencia verificada; requiere solo ajustes menores de consistencia de conteos y redondeo.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item scripts/sprint6\_validacion\_calidad.py:62-84 --- edad\_stats mezcla unidades: len(df) cuenta filas (incluye NaN en EDAD) mientras mean/median/std de pandas ignoran NaN; si hubiera filas con edad faltante, n\_registros y las demás columnas no serían comparables.
+  \item scripts/sprint6\_validacion\_calidad.py:70-73 --- df['EDAD\_ANOS\_PR'].median() sin round frente a round(..., 2) en media (formato inconsistente; en el CSV aparece 43.29 por coincidencia del valor).
+  \item scripts/sprint6\_validacion\_calidad.py:50-51 --- detectar\_atipicos\_edad solo imprime, no informa el conteo de NaN de EDAD\_ANOS\_PR, que podría alterar la interpretación del umbral.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/Transformacion.py}
+\textbf{Rol:} transformacion · \textbf{Líneas:} 222
+
+\textbf{Qué hace:} Núcleo de limpieza y normalización del dataset consolidado de investigadores (77.237 registros). Aplica limpieza de texto (strip + mayúsculas), parseo robusto del año de convocatoria (fecha, serial de Excel o regex de 4 dígitos), estandarización de género y tratamiento de faltantes (mediana para numéricas, 'NO REPORTADO' para categóricas). Entrada: DataFrame crudo de ingesta.cargar\_consolidado(); salida: DataFrame transformado listo para análisis.
+
+\textbf{Valoración:} mejorar --- núcleo correcto y bien estructurado; debe mejorarse la trazabilidad de imputaciones y la corrección del año nominal 2018 antes de seguir usándolo en un informe de calidad de datos.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item Transformacion.py:107-109: la regex r'\textbackslash\{\}b(20[0-9]\{2\})\textbackslash\{\}b' solo captura años 2000-2099; correcto para el dominio, pero un año fuera de rango quedaría como NaT sin aviso.
+  \item Transformacion.py:99-100: pd.to\_datetime(s, dayfirst=True) sobre un texto numérico tipo '640' (id de convocatoria) produciría NaT; depende del contenido real de ANO\_CONVO, que el catálogo documenta como año o timestamp.
+  \item Transformacion.py:140-141: si una columna numérica fuera 100\% NaN, mediana=NaN y fillna(NaN) no corrige nada (caso límite no manejado).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/analisis/calidad.py}
+\textbf{Rol:} analisis · \textbf{Líneas:} 105
+
+\textbf{Qué hace:} Validación documentada de la calidad de los datos del padrón, con foco en atípicos de edad (EDAD\_ANOS\_PR). Documenta explícitamente la decisión metodológica (eliminación frente a imputación por mediana del grupo) para que cualquier auditor pueda reproducirla y discutirla. Expone detectar\_atipicos\_edad, resumen\_tratamiento, filtrar (método elegido) e imputar\_mediana (alternativa comparativa).
+
+\textbf{Valoración:} mejorar --- lógica correcta y bien documentada; corregir la inconsistencia documental y ampliar la instrumentación de calidad.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item Docstring (línea \textasciitilde{}10): 'diez registros' vs 22 reales --- inconsistencia que puede confundir al lector del informe.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/analisis/diversidad.py}
+\textbf{Rol:} analisis · \textbf{Líneas:} 162
+
+\textbf{Qué hace:} Análisis de variables de diversidad (Issue \#20): cobertura temporal de ID\_VICTIMA\_CONFLICTO, TXT\_GRUPO\_ETNICO y TXT\_POBLACION\_DISCA, distribución por categoría, comparación de subrepresentación frente a DANE 2018/RUV 2021, cruce interseccional género x etnia y categorías por minoría. Entrada: DataFrame transformado (mayúsculas aplicadas por src/Transformacion.py); salida: DataFrames exportados a evidencias/diversidad\_*.csv.
+
+\textbf{Valoración:} mejorar --- hallazgos valiosos y bien enmarcados; prioridad alta: corregir el denominador de comparar\_dane(), alinear valores nulos con Transformacion.py y robustecer comparaciones de cadenas.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/analisis/diversidad.py:78-79: contradicción comentario-código sobre 'NINGUN GRUPO ETNICO' en el denominador de comparar\_dane() --- diluye la subrepresentación de minorías (verificado por lectura directa).
+  \item src/analisis/diversidad.py:145: d['FEMENINO'] puede lanzar KeyError si el unstack no crea la columna (grupo étnico sin mujeres) --- crash en caso límite.
+  \item src/analisis/diversidad.py:44-46: los NaN convertidos a 'NO REPORTADO' por Transformacion.py no se cuentan como nulos -> pct\_no\_registra subestimado y cobertura sobreestimada para registros con faltante real.
+  \item src/analisis/diversidad.py:121: comparación 'SÍ' sensible a acentos; no es un bug activo (los datos traen 'Sí' y transformar() lo pone en mayúsculas), pero fallaría si la fuente usara 'Si' sin tilde.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/analisis/genero.py}
+\textbf{Rol:} analisis · \textbf{Líneas:} 85
+
+\textbf{Qué hace:} Análisis de género por área OCDE (Issue \#22): porcentaje femenino, tablas pivote y brecha de género por convocatoria a 3 niveles de área. Entrada: DataFrame transformado con NME\_GENERO\_PR estandarizado y ANO\_CONVO\_INT; salida: DataFrames tidy/pivot listos para exportar a evidencias/genero\_*.csv y graficar.
+
+\textbf{Valoración:} mantener --- análisis correcto y bien documentado; mejoras menores de robustez (grupos vacíos) y limpieza de redundancia.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/analisis/genero.py:32-33: conteos.get('FEMENINO', 0) funciona porque DataFrame.get acepta default escalar, pero si un grupo queda sin filas reportadas, n\_total=0 y pct\_femenino=NaN (división por cero) sin advertencia --- caso límite real si una convocatoria tuviera 100\% NO REPORTADO.
+  \item src/analisis/genero.py:67: pct\_masculino = 1 - pct\_femenino asume universo binario; correcto tras el filtro, pero la columna n\_masculino ya existe y no se usa (inconsistencia menor).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/analisis/longitudinal.py}
+\textbf{Rol:} analisis · \textbf{Líneas:} 207
+
+\textbf{Qué hace:} Núcleo del análisis longitudinal (Issue \#11): construye el panel investigador$\times$convocatoria a partir de ID\_PERSONA\_PR, compara trayectorias entre periodos consecutivos (sube/baja/se mantiene/desaparece), calcula matrices de transición de conteos y probabilidades, y tasas de retención con entrada de nuevos investigadores. Cubre las 6 convocatorias históricas (2013-2021).
+
+\textbf{Valoración:} mantener con mejoras --- lógica sólida para el alcance descriptivo; la ampliación inferencial (markovianidad, supervivencia) es la recomendación de mayor valor.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item Ninguno crítico; riesgo metodológico: interpretar las transiciones como cadena de Markov sin validar la propiedad (caveat recomendado).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/analisis/produccion.py}
+\textbf{Rol:} analisis · \textbf{Líneas:} 340
+
+\textbf{Qué hace:} Análisis cruzado producción <-> investigadores (Sprint 5): cobertura de reconocimiento, productividad por categoría/género/área/territorio, mix de tipologías y reconocidos sin producción. Entrada: prod (3.166.629 filas, Socrata 33dq-ab5a) e inv (consolidado transformado), cruzados por ID\_PERSONA\_PD <-> ID\_PERSONA\_PR (+ ID\_CONVOCATORIA); salida: DataFrames exportados a evidencias/produccion\_*.csv y consumidos por sprint5\_produccion.py.
+
+\textbf{Valoración:} mantener/mejorar --- módulo metodológicamente sólido y bien documentado; priorizar la robustez de tipos/años y la reproducibilidad del input crudo (o versionar un parquet de producción) para que el cruce sea reproducible sin 1,2 GB.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/analisis/produccion.py:43: pd.to\_datetime(ANO\_CONVO) sin manejo de ints/seriales -> año 1970 si el campo es numérico (inconsistente con Transformacion.py:99-116).
+  \item src/analisis/produccion.py:199: pivot.rename no falla si falta 'FEMENINO', pero pivot['prom\_femenino'] sí lanza KeyError en áreas sin mujeres.
+  \item src/analisis/produccion.py:89: división por len(autores\_unicos) -> ZeroDivisionError si prod está vacío (caso límite).
+  \item src/analisis/produccion.py:63-65: isin usa IDs normalizados a Int64; si id\_persona\_pr llega con ceros a la izquierda desde el XLSX (leído como str) y prod como int, el cruce pierde matches (depende de la inferencia de tipos).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/analisis/redes.py}
+\textbf{Rol:} analisis · \textbf{Líneas:} 225
+
+\textbf{Qué hace:} Análisis de redes de co-filiación institucional (Issues \#15/\#16): normaliza nombres de instituciones, extrae pares de instituciones de INST\_FILIA (separador '|'), construye grafos NetworkX, calcula métricas (grado, betweenness, densidad, componentes) y genera HTML interactivo con Pyvis. Entrada: DataFrame transformado con INST\_FILIA; salida: DataFrames de pares/nodos/aristas (evidencias/redes\_*.csv) y HTML en hallazgos/.
+
+\textbf{Valoración:} refactorizar --- análisis con buen valor analítico, pero la pérdida de pares multi-filiación y el conteo duplicado de pesos comprometen las métricas publicadas (n\_aristas, peso de aristas); corregir antes de citar resultados de red.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/analisis/redes.py:62-64: str.split('|', n=1) descarta afiliaciones 3+; red incompleta (subestimación de aristas y nodos).
+  \item src/analisis/redes.py:74-79: sorted() sobre pares que contienen '' (de 'A | ') crea un nodo vacío en el grafo; con tipos no comparables podría lanzar TypeError.
+  \item src/analisis/redes.py:93-98: el peso del grafo global cuenta filas investigador x convocatoria, no investigadores únicos: 'investigadores compartidos' queda inflado entre años.
+  \item src/analisis/redes.py:16-48: normalizar\_institucion devuelve el valor original (posiblemente sin estandarizar) en el caso base.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/analisis/territorial.py}
+\textbf{Rol:} analisis · \textbf{Líneas:} 107
+
+\textbf{Qué hace:} Análisis de concentración territorial (Issue \#13): índice Herfindahl-Hirschman (HHI) por convocatoria, top territorios y tabla de cuotas departamento x año. Entrada: DataFrame transformado; salida: DataFrames exportados a evidencias/territorial\_*.csv.
+
+\textbf{Valoración:} mantener --- análisis correcto y exportable; mejorar la semántica del top-n y centralizar el filtro de faltantes.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/analisis/territorial.py:81-87: el top-n global combinado con pct anual puede producir tablas donde ningún año muestre el territorio \#1 de ese año; no es error de cálculo, pero distorsiona el concepto de 'top territorios por convocatoria'.
+  \item src/analisis/territorial.py:44 y 71: si col\_geo contuviera valores no-cadena (el NaN ya se dropea, pero p.ej. códigos numéricos), .str.strip() lanzaría AttributeError --- depende del contrato de ingesta.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/ingesta/\_\_init\_\_.py}
+\textbf{Rol:} ingesta · \textbf{Líneas:} 53
+
+\textbf{Qué hace:} Punto de entrada de carga de datos del paquete ingesta. Expone cargar\_consolidado() y cargar\_produccion(), con prioridad de rutas (CSV crudo Socrata -> XLSX local para investigadores; CSV crudo obligatorio para producción), normaliza nombres de columnas a MAYÚSCULAS y reporta conteos cargados.
+
+\textbf{Valoración:} mejorar --- diseño sólido de fallback, pero requiere validación de tipos/duplicados y dependencias declaradas (openpyxl/pyyaml) para que la instalación reproducible funcione.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/ingesta/\_\_init\_\_.py:44-48: cargar\_produccion() lanza FileNotFoundError sin alternativa; en el clon (sin datos/raw) todos los scripts sprint5/sprint6 de producción mueren en el arranque.
+  \item src/ingesta/\_\_init\_\_.py:26: read\_csv(low\_memory=False) + read\_excel sin dtype explícito -> ID\_PERSONA\_PR puede inferirse como int en un lado y str en otro, rompiendo el cruce id\_persona\_pd <-> id\_persona\_pr.
+  \item src/ingesta/\_\_init\_\_.py:18-36: no verifica duplicados por (ID\_PERSONA\_PR, ID\_CONVOCATORIA) pese a que el README define esa granularidad para el dataset.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/ingesta/minciencias.py}
+\textbf{Rol:} ingesta · \textbf{Líneas:} 70
+
+\textbf{Qué hace:} Descarga el dataset consolidado de investigadores reconocidos de MinCiencias desde datos.gov.co (API Socrata, sodapy; recurso bqtm-4y2h) y lo guarda en datos/raw/investigadores\_consolidado.csv. Actualiza el campo ultimo\_pull del catálogo YAML. CLI con --limit (muestra de pruebas) y --token (app token Socrata).
+
+\textbf{Valoración:} mantener --- simple y funcional; mejorar la validación de codificación y el manejo del catálogo.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item yaml.dump reescribe el catálogo y puede alterar su estructura/orden (riesgo de formato).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/ingesta/produccion.py}
+\textbf{Rol:} ingesta · \textbf{Líneas:} 106
+
+\textbf{Qué hace:} Descarga paginada del dataset de Producción de Grupos (Socrata 33dq-ab5a, 3.166.629 filas) a datos/raw/produccion\_grupos.csv, con modo --limit para pruebas y actualización de metadatos en datos/catalogo.yaml. Es la única ingesta del proyecto con paginación real.
+
+\textbf{Valoración:} mantener/mejorar --- única ingesta con paginación correcta del proyecto; corregir la dependencia PyYAML declarada y el sobrescrito en modo limit para producción segura.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/ingesta/produccion.py:26: import yaml no cubierto por pyproject.toml -> falla en instalación reproducible (probablemente ejecutado ad-hoc con PyYAML instalado manualmente).
+  \item src/ingesta/produccion.py:47-53: en modo limit main() igualmente guarda el DataFrame como CSV 'completo' en SALIDA: si alguien corre --limit sin querer, sobrescribe el archivo crudo con una muestra.
+  \item src/ingesta/produccion.py:59-65: si la última página devuelve exactamente PAGE\_SIZE y la siguiente viene vacía, el loop hace una petición extra vacía (ineficiencia menor, no error).
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{src/modelo/dimensional.py}
+\textbf{Rol:} modelado · \textbf{Líneas:} 286
+
+\textbf{Qué hace:} Construye el modelo dimensional (Issue \#14) en DuckDB: 7 dimensiones (convocatoria, investigador, categoría, área, territorio, formación, institución) + fact\_clasificacion (investigador x convocatoria) + tabla puente N:N bridge\_hecho\_institucion. Entrada: DataFrame transformado; salida: datos/processed/observatorio.duckdb (gitignored).
+
+\textbf{Valoración:} mejorar --- modelo útil y correcto en granularidad, pero necesita SK/constraints para ser un 'modelo estrella' real y corregir el snapshot cronológico del investigador antes de citarlo como modelo dimensional canónico.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item src/modelo/dimensional.py:69-74: sort solo por ID\_PERSONA\_PR -> 'keep first' no es la primera aparición temporal; los atributos del snapshot (género, región) pueden pertenecer a una convocatoria posterior.
+  \item src/modelo/dimensional.py:41-44: \_drop\_and\_create nunca se usa (código muerto).
+  \item src/modelo/dimensional.py:192-197: el merge por columnas geográficas con NaN (código DANE ausente) no empareja en pandas (NaN != NaN) -> fact con sk\_territorio NULL para filas sin geografía, sin contarlas ni advertirlo.
+  \item src/modelo/dimensional.py:52-56: construir\_dim\_convocatoria conserva ANO\_CONVO\_INT = 2019 para la convocatoria id 20 (año nominal 2018), propagando la anomalía de datos documentada al modelo.
+\end{itemize}
+
+\medskip
+\hrule
+
+\subsubsection{streamlit\_app.py}
+\textbf{Rol:} visualizacion · \textbf{Líneas:} 983
+
+\textbf{Qué hace:} Dashboard Streamlit principal del Observatorio MinCiencias con 7 pestañas tipo capítulo (Calidad, Trayectoria, Territorio, Diversidad, Redes, Productividad, Datos crudos). Lee el consolidado vía src/ingesta.cargar\_consolidado (XLSX de respaldo en datos/tarea\_join), lo transforma con src/Transformacion.transformar y lo cruza con \textasciitilde{}30 funciones de src/analisis/*. Cada sección sigue el patrón pregunta -> evidencia -> hallazgo -> caveat, con filtros globales en la barra lateral.
+
+\textbf{Valoración:} mejorar: es la pieza central del proyecto, bien estructurada y con 5 de 7 secciones funcionales con el XLSX actual. Corregir el bug del HHI, robustecer la cache, documentar/proveer el dataset de produccion y eliminar los hardcodes antes de considerar un refactor.
+
+\textbf{Hallazgos relevantes:}
+\begin{itemize}
+  \item Seccion 3: hhi\_por\_convocatoria(df, col\_geo=col).reset\_index() devuelve 5 columnas (index + ANO\_CONVO\_INT + hhi + n\_total + n\_territorios) y luego hhi\_df.columns = ['Año', 'HHI'] lanza ValueError 'Length mismatch'; el except lo captura y el grafico HHI nunca se muestra (lineas 434-435)
+  \item Seccion 6: depende de datos/raw/produccion\_grupos.csv que no esta en el repo; toda la seccion (4 metricas + 6 graficos) se degrada a un warning
+  \item Seccion 1: fallback hardcodeado `else 16796` y umbral magico ID\_CONVOCATORIA == 20 sin validacion -> numero potencialmente incorrecto en silencio
+  \item panel\_completo(len(df), df) usa len(df) como hash de cache -> colisiones entre filtros del mismo tamano (linea 347)
+  \item Si el CSV de produccion existiera pero vacio, cov.iloc[0]/cov.iloc[-1] (lineas 761-762) lanzarian IndexError no capturado y crashearia la app
+  \item Caption y docstring desincronizados: '6 secciones' en el header (linea 7) vs 7 tabs reales
+\end{itemize}
+
+\medskip
+\hrule

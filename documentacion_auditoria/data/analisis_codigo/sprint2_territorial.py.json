@@ -1,0 +1,34 @@
+{
+  "archivo": "scripts/sprint2_territorial.py",
+  "lenguaje": "Python",
+  "lineas": 142,
+  "rol": "orquestacion",
+  "descripcion": "Analiza la concentración territorial de los investigadores con el índice de Herfindahl-Hirschman (HHI) por departamento y por región para las 6 convocatorias (2013-2021), más las cuotas (%) por departamento y el top-10 de departamentos. Usa src/analisis/territorial (hhi_por_convocatoria, top_territorios, tabla_cuotas) sobre transformar(cargar_consolidado()). Salidas: 3 figuras PNG en artifacts/sprint2_territorial/ y 3 CSVs en evidencias/.",
+  "logica": "main() genera fig_top_departamentos (barras apiladas por convocatoria del top 10 con pct por año), calcula e imprime el HHI departamental y regional, genera fig_hhi_evolucion (2 subplots lado a lado con anotaciones de valor) y fig_heatmap_cuotas (heatmap % por departamento×convocatoria, top 15), que además retorna cuotas_pivot para exportar. Exporta territorial_hhi_por_convocatoria.csv, territorial_hhi_region_por_convocatoria.csv y territorial_cuotas_departamento.csv.",
+  "critica_fortalezas": [
+    "Usa correctamente el HHI normalizado a [0,1] sobre cuotas reales (cálculo delegado en src/analisis/territorial.hhi), con exclusión de valores NO REPORTADO.",
+    "Triple perspectiva complementaria: top-10, evolución HHI (depto y región) y cuotas completas → buena triangulación del hallazgo de concentración.",
+    "Las figuras anotan los valores exactos de HHI, facilitando la lectura sin tabla auxiliar.",
+    "Salidas verificadas: las 3 figuras y los 3 CSVs existen en el clon en las rutas declaradas."
+  ],
+  "critica_debilidades": [
+    "fig_hhi_evolucion mezcla tipos en las coordenadas de anotación: el eje X se plotea con strings (astype(str)) pero annotate recibe str(int(row['ANO_CONVO_INT'])), dependiendo de la conversión categórica implícita de matplotlib; frágil ante cambios de versión y de difícil depuración.",
+    "int(row['ANO_CONVO_INT']) lanzaría ValueError si hubiera NaN en el año (los filtros de hhi_por_convocatoria no garantizan limpieza total del año).",
+    "El HHI por región depende de la columna NME_REGION_RES_PR derivada en Transformacion; el script no verifica que exista, fallando con KeyError poco descriptivo si la transformación cambia.",
+    "Sin validación del tamaño muestral por año (el HHI de un año con pocos registros no es comparable) ni intervalo/estabilidad del índice."
+  ],
+  "mejoras": [
+    "Anotar usando las mismas posiciones categóricas del plot (p. ej. range(len(data)) o plt.xticks con los strings) en lugar de pasar el string como coordenada.",
+    "Proteger con .dropna() sobre ANO_CONVO_INT antes del gráfico y validar la presencia de NME_REGION_RES_PR con un mensaje claro.",
+    "Exportar también n_total y n_territorios junto al HHI (ya los retorna hhi_por_convocatoria) para contextualizar la evolución.",
+    "Añadir test de humo: HHI Bogotá+Antioquia ≈ 51% de concentración reportado en el README."
+  ],
+  "ejecutabilidad": "Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib, seaborn; .venv del clon vacío, requirements.txt incompleto). El input existe: datos/tarea_join/investigadores_consolidado.xlsx vía cargar_consolidado(). No requiere duckdb. Con poetry install, corre de punta a punta; el único supuesto frágil es la columna NME_REGION_RES_PR producida por Transformacion.",
+  "produce_esperado": "SÍ, coincidencia total: existen artifacts/sprint2_territorial/fig01_top_departamentos.png, fig02_hhi_evolucion.png, fig03_heatmap_cuotas.png y evidencias/territorial_hhi_por_convocatoria.csv, territorial_hhi_region_por_convocatoria.csv, territorial_cuotas_departamento.csv, todos con los nombres exactos del docstring y del README, lo que confirma ejecución previa exitosa.",
+  "bugs": [
+    "scripts/sprint2_territorial.py:82 — ax.annotate con x = str(int(row['ANO_CONVO_INT'])): se mezcla una cadena como coordenada de datos en un eje categórico (ploteado con astype(str)); funciona solo por la conversión unitaria implícita de matplotlib y es un punto de fallo frágil.",
+    "scripts/sprint2_territorial.py:82 — int(row['ANO_CONVO_INT']) lanza ValueError si el año es NaN; hhi_por_convocatoria filtra geo y año (dropna en sub), pero el DataFrame impreso/graficado aquí no garantiza ausencia de NaN en otras filas.",
+    "scripts/sprint2_territorial.py:123 — accede a NME_REGION_RES_PR sin verificar su existencia: si Transformacion renombra/elimina esa columna, el script cae con KeyError sin mensaje orientativo."
+  ],
+  "recomendacion": "mantener — el análisis HHI es metodológicamente sólido y las salidas están verificadas; corregir las anotaciones del gráfico de evolución y blindar la dependencia de la columna de región."
+}

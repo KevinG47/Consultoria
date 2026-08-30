@@ -1,0 +1,36 @@
+{
+  "archivo": "src/analisis/produccion.py",
+  "lenguaje": "Python",
+  "lineas": 340,
+  "rol": "analisis",
+  "descripcion": "Análisis cruzado producción <-> investigadores (Sprint 5): cobertura de reconocimiento, productividad por categoría/género/área/territorio, mix de tipologías y reconocidos sin producción. Entrada: prod (3.166.629 filas, Socrata 33dq-ab5a) e inv (consolidado transformado), cruzados por ID_PERSONA_PD <-> ID_PERSONA_PR (+ ID_CONVOCATORIA); salida: DataFrames exportados a evidencias/produccion_*.csv y consumidos por sprint5_produccion.py.",
+  "logica": "normalizar_produccion() pone columnas en MAYÚSCULAS, convierte IDs a Int64 y extrae ANO_CONVO_INT. cobertura_reconocidos() marca es_reconocido por isin global y agrega por año; cobertura_autores_unicos() devuelve un dict de solapamiento. productividad_por_categoria()/por_genero_area() agregan n_productos por (persona, convocatoria) y hacen left merge con inv. productividad_territorial() suma por departamento con per cápita y ratio de concentración. mix_tipologias() y tipologias_por_categoria() agregan por NME_TIPO_MEDICION_PD. reconocidos_sin_produccion() cruza conjuntos de autores por ID_CONVOCATORIA.",
+  "critica_fortalezas": [
+    "Responde de forma completa las 6 preguntas críticas del Sprint 5 con funciones bien nombradas y docstrings que explican la interpretación de cada métrica.",
+    "Manejo correcto de tipos para el cruce (to_numeric -> Int64 en ambos lados).",
+    "Coberturas y brechas con denominadores explícitos (pct_con_al_menos_un_producto, razon_f_m, ratio_concentracion).",
+    "Evidencias producidas y versionadas: 7 CSVs + resumen JSON en evidencias/."
+  ],
+  "critica_debilidades": [
+    "Requiere datos/raw/produccion_grupos.csv (~1,2 GB, gitignored): en el clon ninguna función de este módulo es ejecutable hasta descargar el archivo.",
+    "normalizar_produccion() solo usa pd.to_datetime para ANO_CONVO: si el CSV exporta años como enteros (2013), to_datetime los interpreta como nanosegundos -> año 1970; no replica la estrategia multi-formato de Transformacion.py (riesgo latente según el formato real del export).",
+    "reconocidos_sin_produccion() hace groupby(...).apply(set) sobre 3,2 M filas: lento y con alto uso de memoria.",
+    "Los merges asumen granularidad única (persona, convocatoria) en inv; duplicados inflarían n_productos (sin verificación previa).",
+    "brecha_productividad_genero() lanza KeyError si un área no tiene mujeres (columna ausente tras el pivot)."
+  ],
+  "mejoras": [
+    "Replicar el parseo multiestrategia de año de Transformacion.py en normalizar_produccion() o unificarlo en un helper compartido.",
+    "Vectorizar reconocidos_sin_produccion() con merge sobre autores únicos por convocatoria.",
+    "Verificar unicidad de (ID_PERSONA_PR, ID_CONVOCATORIA) en inv antes de mergear.",
+    "Reindexar columnas en brecha_productividad_genero para áreas sin un género."
+  ],
+  "ejecutabilidad": "NO en el clon: cargar_produccion() falla porque datos/raw/produccion_grupos.csv no existe (gitignored; requiere python -m src.ingesta.produccion, ~1,2 GB y red). Las funciones son puras y ejecutables si se les pasan DataFrames, pero el flujo documentado exige el CSV crudo. No depende del .duckdb.",
+  "produce_esperado": "Sí (con datos): evidencias/produccion_cobertura_por_convocatoria.csv, produccion_productividad_por_categoria.csv, produccion_brecha_genero.csv, produccion_concentracion_territorial.csv, produccion_mix_tipologias.csv, produccion_tipologias_por_categoria.csv, produccion_reconocidos_sin_produccion.csv + produccion_resumen_cobertura.json + 6 figuras en artifacts/sprint5_produccion/ — todos existen en el clon y coinciden con el README (Sprint 5, hallazgos 8-10).",
+  "bugs": [
+    "src/analisis/produccion.py:43: pd.to_datetime(ANO_CONVO) sin manejo de ints/seriales -> año 1970 si el campo es numérico (inconsistente con Transformacion.py:99-116).",
+    "src/analisis/produccion.py:199: pivot.rename no falla si falta 'FEMENINO', pero pivot['prom_femenino'] sí lanza KeyError en áreas sin mujeres.",
+    "src/analisis/produccion.py:89: división por len(autores_unicos) -> ZeroDivisionError si prod está vacío (caso límite).",
+    "src/analisis/produccion.py:63-65: isin usa IDs normalizados a Int64; si id_persona_pr llega con ceros a la izquierda desde el XLSX (leído como str) y prod como int, el cruce pierde matches (depende de la inferencia de tipos)."
+  ],
+  "recomendacion": "mantener/mejorar — módulo metodológicamente sólido y bien documentado; priorizar la robustez de tipos/años y la reproducibilidad del input crudo (o versionar un parquet de producción) para que el cruce sea reproducible sin 1,2 GB."
+}

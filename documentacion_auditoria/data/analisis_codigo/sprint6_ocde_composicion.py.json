@@ -1,0 +1,34 @@
+{
+  "archivo": "scripts/sprint6_ocde_composicion.py",
+  "lenguaje": "Python",
+  "lineas": 183,
+  "rol": "orquestacion",
+  "descripcion": "Responde dos preguntas del director sobre la producción nacional: qué rama del conocimiento produce más y cómo se compone por tipo de medición (nuevo conocimiento, formación, apropiación), segmentando por gran área OCDE. Cruza producción (Socrata 33dq-ab5a) con el padrón por (ID_PERSONA_PD = ID_PERSONA_PR, ID_CONVOCATORIA) mediante inner join. Usa src/ingesta, src/Transformacion.transformar y src/analisis/produccion.normalizar_produccion. Salidas: 3 figuras y 3 CSVs.",
+  "logica": "cruzar(): merge inner de producción con (ID_PERSONA_PR→ID_PERSONA_PD, ID_CONVOCATORIA, NME_GRAN_AREA_PR) y filtra 'NO REGISTRA'/'NO REPORTADO'. Volumen = groupby área con size(); productividad = n_productos (filas producto-por-convocatoria) / n_investigadores (nunique de ID_PERSONA_PR del padrón en esa área, todas las convocatorias); composición = groupby (área, tipo medición) con pct dentro del área. Tres figuras: barras horizontales de volumen, barras apiladas de composición con PALETA_TIPO, y barras de productividad.",
+  "critica_fortalezas": [
+    "Responde directamente la pregunta del director con una lectura clara (volumen por área, composición por tipo de medición).",
+    "Paleta de tipos de medición explícita y consistente con la presentación.",
+    "Filtra áreas no informadas y excluye del denominador de investigadores a áreas sin producción (evita ratios 0).",
+    "Artefactos verificados: 3 figuras y 3 CSVs (ocde_volumen, ocde_productividad, ocde_composicion) existen en el clon."
+  ],
+  "critica_debilidades": [
+    "El denominador de productividad mezcla unidades: n_productos cuenta filas producto × convocatoria (una persona puede sumar productos de 5 convocatorias), mientras n_investigadores es nunique de personas en TODO el padrón → infla la productividad por área hasta ~5× frente a un promedio por persona-convocatoria.",
+    "El inner join reduce la 'producción nacional' a productos firmados por reconocidos: el título '¿Qué rama produce más en Colombia?' es engañoso si se interpreta como toda la producción del país.",
+    "No reporta cuántos productos quedan fuera del cruce (autores no reconocidos o convocatorias sin match), pese a imprimir solo len(df) del resultado.",
+    "La productividad se calcula sin controlar categoría ni año: un área con muchos Senior en 2021 (convocatoria más productiva) se beneficia del efecto composición."
+  ],
+  "mejoras": [
+    "Calcular productividad como productos por (persona, convocatoria, área) y luego promediar por persona-área, o dividir por persona-convocatoria únicos.",
+    "Reportar la pérdida del inner join (n productos sin match / por qué).",
+    "Renombrar la métrica a 'producción de investigadores reconocidos por área' y añadir caveat en el título.",
+    "Controlar por año y categoría (p. ej. productividad estandarizada) antes de afirmar que un área produce más."
+  ],
+  "ejecutabilidad": "NO ejecutable tal cual con el clon: cargar_produccion() falla por ausencia de datos/raw/produccion_grupos.csv (gitignored). Requiere pandas, matplotlib y seaborn. Con el dataset de producción presente, el resto del pipeline (padrón vía datos/tarea_join) está disponible.",
+  "produce_esperado": "SÍ: artifacts/sprint6_ocde/{fig_volumen_por_area,fig_composicion_tipo_por_area,fig_productividad_por_area}.png y evidencias/{ocde_volumen_por_area,ocde_productividad_por_area,ocde_composicion_por_area}.csv existen y son coherentes con la estructura del script.",
+  "bugs": [
+    "scripts/sprint6_ocde_composicion.py:151-154 — n_productos/n_investigadores mezcla granularidades: numerador filas (persona×convocatoria×producto) y denominador personas únicas en todo el periodo; si una persona aparece en varias convocatorias, su producción completa se divide por 1, inflando sistemáticamente la productividad de todas las áreas.",
+    "scripts/sprint6_ocde_composicion.py:62 — how='inner' descarta en silencio los productos sin autor reconocido o con ID_CONVOCATORIA no coincidente; el print de [2/5] solo muestra len(df) del cruce y no la pérdida frente a len(prod).",
+    "scripts/sprint6_ocde_composicion.py:64 — el filtro solo cubre 'NO REGISTRA'/'NO REPORTADO'; variantes como 'SIN INFORMACIÓN' o NaN en NME_GRAN_AREA_PR pasarían y crearían una categoría basura en volumen/composición."
+  ],
+  "recomendacion": "mejorar — el análisis responde la pregunta del director y los entregables existen, pero la métrica de productividad por área es metodológicamente inconsistente (unidades mezcladas) y debe corregirse antes de usarse como hallazgo."
+}

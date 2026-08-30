@@ -1,0 +1,34 @@
+{
+  "archivo": "scripts/sprint2_genero_ocde.py",
+  "lenguaje": "Python",
+  "lineas": 182,
+  "rol": "orquestacion",
+  "descripcion": "Analiza la representación femenina y la brecha de género por área OCDE (gran área, área) en las 6 convocatorias 2013-2021. Usa src/analisis/genero (pct_femenino_por_area, tabla_pivot_pct_femenino, brecha_genero, evolucion_pct_femenino) sobre transformar(cargar_consolidado()). Salidas: 4 figuras PNG en artifacts/sprint2_genero_ocde/ (barras, heatmap gran área×convocatoria, líneas de evolución, brecha primera vs última convocatoria) y 4 CSVs en evidencias/.",
+  "logica": "main() imprime el % femenino global (filtrando solo FEMENINO/MASCULINO), genera las 4 figuras con funciones dedicadas (fig_barras_pct_femenino, fig_heatmap_pct_femenino, fig_lineas_evolucion, fig_brecha_genero), y exporta las tablas: pct por gran área, pivot con promedio, brecha (M%-F%) y pct por área. Cada función de figura llama a la función de analisis/genero correspondiente y guarda con plt.savefig(dpi=150) tras plt.tight_layout(); usa matplotlib.use('Agg') para entornos headless.",
+  "critica_fortalezas": [
+    "Código limpio y directo: separación clara carga→figuras→exportación, funciones de figura autocontenidas y reutilizables.",
+    "Uso correcto de la capa analitica (src/analisis/genero): el script no recalcula métricas, solo orquesta y visualiza.",
+    "Backend Agg antes de importar pyplot, correcto para ejecución por consola/CI.",
+    "Salidas verificadas: las 4 figuras y los 4 CSVs existen en el clon, en las rutas declaradas en el docstring."
+  ],
+  "critica_debilidades": [
+    "Escalas fijas que saturan la información: heatmap con vmin=0, vmax=60 (fig02) y líneas con ylim(0,70) (fig03); si las áreas STEM superan 60% de presencia masculina, el color y la curva quedan aplastados y no se distingue entre áreas.",
+    "fig_brecha_genero alinea b0 con reindex sobre las áreas de la última convocatoria: si una gran área existe en a0 pero no en a1 (o viceversa), se produce NaN silencioso y la comparación pierde áreas sin ninguna advertencia.",
+    "El resumen global (pct femenino total) solo se imprime en consola; no se persiste como evidencia.",
+    "Sin validación del mínimo de registros por área/convocatoria: celdas con n muy bajo (posibles identificadores) se grafican igual que áreas con miles de registros."
+  ],
+  "mejoras": [
+    "Autoeescalar el heatmap (vmin/vmax del dato o por cuantiles) o documentar por qué 60% es el tope; igual para ylim de fig03.",
+    "En fig_brecha_genero usar union de áreas (b0 y b1) y rellenar NaN con 0 o marcar 'sin dato', e imprimir advertencia.",
+    "Exportar el resumen global a un CSV de evidencias.",
+    "Anotar n por celda (o tamaño de punto) en el heatmap para visibilizar áreas con pocos investigadores."
+  ],
+  "ejecutabilidad": "Ejecutable en el clon solo tras instalar dependencias (matplotlib, seaborn, pandas; .venv del clon vacío, requirements.txt no las lista aunque pyproject sí). El input existe: cargar_consolidado() usa el fallback datos/tarea_join/investigadores_consolidado.xlsx (presente). No requiere datos/raw ni duckdb. Con poetry install el script corre de punta a punta en headless.",
+  "produce_esperado": "SÍ, coincidencia total: existen artifacts/sprint2_genero_ocde/fig01_barras_pct_femenino.png, fig02_heatmap_pct_femenino.png, fig03_lineas_evolucion.png, fig04_brecha_genero.png y evidencias/genero_pct_femenino_por_gran_area.csv, genero_tabla_pivot_gran_area.csv, genero_brecha_por_gran_area.csv, genero_pct_femenino_por_area.csv. Las 8 salidas declaradas en el docstring y en el README están presentes y con los nombres exactos, lo que indica ejecución exitosa previa.",
+  "bugs": [
+    "scripts/sprint2_genero_ocde.py:132-135 — b0.reindex(areas) con areas derivada solo de b1: si el conjunto de gran áreas difiere entre convocatorias extremas, las barras de b0 quedan en NaN (no se dibujan) sin advertencia, y las áreas exclusivas de a0 desaparecen del gráfico.",
+    "scripts/sprint2_genero_ocde.py:81 — sns.heatmap con vmin=0, vmax=60 fijos: cualquier gran área con % femenino >60 (esperable en ciencias de la salud o educación) satura el rojo/verde de RdYlGn y pierde discriminación visual.",
+    "scripts/sprint2_genero_ocde.py:108 — ax.set_ylim(0, 70) en fig03: series que superen 70% (posible en áreas pequeñas) quedan cortadas en el borde superior sin indicación."
+  ],
+  "recomendacion": "mantener — análisis correcto y reproducible con salidas verificadas; las debilidades son de visualización (escalas fijas) y de robustez del alineamiento de áreas, corregibles con cambios menores."
+}

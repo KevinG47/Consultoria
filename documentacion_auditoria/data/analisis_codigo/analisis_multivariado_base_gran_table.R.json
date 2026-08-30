@@ -1,0 +1,40 @@
+{
+  "archivo": "notebooks/tarea_gran_tabla/analisis_multivariado_base_gran_table.R",
+  "lenguaje": "R",
+  "lineas": 405,
+  "rol": "legacy",
+  "descripcion": "Análisis multivariado de la gran tabla: análisis de correspondencia (CA) para pares de categóricas (gran área x género, INST_FILIA x género, nivel de formación x clasificación), análisis de correspondencia múltiple (MCA) para conjuntos de categóricas (5 variables; 3 variables de población) y FAMD (factor analysis of mixed data) con ANO_CONVO, gran área, género, país de nacimiento y EDAD_ANOS_PR. Reporta eigenvalores, contribuciones y cos2, y construye biplots con ggrepel. Incluye análisis de faltantes (plot_missing, md.pattern) y retira una fila totalmente vacía.",
+  "logica": "FactoMineR (CA, MCA, FAMD) + factoextra + ggplot2 + ggrepel + mice + DataExplorer: table() -> CA(bc/ bd/ bf, graph = F), MCA(GT[, c(2,5,6,7,16)], graph = F) y MCA(GT[, c(20:22)], ncp = 16), FAMD(GT[-50891, c(2,5,6,7,15)], ncp = 20, graph = T); extrae b$eig, $row/$col/$var/$quanti.var/$quali.var coord/cos2/contrib y grafica varianza y biplots.",
+  "critica_fortalezas": [
+    "Elección correcta de método según tipo de datos: CA para tablas de contingencia 2 x k, MCA para múltiples categóricas, FAMD para datos mixtos",
+    "Reporta contribuciones y cos2 (calidad de representación de filas/columnas), buenas prácticas de lectura de CA/MCA/FAMD",
+    "Detecta y elimina la fila totalmente vacía (md.pattern / !is.finite) antes del FAMD",
+    "Gráficos de varianza explicada y acumulada con umbral del 70% para decidir número de dimensiones"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada 'Downloads/GRAN_TABLA(SIN ID).xlsx', inexistente en el clon",
+    "CA sobre INST_FILIA x género con miles de filas (instituciones y combinaciones PIPE sin normalizar): tabla dispersa donde las categorías con frecuencia 1 dominan el chi-cuadrado; resultado poco interpretable",
+    "Remoción de la fila 50891 por índice hardcodeado (GT[-50891, ...]): frágil si cambia la base; debería ser un filtro por contenido",
+    "Comentario del MCA (dice NME_PAIS_RES_PR) no coincide con el código (columna 16): documentación desalineada",
+    "Los CA no van acompañados de chisq.test: no se reporta significancia ni frecuencias esperadas",
+    "MCA/FAMD con categorías 'No disponible'/'Exterior' y NAs sin tratamiento explícito documentado (depende del default na.method de FactoMineR)",
+    "FAMD con ncp = 20 para solo 5 variables: sobredimensionado",
+    "No guarda resultados (coordenadas/contribuciones) en archivos"
+  ],
+  "mejoras": [
+    "Excluir INST_FILIA del CA o agregar a nivel de institución (eliminar pipes) antes de analizar",
+    "Acompañar cada CA con chisq.test y verificación de frecuencias esperadas",
+    "Eliminar la fila vacía con un filtro (p. ej., rowSums(is.na()) < ncol) en vez del índice 50891",
+    "Alinear comentarios con columnas y documentar el tratamiento de NA",
+    "Guardar eig/coord/cos2/contrib en xlsx para trazabilidad"
+  ],
+  "ejecutabilidad": "NO. Falta 'Downloads/GRAN_TABLA(SIN ID).xlsx' en el clon.",
+  "produce_esperado": "Metodología en general correcta: CA/MCA/FAMD están bien aplicados según el tipo de variables. Riesgos: el CA sobre INST_FILIA con tabla dispersa infla la inercia de categorías raras (poca interpretabilidad); FAMD con ncp=20 es inofensivo pero sobredimensionado; la lectura de contribuciones sin pruebas de significancia puede llevar a sobreinterpretación.",
+  "bugs": [
+    "Índice hardcodeado 50891 para eliminar la fila vacía (rompe con cualquier cambio de la base)",
+    "Comentario del MCA (NME_PAIS_RES_PR) desalineado con la columna 16 del código",
+    "CA sobre INST_FILIA sin normalizar los valores PIPE (instituciones múltiples tratadas como categorías únicas)",
+    "Sintaxis ggplot con aes(shape = '...') dentro de geom_point que no varía la forma real (leyenda engañosa)"
+  ],
+  "recomendacion": "Mantener como referencia académica (buen ejemplo de aplicación de CA/MCA/FAMD). No migrar tal cual: el pipeline moderno no realiza análisis factorial; si se requiere en el futuro, reimplementarlo con datos limpios, validación de supuestos y guardado de resultados."
+}

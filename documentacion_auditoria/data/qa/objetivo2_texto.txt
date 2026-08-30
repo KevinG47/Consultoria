@@ -1,0 +1,1229 @@
+Auditoría — Objetivo 2: OE2 — Modelado
+estadístico e inferencia analítica del sistema de
+reconocimiento
+Documentación técnica y propuesta metodológica · Documento de auditoría por
+objetivo
+Consultor Estadístico Senior · Auditoría de Proyectos de Datos
+Universidad Santo Tomás · Ustadistica · 2026-I
+Repositorio auditado: Observatorio_Ministerio_de_Ciencias_Grupo8
+Versión 1.0 · 29 de agosto de 2026
+Documento generado de forma reproducible a partir de la auditoría del repositorio. La construcción de
+este documento está documentada en documentacion_auditoria.
+ÍNDICE
+ÍNDICE
+Índice
+1. Entendimiento del objetivo
+2
+2. Datos utilizados: suficiencia y corrección
+2
+2.1. Fuentes relevantes para el objetivo . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+3. Documentación y crítica por archivo de código
+2
+3.0.1.
+src/analisis/longitudinal.py . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+3.0.2.
+src/analisis/territorial.py
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+3.0.3.
+src/analisis/genero.py . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+3.0.4.
+src/analisis/diversidad.py . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+3.0.5.
+src/analisis/redes.py . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+3.0.6.
+src/analisis/produccion.py . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+3.0.7.
+scripts/sprint2_panel_longitudinal.py . . . . . . . . . . . . . . . . . . .
+12
+3.0.8.
+scripts/sprint2_matrices_transicion.py
+. . . . . . . . . . . . . . . . . .
+12
+3.0.9.
+scripts/sprint2_territorial.py . . . . . . . . . . . . . . . . . . . . . . . .
+14
+3.0.10. scripts/sprint2_genero_ocde.py
+. . . . . . . . . . . . . . . . . . . . . .
+16
+3.0.11. scripts/sprint3_redes.py . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.0.12. scripts/sprint4_diversidad.py . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.0.13. scripts/sprint5_produccion.py
+. . . . . . . . . . . . . . . . . . . . . . .
+22
+3.0.14. notebooks/tarea_gran_tabla/analisis_de_clusters.R . . . . . . . . . . .
+25
+3.0.15. notebooks/tarea_gran_tabla/analisis_multivariado_base_gran_table.R 27
+4. Validación de la calidad de pruebas, tratamientos y lógica estadística
+29
+5. Lógica de construcción y cumplimiento del objetivo
+29
+6. Línea de tiempo de commits (contexto del repositorio)
+30
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+1
+1
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+1 Entendimiento del objetivo
+Objetivo 2: OE2 — Modelado estadístico e inferencia analítica del sistema de reconocimiento
+Validar y ampliar la inferencia estadística del observatorio: matrices de transición de categoría
+y retención longitudinal, índices de concentración territorial (HHI y familia Gini/Theil con
+IC), brechas de género y diversidad con representación relativa, redes de co-filiación con signi-
+ficancia, y productividad cruzada (categoría, género, territorio), con supuestos y validaciones
+documentadas.
+Nota metodológica
+Este objetivo se audita contra el repositorio Observatorio_Ministerio_de_Ciencias_Grupo8:
+se evalúa si el código, los datos y la metodología existentes responden adecuadamente a la
+pregunta planteada por el objetivo.
+2 Datos utilizados: suficiencia y corrección
+Los datos son suficientes y correctos para el objetivo descriptivo- exploratorio: 30.086 inves-
+tigadores únicos y 3.166.629 productos-autor dan potencia para desagregaciones por área,
+género, región y categoría. Limitaciones: subgrupos pequeños (raizales, palenqueros, Rrom,
+discapacidad) con estimaciones inestables; ventanas irregulares entre convocatorias; co-filiación
+solo capturada en 2019 (569 casos) — la red es un corte transversal; variables de diversidad
+solo desde 2021. La versión de datos disponible en el clon (3 convocatorias) no reproduce
+los resultados versionados (5 periodos), por lo que la inferencia debe recalcularse sobre el
+consolidado completo de 6 convocatorias.
+2.1 Fuentes relevantes para el objetivo
+Para este objetivo intervienen las fuentes del catálogo del repositorio:
+Padrón de investigadores (Socrata bqtm-4y2h): 77 237 registros declarados · 30 086
+investigadores únicos · 6 convocatorias (2013–2021) · 30 variables. Consolidado XLSX ver-
+sionado en datos/tarea_join/ (el CSV paralelo presenta 50 891 filas — ver documento
+maestro, sección de datos).
+Producción de grupos (Socrata 33dq-ab5a): 3 166 629 filas producto-autor; NO ver-
+sionado (gitignored, 1.2 GB).
+Catálogo: datos/catalogo.yaml con diccionario de datos y llaves de cruce.
+3 Documentación y crítica por archivo de código
+Archivos relevantes declarados: 15.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+2
+2
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+3.0.1 src/analisis/longitudinal.py
+Sin ficha de auditoría disponible en data/analisis_codigo/.
+3.0.2 src/analisis/territorial.py
+Rol: analisis · Líneas: 107
+Descripción funcional
+Análisis de concentración territorial (Issue #13): índice Herfindahl-
+Hirschman (HHI) por convocatoria, top territorios y tabla de cuotas departamento x año. En-
+trada: DataFrame transformado; salida: DataFrames exportados a evidencias/territorial_*.csv.
+Análisis de la lógica
+hhi() normaliza conteos a cuotas y suma sus cuadrados (devuelve NaN
+si la suma es 0). hhi_por_convocatoria() filtra ’NO REPORTADO’ y dropna, agrupa por año
+y reporta hhi, n_total y n_territorios. top_territorios() calcula conteos por (año, territorio)
+con pct sobre el total anual y filtra los n territorios más frecuentes del total acumulado.
+tabla_cuotas() pivotea departamento x año con las cuotas. sprint2_territorial.py los consume
+(HHI por departamento y por región).
+Fortalezas
+HHI implementado correctamente (cuotas normalizadas, rango [0,1]) con docstring de
+interpretación.
+Filtro explícito de ’NO REPORTADO’ y dropna antes de calcular.
+Métricas auxiliares (n_total, n_territorios) dan contexto al índice.
+Debilidades
+top_territorios mezcla dos alcances: el ’top n’ se calcula sobre el total acumulado del
+período, pero pct se calcula por año ->un territorio top en un año específico puede
+quedar excluido de la tabla (pérdida de información por año).
+hhi() con una sola unidad devuelve 1.0 (concentración total), correcto matemáticamente
+pero debe interpretarse junto con n_territorios.
+El filtro de ’NO REPORTADO’ depende de que Transformacion.py haya etiquetado así
+los faltantes: acoplamiento implícito a un valor mágico.
+Sin normalización adicional de nombres de departamentos (p.ej. ’Bogotá D.C.’ vs ’Bogota’)
+más allá del upper del pipeline.
+Mejoras propuestas
+Separar el alcance del top-n (por año o global) en parámetros explícitos.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+3
+3
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Mover el filtro de ’NO REPORTADO’ a una constante compartida (p.ej. en anali-
+sis/__init__) para evitar valores mágicos.
+Añadir HHI normalizado (HHI*) para comparar entre años con distinto número de
+territorios.
+Tests: serie de conteos, suma cero, una sola unidad.
+Ejecutabilidad
+Sí en el clon: solo requiere DataFrame transformado (XLSX presente). Sin
+datos/raw ni .duckdb.
+¿Produce lo esperado?
+Sí: evidencias/territorial_hhi_por_convocatoria.csv, territorial_hhi_region_por_c
+y territorial_cuotas_departamento.csv existen, junto con artifacts/sprint2_territorial/fig01-
+03.png — consistente con el README (Issue #13).
+Riesgo / Limitación
+Bugs / problemas detectados:
+src/analisis/territorial.py:81-87: el top-n global combinado con pct anual puede producir
+tablas donde ningún año muestre el territorio #1 de ese año; no es error de cálculo, pero
+distorsiona el concepto de ’top territorios por convocatoria’.
+src/analisis/territorial.py:44 y 71: si col_geo contuviera valores no-cadena (el NaN ya se
+dropea, pero p.ej. códigos numéricos), .str.strip() lanzaría AttributeError — depende del
+contrato de ingesta.
+Recomendación de auditoría
+mantener — análisis correcto y exportable; mejorar
+la semántica del top-n y centralizar el filtro de faltantes.
+3.0.3 src/analisis/genero.py
+Rol: analisis · Líneas: 85
+Descripción funcional
+Análisis de género por área OCDE (Issue #22): porcentaje femenino,
+tablas pivote y brecha de género por convocatoria a 3 niveles de área. Entrada: DataFra-
+me transformado con NME_GENERO_PR estandarizado y ANO_CONVO_INT; salida:
+DataFrames tidy/pivot listos para exportar a evidencias/genero_*.csv y graficar.
+Análisis de la lógica
+pct_femenino_por_area() filtra género en {FEMENINO, MASCU-
+LINO} (excluye NO REPORTADO del denominador, decisión documentada), agrupa por
+(año, área), hace value_counts().unstack() y calcula n_femenino, n_masculino, n_total y pct.
+tabla_pivot_pct_femenino() pivotea área x año con promedio y ordena; brecha_genero()
+deriva pct_masculino = 1 - pct_femenino y la brecha; evolucion_pct_femenino() reordena.
+El script sprint2_genero_ocde.py llama a estas funciones y exporta los CSVs.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+4
+4
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Fortalezas
+Decisión metodológica explícita y correcta: excluir NO REPORTADO del denominador
+evita sesgos de imputación.
+Funciones puras, parametrizables (col_area, col_year) y reutilizables en scripts y dash-
+board.
+Documenta el contrato de entrada (género estandarizado, ANO_CONVO_INT disponi-
+ble).
+Debilidades
+evolucion_pct_femenino() es redundante (mismo DataFrame ordenado); el propio docs-
+tring lo admite.
+No aplica dropna sobre col_area: un área con NaN se pierde silenciosamente del groupby
+(aceptable pero implícito).
+pct_femenino = n_fem/n_total puede dividir por cero si un grupo tiene 0 registros
+reportados ->NaN propagado a pivote y brecha sin aviso.
+brecha usa pct_masculino = 1 - pct_femenino, válido solo dentro del universo ’reportado’;
+la columna n_masculino calculada no se aprovecha.
+Mejoras propuestas
+Eliminar evolucion_pct_femenino o fusionarla con un parámetro sort.
+Añadir manejo explícito de grupos vacíos (n_total=0 ->pct=NaN con advertencia).
+Escribir tests con df pequeño (área 100 % hombres, área con solo NO REPORTADO).
+Ejecutabilidad
+Sí en el clon: solo requiere el DataFrame transformado, que se obtiene
+de cargar_consolidado() con fallback al XLSX presente. Sin dependencias de datos/raw ni
+.duckdb.
+¿Produce lo esperado?
+Sí: evidencias/genero_pct_femenino_por_area.csv, genero_pct_femenino_por_gr
+genero_brecha_por_gran_area.csv y genero_tabla_pivot_gran_area.csv existen en el clon,
+junto con artifacts/sprint2_genero_ocde/fig01-04.png — consistente con el README (Issue
+#22).
+Riesgo / Limitación
+Bugs / problemas detectados:
+src/analisis/genero.py:32-33: conteos.get(’FEMENINO’, 0) funciona porque DataFra-
+me.get acepta default escalar, pero si un grupo queda sin filas reportadas, n_total=0 y
+pct_femenino=NaN (división por cero) sin advertencia — caso límite real si una convoca-
+toria tuviera 100 % NO REPORTADO.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+5
+5
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+src/analisis/genero.py:67: pct_masculino = 1 - pct_femenino asume universo binario;
+correcto tras el filtro, pero la columna n_masculino ya existe y no se usa (inconsistencia
+menor).
+Recomendación de auditoría
+mantener — análisis correcto y bien documentado;
+mejoras menores de robustez (grupos vacíos) y limpieza de redundancia.
+3.0.4 src/analisis/diversidad.py
+Rol: analisis · Líneas: 162
+Descripción funcional
+Análisis de variables de diversidad (Issue #20): cobertura temporal
+de ID_VICTIMA_CONFLICTO, TXT_GRUPO_ETNICO y TXT_POBLACION_DISCA,
+distribución por categoría, comparación de subrepresentación frente a DANE 2018/RUV 2021,
+cruce interseccional género x etnia y categorías por minoría. Entrada: DataFrame transfor-
+mado (mayúsculas aplicadas por src/Transformacion.py); salida: DataFrames exportados a
+evidencias/diversidad_*.csv.
+Análisis de la lógica
+Define DANE_REFERENCIA (constantes poblacionales) y VALO-
+RES_NULOS por variable. cobertura_por_convocatoria() calcula % NO REGISTRA/NO
+DISPONIBLE y cobertura por año. comparar_dane() (diseñada para df_2021) mapea nom-
+bres MinCiencias ->DANE con regex y calcula la razón de subrepresentación. interseccio-
+nal_genero_etnia() y categoria_por_minoria() cruzan con género y categoría académica. El
+script sprint4_diversidad.py filtra df_2021 antes de llamar a comparar_dane.
+Fortalezas
+Hallazgo central documentado en el propio módulo: las variables solo se capturaron desde
+2021 — honestidad metodológica.
+Razón de subrepresentación (DANE/MinCiencias) correcta y con manejo de división por
+cero (None).
+Constantes de referencia (DANE 2018 / RUV 2021) centralizadas y comentadas.
+Debilidades
+Contrato frágil: comparar_dane, interseccional_genero_etnia y categoria_por_minoria
+asumen que el caller ya filtró la convocatoria 2021; si se pasa el df completo, los resultados
+mezclan años sin advertencia.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+6
+6
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+ACOPLAMIENTO ROTO CON Transformacion.py: éste convierte NaN categórico en
+’NO REPORTADO’, pero diversidad espera ’NO REGISTRA’/’NO DISPONIBLE’; los
+faltantes reales etiquetados ’NO REPORTADO’ no se cuentan como nulos ->cobertura
+inflada.
+Bug metodológico en comparar_dane(): el comentario (línea 78) dice excluir ’NIN-
+GUN GRUPO ETNICO’ del denominador, pero el código (línea 79) solo excluye ’NO
+DISPONIBLE’; ’NINGUN GRUPO ETNICO’ queda en el denominador y diluye la
+subrepresentación de las minorías (verificado: comentario vs código).
+Comparación ’SÍ’ con tilde (línea 121): funciona con los datos actuales porque transfor-
+mar() pone en mayúsculas ’Sí’ ->’SÍ’, pero es frágil ante variantes sin tilde (’Si’/’SI’) —
+el catálogo documenta ’Si’.
+interseccional_genero_etnia() puede lanzar KeyError ’FEMENINO’ si algún grupo
+étnico no tiene mujeres (la columna no existe tras unstack).
+Mejoras propuestas
+Que las funciones filtren internamente por ANO_CONVO_INT == 2021 (parametrizado)
+para hacer la API autónoma.
+Alinear los valores nulos entre Transformacion y diversidad (constante compartida) o
+contar también ’NO REPORTADO’ como faltante.
+Excluir de verdad ’NINGUN GRUPO ETNICO’ del denominador (alinear comentario y
+código) y documentar el impacto en las razones de subrepresentación.
+Normalizar ’SÍ’/’SI’/’Si’ con strip + upper antes de comparar (o eliminar acentos).
+Usar .reindex(columns=[’FEMENINO’, ’MASCULINO’], fill_value=0) tras el unstack
+en interseccional_genero_etnia.
+Ejecutabilidad
+Sí en el clon: solo DataFrame transformado (XLSX presente); las funciones
+de 2021 requieren que el caller filtre (sprint4_diversidad.py lo hace). Sin datos/raw ni .duckdb.
+¿Produce lo esperado?
+Sí: evidencias/diversidad_cobertura_por_convocatoria.csv, diver-
+sidad_comparacion_dane.csv, diversidad_distribucion_*.csv, diversidad_interseccional_genero_etnia.csv
+y diversidad_categorias_por_etnia.csv existen, junto con artifacts/sprint4_diversidad/fig01-
+03.png — consistente con el README (Issue #20, hallazgos 4-6).
+Riesgo / Limitación
+Bugs / problemas detectados:
+src/analisis/diversidad.py:78-79: contradicción comentario-código sobre ’NINGUN GRUPO
+ETNICO’ en el denominador de comparar_dane() — diluye la subrepresentación de
+minorías (verificado por lectura directa).
+src/analisis/diversidad.py:145: d[’FEMENINO’] puede lanzar KeyError si el unstack no
+crea la columna (grupo étnico sin mujeres) — crash en caso límite.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+7
+7
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+src/analisis/diversidad.py:44-46: los NaN convertidos a ’NO REPORTADO’ por Trans-
+formacion.py no se cuentan como nulos ->pct_no_registra subestimado y cobertura
+sobreestimada para registros con faltante real.
+src/analisis/diversidad.py:121: comparación ’SÍ’ sensible a acentos; no es un bug activo
+(los datos traen ’Sí’ y transformar() lo pone en mayúsculas), pero fallaría si la fuente usara
+’Si’ sin tilde.
+Recomendación de auditoría
+mejorar — hallazgos valiosos y bien enmarcados;
+prioridad alta: corregir el denominador de comparar_dane(), alinear valores nulos
+con Transformacion.py y robustecer comparaciones de cadenas.
+3.0.5 src/analisis/redes.py
+Rol: analisis · Líneas: 225
+Descripción funcional
+Análisis de redes de co-filiación institucional (Issues #15/#16):
+normaliza nombres de instituciones, extrae pares de instituciones de INST_FILIA (separador
+’|’), construye grafos NetworkX, calcula métricas (grado, betweenness, densidad, componentes)
+y genera HTML interactivo con Pyvis. Entrada: DataFrame transformado con INST_FILIA;
+salida: DataFrames de pares/nodos/aristas (evidencias/redes_*.csv) y HTML en hallazgos/.
+Análisis de la lógica
+normalizar_institucion() aplica heurística de paréntesis (si el paréntesis
+contiene una institución madre, lo usa; si no, lo elimina), elimina sufijos SEDE/SECCIONAL y
+normaliza mayúsculas. construir_pares() filtra filas con ’|’, divide en 2 partes (n=1), normaliza,
+elimina self-loops y ordena pares para que (A,B)==(B,A). construir_grafo() agrega pesos por
+grupo (a,b). metricas_grafo(), tabla_nodos(), tabla_aristas(), metricas_por_convocatoria()
+y subgrafo_grado_minimo() componen el resto. generar_html_pyvis() pinta nodos por grado
+ponderado y betweenness.
+Fortalezas
+Normalización institucional con reglas documentadas y heurística de paréntesis — valor
+real frente a las 2.762 cadenas crudas de inst_filia.
+Eliminación de self-loops tras normalizar y orden canónico de pares: evita aristas dupli-
+cadas (A,B)==(B,A).
+Módulo completo (construcción, métricas, subgrafos, visualización) con lazy import de
+pyvis.
+Artefactos versionados en evidencias/redes_*.csv y artifacts/sprint3_redes/.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+8
+8
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Debilidades
+CRÍTICO: construir_pares() divide con n=1, capturando solo el PRIMER par de
+investigadores con 3+ instituciones; se pierden las combinaciones restantes (A,C), (B,C)
+->el grafo subestima la co-filiación.
+El grafo global (anio=None) pondera por filas investigador x convocatoria: un inves-
+tigador con el mismo par en 2 convocatorias cuenta doble, inflando el peso de aristas
+’investigadores compartidos’.
+import networkx en mitad del archivo (línea 49) y un import networkx as nx_local sin
+uso dentro de generar_html_pyvis — estilo e higiene.
+Si INST_FILIA termina en ’|’ (cadena vacía tras split), se crea un nodo con nombre ”
+en el grafo (no se filtra la cadena vacía, a diferencia de modelo/dimensional.py).
+El bloque ’if G.has_edge’ en construir_grafo es código muerto (cada grupo (a,b) es
+único en el groupby).
+Mejoras propuestas
+Usar itertools.combinations sobre las instituciones separadas para generar todos los pares
+de investigadores multi-filiados.
+Agregar peso por investigadores únicos (drop_duplicates por ID_PERSONA_PR antes
+de contar) en el grafo global.
+Filtrar cadenas vacías y NaN después del split (strip + dropna + != ”).
+Mover los imports al inicio del módulo; eliminar nx_local no usado.
+Ejecutabilidad
+Sí en el clon (solo DataFrame transformado, XLSX presente); requiere
+networkx y, para generar_html_pyvis, pyvis (ambos declarados en pyproject.toml). Sin
+datos/raw ni .duckdb.
+¿Produce lo esperado?
+Sí: evidencias/redes_pares_cofiliacion.csv, redes_nodos_global.csv,
+redes_aristas_global.csv y redes_metricas_por_convocatoria.csv existen, junto con artifacts/sprint3_redes/fig0
+03.png; los HTML Pyvis los genera sprint3_grafo_interactivo.py. Coincide con el README
+(Issues #15/#16).
+Riesgo / Limitación
+Bugs / problemas detectados:
+src/analisis/redes.py:62-64: str.split(’|’, n=1) descarta afiliaciones 3+; red incompleta
+(subestimación de aristas y nodos).
+src/analisis/redes.py:74-79: sorted() sobre pares que contienen ” (de ’A | ’) crea un nodo
+vacío en el grafo; con tipos no comparables podría lanzar TypeError.
+src/analisis/redes.py:93-98: el peso del grafo global cuenta filas investigador x convocatoria,
+no investigadores únicos: ’investigadores compartidos’ queda inflado entre años.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+9
+9
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+src/analisis/redes.py:16-48: normalizar_institucion devuelve el valor original (posiblemente
+sin estandarizar) en el caso base.
+Recomendación de auditoría
+refactorizar — análisis con buen valor analítico, pero
+la pérdida de pares multi-filiación y el conteo duplicado de pesos comprometen las
+métricas publicadas (n_aristas, peso de aristas); corregir antes de citar resultados
+de red.
+3.0.6 src/analisis/produccion.py
+Rol: analisis · Líneas: 340
+Descripción funcional
+Análisis cruzado producción <->investigadores (Sprint 5): cober-
+tura de reconocimiento, productividad por categoría/género/área/territorio, mix de tipolo-
+gías y reconocidos sin producción. Entrada: prod (3.166.629 filas, Socrata 33dq-ab5a) e inv
+(consolidado transformado), cruzados por ID_PERSONA_PD <->ID_PERSONA_PR (+
+ID_CONVOCATORIA); salida: DataFrames exportados a evidencias/produccion_*.csv y
+consumidos por sprint5_produccion.py.
+Análisis de la lógica
+normalizar_produccion() pone columnas en MAYÚSCULAS, convier-
+te IDs a Int64 y extrae ANO_CONVO_INT. cobertura_reconocidos() marca es_reconocido
+por isin global y agrega por año; cobertura_autores_unicos() devuelve un dict de solapamiento.
+productividad_por_categoria()/por_genero_area() agregan n_productos por (persona, con-
+vocatoria) y hacen left merge con inv. productividad_territorial() suma por departamento con
+per cápita y ratio de concentración. mix_tipologias() y tipologias_por_categoria() agregan por
+NME_TIPO_MEDICION_PD. reconocidos_sin_produccion() cruza conjuntos de autores
+por ID_CONVOCATORIA.
+Fortalezas
+Responde de forma completa las 6 preguntas críticas del Sprint 5 con funciones bien
+nombradas y docstrings que explican la interpretación de cada métrica.
+Manejo correcto de tipos para el cruce (to_numeric ->Int64 en ambos lados).
+Coberturas y brechas con denominadores explícitos (pct_con_al_menos_un_producto,
+razon_f_m, ratio_concentracion).
+Evidencias producidas y versionadas: 7 CSVs + resumen JSON en evidencias/.
+Debilidades
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+10
+10
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Requiere datos/raw/produccion_grupos.csv (~1,2 GB, gitignored): en el clon ninguna
+función de este módulo es ejecutable hasta descargar el archivo.
+normalizar_produccion() solo usa pd.to_datetime para ANO_CONVO: si el CSV
+exporta años como enteros (2013), to_datetime los interpreta como nanosegundos ->año
+1970; no replica la estrategia multi-formato de Transformacion.py (riesgo latente según
+el formato real del export).
+reconocidos_sin_produccion() hace groupby(...).apply(set) sobre 3,2 M filas: lento y con
+alto uso de memoria.
+Los merges asumen granularidad única (persona, convocatoria) en inv; duplicados inflarían
+n_productos (sin verificación previa).
+brecha_productividad_genero() lanza KeyError si un área no tiene mujeres (columna
+ausente tras el pivot).
+Mejoras propuestas
+Replicar el parseo multiestrategia de año de Transformacion.py en normalizar_produccion()
+o unificarlo en un helper compartido.
+Vectorizar reconocidos_sin_produccion() con merge sobre autores únicos por convocato-
+ria.
+Verificar unicidad de (ID_PERSONA_PR, ID_CONVOCATORIA) en inv antes de
+mergear.
+Reindexar columnas en brecha_productividad_genero para áreas sin un género.
+Ejecutabilidad
+NO en el clon: cargar_produccion() falla porque datos/raw/produccion_grupos.csv
+no existe (gitignored; requiere python -m src.ingesta.produccion, ~1,2 GB y red). Las funciones
+son puras y ejecutables si se les pasan DataFrames, pero el flujo documentado exige el CSV
+crudo. No depende del .duckdb.
+¿Produce lo esperado?
+Sí (con datos): evidencias/produccion_cobertura_por_convocatoria.csv,
+produccion_productividad_por_categoria.csv, produccion_brecha_genero.csv, produccion_concentracion_terr
+produccion_mix_tipologias.csv, produccion_tipologias_por_categoria.csv, produccion_reconocidos_sin_prod
++ produccion_resumen_cobertura.json + 6 figuras en artifacts/sprint5_produccion/ — todos
+existen en el clon y coinciden con el README (Sprint 5, hallazgos 8-10).
+Riesgo / Limitación
+Bugs / problemas detectados:
+src/analisis/produccion.py:43: pd.to_datetime(ANO_CONVO) sin manejo de ints/seriales
+->año 1970 si el campo es numérico (inconsistente con Transformacion.py:99-116).
+src/analisis/produccion.py:199: pivot.rename no falla si falta ’FEMENINO’, pero pi-
+vot[’prom_femenino’] sí lanza KeyError en áreas sin mujeres.
+src/analisis/produccion.py:89: división por len(autores_unicos) ->ZeroDivisionError si
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+11
+11
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+prod está vacío (caso límite).
+src/analisis/produccion.py:63-65: isin usa IDs normalizados a Int64; si id_persona_pr llega
+con ceros a la izquierda desde el XLSX (leído como str) y prod como int, el cruce pierde
+matches (depende de la inferencia de tipos).
+Recomendación de auditoría
+mantener/mejorar — módulo metodológicamente
+sólido y bien documentado; priorizar la robustez de tipos/años y la reproducibilidad
+del input crudo (o versionar un parquet de producción) para que el cruce sea
+reproducible sin 1,2 GB.
+3.0.7 scripts/sprint2_panel_longitudinal.py
+Sin ficha de auditoría disponible en data/analisis_codigo/.
+3.0.8 scripts/sprint2_matrices_transicion.py
+Rol: orquestacion · Líneas: 125
+Descripción funcional
+Calcula y visualiza las matrices de probabilidad de transición
+entre categorías (Junior/Asociado/Senior/Emérito) para los 5 periodos consecutivos de las
+6 convocatorias (2013-2021), en dos variantes: observada (solo investigadores retenidos) y
+extendida (incluye el estado ’Desaparece’). Usa src/analisis/longitudinal (construir_panel,
+comparar_periodo, matriz_transicion, matrices_todos_periodos). Salidas: 2 figuras de heat-
+maps en artifacts/sprint2_transiciones/ y 20 CSVs (conteos y probabilidades × ext/obs × 5
+periodos) en evidencias/.
+Análisis de la lógica
+main() construye el panel (ID_PERSONA_PR, año, categoria, orden),
+imprime las matrices por periodo en consola con un bucle comparar_periodo+matriz_transicion,
+y luego recalcula todo con matrices_todos_periodos para las figuras y la exportación. fig_heatmaps()
+dibuja un heatmap por periodo en una sola fila de subplots (1×n) con sns.heatmap(annot=True,
+fmt=’.2f’, vmin=0, vmax=1). Los nombres de archivo derivan del periodo reemplazando el
+guion largo ’–’ por ’_’ (p. ej. matriz_probabilidades_ext_2015_2017.csv).
+Fortalezas
+Presenta explícitamente las dos variantes metodológicas (observada vs extendida con
+’Desaparece’), lo que permite ver el sesgo de selección por deserción en lugar de ocultarlo.
+La lógica estadística está delegada en src/analisis/longitudinal (crosstab, renormalización
+por fila), manteniendo el script como orquestador puro.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+12
+12
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+El manejo del guion largo ’–’ en nombres de archivo evita problemas de codificación de
+rutas en Windows.
+Salidas verificadas: las 2 figuras y los 20 CSVs de la nomenclatura actual existen en el
+clon.
+Debilidades
+Cómputo duplicado: el bucle de impresión (líneas 83-91) recalcula las matrices que
+matrices_todos_periodos vuelve a calcular en la línea 94-95; con 77.237 registros y 5
+periodos es ineficiente y propenso a divergencias si cambia la lógica.
+La matriz ’observada’ renormaliza por fila excluyendo a los desaparecidos: sus probabi-
+lidades no suman a la población real y pueden sobreestimar la movilidad; el script no
+advierte de esta limitación interpretativa.
+Evidencias con nomenclatura heredada: en evidencias/ coexisten archivos de una versión
+anterior (matriz_transicion_extendida_*.csv, matriz_probabilidades_extendida_*.csv
+y variantes sin prefijo ext/obs como matriz_transicion_2017_2019.csv) que este script
+ya no produce, duplicando y confundiendo la evidencia.
+fig_heatmaps asume n>=1 periodo: con un solo par de años plt.subplots(1, n) devolvería
+un Axes escalar y zip() fallaría (robustez marginal).
+Sin validación de que el panel contenga exactamente 6 convocatorias / 5 periodos ni de
+tamaños de celda mínimos.
+Mejoras propuestas
+Calcular matrices una sola vez (fuera del bucle de impresión) y reutilizarlas para print,
+figuras y exportación.
+Añadir advertencia explícita cuando la matriz observada descarte >X % de la fila por
+deserción, y priorizar la lectura de la matriz extendida en el informe.
+Eliminar o archivar los CSVs legacy (extendida_/sin prefijo) para dejar una sola conven-
+ción de nombres.
+Proteger fig_heatmaps para n==1 (ax = axes si escalar) y añadir un assert del número
+de periodos esperados.
+Escribir un test que verifique que las filas de la matriz de probabilidades sumen 1.0 (obs)
+y 1.0 incluyendo Desaparece (ext).
+Ejecutabilidad
+Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib, sea-
+born; .venv del clon vacío, requirements.txt incompleto). El input existe: datos/tarea_join/investigadores_consol
+vía cargar_consolidado() (fallback del CSV raw inexistente). No requiere duckdb ni datos/raw.
+Con poetry install, corre de punta a punta.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+13
+13
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+¿Produce lo esperado?
+SÍ: existen artifacts/sprint2_transiciones/fig01_heatmaps_ext.png
+y fig02_heatmaps_obs.png, y en evidencias/ los 20 CSVs con la nomenclatura actual (ma-
+triz_transicion_ext_/matriz_probabilidades_ext_/matriz_transicion_obs_/matriz_probabilidades_obs_
+× 2013_2014, 2014_2015, 2015_2017, 2017_2019, 2019_2021), coincidiendo con lo declarado
+(evidencias/matriz_transicion_*.csv, matriz_probabilidades_*.csv). Adicionalmente hay 8
+archivos de nomenclatura antigua (extendida_/sin prefijo) que evidencian ejecuciones previas
+con una versión distinta del script.
+Riesgo / Limitación
+Bugs / problemas detectados:
+scripts/sprint2_matrices_transicion.py:83-95 — las matrices se calculan dos veces (bucle
+de impresión y matrices_todos_periodos): doble costo de cómputo sobre 77.237 registros y
+riesgo de que las cifras impresas difieran de las exportadas si la función cambiara entre
+ambas llamadas.
+scripts/sprint2_matrices_transicion.py:49 — plt.subplots(1, n) con n=1 devuelve un solo
+Axes (no iterable); el zip(axes, periodos) fallaría con TypeError si el panel tuviera un único
+periodo.
+Evidencias/ legacy: los archivos matriz_transicion_extendida_2017_2019.csv, ma-
+triz_probabilidades_extendida_2019_2021.csv y matriz_transicion_2017_2019.csv (sin
+prefijo) ya no son generados por este script; quedan como evidencia huérfana que puede
+confundir la trazabilidad.
+Recomendación de auditoría
+mantener — es la entrega central del análisis longi-
+tudinal y produce evidencia verificable en el clon; requiere eliminar el cómputo
+duplicado, advertir el sesgo de la matriz observada y limpiar la nomenclatura
+legacy.
+3.0.9 scripts/sprint2_territorial.py
+Rol: orquestacion · Líneas: 142
+Descripción funcional
+Analiza la concentración territorial de los investigadores con el
+índice de Herfindahl-Hirschman (HHI) por departamento y por región para las 6 convocato-
+rias (2013-2021), más las cuotas ( %) por departamento y el top-10 de departamentos. Usa
+src/analisis/territorial (hhi_por_convocatoria, top_territorios, tabla_cuotas) sobre transfor-
+mar(cargar_consolidado()). Salidas: 3 figuras PNG en artifacts/sprint2_territorial/ y 3 CSVs
+en evidencias/.
+Análisis de la lógica
+main() genera fig_top_departamentos (barras apiladas por convoca-
+toria del top 10 con pct por año), calcula e imprime el HHI departamental y regional, genera
+fig_hhi_evolucion (2 subplots lado a lado con anotaciones de valor) y fig_heatmap_cuotas
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+14
+14
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+(heatmap % por departamento×convocatoria, top 15), que además retorna cuotas_pivot para ex-
+portar. Exporta territorial_hhi_por_convocatoria.csv, territorial_hhi_region_por_convocatoria.csv
+y territorial_cuotas_departamento.csv.
+Fortalezas
+Usa correctamente el HHI normalizado a [0,1] sobre cuotas reales (cálculo delegado en
+src/analisis/territorial.hhi), con exclusión de valores NO REPORTADO.
+Triple perspectiva complementaria: top-10, evolución HHI (depto y región) y cuotas
+completas →buena triangulación del hallazgo de concentración.
+Las figuras anotan los valores exactos de HHI, facilitando la lectura sin tabla auxiliar.
+Salidas verificadas: las 3 figuras y los 3 CSVs existen en el clon en las rutas declaradas.
+Debilidades
+fig_hhi_evolucion mezcla tipos en las coordenadas de anotación: el eje X se plotea
+con strings (astype(str)) pero annotate recibe str(int(row[’ANO_CONVO_INT’])),
+dependiendo de la conversión categórica implícita de matplotlib; frágil ante cambios de
+versión y de difícil depuración.
+int(row[’ANO_CONVO_INT’]) lanzaría ValueError si hubiera NaN en el año (los filtros
+de hhi_por_convocatoria no garantizan limpieza total del año).
+El HHI por región depende de la columna NME_REGION_RES_PR derivada en
+Transformacion; el script no verifica que exista, fallando con KeyError poco descriptivo
+si la transformación cambia.
+Sin validación del tamaño muestral por año (el HHI de un año con pocos registros no es
+comparable) ni intervalo/estabilidad del índice.
+Mejoras propuestas
+Anotar usando las mismas posiciones categóricas del plot (p. ej. range(len(data)) o
+plt.xticks con los strings) en lugar de pasar el string como coordenada.
+Proteger con .dropna() sobre ANO_CONVO_INT antes del gráfico y validar la presencia
+de NME_REGION_RES_PR con un mensaje claro.
+Exportar también n_total y n_territorios junto al HHI (ya los retorna hhi_por_convocatoria)
+para contextualizar la evolución.
+Añadir test de humo: HHI Bogotá+Antioquia ≈51 % de concentración reportado en el
+README.
+Ejecutabilidad
+Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib, sea-
+born; .venv del clon vacío, requirements.txt incompleto). El input existe: datos/tarea_join/investigadores_consol
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+15
+15
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+vía cargar_consolidado(). No requiere duckdb. Con poetry install, corre de punta a punta; el
+único supuesto frágil es la columna NME_REGION_RES_PR producida por Transformacion.
+¿Produce lo esperado?
+SÍ, coincidencia total: existen artifacts/sprint2_territorial/fig01_top_departamento
+fig02_hhi_evolucion.png, fig03_heatmap_cuotas.png y evidencias/territorial_hhi_por_convocatoria.csv,
+territorial_hhi_region_por_convocatoria.csv, territorial_cuotas_departamento.csv, todos con
+los nombres exactos del docstring y del README, lo que confirma ejecución previa exitosa.
+Riesgo / Limitación
+Bugs / problemas detectados:
+scripts/sprint2_territorial.py:82
+—
+ax.annotate
+con
+x
+=
+str(int(row[’ANO_CONVO_INT’])): se mezcla una cadena como coordenada de
+datos en un eje categórico (ploteado con astype(str)); funciona solo por la conversión
+unitaria implícita de matplotlib y es un punto de fallo frágil.
+scripts/sprint2_territorial.py:82 — int(row[’ANO_CONVO_INT’]) lanza ValueError si el
+año es NaN; hhi_por_convocatoria filtra geo y año (dropna en sub), pero el DataFrame
+impreso/graficado aquí no garantiza ausencia de NaN en otras filas.
+scripts/sprint2_territorial.py:123 — accede a NME_REGION_RES_PR sin verificar su
+existencia: si Transformacion renombra/elimina esa columna, el script cae con KeyError
+sin mensaje orientativo.
+Recomendación de auditoría
+mantener — el análisis HHI es metodológicamente
+sólido y las salidas están verificadas; corregir las anotaciones del gráfico de evolución
+y blindar la dependencia de la columna de región.
+3.0.10 scripts/sprint2_genero_ocde.py
+Rol: orquestacion · Líneas: 182
+Descripción funcional
+Analiza la representación femenina y la brecha de género por
+área OCDE (gran área, área) en las 6 convocatorias 2013-2021. Usa src/analisis/genero
+(pct_femenino_por_area, tabla_pivot_pct_femenino, brecha_genero, evolucion_pct_femenino)
+sobre transformar(cargar_consolidado()). Salidas: 4 figuras PNG en artifacts/sprint2_genero_ocde/
+(barras, heatmap gran área×convocatoria, líneas de evolución, brecha primera vs última con-
+vocatoria) y 4 CSVs en evidencias/.
+Análisis de la lógica
+main() imprime el % femenino global (filtrando solo FEMENINO/MASCULINO),
+genera las 4 figuras con funciones dedicadas (fig_barras_pct_femenino, fig_heatmap_pct_femenino,
+fig_lineas_evolucion, fig_brecha_genero), y exporta las tablas: pct por gran área, pivot con
+promedio, brecha (M %-F %) y pct por área. Cada función de figura llama a la función de
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+16
+16
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+analisis/genero correspondiente y guarda con plt.savefig(dpi=150) tras plt.tight_layout(); usa
+matplotlib.use(’Agg’) para entornos headless.
+Fortalezas
+Código limpio y directo: separación clara carga→figuras→exportación, funciones de
+figura autocontenidas y reutilizables.
+Uso correcto de la capa analitica (src/analisis/genero): el script no recalcula métricas,
+solo orquesta y visualiza.
+Backend Agg antes de importar pyplot, correcto para ejecución por consola/CI.
+Salidas verificadas: las 4 figuras y los 4 CSVs existen en el clon, en las rutas declaradas
+en el docstring.
+Debilidades
+Escalas fijas que saturan la información: heatmap con vmin=0, vmax=60 (fig02) y líneas
+con ylim(0,70) (fig03); si las áreas STEM superan 60 % de presencia masculina, el color
+y la curva quedan aplastados y no se distingue entre áreas.
+fig_brecha_genero alinea b0 con reindex sobre las áreas de la última convocatoria: si
+una gran área existe en a0 pero no en a1 (o viceversa), se produce NaN silencioso y la
+comparación pierde áreas sin ninguna advertencia.
+El resumen global (pct femenino total) solo se imprime en consola; no se persiste como
+evidencia.
+Sin validación del mínimo de registros por área/convocatoria: celdas con n muy bajo
+(posibles identificadores) se grafican igual que áreas con miles de registros.
+Mejoras propuestas
+Autoeescalar el heatmap (vmin/vmax del dato o por cuantiles) o documentar por qué
+60 % es el tope; igual para ylim de fig03.
+En fig_brecha_genero usar union de áreas (b0 y b1) y rellenar NaN con 0 o marcar ’sin
+dato’, e imprimir advertencia.
+Exportar el resumen global a un CSV de evidencias.
+Anotar n por celda (o tamaño de punto) en el heatmap para visibilizar áreas con pocos
+investigadores.
+Ejecutabilidad
+Ejecutable en el clon solo tras instalar dependencias (matplotlib, seaborn,
+pandas; .venv del clon vacío, requirements.txt no las lista aunque pyproject sí). El input
+existe: cargar_consolidado() usa el fallback datos/tarea_join/investigadores_consolidado.xlsx
+(presente). No requiere datos/raw ni duckdb. Con poetry install el script corre de punta a
+punta en headless.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+17
+17
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+¿Produce lo esperado?
+SÍ, coincidencia total: existen artifacts/sprint2_genero_ocde/fig01_barras_pct_fem
+fig02_heatmap_pct_femenino.png, fig03_lineas_evolucion.png, fig04_brecha_genero.png y
+evidencias/genero_pct_femenino_por_gran_area.csv, genero_tabla_pivot_gran_area.csv,
+genero_brecha_por_gran_area.csv, genero_pct_femenino_por_area.csv. Las 8 salidas de-
+claradas en el docstring y en el README están presentes y con los nombres exactos, lo que
+indica ejecución exitosa previa.
+Riesgo / Limitación
+Bugs / problemas detectados:
+scripts/sprint2_genero_ocde.py:132-135 — b0.reindex(areas) con areas derivada solo de
+b1: si el conjunto de gran áreas difiere entre convocatorias extremas, las barras de b0
+quedan en NaN (no se dibujan) sin advertencia, y las áreas exclusivas de a0 desaparecen
+del gráfico.
+scripts/sprint2_genero_ocde.py:81 — sns.heatmap con vmin=0, vmax=60 fijos: cualquier
+gran área con % femenino >60 (esperable en ciencias de la salud o educación) satura el
+rojo/verde de RdYlGn y pierde discriminación visual.
+scripts/sprint2_genero_ocde.py:108 — ax.set_ylim(0, 70) en fig03: series que superen
+70 % (posible en áreas pequeñas) quedan cortadas en el borde superior sin indicación.
+Recomendación de auditoría
+mantener — análisis correcto y reproducible con
+salidas verificadas; las debilidades son de visualización (escalas fijas) y de robustez
+del alineamiento de áreas, corregibles con cambios menores.
+3.0.11 scripts/sprint3_redes.py
+Rol: orquestacion · Líneas: 134
+Descripción funcional
+Análisis de redes de co-filiación institucional: grafo donde nodo =
+institución y arista = investigadores con doble afiliación, a nivel global (2013-2021) y por convo-
+catoria. Usa src/analisis/redes (construir_pares, construir_grafo, metricas_grafo, tabla_nodos,
+tabla_aristas, metricas_por_convocatoria) sobre transformar(cargar_consolidado()). Salidas:
+3 figuras PNG en artifacts/sprint3_redes/ (distribución de grado, evolución de aristas/nodos,
+top-20 instituciones por grado ponderado) y 4 CSVs en evidencias/ (pares, nodos, aristas,
+métricas por convocatoria).
+Análisis de la lógica
+main() extrae los pares de doble afiliación (solo INST_FILIA con
+’|’), construye el grafo global con peso = investigadores compartidos, imprime métricas (no-
+dos, aristas, densidad, componentes, hub), genera 3 figuras con funciones dedicadas y ex-
+porta 4 CSVs. metricas_por_convocatoria reutiliza construir_grafo(pares, anio) para la
+evolución anual. La normalización de instituciones (colapsar sedes/seccionales) ocurre en
+src/analisis/redes.normalizar_institucion.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+18
+18
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Fortalezas
+Cobertura completa del análisis de red: grafo global, evolución por convocatoria, top
+instituciones y exportación tabular de nodos/aristas para reproducibilidad.
+El uso de grado ponderado (weight) en nodos y aristas refleja correctamente el conteo de
+investigadores compartidos.
+La normalización de instituciones (sedes, paréntesis, mayúsculas) está delegada y docu-
+mentada en la capa analitica, evitando duplicados espurios.
+Salidas verificadas: las 3 figuras y los 4 CSVs existen en el clon en las rutas declaradas.
+Debilidades
+Línea 102: ’instituciones mencionadas’ = nunique(inst_a) + nunique(inst_b) cuenta dos
+veces toda institución que aparece en ambas columnas; la cifra impresa está sobreestimada
+(debería ser la unión).
+fig_distribucion_grado dibuja una barra por nodo sin etiquetas de eje X legibles: con
+cientos de nodos la figura es poco informativa; un histograma log-log del grado sería más
+analítico.
+No reporta métricas de comunidad (modularidad, componentes gigantes) pese a impri-
+mir n_componentes; el análisis de ’poder institucional’ queda en grado/betweenness
+solamente.
+Depende de la columna INST_FILIA con separador ’|’: si Transformacion cambia el
+formato (p. ej. ’;’), construir_pares devuelve un DataFrame vacío sin advertencia.
+Mejoras propuestas
+Corregir el conteo de instituciones con pd.unique(concat(inst_a, inst_b)) o una unión
+de conjuntos.
+Sustituir las barras por nodo por un histograma de distribución de grado (escala log-log)
+y anotar el grado medio.
+Añadir detección de comunidad (nx.community.louvain_communities) y tamaño del
+componente gigante al resumen.
+Validar en construir_pares que INST_FILIA contenga ’|’ y advertir si el número de
+pares es 0 o anómalo.
+Ejecutabilidad
+Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib,
+seaborn, networkx; .venv del clon vacío, requirements.txt no los lista pero pyproject sí). El
+input existe: datos/tarea_join/investigadores_consolidado.xlsx vía cargar_consolidado(). No
+requiere duckdb. Con poetry install, corre de punta a punta.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+19
+19
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+¿Produce lo esperado?
+SÍ, coincidencia total: existen artifacts/sprint3_redes/fig01_distribucion_grado.png
+fig02_evolucion_aristas.png, fig03_top_instituciones.png y evidencias/redes_pares_cofiliacion.csv,
+redes_nodos_global.csv, redes_aristas_global.csv, redes_metricas_por_convocatoria.csv, con
+los nombres exactos del docstring y del README; confirma ejecución previa exitosa.
+Riesgo / Limitación
+Bugs / problemas detectados:
+scripts/sprint3_redes.py:102 — pares[’inst_a’].nunique() + pares[’inst_b’].nunique() so-
+breestima ’instituciones mencionadas’ al sumar cardinalidades de columnas que comparten
+elementos; la cifra impresa en consola no es el número real de instituciones.
+scripts/sprint3_redes.py:48-57 — fig_distribucion_grado genera una barra por nodo
+(len(grados) barras) sin eje X útil: con cientos de instituciones la figura se vuelve ilegible y
+aporta poco frente a un histograma de la distribución de grado.
+scripts/sprint3_redes.py:100 — construir_pares(df) asume implícitamente el separador ’|’
+en INST_FILIA (src/analisis/redes.py:61-64); si la transformación cambia el formato, el
+grafo queda vacío sin ningún warning.
+Recomendación de auditoría
+mantener — es el análisis de redes estándar del
+observatorio con salidas verificadas y evidencia completa; corregir el doble conteo
+impreso y mejorar la figura de distribución de grado.
+3.0.12 scripts/sprint4_diversidad.py
+Rol: orquestacion · Líneas: 172
+Descripción funcional
+Analiza las variables de diversidad (víctima de conflicto, grupo étnico,
+discapacidad) comparando a los investigadores reconocidos en la convocatoria 2021 con propor-
+ciones poblacionales de referencia DANE 2018 / RUV 2021. Usa src/analisis/diversidad (cober-
+tura_por_convocatoria, distribucion_categoria, comparar_dane, interseccional_genero_etnia,
+categoria_por_minoria) sobre transformar(cargar_consolidado()). Salidas: 3 figuras PNG en
+artifacts/sprint4_diversidad/ y 7 CSVs en evidencias/ (uno más que los 6 del docstring).
+Análisis de la lógica
+main() calcula la cobertura temporal de las 3 variables (solo
+se capturan desde 2021, hallazgo crítico documentado en el docstring), filtra df_2021 =
+df[ANO_CONVO_INT == 2021], imprime las distribuciones excluyendo NO DISPONI-
+BLE/NO REGISTRA, ejecuta comparar_dane (subrepresentación de minorías vs DANE/RUV
+con razón pct_dane/pct_minc) y genera 3 figuras + exporta 7 CSVs. fig_categorias_por_minoria
+apila la distribución de categorías académicas por grupo étnico minoritario.
+Fortalezas
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+20
+20
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+El hallazgo metodológico central está bien documentado: las variables de diversidad solo
+existen desde la convocatoria 894 (2021), por lo que todo el análisis se acota honestamente
+a 2021.
+La comparación con DANE 2018 / RUV 2021 con razón de subrepresentación es meto-
+dológicamente apropiada y da un resultado de política pública accionable.
+Exporta evidencia completa: cobertura, distribuciones por variable, comparación DANE,
+cruce interseccional género×etnia y categorías por etnia.
+Salidas verificadas: las 3 figuras y los 7 CSVs existen en el clon.
+Debilidades
+Drift docstring-código: el docstring declara 6 CSVs pero el código escribe 7 (agrega
+diversidad_distribucion_victimas_2021.csv en la línea 158, no listado).
+Bug metodológico heredado de src/analisis/diversidad.comparar_dane (líneas 78-80):
+el comentario afirma ’excluir NINGUN GRUPO ETNICO del denominador para ver
+minorias’, pero el código solo excluye NO DISPONIBLE; quienes respondieron ’NINGUN
+GRUPO ETNICO’ permanecen en el denominador, diluyendo los porcentajes de minorías
+y la razón de subrepresentación.
+Categorías académicas hardcodeadas con tildes (’INVESTIGADOR SÉNIOR’, ’INVES-
+TIGADOR EMÉRITO’, línea 105): si la normalización de NME_CLASIFICACION_PR
+usa otro casing/acentuación, la figura puede salir vacía (el filtro cats_disponibles lo
+mitiga pero no avisa).
+El filtro ’NING’ (línea 103) elimina cualquier valor que contenga esas tres letras (p. ej.
+un grupo ’NINGUNA’ mal codificado) sin validación del vocabulario real.
+No hay intervalos de confianza ni tests de significancia para las diferencias vs DANE; la
+’subrepresentación’ se reporta sin incertidumbre.
+Mejoras propuestas
+Actualizar el docstring para incluir diversidad_distribucion_victimas_2021.csv (o elimi-
+nar esa exportación si no es entregable).
+Corregir comparar_dane para excluir ’NINGUN GRUPO ETNICO’ del denominador
+(como dice su comentario) y añadir un test que verifique denominador y suma de pct.
+Derivar las categorías de las columnas reales del DataFrame (p. ej. de un catálogo) en
+lugar de hardcodear strings con acentos.
+Añadir IC (binomial) a los porcentajes vs DANE y una nota sobre el tamaño muestral
+de 2021.
+Reportar n de ’NINGUN GRUPO ETNICO’ y NO DISPONIBLE para que el lector vea
+la cobertura real del denominador.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+21
+21
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Ejecutabilidad
+Ejecutable en el clon solo tras instalar dependencias (pandas, matplotlib, sea-
+born; .venv del clon vacío, requirements.txt incompleto). El input existe: datos/tarea_join/investigadores_consol
+vía cargar_consolidado(). Requiere que Transformacion genere ANO_CONVO_INT == 2021
+para la convocatoria 894 (no verificado en el script). No requiere duckdb ni datos/raw. Con
+poetry install, corre de punta a punta.
+¿Produce lo esperado?
+SÍ: existen artifacts/sprint4_diversidad/fig01_cobertura_temporal.png,
+fig02_comparacion_dane.png, fig03_categorias_por_minoria.png y los 7 CSVs de evidencias
+(diversidad_cobertura_por_convocatoria.csv, diversidad_distribucion_etnia_2021.csv, diver-
+sidad_distribucion_discapacidad_2021.csv, diversidad_distribucion_victimas_2021.csv, di-
+versidad_comparacion_dane.csv, diversidad_interseccional_genero_etnia.csv, diversidad_categorias_por_etni
+Coincide con el código; difiere del docstring en 1 CSV (victimas_2021 no declarado), lo que
+confirma que se ejecutó una versión del script y hubo drift documental.
+Riesgo / Limitación
+Bugs / problemas detectados:
+src/analisis/diversidad.py:78-80 — comentario vs código: ’excluir NINGUN GRUPO
+ETNICO del denominador’ pero el código filtra solo ’NO DISPONIBLE’ (etnia =
+df_2021[TXT_GRUPO_ETNICO != ’NO DISPONIBLE’]; n_etnia_resp = len(etnia)
+incluye NINGUN GRUPO ETNICO): los pct_minciencias y las razones de subrepresenta-
+ción de minorías quedan diluidos por el denominador inflado. Bug metodológico que afecta
+la figura fig02 y evidencias/diversidad_comparacion_dane.csv.
+scripts/sprint4_diversidad.py:105 — lista hardcodeada con tildes [’INVESTIGADOR
+SÉNIOR’, ’INVESTIGADOR EMÉRITO’]: depende del casing/acentuación exacta que
+produzca Transformacion en NME_CLASIFICACION_PR; si difiere, la figura 03 muestra
+categorías faltantes en silencio.
+scripts/sprint4_diversidad.py:103
+—
+cat_etnia[...].str.contains(’NING’,
+case=False,
+na=False) es un filtro de subcadena: eliminaría también valores como ’NINGUNA...’
+si el vocabulario de la variable cambiara.
+scripts/sprint4_diversidad.py:158 — exporta diversidad_distribucion_victimas_2021.csv
+sin declararlo en el docstring (líneas 12-22), generando evidencia no documentada.
+Recomendación de auditoría
+mejorar — el análisis es el más sensible metodo-
+lógicamente (comparación con DANE/RUV) y tiene salidas verificadas, pero
+el denominador incorrecto en comparar_dane compromete la cifra central de
+subrepresentación; corregir ese bug antes de publicar y alinear docstring-código.
+3.0.13 scripts/sprint5_produccion.py
+Rol: orquestacion · Líneas: 251
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+22
+22
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Descripción funcional
+Análisis integral de producción de grupos: cobertura de reconoci-
+miento (autores únicos y por convocatoria), productividad por categoría, brecha de género ×
+gran área OCDE, concentración territorial, mix de tipologías y reconocidos sin producción.
+Usa src/ingesta (cargar_consolidado, cargar_produccion), src/Transformacion.transformar y
+10 funciones de src/analisis/produccion. Entradas: investigadores consolidados + producción
+Socrata; salidas: 6 figuras PNG y 8 evidencias (7 CSVs + 1 JSON).
+Análisis de la lógica
+Flujo 1→8: (1) carga y transforma; (2) cobertura_autores_unicos de-
+vuelve dict de solape de IDs; (3) cobertura_reconocidos agrupa por ANO_CONVO_INT mar-
+cando es_reconocido = ID_PERSONA_PD ∈set(ID_PERSONA_PR del padrón EN CUAL-
+QUIER convocatoria); (4) productividad_por_categoria agrupa producción por (persona,
+convocatoria), hace left merge con el padrón y agrega por (año, NME_CLASIFICACION_PR)
+media/mediana/pct con ≥1 producto; (5) brecha_productividad_genero pivotea promedios
+F/M por área OCDE; (6) productividad_territorial calcula % productos vs % investigadores
+y ratio; (7) mix_tipologias y tipologias_por_categoria (porcentajes por año/categoría) y
+reconocidos_sin_produccion (intersección de sets por convocatoria); (8) genera 6 figuras
+matplotlib/seaborn y exporta CSVs y JSON.
+Fortalezas
+Orquestación clara y progresiva [1/8]. . . [8/8] con impresión de resultados intermedios
+(auditable en consola).
+Separación limpia entre lógica de análisis (src/analisis/produccion.py) y presentación
+(figuras), facilitando testing y reuso.
+Salidas exhaustivas y documentadas en el docstring; las 6 figuras y las 8 evidencias
+existen en el clon.
+Incluye indicador de calidad de captura (reconocidos sin producción) y métricas robustas
+(mediana además de media).
+Debilidades
+Definición de ’reconocido’ inconsistente con sprint5_duckdb.py: cobertura_reconocidos
+marca como reconocido a quien lo fue en cualquier convocatoria (src/analisis/produccion.py:63-
+65), mientras la vista DuckDB exige la misma convocatoria; las coberturas resultantes
+(63.34 % DuckDB vs. CSV) no son comparables.
+Carga ~3.16M filas de producción en pandas y hace merges/grupos completos en memoria:
+alto consumo de RAM y sin streaming ni particionado.
+normalizar_produccion convierte IDs a numérico Int64 (src/analisis/produccion.py:38-
+40): cualquier id con ceros a la izquierda se pierde, riesgo silencioso de cruces falsos si el
+padrón conserva el formato string.
+El pct de la figura 1 se dibuja a total+5000 unidades fijas, escala que no se adapta a
+convocatorias pequeñas.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+23
+23
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+No hay validación de que el join producción↔padrón haya encontrado coincidencias (una
+caída de cobertura se reporta como hallazgo, no como error).
+Mejoras propuestas
+Unificar la definición de ’reconocido’ entre scripts (recomendado: misma convocatoria) y
+documentarla en un único lugar.
+Validar tipos y solape de IDs antes de los merges (advertir si el match <umbral).
+Reducir memoria: leer solo columnas necesarias de producción o procesar por convocatoria.
+Añadir tests sobre produccion_productividad_por_categoria.csv (p. ej. productos_promedio
+Senior >Junior en todas las convocatorias).
+Hacer la posición de la etiqueta de % proporcional al total (ax.text con offset relativo).
+Ejecutabilidad
+NO ejecutable tal cual con el clon: cargar_produccion() lanza FileNotFoun-
+dError porque datos/raw/produccion_grupos.csv está gitignored y ausente. cargar_consolidado()
+sí funciona (cae a datos/tarea_join/investigadores_consolidado.xlsx). Dependencias: pandas,
+numpy, matplotlib, seaborn (todas estándar del proyecto). Con el CSV de producción en
+datos/raw, el script corre completo.
+¿Produce lo esperado?
+SÍ: las 6 figuras de artifacts/sprint5_produccion/ y las 8 evidencias
+(produccion_cobertura_por_convocatoria.csv, produccion_productividad_por_categoria.csv,
+produccion_brecha_genero.csv, produccion_concentracion_territorial.csv, produccion_mix_tipologias.csv,
+produccion_tipologias_por_categoria.csv, produccion_reconocidos_sin_produccion.csv, pro-
+duccion_resumen_cobertura.json) existen. El CSV de productividad muestra Junior 9.9-17.9
+y Senior 39.0-50.1 productos promedio según convocatoria, coherente con el hallazgo ’Senior
+produce más’. Nota: la cifra 30/65/121 mencionada en el encargo corresponde a la métrica
+acumulada de sprint5_duckdb.py, no a este CSV (que es por convocatoria).
+Riesgo / Limitación
+Bugs / problemas detectados:
+src/analisis/produccion.py:63-65 (invocado desde sprint5_produccion.py:203) — cobertu-
+ra_reconocidos marca es_reconocido sin condicionar la convocatoria: un producto de 2013
+firmado por alguien reconocido solo en 2021 cuenta como ’firmado por reconocido’, sobre-
+estimando la cobertura frente a la definición por convocatoria del DuckDB (documentado
+en el docstring de la función como decisión, pero no advertido en el script orquestador).
+scripts/sprint5_produccion.py:75-78 — la etiqueta de porcentaje se posiciona en total+5000
+y el bucle itera zip(n_reconocidos, n_productos, pct_reconocidos): si n_productos <5000
+la etiqueta queda fuera del rango visible del eje (cosmético).
+scripts/sprint5_produccion.py:243-244 — import json dentro de main() (estilo menor;
+debería ir al tope con los demás imports).
+src/analisis/produccion.py:38-40 — pd.to_numeric(errors=’coerce’) convierte IDs no numé-
+ricos a NA silenciosamente; si ID_PERSONA_PD tiene formatos mixtos, filas completas
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+24
+24
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+se pierden del análisis sin reporte.
+Recomendación de auditoría
+mantener — es el script central del sprint 5, con
+salidas verificadas y documentadas; las mejoras prioritarias son unificar la definición
+de ’reconocido’ entre scripts y validar la calidad del join antes de interpretar
+coberturas.
+3.0.14 notebooks/tarea_gran_tabla/analisis_de_clusters.R
+Rol: legacy · Líneas: 94
+Descripción funcional
+Clustering k-prototypes sobre la GRAN_TABLA(SIN ID) para
+datos mixtos: convierte las categóricas en factor/ordinal, elimina casos incompletos con cc(),
+aplica kproto(k = 3) con set.seed(123) y describe los clusters con tablas de proporción
+por variable (gran área, género, región de nacimiento/residencia, formación, clasificación,
+discapacidad) y medias de edad. Corresponde a la tarea de análisis multivariado de la gran
+tabla.
+Análisis de la lógica
+klaR + clustMixType + factoextra + dplyr: mutate(across(c(1:10,16:23),
+factor) y ordered() para formación/clasificación), cc() para casos completos (retiene el 91.6 % de
+la base), kproto(GT_NA, k = 3), filter por cluster y table()/mean() por grupo para perfilado.
+Fortalezas
+Elección correcta del método: k-prototypes (clustMixType) es el algoritmo apropiado
+para datos mixtos categórico-numérico
+Fija semilla (set.seed(123)): el resultado del kproto es reproducible
+Reporta explícitamente la proporción de datos retenidos tras eliminar casos incompletos
+(91.6 %)
+Perfilado de clusters con proporciones por variable y media de edad: enfoque descriptivo
+adecuado para interpretar grupos
+Debilidades
+k = 3 fijado sin validación: no hay curva de withinss/silhouette, ni comparación de varios
+k, ni análisis del lambda (importancia de variables) de kproto
+cc() (función de casos completos del paquete mice) elimina el 8.4 % de las filas sin evaluar
+sesgo: los registros faltantes pueden ser sistemáticos (p. ej., ’Exterior’, sin filiación, sin
+código DANE)
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+25
+25
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+mice NO está cargado en este script (solo readxl, klaR, dplyr, factoextra, clustMixType):
+cc() solo existe si se ejecutó antes analisis_multivariado_base_gran_table.R en la misma
+sesión: no reproducible
+Incluye el outlier de edad (956 años) en el clusterizado sin filtrar (los análisis previos sí
+lo descartaban)
+Categorías ’No disponible’/’Exterior’ dominantes distorsionan las distancias mixtas del
+kproto (el algoritmo estandariza categorías de forma uniforme)
+El perfilado es solo inspección visual de proporciones: sin chi-cuadrado/ANOVA por
+variable vs cluster ni tamaño de clusters reportado
+Ruta hardcodeada ’Downloads/GRAN_TABLA(SIN ID).xlsx’, inexistente en el clon
+Mejoras propuestas
+Validar k con varios valores (p. ej., k = 2..8) usando métricas de clustMixType (lambda,
+withinss) o silhouette para datos mixtos
+Cargar mice (o definir casos completos con complete.cases()) y documentar el sesgo de
+la eliminación; evaluar imputación como alternativa
+Filtrar edad >100 antes de clusterizar (coherencia con la limpieza previa)
+Reportar el lambda de cada variable (contribución al clustering) y validar perfiles con
+pruebas formales
+Documentar la granularidad y el número de filas por cluster
+Ejecutabilidad
+NO. Falta ’Downloads/GRAN_TABLA(SIN ID).xlsx’ en el clon y, en una
+sesión limpia, cc() no existe porque mice no está cargado (depende de ejecutar antes el script
+multivariado en la misma sesión R).
+¿Produce lo esperado?
+El método (k-prototypes) es el adecuado para datos mixtos, pero
+la selección de k sin validación y la eliminación de NA por casos completos sin evaluar sesgo
+son errores metodológicos: los clusters pueden ser artefactos del número de grupos impuesto y
+de la pérdida de 8.4 % de la muestra. Los perfiles por proporción son descriptivos y no validan
+la estructura encontrada.
+Riesgo / Limitación
+Bugs / problemas detectados:
+cc() (mice) usado sin cargar mice en el script: dependencia oculta de sesión previa
+k = 3 fijo sin justificación ni validación (no hay análisis de sensibilidad a k)
+Outlier de edad (956 años) incluido en el clusterizado
+Eliminación de casos incompletos (8.4 %) sin análisis de sesgo
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+26
+26
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Recomendación de auditoría
+Mantener como referencia académica de la tarea
+(muestra el uso correcto de k-prototypes para datos mixtos). No migrar: el pipeline
+moderno no incluye clustering; si se reintroduce, hacerlo con validación de k,
+manejo de NA documentado y datos depurados.
+3.0.15 notebooks/tarea_gran_tabla/analisis_multivariado_base_gran_table.R
+Rol: legacy · Líneas: 405
+Descripción funcional
+Análisis multivariado de la gran tabla: análisis de corresponden-
+cia (CA) para pares de categóricas (gran área x género, INST_FILIA x género, nivel de
+formación x clasificación), análisis de correspondencia múltiple (MCA) para conjuntos de
+categóricas (5 variables; 3 variables de población) y FAMD (factor analysis of mixed data)
+con ANO_CONVO, gran área, género, país de nacimiento y EDAD_ANOS_PR. Reporta
+eigenvalores, contribuciones y cos2, y construye biplots con ggrepel. Incluye análisis de faltantes
+(plot_missing, md.pattern) y retira una fila totalmente vacía.
+Análisis de la lógica
+FactoMineR (CA, MCA, FAMD) + factoextra + ggplot2 + ggrepel +
+mice + DataExplorer: table() ->CA(bc/ bd/ bf, graph = F), MCA(GT[, c(2,5,6,7,16)], graph
+= F) y MCA(GT[, c(20:22)], ncp = 16), FAMD(GT[-50891, c(2,5,6,7,15)], ncp = 20, graph =
+T); extrae b$eig, $row/$col/$var/$quanti.var/$quali.var coord/cos2/contrib y grafica varianza
+y biplots.
+Fortalezas
+Elección correcta de método según tipo de datos: CA para tablas de contingencia 2 x k,
+MCA para múltiples categóricas, FAMD para datos mixtos
+Reporta contribuciones y cos2 (calidad de representación de filas/columnas), buenas
+prácticas de lectura de CA/MCA/FAMD
+Detecta y elimina la fila totalmente vacía (md.pattern / !is.finite) antes del FAMD
+Gráficos de varianza explicada y acumulada con umbral del 70 % para decidir número de
+dimensiones
+Debilidades
+Ruta hardcodeada ’Downloads/GRAN_TABLA(SIN ID).xlsx’, inexistente en el clon
+CA sobre INST_FILIA x género con miles de filas (instituciones y combinaciones
+PIPE sin normalizar): tabla dispersa donde las categorías con frecuencia 1 dominan el
+chi-cuadrado; resultado poco interpretable
+Remoción de la fila 50891 por índice hardcodeado (GT[-50891, ...]): frágil si cambia la
+base; debería ser un filtro por contenido
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+27
+27
+3
+DOCUMENTACIÓN Y CRÍTICA POR ARCHIVO DE CÓDIGO
+Comentario del MCA (dice NME_PAIS_RES_PR) no coincide con el código (columna
+16): documentación desalineada
+Los CA no van acompañados de chisq.test: no se reporta significancia ni frecuencias
+esperadas
+MCA/FAMD con categorías ’No disponible’/’Exterior’ y NAs sin tratamiento explícito
+documentado (depende del default na.method de FactoMineR)
+FAMD con ncp = 20 para solo 5 variables: sobredimensionado
+No guarda resultados (coordenadas/contribuciones) en archivos
+Mejoras propuestas
+Excluir INST_FILIA del CA o agregar a nivel de institución (eliminar pipes) antes de
+analizar
+Acompañar cada CA con chisq.test y verificación de frecuencias esperadas
+Eliminar la fila vacía con un filtro (p. ej., rowSums(is.na()) <ncol) en vez del índice
+50891
+Alinear comentarios con columnas y documentar el tratamiento de NA
+Guardar eig/coord/cos2/contrib en xlsx para trazabilidad
+Ejecutabilidad
+NO. Falta ’Downloads/GRAN_TABLA(SIN ID).xlsx’ en el clon.
+¿Produce lo esperado?
+Metodología en general correcta: CA/MCA/FAMD están bien
+aplicados según el tipo de variables. Riesgos: el CA sobre INST_FILIA con tabla dispersa
+infla la inercia de categorías raras (poca interpretabilidad); FAMD con ncp=20 es inofensivo
+pero sobredimensionado; la lectura de contribuciones sin pruebas de significancia puede llevar
+a sobreinterpretación.
+Riesgo / Limitación
+Bugs / problemas detectados:
+Índice hardcodeado 50891 para eliminar la fila vacía (rompe con cualquier cambio de la
+base)
+Comentario del MCA (NME_PAIS_RES_PR) desalineado con la columna 16 del código
+CA sobre INST_FILIA sin normalizar los valores PIPE (instituciones múltiples tratadas
+como categorías únicas)
+Sintaxis ggplot con aes(shape = ’...’) dentro de geom_point que no varía la forma real
+(leyenda engañosa)
+Recomendación de auditoría
+Mantener como referencia académica (buen ejemplo
+de aplicación de CA/MCA/FAMD). No migrar tal cual: el pipeline moderno no
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+28
+28
+5
+LÓGICA DE CONSTRUCCIÓN Y CUMPLIMIENTO DEL OBJETIVO
+realiza análisis factorial; si se requiere en el futuro, reimplementarlo con datos
+limpios, validación de supuestos y guardado de resultados.
+4 Validación de la calidad de pruebas, tratamientos y lógica
+estadística
+La estadística descriptiva y exploratoria es sólida (matrices de Markov correctas, HHI correcto,
+representación relativa vs DANE correcta en concepto). Veredicto de auditoría: la inferencia
+formal es la principal debilidad: (a) no se testea la propiedad markoviana ni la homogeneidad
+temporal; (b) HHI sin IC bootstrap y sin Gini/Theil; (c) brechas de género/diversidad sin
+modelos ajustados (odds ratio, IC); (d) métricas de red sin modelos nulos; (e) clustering legacy
+(k-prototypes, k=3 fijo) sin validación (silhouette/Calinski-Harabasz) y con pérdida del 8.4 % de
+la muestra (cc()); (f) bug metodológico en comparar_dane(): el comentario excluye ’NINGUN
+GRUPO ETNICO’ del denominador pero el código no (diluye la subrepresentación); (g) redes.py
+pierde pares de 3+ afiliaciones (split n=1). Recomendación: supervivencia (KM/Cox) para
+retención, IC bootstrap en índices, modelos logísticos ajustados, modelos nulos de configuración
+y validación formal de clusters.
+Nota metodológica
+Los detalles metodológicos por eje (longitudinal, territorial, género, diversidad, redes, productivi-
+dad, clustering) y las decisiones de tratamiento de datos se documentan en el documento maestro
+de auditoría (sección 6).
+5 Lógica de construcción y cumplimiento del objetivo
+La lógica de construcción del eje analítico es correcta: capa reutilizable en src/analisis/*.py
++ orquestación por sprint con salidas trazables (artifacts/, evidencias/). La ejecución real
+verificada: 8/10 scripts de análisis corren OK en un clon fresco (sprint5_* fallan por datos de
+producción gitignored; sprint6_sankey_* por kaleido no declarado). El clustering vive en R
+legacy fuera del pipeline (no reproducible, rutas Downloads/). Cumplimiento: el objetivo se
+cumple en lo descriptivo; la ampliación inferencial propuesta por esta consultoría es la mejora
+de mayor valor.
+Hallazgo
+El repositorio se construyó en dos etapas: tareas académicas iniciales (notebooks tarea_*, ago–oct
+2025) y pipeline de ingeniería de datos (src/ + scripts/sprint*, oct 2025 – may 2026). La
+valoración de si esta lógica fue correcta u óptima para el objetivo específico se resume arriba; la
+auditoría global está en el documento maestro.
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+29
+29
+REFERENCIAS
+6 Línea de tiempo de commits (contexto del repositorio)
+El repositorio fue construido con 133 commits entre 2025-08-24 y 2026-05-14 por 12
+identidades de autor. La tabla completa de commits (133 filas) está en el documento maestro,
+sección 8 y apéndice. Para este objetivo, la línea de tiempo relevante se resume por fases:
+Fase académica (ago–oct 2025): análisis por convocatoria, join, dimensiones/hechos y
+gran tabla (autores: Paula, JulianMendez27, camiloacr1322, Maria Amaya).
+Fase de ingeniería (oct 2025 – abr 2026): src/, scripts/sprint2..5, DuckDB y
+dashboard (Victor-Diaz-Usta).
+Fase de cierre (abr–may 2026): Sprint 6 (calidad, tabla maestra IES, Sankeys, geografía)
+y merge final (Victor-Diaz-Usta).
+Referencias
+Documentación de Auditoría · Observatorio MinCiencias · USTA · 2026-I
+30
+30

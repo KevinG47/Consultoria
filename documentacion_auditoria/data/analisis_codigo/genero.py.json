@@ -1,0 +1,31 @@
+{
+  "archivo": "src/analisis/genero.py",
+  "lenguaje": "Python",
+  "lineas": 85,
+  "rol": "analisis",
+  "descripcion": "Análisis de género por área OCDE (Issue #22): porcentaje femenino, tablas pivote y brecha de género por convocatoria a 3 niveles de área. Entrada: DataFrame transformado con NME_GENERO_PR estandarizado y ANO_CONVO_INT; salida: DataFrames tidy/pivot listos para exportar a evidencias/genero_*.csv y graficar.",
+  "logica": "pct_femenino_por_area() filtra género en {FEMENINO, MASCULINO} (excluye NO REPORTADO del denominador, decisión documentada), agrupa por (año, área), hace value_counts().unstack() y calcula n_femenino, n_masculino, n_total y pct. tabla_pivot_pct_femenino() pivotea área x año con promedio y ordena; brecha_genero() deriva pct_masculino = 1 - pct_femenino y la brecha; evolucion_pct_femenino() reordena. El script sprint2_genero_ocde.py llama a estas funciones y exporta los CSVs.",
+  "critica_fortalezas": [
+    "Decisión metodológica explícita y correcta: excluir NO REPORTADO del denominador evita sesgos de imputación.",
+    "Funciones puras, parametrizables (col_area, col_year) y reutilizables en scripts y dashboard.",
+    "Documenta el contrato de entrada (género estandarizado, ANO_CONVO_INT disponible)."
+  ],
+  "critica_debilidades": [
+    "evolucion_pct_femenino() es redundante (mismo DataFrame ordenado); el propio docstring lo admite.",
+    "No aplica dropna sobre col_area: un área con NaN se pierde silenciosamente del groupby (aceptable pero implícito).",
+    "pct_femenino = n_fem/n_total puede dividir por cero si un grupo tiene 0 registros reportados -> NaN propagado a pivote y brecha sin aviso.",
+    "brecha usa pct_masculino = 1 - pct_femenino, válido solo dentro del universo 'reportado'; la columna n_masculino calculada no se aprovecha."
+  ],
+  "mejoras": [
+    "Eliminar evolucion_pct_femenino o fusionarla con un parámetro sort.",
+    "Añadir manejo explícito de grupos vacíos (n_total=0 -> pct=NaN con advertencia).",
+    "Escribir tests con df pequeño (área 100% hombres, área con solo NO REPORTADO)."
+  ],
+  "ejecutabilidad": "Sí en el clon: solo requiere el DataFrame transformado, que se obtiene de cargar_consolidado() con fallback al XLSX presente. Sin dependencias de datos/raw ni .duckdb.",
+  "produce_esperado": "Sí: evidencias/genero_pct_femenino_por_area.csv, genero_pct_femenino_por_gran_area.csv, genero_brecha_por_gran_area.csv y genero_tabla_pivot_gran_area.csv existen en el clon, junto con artifacts/sprint2_genero_ocde/fig01-04.png — consistente con el README (Issue #22).",
+  "bugs": [
+    "src/analisis/genero.py:32-33: conteos.get('FEMENINO', 0) funciona porque DataFrame.get acepta default escalar, pero si un grupo queda sin filas reportadas, n_total=0 y pct_femenino=NaN (división por cero) sin advertencia — caso límite real si una convocatoria tuviera 100% NO REPORTADO.",
+    "src/analisis/genero.py:67: pct_masculino = 1 - pct_femenino asume universo binario; correcto tras el filtro, pero la columna n_masculino ya existe y no se usa (inconsistencia menor)."
+  ],
+  "recomendacion": "mantener — análisis correcto y bien documentado; mejoras menores de robustez (grupos vacíos) y limpieza de redundancia."
+}

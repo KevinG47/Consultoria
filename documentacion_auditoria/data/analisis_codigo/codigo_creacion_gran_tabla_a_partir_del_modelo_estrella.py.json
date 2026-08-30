@@ -1,0 +1,39 @@
+{
+  "archivo": "notebooks/tarea_gran_tabla/codigo_creacion_gran_tabla_a_partir_del_modelo_estrella.py",
+  "lenguaje": "Python",
+  "lineas": 205,
+  "rol": "legacy",
+  "descripcion": "Ensambla la gran tabla a partir del modelo estrella: lee todos los CSV/Excel de una carpeta, detecta la tabla de hechos por nombre (regex 'hecho|hechos|fact') o por máximo de filas, detecta claves de unión con heurísticas (columnas comunes únicas, llaves compuestas, columnas tipo ID) y hace merges left con guarda anti-1:N; exporta gran_tabla.* y un reporte de uniones, y luego elimina columnas ID para producir GRAN_TABLA(SIN ID). Corresponde a la tarea de creación de la gran tabla a partir del modelo estrella.",
+  "logica": "pandas + re + pathlib: read_any() por archivo/hoja, guess_fact_name(), candidate_keys_for_dim() (nunique == len, combinaciones únicas, columnas id_like), safe_left_join() que revierte el merge si aumenta el número de filas (1:N), merge(how='left') con rename de columnas con prefijo de dimensión, drop de IDs y export a CSV/Excel (xlsxwriter/openpyxl).",
+  "critica_fortalezas": [
+    "Heurísticas de detección de claves razonables y defensivas: verifica unicidad y revierte joins 1:N en lugar de duplicar filas silenciosamente",
+    "Genera un reporte de uniones (reporte_uniones.csv/xlsx) que permite auditar qué dimensiones se integraron y con qué claves",
+    "Separa la versión completa (con IDs) de la versión analítica sin IDs (GRAN_TABLA(SIN ID))",
+    "Tolerante a formatos múltiples (CSV/Excel y múltiples hojas)"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada '/content/A123' (placeholder del drive del autor), inexistente en el clon; y claves_forzadas apunta a 'MiArchivo__Dimension_municipos_de_naciminetos_R', nombre que nunca coincide con los archivos reales del repo: la única clave forzada no aplica y todo queda a merced de las heurísticas",
+    "!pip install xlsxwriter y display() dentro del script: magias de Colab que fallan como script estándar",
+    "Lee todo con dtype='object': las columnas numéricas salen como texto y contaminan la gran tabla (por eso los análisis posteriores re-parsan fechas y números, p. ej., codigo_analisis_univariado.py)",
+    "La heurística de clave puede unir por una columna común equivocada (p. ej., NME_CONVOCATORIA) sin verificación semántica de que sea clave en ambas tablas",
+    "Renombra columnas con prefijos largos tipo 'Archivo__Hoja__col', generando nombres difíciles de usar",
+    "No versiona inputs ni dimensiones: el resultado depende del contenido exacto de la carpeta",
+    "Import de re duplicado (líneas 11 y 13) y variable pat_fact definida dos veces"
+  ],
+  "mejoras": [
+    "Eliminar magias de Colab (pip/display) y parametrizar la carpeta de entrada",
+    "Leer con tipos inferidos o tipar explícitamente las columnas numéricas",
+    "Verificar semánticamente las claves (unicidad en hechos y en dimensión) y agregar validación cruzada",
+    "Persistir el reporte de uniones como artefacto del pipeline y versionar los inputs",
+    "Usar prefijos de columna cortos y estables"
+  ],
+  "ejecutabilidad": "NO. Falta la carpeta '/content/A123' con las tablas del modelo estrella (y los nombres forzados 'MiArchivo__...' no existen en el repo); además !pip install y display() son incompatibles con un script estándar.",
+  "produce_esperado": "La lógica de ensamblaje (star schema -> tabla denormalizada) es correcta en concepto y tiene buenas salvaguardas (reversión de 1:N, reporte de uniones). El problema grave es dtype='object', que degrada tipos numéricos/ordenados y obliga a parches aguas abajo, y la falta de versionado de inputs, que hace el resultado no reproducible con los datos actuales del repositorio.",
+  "bugs": [
+    "dtype='object' al leer Excel convierte todas las columnas en texto (pérdida de tipos numéricos)",
+    "claves_forzadas apunta a un nombre inexistente ('MiArchivo__Dimension_municipos_de_naciminetos_R'): nunca se usa",
+    "!pip install dentro de un archivo .py (falla fuera de notebook)",
+    "La detección de la tabla de hechos por máximo de filas puede elegir la tabla equivocada si ninguna coincide con la regex"
+  ],
+  "recomendacion": "Mantener como referencia del proceso de ensamblaje (buena idea de reporte de uniones). No migrar tal cual: el modelo moderno (src/modelo/dimensional.py + scripts/sprint2_duckdb.py) ya construye la gran tabla con tipos correctos y control de calidad; este script solo aporta la idea de auditar las uniones."
+}

@@ -1,0 +1,40 @@
+{
+  "archivo": "notebooks/tarea_anlisis_bases_de_datos/inv_17_codigo_graficas.R",
+  "lenguaje": "R",
+  "lineas": 614,
+  "rol": "legacy",
+  "descripcion": "EDA descriptivo de la convocatoria 2017 (Investigadores_Reconocidos_por_convocatoria_20250831.xlsx): tablas de frecuencia y gráficos (barras, pie, histograma con densidad, boxplot) para área, gran área, género, país/región/departamento/municipio de nacimiento y de residencia, nivel de formación, clasificación, edad, víctimas del conflicto, grupo étnico, discapacidad e INST_FILIA. Detecta el valor imposible de edad (952 años) y crea una versión filtrada (edad < 100). Corresponde a la tarea de análisis de bases de datos.",
+  "logica": "readxl + ggplot2 + dplyr + forcats: count() con filtros por umbral de frecuencia para dividir categorías altas/bajas, geom_bar/geom_col con coord_flip y reorder/fct_infreq, pie charts con coord_polar, histograma con aes(y = ..density..) + geom_density + vline de la media. Sin pruebas formales; análisis univariado exploratorio.",
+  "critica_fortalezas": [
+    "Reconoce explícitamente las variables de identificación (IDs, códigos DANE) y evita graficarlas, decisión de análisis correcta",
+    "Detecta el valor imposible de edad (952) y construye edad_sin_error (edad < 100), buen control de calidad de datos",
+    "Ordena categorías con reorder/fct_infreq y separa frecuencias altas y bajas para legibilidad",
+    "Autoevalúa gráficos poco informativos ('grafica sin sentido', 'no sirve la grafica'): honestidad analítica y criterio"
+  ],
+  "critica_debilidades": [
+    "Ruta hardcodeada 'Downloads/Investigadores_Reconocidos_por_convocatoria_20250831.xlsx', inexistente en el clon",
+    "Usa plot_missing() de DataExplorer sin cargar library(DataExplorer): error en ejecución",
+    "Referencia el objeto Investigadores_Consolidado (línea 21) sin definirlo en el archivo: error de ejecución",
+    "Pie charts con decenas de categorías (país de nacimiento, región): mala práctica de visualización",
+    "Umbrales de filtrado arbitrarios y comentarios desalineados con el código (p. ej., comenta 'menor a 140' pero filtra n<40)",
+    "Número mágico hardcodeado: sum(NME_MUNICIPIO_RES_PR1$n)/13001",
+    "Sintaxis deprecada geom_text(aes(label = ..count..)) y aes(y = ..density..) en ggplot2 >= 3.4 (usa after_stat)",
+    "No guarda gráficos ni tablas; sin documentación de parámetros ni versión de los datos"
+  ],
+  "mejoras": [
+    "Cargar DataExplorer o reemplazar plot_missing por un cálculo propio de faltantes",
+    "Definir Investigadores_Consolidado o eliminar la línea que lo referencia",
+    "Sustituir pie charts por barras horizontales cuando hay muchas categorías",
+    "Documentar y justificar los umbrales (n>250, n>500, n<40, etc.)",
+    "Usar after_stat(count)/after_stat(density) y parametrizar la ruta y el denominador (13001)"
+  ],
+  "ejecutabilidad": "NO. Falta 'Downloads/Investigadores_Reconocidos_por_convocatoria_20250831.xlsx' (no existe en el clon) y además falla en plot_missing() por falta de library(DataExplorer) y en la referencia a Investigadores_Consolidado (objeto no definido).",
+  "produce_esperado": "Descriptivo correcto para el objetivo (EDA por convocatoria): no hay errores de inferencia porque no realiza pruebas. El filtro edad < 100 es apropiado. Los pie charts con muchas categorías son un problema de visualización, no estadístico.",
+  "bugs": [
+    "plot_missing() sin library(DataExplorer): función no encontrada",
+    "Investigadores_Consolidado referenciado sin ser definido (línea 21)",
+    "Sintaxis ..count../..density.. deprecada en ggplot2 moderno (deprecation warning/error según versión)",
+    "Denominador hardcodeado 13001 en el cálculo de proporción de municipios de residencia"
+  ],
+  "recomendacion": "Mantener como referencia histórica del EDA de la convocatoria 2017 (documenta hallazgos de calidad de datos). No migrar: src/analisis/calidad.py y src/ingesta/minciencias.py sistematizan la limpieza; este script no aporta lógica reutilizable sin reescribirlo."
+}
