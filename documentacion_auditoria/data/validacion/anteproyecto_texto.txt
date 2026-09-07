@@ -11,7 +11,7 @@ Kevin Leonardo Chaparro Reyes
 Valentina Muñoz Palma
 Paula Margarita Triana Ancinez
 Experto temático: Javier Mauricio Sierra
-Fecha: 6 de septiembre de 2026
+Fecha: 7 de septiembre de 2026
 Declaración: este documento fue elaborado con apoyo de herramientas de IA generativa; el uso está
 declarado en la sección 6 conforme a la rúbrica.
 
@@ -59,9 +59,9 @@ declarado en la sección 6 conforme a la rúbrica.
 4.4. ¿Por qué no está ya resuelto con estos datos? . . . . . . . . . . . . . . . . . . . .
 6
 5. Alcance, riesgos y cronograma
-6
+7
 5.1. Qué hará y qué no hará el proyecto . . . . . . . . . . . . . . . . . . . . . . . . . .
-6
+7
 5.2. Riesgos principales y plan de contingencia . . . . . . . . . . . . . . . . . . . . . .
 7
 5.3. Cronograma por hitos (12 semanas)
@@ -74,7 +74,7 @@ declarado en la sección 6 conforme a la rúbrica.
 6.2. Uso declarado de herramientas de IA . . . . . . . . . . . . . . . . . . . . . . . . .
 8
 6.3. Riesgos éticos del proyecto y marco legal . . . . . . . . . . . . . . . . . . . . . . .
-8
+9
 Referencias
 10
 1
@@ -103,12 +103,13 @@ y al Sistema Nacional de Ciencia, Tecnología e Innovación (SNCTI) —porque su
 son el instrumento—, a los investigadores reconocidos —porque su categoría condiciona su
 carrera— y a los tomadores de decisión de política de CTI en el país —porque necesitan saber si
 el instrumento mide lo que dice medir.
-Este problema no es un síntoma ni una preferencia metodológica: es una pregunta sobre la
-validez de un instrumento público de medición. La literatura regional lo considera un tema vigente:
-la categorización de grupos e investigadores ante el SNCTI ha sido objeto de análisis críticos
-recientes (Çategorización de grupos e investigadores", 2023), y Colombia es, junto con Brasil,
-uno de los pocos países latinoamericanos con un sistema de información curricular consolidado
-(Revista CTS, 2010), lo que hace especialmente relevante auditar la calidad de ese registro.
+Este problema no es un síntoma ni una preferencia metodológica: es una pregunta sobre
+la validez de un instrumento público de medición. La literatura regional lo considera un tema
+vigente: la categorización de grupos e investigadores ante el SNCTI ha sido objeto de análisis
+críticos recientes (“Categorización de grupos e investigadores”, 2023), y Colombia es, junto
+con Brasil, uno de los pocos países latinoamericanos con un sistema de información curricular
+consolidado (Revista CTS, 2010), lo que hace especialmente relevante auditar la calidad de ese
+registro.
 1.2.
 Estado actual del problema: evidencia propia
 Como parte de este trabajo ya se construyó y verificó evidencia empírica propia sobre el registro,
@@ -126,11 +127,11 @@ los investigadores reconocidos; la retención de Bogotá alcanza el 92 % y absor
 La brecha de género por área es estructural: 24 % de mujeres en Ingeniería frente a
 48 % en ciencias médicas y de la salud.
 Frente a la población (censo DANE 2018), la población afrocolombiana está 3 veces
-subrepresentada, la indígena 7,9 veces y las personas con discapacidad 8 veces.
 2
 
 
 ===== PAGINA 4 =====
+subrepresentada, la indígena 7,9 veces y las personas con discapacidad 8 veces.
 Solo el 36,9 % de los autores únicos que firman la producción declarada de grupos son
 investigadores reconocidos: el sistema de medición captura coautoría externa al padrón.
 Estas cifras son propias y verificables (obtenidas y auditadas en este trabajo, con métodos
@@ -164,20 +165,20 @@ La science of science estudia el sistema científico con datos masivos y método
 uso de indicadores. En América Latina, Brasil (Lattes) y Colombia (ScienTI-CVLAC/Publindex)
 son referentes de registros curriculares (Revista CTS, 2010), con herramientas como ScriptLattes
 (Mena-Chalco & Cesar Júnior, 2009) y el método del currículum vitae (Cañibano & Bozeman,
-2009). Para Colombia existen análisis críticos del modelo de categorización ante el SNCTI (2023)
-y estudios de métricas responsables y ciencia abierta (CONPES 4069, 2021). Nuestro proyecto se
-inscribe en esta intersección: auditar un instrumento público de medición bajo estándares de
-métricas responsables.
+2009). Para Colombia existen análisis críticos del modelo de categorización ante el SNCTI
+(“Categorización de grupos e investigadores”, 2023) y estudios de métricas responsables y ciencia
+abierta (CONPES 4069, 2021). Nuestro proyecto se inscribe en esta intersección: auditar un
+instrumento público de medición bajo estándares de métricas responsables.
 2.2.
 Enfoques 3–4: calidad de datos y dinámica longitudinal
 La evaluación de registros administrativos usa las dimensiones de Wang & Strong (1996) y
 los principios FAIR (Wilkinson et al., 2016); la reproducibilidad exige versionado de datos y
 observabilidad de pipelines (Souza et al., 2023). El seguimiento de carreras se apoya en cadenas
-de Markov (Kemeny & Snell, 1976), modelos de supervivencia y análisis de cohortes; los clásicos
 3
 
 
 ===== PAGINA 5 =====
+de Markov (Kemeny & Snell, 1976), modelos de supervivencia y análisis de cohortes; los clásicos
 de física de carreras muestran que el impacto individual evoluciona con reglas cuantificables
 (Sinatra et al., 2016; Petersen et al., 2012) y que la movilidad geográfica estratifica la carrera
 (Deville et al., 2014; Sugimoto et al., 2017).
@@ -205,35 +206,42 @@ Objetivos
 Objetivo general
 Cuantificar y auditar de forma reproducible la fiabilidad, comparabilidad y equidad
 del padrón de investigadores reconocidos de MinCiencias (convocatorias 2013–2021),
-a partir de los datos abiertos oficiales y su cruce con la producción de grupos, y
-entregar un marco de indicadores y un tablero de auditoría que orienten la mejora
-del observatorio de capital humano científico en Colombia.
-El objetivo general responde exactamente al problema planteado: no es más ancho (se limita al
-padrón y su cruce con producción, 2013–2021) ni más angosto (abarca las tres dimensiones de la
-pregunta: fiabilidad, comparabilidad y equidad).
+a partir de los datos abiertos oficiales —con el cruce contra la producción de grupos
+ya ejecutado como línea base de contexto—, y entregar un marco de indicadores y
+un tablero de auditoría que orienten la mejora del observatorio de capital humano
+científico en Colombia.
+El objetivo general responde exactamente al problema planteado: no es más ancho (se limita
+al padrón, 2013–2021) ni más angosto (abarca las tres dimensiones de la pregunta: fiabilidad,
+comparabilidad y equidad). El cruce con la producción de grupos (33dq-ab5a) se usó para
+cuantificar la cobertura del padrón (36,9 % de autores reconocidos, §1.2) y queda documentado
+como contexto de línea base: no es objeto de ningún objetivo específico, que se centran en el
+padrón, de modo que su eventual indisponibilidad no compromete el cumplimiento (plan B en
+§4.3).
 3.2.
 Objetivos específicos
 Los tres objetivos específicos son secuenciales: cada uno habilita al siguiente, y cumplidos todos
 agotan el objetivo general sin solaparse.
 1. Cuantificar la calidad del registro del padrón de investigadores reconocidos de Min-
 Ciencias (2013–2021) según las dimensiones de completitud, unicidad, validez y consistencia,
-usando el dataset abierto oficial bqtm-4y2h y su artefacto consolidado. Evidencia de cum-
-plimiento: tabla de indicadores de calidad por convocatoria con conteos verificables (filas
-reales vs. declaradas, duplicados de id persona, atípicos de edad, errores de codificación)
-y código reproducible que la genera.
 4
 
 
 ===== PAGINA 6 =====
+usando el dataset abierto oficial bqtm-4y2h y su artefacto consolidado. Evidencia de cum-
+plimiento: tabla de indicadores de calidad por convocatoria con conteos verificables (filas
+reales vs. declaradas, duplicados de id persona, atípicos de edad, errores de codificación)
+y código reproducible que la genera.
 2. Estimar la dinámica longitudinal (retención, transición de categoría y tiempo hasta
 la salida) de los investigadores entre convocatorias consecutivas, contrastando cadenas de
 Markov y modelos de supervivencia. Evidencia de cumplimiento: matrices de transición
 con IC, curvas de Kaplan–Meier y un modelo de Cox con covariables (área, género, región),
 todos reproducibles sobre los datos abiertos.
-3. Cuantificar la equidad del sistema en sus dimensiones territorial, de género y de diversidad
-(etnia, discapacidad, víctimas), con indicadores de concentración (HHI/Gini/Theil) y
-razones de representación frente al censo DANE 2018. Evidencia de cumplimiento: tabla de
-indicadores de equidad con intervalos de confianza y figura resumen por convocatoria.
+3. Cuantificar la equidad del sistema en sus dimensiones territorial y de género, y de
+diversidad (etnia, discapacidad), con indicadores de concentración (HHI/Gini/Theil) y
+razones de representación frente al censo DANE 2018; la condición de víctima del conflicto,
+que el censo no captura, se mide como prevalencia interna del padrón en la ventana
+disponible (2021). Evidencia de cumplimiento: tabla de indicadores de equidad con intervalos
+de confianza y figura resumen por convocatoria.
 Cada objetivo especifica con qué evidencia se declarará cumplido, y la secuencia es visible: sin
 el registro limpio (OE1) no hay panel longitudinal fiable (OE2), y sin ambos no hay lectura de
 equidad comparable (OE3). El marco de indicadores y el tablero de auditoría se derivan de los
@@ -291,6 +299,14 @@ API Socrata / descarga
 CSV
 API Socrata (paginada)
 Sin autenticación
+5
+
+
+===== PAGINA 7 =====
+Atributo
+Padrón
+Producción
+Observaciones
 Licencia
 Datos abiertos del portal
 (uso libre con atribución)
@@ -305,10 +321,6 @@ id persona pd
 +
 id
 convocatoria
-5
-
-
-===== PAGINA 7 =====
 4.2.
 Variables ligadas a cada objetivo
 OE1 (calidad): ID CONVOCATORIA, ANO CONVO, ID PERSONA PR (unicidad), EDAD ANOS PR
@@ -345,6 +357,10 @@ combine las tres dimensiones (calidad + longitudinal + equidad) con los métodos
 de la ciencia y que documente explícitamente los defectos del registro (discrepancia 77 237 vs.
 50 891, atípicos, mojibake). Nuestro aporte es ese: no repetir un análisis descriptivo, sino auditar
 el instrumento y entregar un marco de indicadores reutilizable.
+6
+
+
+===== PAGINA 8 =====
 5.
 Alcance, riesgos y cronograma
 5.1.
@@ -354,10 +370,6 @@ artefacto consolidado; construir el panel longitudinal y estimar transiciones y 
 medir concentración territorial y equidad de género y diversidad frente al censo DANE 2018;
 entregar un marco de indicadores, un tablero de auditoría y documentación reproducible.
 No hará (y por qué):
-6
-
-
-===== PAGINA 8 =====
 No validará el padrón contra registros internos de MinCiencias (no accesibles): se audita la
 fuente pública, que es el objeto declarado.
 No construirá modelos predictivos de carreras individuales ni análisis causal (requieren
@@ -405,6 +417,13 @@ Equidad (OE3)
 Indicadores HHI/Gini/Theil
 + razones de representación
 con IC
+7
+
+
+===== PAGINA 9 =====
+Semanas
+Hito
+Entregable verificable
 11
 Marco de indicadores y tablero
 Tablero de auditoría + marco
@@ -417,10 +436,6 @@ Holgura: semanas 6 y 11 incluyen margen de 2 semanas acumuladas para imprevistos
 Presupuesto de horas: cada integrante dedicará 6 horas semanales (1 hora diaria después de
 clases, en la noche, 6 días a la semana) × 3 integrantes × 12 semanas ≈216 horas disponibles;
 la carga estimada del plan es de 180 horas, dejando 36 horas ( 17 %) de holgura.
-7
-
-
-===== PAGINA 9 =====
 6.
 Declaración de uso de herramientas de IA y reparto del trabajo
 6.1.
@@ -452,9 +467,13 @@ reglas automáticas; (ii) agentes de validación independientes solicitados por 
 equipo revisaron hechos, reglas de construcción, referencias (0 inventadas) y la rúbrica
 (bloques D y S); sus informes quedaron archivados en data/validacion/.
 Qué se descartó porque estaba mal (casos concretos): (1) un agente afirmó que el
-código comparaba la cadena "SÍ" con un dato "SI" y que la métrica de víctimas colapsaría
-a cero; al leer el código y ejecutarlo se verificó que la normalización previa lo resolvía:
-la afirmación se corrigió. (2) Un agente reportó un .orden alfabético"de archivos que en
+código comparaba la cadena SÍ con un dato SI y que la métrica de víctimas colapsaría
+a cero; al leer el código y ejecutarlo se verificó que la normalización previa lo resolvía: la
+8
+
+
+===== PAGINA 10 =====
+afirmación se corrigió. (2) Un agente reportó un «orden alfabético» de archivos que en
 realidad era canónico por capa (artefacto de su propio verificador); se corrigió. (3) Un
 agente generó texto con un error de codificación (SÃ por Sí) que se detectó y corrigió en la
 revisión final.
@@ -462,18 +481,14 @@ revisión final.
 Riesgos éticos del proyecto y marco legal
 El proyecto trata datos personales del padrón público (identificadores de persona, edad,
 geolocalización) e incluye categorías sensibles auto-declaradas: grupo étnico, condición de
-discapacidad y condición de víctima del conflicto. El marco legal aplicable en Colombia es
-la Ley 1581 de 2012 (protección de datos personales). Nuestras medidas: (i) no publicar
-microdatos identificables: los análisis se publican agregados y se mantiene la "gran tabla sin
-identificadoresçomo estándar, porque incluso los datos seudonimizados pueden ser reidentificables
-8
-
-
-===== PAGINA 10 =====
-en ciertas condiciones (Rocher et al., 2019); (ii) declarar la finalidad y el tratamiento en la
-documentación del proyecto; (iii) tratar las variables sensibles con especial cuidado interpretativo
-(son auto-declaradas y solo comparables en la ventana 2021). El riesgo de sesgo se mitiga
-declarando explícitamente los supuestos y las limitaciones de cada indicador.
+discapacidad y condición de víctima del conflicto. El marco legal aplicable en Colombia es la Ley
+1581 de 2012 (protección de datos personales). Nuestras medidas: (i) no publicar microdatos
+identificables: los análisis se publican agregados y se mantiene la «gran tabla sin identificadores»
+como estándar, porque incluso los datos seudonimizados pueden ser reidentificables en ciertas
+condiciones (Rocher et al., 2019); (ii) declarar la finalidad y el tratamiento en la documentación
+del proyecto; (iii) tratar las variables sensibles con especial cuidado interpretativo (son auto-
+declaradas y solo comparables en la ventana 2021). El riesgo de sesgo se mitiga declarando
+explícitamente los supuestos y las limitaciones de cada indicador.
 9
 
 
