@@ -1,5 +1,12 @@
 # Informe de Consultoría Estadística — Observatorio MinCiencias (Investigadores Reconocidos)
 
+> **⚠️ Nota de contexto (2026-II):** este informe es la **primera versión del
+> diagnóstico técnico** del repositorio auditado, elaborada en la fase 2026-I.
+> **No es el entregable de la Entrega 1** (Anteproyecto) de 2026-II. El documento
+> que se califica con la rúbrica es
+> `documentacion_auditoria/pdf/anteproyecto.pdf`, acompañado del material de
+> sustentación en la misma carpeta. Este informe se conserva como antecedente.
+
 **Documento:** Primera versión — Documentación técnica y propuesta metodológica
 **Proyecto auditado:** [`Observatorio_Ministerio_de_Ciencias_Grupo8`](https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8)
 **Contexto:** Consultoría universitaria — Ustadistica · Universidad Santo Tomás · 2026-I
