@@ -7,7 +7,7 @@ Kevin Leonardo Chaparro Reyes
 Valentina Muñoz Palma
 Paula Margarita Triana Ancinez
 Universidad Santo Tomás
-6 de septiembre de 2026
+7 de septiembre de 2026
 
 
 ===== PAGINA 2 =====
@@ -26,7 +26,8 @@ política de CTI.
 ===== PAGINA 3 =====
 Evidencia propia de que el problema existe
 Padrón público declara 77 237 registros / 6 convocatorias (30 086 únicos). . . pero el archivo
-consolidado verificado tiene 50 891 filas y 3 convocatorias.
+consolidado verificado tiene 50 891 filas y 3 convocatorias (781/2017, 833/2018 y 894/2021)
+con 26 662 personas únicas.
 22 registros con edad > 100 años (máx. 956) y errores de codificación.
 Concentración territorial: Bogotá + Antioquia = 51 %; Bogotá retiene 92 % y absorbe 1 000+
 investigadores.
@@ -92,8 +93,9 @@ panel fiable →lectura de equidad.
 ===== PAGINA 7 =====
 Datos y método preliminar
 Datos abiertos verificados (datos.gov.co):
-Padrón bqtm-4y2h: 6 convocatorias, 30 variables
-(abierto y contado)
+Padrón bqtm-4y2h: declara 6 convocatorias
+(2013–2021); verificadas 3 en el artefacto
+(781/2017, 833/2018 y 894/2021)
 Producción 33dq-ab5a: 3,2 M filas (cruce por
 id_persona)
 Censo DANE 2018 (referencia de equidad)

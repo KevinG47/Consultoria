@@ -125,11 +125,12 @@ poder responder cualquier pregunta** (banco al final).
   el problema es la puerta bloqueante (D1) y determina qué datos se necesitan,
   no al revés; además el problema ya tenía evidencia propia (50 891 vs.
   77 237), lo que orientó el diseño.
-- **Con solo dos transiciones (2017→2019→2021), ¿qué estiman con
-  Kaplan–Meier/Cox?** (Valentina) — Modelamos la permanencia entre ondas
-  consecutivas como supervivencia discreta/por intervalos; es un análisis
-  acotado y exploratorio, y el contraste con Markov es metodológico (supuestos
-  distintos), no una promesa de inferencia fina.
+- **Con solo dos transiciones entre las 3 convocatorias (781→833→894),
+  ¿qué estiman con Kaplan–Meier/Cox?** (Valentina) — Modelamos la permanencia
+  entre ondas consecutivas como supervivencia discreta/por intervalos; es un
+  análisis acotado y exploratorio, y el contraste con Markov es metodológico
+  (supuestos distintos), no una promesa de inferencia fina. (El "2019" que a
+  veces se cita es la fecha de resolución de la 833/2018, no una onda extra.)
 
 ## Checklist 5 minutos antes
 

@@ -103,22 +103,21 @@ y al Sistema Nacional de Ciencia, Tecnología e Innovación (SNCTI) —porque su
 son el instrumento—, a los investigadores reconocidos —porque su categoría condiciona su
 carrera— y a los tomadores de decisión de política de CTI en el país —porque necesitan saber si
 el instrumento mide lo que dice medir.
-Este problema no es un síntoma ni una preferencia metodológica: es una pregunta sobre
-la validez de un instrumento público de medición. La literatura regional lo considera un tema
-vigente: la categorización de grupos e investigadores ante el SNCTI ha sido objeto de análisis
-críticos recientes (Categorización de grupos e investigadores ante el sistema nacional de ciencia,
-tecnología e innovación en Colombia, 2023), y Colombia es, junto con Brasil, uno de los pocos
-países latinoamericanos con un sistema de información curricular consolidado (Revista CTS,
-2010), lo que hace especialmente relevante auditar la calidad de ese registro.
+Este problema no es un síntoma ni una preferencia metodológica: es una pregunta sobre la
+validez de un instrumento público de medición. La literatura regional lo considera un tema vigente:
+la categorización de grupos e investigadores ante el SNCTI ha sido objeto de análisis críticos
+recientes (Çategorización de grupos e investigadores", 2023), y Colombia es, junto con Brasil,
+uno de los pocos países latinoamericanos con un sistema de información curricular consolidado
+(Revista CTS, 2010), lo que hace especialmente relevante auditar la calidad de ese registro.
 1.2.
 Estado actual del problema: evidencia propia
 Como parte de este trabajo ya se construyó y verificó evidencia empírica propia sobre el registro,
 que constituye la línea base del anteproyecto:
 El dataset público bqtm-4y2h declara 77 237 registros y 6 convocatorias (2013–2021)
 con 30 086 investigadores únicos; sin embargo, la verificación directa del archivo consolidado
-disponible muestra solo 50 891 filas y 3 convocatorias (2017, 2019, 2021): el artefacto
-versionado no corresponde al alcance declarado, lo que impide reproducir los análisis
-completos desde un clon del repositorio.
+disponible muestra solo 50 891 filas y 3 convocatorias (781/2017, 833/2018 y 894/2021),
+con 26 662 investigadores únicos: el artefacto versionado no corresponde al alcance
+declarado, lo que impide reproducir los análisis completos desde un clon del repositorio.
 Se detectaron 22 registros con edad mayor a 100 años (máximo 956) y errores de
 codificación (mojibake) en el archivo canónico.
 La concentración territorial es extrema: Bogotá y Antioquia concentran el 51 % de
@@ -127,11 +126,11 @@ los investigadores reconocidos; la retención de Bogotá alcanza el 92 % y absor
 La brecha de género por área es estructural: 24 % de mujeres en Ingeniería frente a
 48 % en ciencias médicas y de la salud.
 Frente a la población (censo DANE 2018), la población afrocolombiana está 3 veces
+subrepresentada, la indígena 7,9 veces y las personas con discapacidad 8 veces.
 2
 
 
 ===== PAGINA 4 =====
-subrepresentada, la indígena 7,9 veces y las personas con discapacidad 8 veces.
 Solo el 36,9 % de los autores únicos que firman la producción declarada de grupos son
 investigadores reconocidos: el sistema de medición captura coautoría externa al padrón.
 Estas cifras son propias y verificables (obtenidas y auditadas en este trabajo, con métodos
@@ -174,11 +173,11 @@ Enfoques 3–4: calidad de datos y dinámica longitudinal
 La evaluación de registros administrativos usa las dimensiones de Wang & Strong (1996) y
 los principios FAIR (Wilkinson et al., 2016); la reproducibilidad exige versionado de datos y
 observabilidad de pipelines (Souza et al., 2023). El seguimiento de carreras se apoya en cadenas
+de Markov (Kemeny & Snell, 1976), modelos de supervivencia y análisis de cohortes; los clásicos
 3
 
 
 ===== PAGINA 5 =====
-de Markov (Kemeny & Snell, 1976), modelos de supervivencia y análisis de cohortes; los clásicos
 de física de carreras muestran que el impacto individual evoluciona con reglas cuantificables
 (Sinatra et al., 2016; Petersen et al., 2012) y que la movilidad geográfica estratifica la carrera
 (Deville et al., 2014; Sugimoto et al., 2017).
@@ -415,9 +414,9 @@ Documentación y sustentación
 Informe final reproducible +
 guion de sustentación
 Holgura: semanas 6 y 11 incluyen margen de 2 semanas acumuladas para imprevistos.
-Presupuesto de horas: 6 horas semanales por integrante × 3 integrantes × 12 semanas ≈216
-horas disponibles; la carga estimada del plan es de 180 horas, dejando 36 horas ( 17 %) de
-holgura. (Ajustable a la dedicación real declarada por cada integrante.)
+Presupuesto de horas: cada integrante dedicará 6 horas semanales (1 hora diaria después de
+clases, en la noche, 6 días a la semana) × 3 integrantes × 12 semanas ≈216 horas disponibles;
+la carga estimada del plan es de 180 horas, dejando 36 horas ( 17 %) de holgura.
 7
 
 
@@ -466,21 +465,34 @@ geolocalización) e incluye categorías sensibles auto-declaradas: grupo étnico
 discapacidad y condición de víctima del conflicto. El marco legal aplicable en Colombia es
 la Ley 1581 de 2012 (protección de datos personales). Nuestras medidas: (i) no publicar
 microdatos identificables: los análisis se publican agregados y se mantiene la "gran tabla sin
-identificadoresçomo estándar; (ii) declarar la finalidad y el tratamiento en la documentación
+identificadoresçomo estándar, porque incluso los datos seudonimizados pueden ser reidentificables
 8
 
 
 ===== PAGINA 10 =====
-del proyecto; (iii) tratar las variables sensibles con especial cuidado interpretativo (son auto-
-declaradas y solo comparables en la ventana 2021). El riesgo de sesgo se mitiga declarando
-explícitamente los supuestos y las limitaciones de cada indicador.
+en ciertas condiciones (Rocher et al., 2019); (ii) declarar la finalidad y el tratamiento en la
+documentación del proyecto; (iii) tratar las variables sensibles con especial cuidado interpretativo
+(son auto-declaradas y solo comparables en la ventana 2021). El riesgo de sesgo se mitiga
+declarando explícitamente los supuestos y las limitaciones de cada indicador.
 9
 
 
 ===== PAGINA 11 =====
 Referencias
-Cañibano, C., & Bozeman, B. (2009). Curriculum vitae method in science policy research.
-Research Policy, 38(2), 259–266. https://doi.org/10.1016/j.respol.2008.09.014
+Cañibano,
+C.,
+&
+Bozeman,
+B.
+(2009).
+Curriculum
+vitae
+method
+in
+science
+po-
+licy and research evaluation: The state-of-the-art. Research Policy, 38(2), 259–266.
+https://doi.org/10.1016/j.respol.2008.09.014
 Categorización
 de
 grupos
@@ -502,7 +514,7 @@ Universidad
 y
 Sociedad,
 15(5).
-http://scielo.sld.cu/scielo.php?script=sci abstract&pid=S2218-36202023000500133
+http://scielo.sld.cu/scielo.php?pid=S2218-36202023000500133
 Clauset,
 A.,
 Arbesman,
@@ -574,11 +586,11 @@ Ministerio de Ciencia, Tecnología e Innovación. (2021). Investigadores reconoc
 [Conjunto de datos]. datos.gov.co. https://www.datos.gov.co/resource/bqtm-4y2h.csv
 Ministerio de Ciencia, Tecnología e Innovación. (2021). Producción de grupos de investigación
 [Conjunto de datos]. datos.gov.co. https://www.datos.gov.co/resource/33dq-ab5a.csv
-Newman, M. E. J. (2001). The structure of scientific collaboration networks. Proceedings of the
 10
 
 
 ===== PAGINA 12 =====
+Newman, M. E. J. (2001). The structure of scientific collaboration networks. Proceedings of the
 National Academy of Sciences, 98(2), 404–409. https://doi.org/10.1073/pnas.98.2.404
 Petersen, A. M., Riccaboni, M., Stanley, H. E., & Pammolli, F. (2012). Persistence and uncertainty
 in the academic career. Proceedings of the National Academy of Sciences, 109(14), 5213–5218.

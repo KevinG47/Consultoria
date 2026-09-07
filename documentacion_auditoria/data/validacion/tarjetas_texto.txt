@@ -1,0 +1,117 @@
+
+===== PAGINA 1 =====
+Tarjeta 1 — Kevin Leonardo Chaparro Reyes
+(3:30 total)
+Rol en la exposición: apertura (lámina 1–2), evidencia (lámina 3) y datos/método (lámina 7). Lee una frase a la
+vez; cada bloque indica su tiempo.
+Lámina 1–2 · Presentación y problema — 0:00–1:30 (90 s)
+“Buenos días. Somos Kevin Leonardo Chaparro, Valentina Muñoz Palma y Paula Margarita Triana Ancinez,
+del equipo de Consultoría Estadística.”
+“Presentamos el anteproyecto de una auditoría estadística reproducible del sistema de reconocimiento de
+investigadores de MinCiencias.”
+“MinCiencias reconoce a los investigadores por convocatorias y los clasifica en Junior, Asociado, Senior y
+Emérito.”
+“Ese padrón es la principal fuente administrativa de capital humano científico: alimenta decisiones de política,
+de financiación y de carrera.”
+“El problema es doble. Primero: nadie audita la calidad y la comparabilidad del registro. Segundo: la
+inequidad estructural no está cuantificada con rigor.”
+“¿A quién le importa? A MinCiencias, a los investigadores y a quienes toman decisiones de política de
+ciencia.”
+Lámina 3 · Evidencia propia — 1:30–2:45 (75 s)
+“No lo decimos por intuición: lo medimos.”
+“El padrón público declara 77 237 registros y 6 convocatorias. Al abrirlo, encontramos 50 891 filas, 26 662
+personas únicas y solo 3 convocatorias: 781 de 2017, 833 de 2018 y 894 de 2021.”
+“Hay 22 registros con edad mayor a 100 años —uno con 956— y errores de codificación.”
+“La concentración territorial es extrema: Bogotá y Antioquia suman el 51 %. Bogotá retiene el 92 % de sus
+investigadores y absorbe a más de mil de otros departamentos.”
+“La brecha de género es estructural: 24 % de mujeres en Ingeniería, frente a 48 % en ciencias médicas.”
+“Y frente al censo: afrocolombianos 3 veces subrepresentados, indígenas 7,9 veces y personas con discapacidad
+8 veces.”
+“Conclusión: el problema existe y es cuantificable.”
+(cambio a Valentina)
+Lámina 7 · Datos y método — 6:00–7:15 (75 s)
+“Todo lo que haremos es sobre datos abiertos, ya abiertos por nosotros.”
+“Tres fuentes: el padrón bqtm-4y2h; la producción de grupos 33dq-ab5a; y el censo DANE 2018 como
+referencia de equidad.”
+“La ruta es reproducible —Python con DuckDB— en tres etapas.”
+“Primero, auditoría de calidad con contratos de esquema. Segundo, panel longitudinal con cadenas de Markov
+y supervivencia: Kaplan–Meier y Cox. Tercero, equidad con HHI, Gini y Theil, y razones de representación
+con intervalos de confianza.”
+“¿Qué descartamos? El análisis de producción individual, el índice h: requiere 1,2 gigabytes y no define esta
+entrega.”
+“Y si el dato no llega, los objetivos no dependen de él.”
+(cambio a Paula)
+1
+
+
+===== PAGINA 2 =====
+Tarjeta 2 — Valentina Muñoz Palma
+(2:45 total)
+Rol en la exposición: pregunta (lámina 4), objetivos (lámina 6) y por qué cabe en el semestre (lámina 9).
+Lámina 4 · La pregunta estadística — 2:45–3:30 (45 s)
+“Traducimos todo eso a una pregunta estadística respondible.”
+“¿El padrón de investigadores reconocidos de MinCiencias, entre 2013 y 2021, es fiable, comparable entre
+convocatorias y equitativo?”
+“Y además: ¿qué mejoras metodológicas y de gobernanza de datos lo convertirían en la base sólida de un
+observatorio?”
+“Si nadie hace nada, seguiremos decidiendo política sobre un instrumento no auditado.” (cambio a Paula)
+Lámina 6 · Objetivos — 5:00–6:00 (60 s)
+“El objetivo general: cuantificar y auditar, de forma reproducible, la fiabilidad, la comparabilidad y la
+equidad del padrón, y entregar un marco de indicadores y un tablero de auditoría.”
+“Tres objetivos específicos, en secuencia.”
+“Primero, cuantificar la calidad del registro —completitud, unicidad, validez y consistencia— por convocatoria.
+Evidencia: tabla de indicadores con conteos verificables.”
+“Segundo, estimar la dinámica longitudinal: retención, transición de categoría y tiempo hasta la salida.
+Evidencia: matrices de transición con intervalos de confianza, curvas de Kaplan–Meier y un modelo de Cox.”
+“Tercero, cuantificar la equidad: concentración territorial y representación de género, etnia, discapacidad y
+víctimas frente al censo. Evidencia: indicadores con intervalos de confianza.”
+“Sin registro limpio no hay panel fiable; sin panel no hay lectura de equidad. Por eso ese orden.” (cambio a
+Kevin)
+Lámina 9 · Por qué cabe en el semestre — 8:00–9:00 (60 s)
+“El plan cabe en 12 semanas, con hitos y holgura.”
+“Semanas 1–2, datos y contratos. 3–4, calidad. 5–6, panel y transiciones. 7–8, supervivencia. 9–10, equidad.
+11, marco y tablero. 12, informe final y sustentación.”
+“Horas: una hora diaria después de clases, en la noche, seis días a la semana, por cada integrante.”
+“Seis horas por tres integrantes por doce semanas: 216 horas. Estimamos 180 de carga: queda un 17 % de
+holgura.”
+(cambio a Paula)
+2
+
+
+===== PAGINA 3 =====
+Tarjeta 3 — Paula Margarita Triana Ancinez
+(3:15 total)
+Rol en la exposición: estado del arte (lámina 5), alcance y riesgos (lámina 8) y cierre (lámina 10).
+Lámina 5 · Estado del arte y vacío — 3:30–5:00 (90 s)
+“¿Qué se sabe ya? En el mundo, la science of science y las métricas responsables fijaron cómo auditar
+indicadores: el Manifiesto de Leiden, la declaración DORA y CoARA.”
+“También hay estándares de calidad de datos y reproducibilidad: los principios FAIR.”
+“Y se ha estudiado la dinámica de las carreras con métodos longitudinales: Markov, supervivencia, movilidad.”
+“En Colombia y la región hay sistemas consolidados: Lattes en Brasil; ScienTI, CVLAC y Publindex aquí; y
+el CONPES 4069 de ciencia abierta.”
+“Pero hay críticas al modelo de categorización, y no existe una evidencia cuantitativa reproducible que
+audite el padrón combinando calidad, trayectoria y equidad. Ese es el vacío que atendemos.”
+“Metodológicamente contrastamos dos enfoques: las cadenas de Markov suponen homogeneidad; la supervi-
+vencia modela el tiempo al evento con covariables. Los contrastamos porque el supuesto markoviano puede
+violarse.”
+(cambio a Valentina)
+Lámina 8 · Alcance y riesgos — 7:15–8:00 (45 s)
+“¿Qué no haremos y por qué?”
+“No validaremos contra registros internos de MinCiencias: no son accesibles. No haremos modelos predictivos
+individuales ni análisis causal. No profundizaremos en el índice h en esta fase.”
+“Riesgos con contingencia: la discrepancia entre 77 mil y 50 mil ya es un hallazgo del objetivo, no un
+bloqueo.”
+“La producción no descargable no detiene los objetivos, y el tiempo tiene dos semanas de holgura.” (cambio
+a Valentina)
+Lámina 10 · Cierre — 9:00–10:00 (60 s)
+“Cerramos con cuatro ideas.”
+“Primera: el problema es real y ya está medido con cifras propias verificables.”
+“Segunda: la literatura deja un vacío claro: falta la auditoría reproducible del registro.”
+“Tercera: los datos son abiertos, accesibles y ya abiertos por el equipo.”
+“Cuarta: el plan es realista —tiene hitos, holgura y horas.”
+“Nuestro aporte: un marco de indicadores y un tablero para que MinCiencias y la comunidad sepan qué tan
+confiable, comparable y equitativo es su sistema de reconocimiento.”
+“Muchas gracias. Quedamos atentos a sus preguntas.”
+Regla S1: aunque cada quien presenta su bloque, cualquier integrante debe poder responder cualquier pregunta. Practiquen
+la rotación.
+3

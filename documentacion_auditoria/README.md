@@ -60,6 +60,15 @@ Mejoras de esta versión (todas verificadas con QA automático):
 | `pdf/guia_estudio.pdf` | ✅ (3 págs.) — guía de estudio para la sustentación (reparto, frases clave, banco de ~21 preguntas, checklist) |
 | `pdf/tarjetas_sustentacion.pdf` | ✅ (3 págs.) — tarjetas de sustentación frase por frase, una página por integrante (Kevin · Valentina · Paula) |
 
+### Entrega 1 — Anteproyecto (2026-II)
+
+La **carpeta `ENTREGA_1/`** (raíz del repositorio) contiene **exactamente lo que
+se califica**: `anteproyecto.pdf` (Documento D1–D5, 40 %), `diapositivas_anteproyecto.pdf`
+(Sustentación S1–S3, 60 %) y `guia_estudio.pdf` / `tarjetas_sustentacion.pdf` (apoyo).
+El README de la raíz es la guía de entrada para el docente. Validación final de
+cierre contra la rúbrica: `data/validacion/validacion_cierre_D.md` y
+`data/validacion/validacion_cierre_S.md`.
+
 ### Estado del Arte (revisión de literatura)
 
 `pdf/estado_del_arte.pdf` (proyecto Overleaf en `latex/estado_del_arte/`, ZIP
