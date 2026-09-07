@@ -1,0 +1,151 @@
+
+===== PAGINA 1 =====
+Guía de estudio — Sustentación
+Entrega 1 · Anteproyecto · Consultoría Estadística · USTA 2026-II
+Kevin Leonardo Chaparro Reyes · Valentina Muñoz Palma · Paula Margarita Triana Ancinez
+Reglas de la rúbrica (60 % de la nota)
+La sustentación pesa 60 %; S1 es individual: cada quien debe poder defender el conjunto, no
+solo su bloque.
+Este guion reparte los bloques, pero todos deben poder responder cualquier pregunta
+(banco al final).
+Nota individual ≤S1 + 1,0: quien no defienda bien su S1 arrastra a su nota individual, sin
+importar el resto.
+Reparto sugerido de la exposición (10 min)
+#
+Diapositiva
+Quién presenta
+Tiempo
+1
+Título (presentación)
+Cualquiera (30 s)
+0:00–0:30
+2
+El problema: qué audita
+Kevin
+0:30–1:30
+3
+Evidencia propia (cifras)
+Kevin
+1:30–2:45
+4
+La pregunta estadística
+Valentina
+2:45–3:30
+5
+Estado del arte y vacío
+Paula
+3:30–5:00
+6
+Objetivos
+Valentina
+5:00–6:00
+7
+Datos y método
+Kevin
+6:00–7:15
+8
+Alcance y riesgos
+Paula
+7:15–8:00
+9
+Por qué cabe en el semestre
+Valentina
+8:00–9:00
+10
+Cierre
+Paula
+9:00–10:00
+Frases clave por bloque (decirlas, no leerlas)
+1. Problema [Kevin]: “MinCiencias reconoce a los investigadores por convocatorias y ese padrón
+alimenta decisiones de política y de carrera. Nadie ha auditado si ese registro es confiable,
+comparable y equitativo.”
+2. Evidencia [Kevin]: “No lo decimos por intuición: el padrón público declara 77 237 registros,
+pero al abrirlo encontramos 50 891 y solo 3 de 6 convocatorias; 22 edades superan los 100
+años; Bogotá y Antioquia concentran el 51 %; 24 % de mujeres en Ingeniería frente a 48 % en
+ciencias médicas.”
+3. Pregunta [Valentina]: “Traducimos eso a una pregunta estadística respondible: ¿el padrón
+es fiable, comparable entre convocatorias y equitativo?”
+4. Estado del arte [Paula]: “La literatura de la science of science y las métricas responsables
+ya fijó cómo auditar indicadores; en Colombia hay crítica al modelo pero no evidencia cuan-
+titativa reproducible. Ese es el vacío que atendemos. Contrastamos dos enfoques: Markov y
+supervivencia.”
+5. Objetivos [Valentina]: “Un general y tres específicos: calidad, dinámica longitudinal y
+equidad. Cada uno tiene evidencia de cumplimiento.”
+6. Datos [Kevin]: “Todo son datos abiertos ya abiertos por nosotros: bqtm-4y2h y 33dq-ab5a
+en datos.gov.co. Método reproducible en Python.”
+1
+
+
+===== PAGINA 2 =====
+7. Riesgos [Paula]: “El riesgo principal —la discrepancia de datos— ya es un hallazgo del
+objetivo, no un bloqueo; tenemos holgura de dos semanas.”
+8. Cierre [Paula]: “Entregamos un marco de indicadores y un tablero para que MinCiencias
+sepa qué tan confiable y equitativo es su sistema.”
+Banco de preguntas probables (rúbrica págs. 12–13) y respuestas-
+plantilla
+P1. ¿Quién sufre este problema y desde cuándo? [Kevin/Paula] — MinCiencias y el SNCTI
+desde 2013 (6 convocatorias); investigadores cuya categoría condiciona su carrera; política
+pública que usa el padrón.
+P2. ¿Cómo se resuelve hoy sin ustedes? — Con análisis descriptivos y críticas normativas; sin
+auditoría reproducible de calidad/equidad del registro.
+P3. ¿Qué pasa si nadie hace nada? — Decisiones de política sobre un instrumento no auditado;
+inequidades no cuantificadas.
+P4. ¿Qué fuente los hizo cambiar de idea? [Paula] — Las críticas al modelo de categorización
+colombiano + la evidencia propia de 50 891 vs. 77 237: el problema no era solo de diseño, era
+de registro.
+P5. ¿Qué hicieron distinto los dos enfoques que contrastan? [Valentina] — Markov supone
+homogeneidad; supervivencia modela el tiempo al evento con covariables; los contrastamos
+porque el supuesto markoviano puede violarse.
+P6. ¿Por qué no es una repetición de lo ya leído? [Paula] — Porque no existe la combinación
+calidad + longitudinal + equidad reproducible sobre estos datos abiertos.
+P7. Si cumplen los tres específicos, ¿ya resolvieron el general? [Valentina] — Sí: calidad +
+comparabilidad + equidad agotan el general; el tablero y el marco de indicadores son producto
+final.
+P8. ¿Con qué evidencia declaran cumplido el objetivo 2? — Matrices de transición con IC,
+curvas Kaplan–Meier y un modelo Cox reproducibles.
+P9. ¿Cuál de sus objetivos es en realidad una actividad? [todos] — Ninguno: los tres
+empiezan con verbos verificables (cuantificar, estimar, cuantificar) y declaran evidencia.
+P10. ¿Alguien ya abrió el archivo? ¿Cuántas filas tiene? [Kevin] — Sí: XLSX con 50 891
+filas × 30 columnas; 3 convocatorias (2017/2019/2021).
+P11. ¿Qué
+variable
+responde
+al
+primer
+objetivo
+específico?
+—
+EDAD_ANOS_PR,
+ID_PERSONA_PR (unicidad), ID_CONVOCATORIA/ANO_CONVO.
+P12. ¿Qué hacen si en octubre el dato no llega? [Kevin] — OE1–OE3 no dependen de la
+producción (∼1,2 GB); redescarga por API Socrata con contratos.
+P13. ¿Qué decidieron dejar por fuera y por qué? [Paula] — producción individual (h),
+modelos predictivos individuales y causalidad: fuera del alcance semestral y/o del dato.
+P14. ¿Qué es lo más probable que salga mal? [Kevin] — La discrepancia del consolidado; ya
+está caracterizada y es parte del hallazgo.
+P15. ¿Cuántas horas por semana reales? — 6 h × 3 integrantes × 12 semanas = 216 h; carga
+estimada 180 h; 36 h de holgura (17 %).
+P16. Explíquemelo usted, que no redactó esa sección — Cada quien practica el bloque de los
+demás (rotar: Kevin explica objetivos; Paula explica datos; Valentina explica riesgos).
+P17. ¿Qué alternativa consideraron y por qué la descartaron? [Kevin] — Producción
+individual con h: descartada por volumen (∼1,2 GB) y foco.
+P18. Si le digo que su tercer objetivo sobra, ¿qué responde? [Valentina] — Sin equidad el
+2
+
+
+===== PAGINA 3 =====
+general queda incompleto: la pregunta incluye la dimensión distributiva explícitamente.
+P19. Resuma el problema en dos frases — “El registro oficial de investigadores reconocidos
+no ha sido auditado. Queremos saber si es confiable, comparable y equitativo, con evidencia
+reproducible.”
+P20. ¿Qué les devolvió la IA que descartaron? [cualquiera] — Un agente afirmó un bug falso
+(el “SÍ” de diversidad.py) y un orden alfabético que era canónico; se corrigieron al verificar
+el código.
+P21. ¿Qué riesgo ético tiene este proyecto? [Paula] — Datos personales y categorías sensibles
+(etnia, discapacidad, víctimas): Ley 1581 de 2012; no publicamos microdatos identificables.
+Checklist 5 minutos antes
+□Portada con los tres nombres (PDF del anteproyecto).
+□Llevar el PDF del anteproyecto y esta guía.
+□Cada quien domina los bloques de los demás (rotación de 5 min).
+□Cronómetro: 10 min sin recortar el cierre.
+3

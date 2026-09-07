@@ -4,7 +4,7 @@
   "lineas": 105,
   "rol": "analisis",
   "descripcion": "Validación documentada de la calidad de los datos del padrón, con foco en atípicos de edad (EDAD_ANOS_PR). Documenta explícitamente la decisión metodológica (eliminación frente a imputación por mediana del grupo) para que cualquier auditor pueda reproducirla y discutirla. Expone detectar_atipicos_edad, resumen_tratamiento, filtrar (método elegido) e imputar_mediana (alternativa comparativa).",
-  "logica": "Umbral UMBRAL_EDAD_MAX=100. detectar_atipicos_edad devuelve los registros con edad>100 (mínimas columnas de identificación). resumen_tratamiento produce el reporte antes/después con justificación. filtrar aplica eliminación (decisión por defecto). imputar_mediana reemplaza los atípicos por la mediana del grupo (gran área, clasificación, género) como alternativa reproducible. El docstring documenta el razonamiento: 22 casos sobre 77.237 (0.028%), sesgo despreciable, eliminación preferida por trazabilidad.",
+  "logica": "Umbral UMBRAL_EDAD_MAX=100. detectar_atipicos_edad devuelve los registros con edad>100 (mínimas columnas de identificación). resumen_tratamiento produce el reporte antes/después con justificación. filtrar aplica eliminación (decisión por defecto). imputar_mediana reemplaza los atípicos por la mediana del grupo (gran área, clasificación, género) como alternativa reproducible. El docstring documenta el razonamiento con la cifra de su momento ('diez registros' sobre el total entonces disponible, 0.013%); el conteo vigente en el README y en las evidencias versionadas (git HEAD) es de 22 casos sobre 77.237 (0.028%), sesgo despreciable, eliminación preferida por trazabilidad.",
   "critica_fortalezas": [
     "Decisión metodológica documentada y justificada en el propio código (transparencia auditable).",
     "Ofrece comparación explícita entre eliminación e imputación (análisis de sensibilidad).",
@@ -23,7 +23,7 @@
     "Instrumentar también las otras dimensiones de calidad (completitud, consistencia, unicidad) como funciones."
   ],
   "ejecutabilidad": "Sí, verificada empíricamente: sprint6_validacion_calidad.py (que lo usa) ejecutado en clon fresco con EXIT=0 en 61.6 s. Requiere el XLSX consolidado (presente).",
-  "produce_esperado": "Sí: evidencias/calidad_atipicos_edad.csv, calidad_comparacion.csv y calidad_resumen.json existen en el clon y coinciden con el tratamiento documentado (22 atípicos, eliminación).",
+  "produce_esperado": "Sí: evidencias/calidad_atipicos_edad.csv, calidad_comparacion.csv y calidad_resumen.json existen. Matiz verificable: la versión versionada en git (HEAD) reporta 22 atípicos sobre 77.237 (0.0285%); el working tree regenerado por la propia ejecución de la auditoría sobre el XLSX parcial (3 convocatorias, 50.891 filas) reporta 19 (0.0373%). El tratamiento documentado (eliminación) es el mismo en ambos casos.",
   "bugs": [
     "Docstring (línea ~10): 'diez registros' vs 22 reales — inconsistencia que puede confundir al lector del informe."
   ],

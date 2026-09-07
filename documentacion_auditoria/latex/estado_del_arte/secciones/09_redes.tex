@@ -1,0 +1,47 @@
+% ============ 09. Redes institucionales ============
+\section{Redes institucionales: co-afiliación, jerarquías y endogamia académica}
+
+\subsection{Qué dice la literatura}
+
+El análisis de redes de colaboración tiene base consolidada en
+\citet{newman2001structure} y \citet{wasserman1994social}; las medidas de
+centralidad (grado, intermediación de \citet{freeman1977set}) identifican
+instituciones-puente. La literatura reciente sobre \textbf{jerarquía y
+endogamia académica} (academic inbreeding) — estudiar/contratar en la propia
+institución — documenta efectos sobre la productividad y la diversidad de
+ideas, con estudios tanto globales como latinoamericanos (sección 13.2).
+\citet{clauset2015systematic} mostró que las jerarquías institucionales en la
+contratación son extremas y persistentes; estudios recientes (2023) confirman
+la estratificación por prestigio desde la carrera temprana (sección 13.2). Un
+principio metodológico clave de la literatura: las métricas de red deben
+contrastarse contra \textbf{modelos nulos} (grafos aleatorios con la misma
+distribución de grados) antes de declarar significancia, y debe declararse la
+\textbf{ventana de captura} (qué relaciones son observables y cuáles no).
+
+\subsection{Relación con este repositorio}
+
+El proyecto construye el grafo de \textbf{co-filiación institucional} a partir
+de \texttt{INST\_FILIA} (separador \texttt{|}), con métricas por convocatoria,
+normalización de nombres y una tabla maestra de IES (211 IES, 91\,\% de
+cobertura); identifica universidades-puente y la absorción de Bogotá. La
+auditoría verificó limitaciones: captura selectiva (co-filiación múltiple solo
+en 2019, 569 casos) → la red es un corte transversal; el bug de
+\texttt{split(n=1)} en \texttt{redes.py} pierde pares de 3+ afiliaciones y crea
+nodos con cadenas literales ("B|C"); métricas sin modelos nulos; y el
+tratamiento de 2\,762 cadenas crudas de \texttt{inst\_filia} (~800 IES reales)
+requiere la tabla maestra para no inflar la red.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Contrastar la centralidad y la detección de puentes contra
+        \textbf{modelos nulos de configuración} (práctica estándar en redes;
+        \citet{newman2001structure} y extensiones).
+  \item Corregir la extracción de pares (explode completo de \texttt{INST\_FILIA},
+        no \texttt{split(n=1)}) y validar contra la \textbf{tabla maestra de
+        IES} para eliminar nodos espurios.
+  \item Declarar la red como \textbf{corte transversal 2019} y, si se amplía a
+        más convocatorias, estudiar la \textbf{evolución de la jerarquía}
+        (estilo \citet{clauset2015systematic}) y la endogamia institucional en
+        el contexto colombiano (sección 13.2).
+\end{enumerate}

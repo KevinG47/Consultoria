@@ -1,0 +1,94 @@
+% ============ 1. Planteamiento del problema y contexto (D1) ============
+\section{Planteamiento del problema y contexto}
+
+\subsection{El problema y a quién afecta}
+
+Desde 2013, el Ministerio de Ciencia, Tecnología e Innovación de Colombia
+(MinCiencias) reconoce periódicamente a los investigadores activos del país a
+través de \textbf{convocatorias nacionales} (640/2013, 693/2014, 737/2015,
+781/2017, 833/2018 y 894/2021). El resultado es un padrón oficial que clasifica
+a los investigadores en categorías —Junior, Asociado, Senior y Emérito— y que
+alimenta decisiones de política de ciencia, financiación, ascenso y
+visibilidad. Este padrón es, en la práctica, la \textbf{principal fuente
+administrativa de capital humano científico} del país y la base de su
+observatorio de ciencia y tecnología.
+
+El problema que aborda este anteproyecto es doble. \textbf{En primer lugar},
+no existe una evaluación estadística sistemática y reproducible de la
+\textbf{calidad y comparabilidad} de ese registro oficial: ¿la información
+publicada por MinCiencias es fiable entre convocatorias? ¿el padrón permite
+seguir a los investigadores a lo largo del tiempo? ¿qué distorsiones introduce
+el propio sistema de captura? \textbf{En segundo lugar}, el padrón exhibe
+patrones de \textbf{inequidad estructural} (concentración territorial, brechas
+de género y subrepresentación de minorías) cuya magnitud exacta y evolución no
+están cuantificadas con rigor estadístico en una sola fuente. A quién le
+importa: a MinCiencias y al Sistema Nacional de Ciencia, Tecnología e
+Innovación (SNCTI) —porque sus convocatorias son el instrumento—, a los
+investigadores reconocidos —porque su categoría condiciona su carrera— y a los
+tomadores de decisión de política de CTI en el país —porque necesitan saber si
+el instrumento mide lo que dice medir.
+
+Este problema \textbf{no es un síntoma ni una preferencia metodológica}: es una
+pregunta sobre la validez de un instrumento público de medición. La literatura
+regional lo considera un tema vigente: la categorización de grupos e
+investigadores ante el SNCTI ha sido objeto de análisis críticos recientes
+("Categorización de grupos e investigadores", 2023), y Colombia es, junto con
+Brasil,
+uno de los pocos países latinoamericanos con un sistema de información
+curricular consolidado (Revista CTS, ~2010), lo que hace especialmente
+relevante auditar la calidad de ese registro.
+
+\subsection{Estado actual del problema: evidencia propia}
+
+Como parte de este trabajo ya se construyó y verificó evidencia empírica
+propia sobre el registro, que constituye la línea base del anteproyecto:
+
+\begin{itemize}
+  \item El dataset público \texttt{bqtm-4y2h} declara \textbf{77\,237
+        registros y 6 convocatorias (2013--2021)} con 30\,086 investigadores
+        únicos; sin embargo, la verificación directa del archivo consolidado
+        disponible muestra \textbf{solo 50\,891 filas y 3 convocatorias}
+        (781/2017, 833/2018 y 894/2021), con \textbf{26\,662 investigadores
+        únicos}: el artefacto versionado no corresponde al alcance declarado,
+        lo que impide reproducir los análisis completos desde un clon del
+        repositorio.
+  \item Se detectaron \textbf{22 registros con edad mayor a 100 años}
+        (máximo 956) y errores de codificación (mojibake) en el archivo
+        canónico.
+  \item La concentración territorial es extrema: \textbf{Bogotá y Antioquia
+        concentran el 51\,\%} de los investigadores reconocidos; la retención
+        de Bogotá alcanza el 92\,\% y absorbe más de 1\,000 investigadores de
+        otros departamentos.
+  \item La brecha de género por área es estructural: \textbf{24\,\% de mujeres
+        en Ingeniería frente a 48\,\% en ciencias médicas y de la salud}.
+  \item Frente a la población (censo DANE 2018), la población afrocolombiana
+        está \textbf{3 veces subrepresentada}, la indígena \textbf{7,9 veces} y
+        las personas con discapacidad \textbf{8 veces}.
+  \item Solo \textbf{el 36,9\,\%} de los autores únicos que firman la
+        producción declarada de grupos son investigadores reconocidos: el
+        sistema de medición captura coautoría externa al padrón.
+\end{itemize}
+
+Estas cifras son \textbf{propias y verificables} (obtenidas y auditadas en
+este trabajo, con métodos reproducibles) y muestran que el problema existe, es
+cuantificable y tiene consecuencias: decisiones de política y de carrera
+apoyadas en un instrumento cuya fiabilidad, comparabilidad y equidad no están
+garantizadas.
+
+\subsection{La pregunta que este proyecto responde}
+
+El problema se traduce en una \textbf{pregunta estadística respondible}:
+
+\begin{quote}
+\textbf{¿El padrón de investigadores reconocidos de MinCiencias
+(2013--2021) es fiable (calidad del registro), comparable entre convocatorias
+(trazabilidad longitudinal) y equitativo (distribución territorial, de género
+y de diversidad), y qué mejoras metodológicas y de gobernanza de datos
+permitirían convertirlo en la base sólida de un observatorio de capital
+humano científico en Colombia?}
+\end{quote}
+
+Responderla importa porque \textbf{si nadie hace nada}, el país seguirá
+tomando decisiones de política de ciencia sobre un registro cuya calidad no ha
+sido auditada de forma sistemática y reproducible, con el riesgo de perpetuar
+inequidades y de basar evaluaciones individuales en datos no comparables.

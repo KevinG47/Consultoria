@@ -1,0 +1,49 @@
+% ============ 08. Género y diversidad ============
+\section{Género y diversidad en la ciencia}
+
+\subsection{Qué dice la literatura}
+
+El referente clásico es el estudio global de \citet{lariviere2013global}
+(\emph{Nature}), que documentó la subrepresentación femenina y su variación por
+disciplina. La literatura reciente en español y portugués aporta evidencia
+regional: análisis bibliométricos comparativos de la \textbf{Comunidad Andina}
+(2020--2024) sobre disparidades de género en producción (sección 13.2) y
+estudios sobre participación femenina en STEM (sección 13.2). El enfoque
+\textbf{interseccional} \citep{crenshaw1989demarginalizing} recomienda cruzar
+género con etnia, territorio y otras dimensiones, en vez de analizar el género
+de forma aislada. Las métricas estándar son proporciones de participación por
+disciplina, brechas relativas (odds ratios) y razones de representación frente
+a la población de referencia; la literatura advierte contra comparar
+proporciones sin ajustar por composición de área y cohorte.
+
+\subsection{Relación con este repositorio}
+
+El proyecto mide la participación femenina por gran área OCDE (hallazgo: 24\,\%
+en Ingeniería vs.\ 48\,\% en ciencias médicas), la evolución temporal y la
+brecha en productividad (5 de 6 grandes áreas con brecha); en diversidad,
+compara grupos étnicos, discapacidad y víctimas frente al censo DANE 2018 y el
+RUV (afro 3$\times$, indígena 7.9$\times$, discapacidad 8$\times$
+subrepresentados) y produce un cruce interseccional género$\times$etnia. La
+auditoría verificó debilidades: variables auto-declaradas y capturadas solo
+desde 2021 (sin serie temporal); comparaciones sin modelos ajustados (odds
+ratios con IC); el bug metodológico de \texttt{comparar\_dane()}: el comentario
+promete excluir "NINGUN GRUPO ETNICO" del denominador pero el código solo
+excluye "NO DISPONIBLE", con lo que la subrepresentación queda diluida (el
+arreglo recomendado es excluir de verdad ese grupo del denominador); y el cruce
+interseccional frágil ante subgrupos sin mujeres.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Formalizar la inferencia de brechas con \textbf{modelos logísticos
+        ajustados por área, cohorte y categoría} (odds ratios con IC), como
+        recomienda la literatura \citep{lariviere2013global} y sus extensiones
+        regionales (sección 13.2).
+  \item Reportar \textbf{razones de representación con intervalos de
+        confianza} (bootstrap) y declarar explícitamente la ventana 2021 como
+        única comparable para diversidad.
+  \item Robustecer el \textbf{análisis interseccional} (género$\times$etnia
+        $\times$área) con \texttt{reindex} de columnas y tamaños de celda
+        mínimos (evitar desagregaciones sin respaldo muestral), siguiendo el
+        enfoque de \citet{crenshaw1989demarginalizing}.
+\end{enumerate}

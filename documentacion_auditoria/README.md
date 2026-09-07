@@ -30,26 +30,49 @@ documentacion_auditoria/
 └── pdf/                             # PDFs compilados
 ```
 
-## Estado actual (versión 3 — criterios enfocados + versión LITE)
+## Estado actual (versión 4 — LITE con reglas de build, glosario parametrizado, evidencia de código)
 
-Mejoras aplicadas tras la revisión del usuario:
-- **Layout corregido**: 0 desbordes de línea significativos (de 400+ avisos *Overfull hbox* a 5 avisos <2 pt, invisibles) — se añadió control de quiebres en rutas, columnas `raggedright` y anchos de tabla ajustados.
-- **Documentos enfocados**: cada PDF desarrolla SOLO su criterio (5-8 págs.) + guía de lectura con **glosario en lenguaje llano** + un breve cruce con el documento maestro (sin repetir contenido entre PDFs).
-- **Crítica equilibrada**: las debilidades se presentan como "puntos de mejora (si aplican)"; si un archivo está bien construido se dice explícitamente ("No se identifican debilidades significativas").
-- **Versión LITE** de cada criterio: archivos clave + fichas compactas (objetivo_3 pasa de 95 a 15 págs.).
+Mejoras de esta versión (todas verificadas con QA automático):
+- **LITE ≠ completo**: la sección principal LITE = veredicto + 1-2 hallazgos de impacto (≤40% de palabras del completo). Si el LITE es idéntico al completo o supera el 40%, la build **FALLA** y no se emite el PDF (`_verificar_lite` en `generar_objetivo.py`).
+- **Glosario parametrizado**: fuente de verdad única en `data/glosario.yaml`; cada PDF incluye SOLO los términos que aparecen en su propio texto (filtrado por claves). Verificado: objetivo_2 → Mojibake; objetivo_4 → HHI, k-prototypes; objetivo_5 → DuckDB, Sprint, CRISP-DM; objetivo_1 → ninguno.
+- **Orden canónico por capa**: `data/capas.yaml` (ingesta → transformación → modelo → análisis → orquestación → visualización → docs → tests → legacy) usado por TODOS los documentos que listan archivos.
+- **Evidencia de código**: cada hallazgo con referencia `archivo.py:N-M` incrusta el fragmento real del código (≤6 líneas) extraído del repositorio en el momento de la auditoría (84 bloques en las versiones completas).
+- **Cobertura computada**: línea "Cobertura: X de Y archivos..." calculada de los conteos reales (51 de 51 completo; 18 de 51 LITE).
+- **Commit auditado**: cada portada muestra el hash corto del commit auditado (`1528939`), además de la fecha de generación.
+- **Autoconsistencia numérica**: `src/verificar_consistencia.py` compara cifras citadas en prosa contra conteos reales (commits, scripts, criterios, preguntas enumeradas, cobertura). Estado: 5/5 OK.
 
 | Entregable | Estado |
 |---|---|
-| `pdf/maestro_auditoria.pdf` | ✅ (114 págs.) — auditoría integral, 51 fichas de código |
-| `pdf/objetivo_1.pdf` · `_lite` | ✅ (5 + 5 págs.) — **Criterio 1**: Entendimiento del objetivo |
-| `pdf/objetivo_2.pdf` · `_lite` | ✅ (5 + 5 págs.) — **Criterio 2**: Datos: suficiencia y corrección |
-| `pdf/objetivo_3.pdf` · `_lite` | ✅ (95 + 15 págs.) — **Criterio 3**: Documentación y crítica de código (51 / 18 archivos) |
+| `pdf/maestro_auditoria.pdf` | ✅ (125 págs.) — auditoría integral, 51 fichas, 84 bloques de evidencia |
+| `pdf/objetivo_1.pdf` · `_lite` | ✅ (4 + 4 págs.) — **Criterio 1**: Entendimiento del objetivo |
+| `pdf/objetivo_2.pdf` · `_lite` | ✅ (5 + 4 págs.) — **Criterio 2**: Datos: suficiencia y corrección |
+| `pdf/objetivo_3.pdf` · `_lite` | ✅ (106 + 20 págs.) — **Criterio 3**: Documentación y crítica de código (51 / 18 archivos) |
 | `pdf/objetivo_4.pdf` · `_lite` | ✅ (5 + 5 págs.) — **Criterio 4**: Validación estadística |
-| `pdf/objetivo_5.pdf` · `_lite` | ✅ (5 + 5 págs.) — **Criterio 5**: Lógica de creación y cumplimiento |
-| `pdf/objetivo_6.pdf` · `_lite` | ✅ (8 + 8 págs.) — **Criterio 6**: Línea de tiempo (133 commits) |
-| `zip_overleaf/*.zip` | ✅ 13 ZIPs Overleaf-ready (maestro + 6 criterios × 2 versiones) |
+| `pdf/objetivo_5.pdf` · `_lite` | ✅ (5 + 4 págs.) — **Criterio 5**: Lógica de creación y cumplimiento |
+| `pdf/objetivo_6.pdf` · `_lite` | ✅ (8 + 4 págs.) — **Criterio 6**: Línea de tiempo (133 commits) |
+| `zip_overleaf/*.zip` | ✅ 19 ZIPs Overleaf-ready (maestro + 6 criterios × 2 versiones + estado del arte + validación rúbrica + anteproyecto + diapositivas + guía de estudio + tarjetas de sustentación) |
 | `data/analisis_codigo/*.json` | ✅ 51 fichas por archivo (cobertura 100%) |
 | `data/ejecucion_resumen.csv` | ✅ 16 scripts ejecutados: 10 OK / 6 error (con causa) |
+| `src/verificar_consistencia.py` | ✅ Autoconsistencia numérica: 7/7 OK |
+| `pdf/estado_del_arte.pdf` | ✅ (20 págs.) — Estado del Arte multilingüe: 11 dominios, matriz de mejora, 39 referencias; validado por 2 agentes independientes |
+| `pdf/anteproyecto.pdf` | ✅ (12 págs. totales; cuerpo 8 págs.) — **Entrega 1 · Anteproyecto USTA 2026-II** · modalidad datos abiertos · APA 7 · declaración de IA en §6 |
+| `pdf/diapositivas_anteproyecto.pdf` | ✅ (10 láminas Beamer) — sustentación de 10 minutos |
+| `pdf/guia_estudio.pdf` | ✅ (3 págs.) — guía de estudio para la sustentación (reparto, frases clave, banco de ~21 preguntas, checklist) |
+| `pdf/tarjetas_sustentacion.pdf` | ✅ (3 págs.) — tarjetas de sustentación frase por frase, una página por integrante (Kevin · Valentina · Paula) |
+
+### Estado del Arte (revisión de literatura)
+
+`pdf/estado_del_arte.pdf` (proyecto Overleaf en `latex/estado_del_arte/`, ZIP
+en `zip_overleaf/estado_del_arte_overleaf.zip`) es una guía de literatura para
+mejorar el repositorio auditado, con fuentes en inglés, español y portugués.
+Cubre: Ciencia de la Ciencia y evaluación responsable (Leiden/DORA/CoARA),
+sistemas nacionales (Lattes/ScienTI/CVLAC, CONPES 4069), calidad de datos y
+reproducibilidad (FAIR, DVC, observabilidad), dinámica longitudinal de carreras
+(Markov, supervivencia, atrición), desigualdad/concentración, género y
+diversidad, redes y jerarquías institucionales, datos mixtos, **ética y
+protección de datos** (Ley 1581/2012, reidentificación) y **visualización
+narrativa**, más una matriz de mejora priorizada. Validado por dos agentes
+independientes (informes en `data/validacion/validacion_sota_*.md`).
 
 ## Cómo reproducir los PDFs
 

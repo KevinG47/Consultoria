@@ -23,6 +23,13 @@ objetivos:
       investigación (7), su alcance declarado (README/informe_final.md) y cómo
       cada módulo del repositorio responde a esas preguntas.
     secciones_principales: ["entendimiento"]
+    lite_veredicto: >
+      El objetivo es claro y bien documentado: un observatorio crítico del
+      sistema de reconocimiento de MinCiencias (2013-2021), descompuesto en 7
+      preguntas que los módulos del proyecto responden.
+    lite_hallazgos:
+      - "El alcance evolucionó de 3 a 6 convocatorias; las métricas de las primeras fases deben reinterpretarse."
+      - "Falta un marco formal de indicadores (fórmula, fuente, límites)."
     entendimiento_observacion: >
       El objetivo del repositorio es claro y bien documentado: consolidar,
       validar y analizar el padrón de investigadores reconocidos por
@@ -62,6 +69,13 @@ objetivos:
       producción de grupos (33dq-ab5a, 3.166.629 filas), cruzados por
       id_persona_pr <-> id_persona_pd.
     secciones_principales: ["datos"]
+    lite_veredicto: >
+      Datos correctos y suficientes en origen (30.086 investigadores, 6
+      convocatorias, 3.166.629 productos), pero el consolidado versionado solo
+      tiene 3 de 6 convocatorias (50.891 de 77.237 filas).
+    lite_hallazgos:
+      - "Un clon del repositorio no reproduce los resultados del informe (verificado: 2 periodos de transición en vez de 5)."
+      - "Mojibake en el CSV y dataset de producción (~1.2 GB) sin versionar."
     datos_observacion: >
       VERIFICADO EMPÍRICAMENTE: el consolidado versionado (XLSX y CSV en
       datos/tarea_join/) contiene solo 50.891 filas y 3 convocatorias
@@ -134,6 +148,13 @@ objetivos:
       redes, productividad, clustering) y en los tratamientos (atípicos,
       faltantes, codificación).
     secciones_principales: ["estadistica"]
+    lite_veredicto: >
+      Estadística descriptiva sólida y transparente; la debilidad es la falta
+      de inferencia formal (intervalos de confianza, supuestos, modelos
+      ajustados).
+    lite_hallazgos:
+      - "Sin test de markovianidad ni supervivencia (Kaplan-Meier/Cox) para la retención."
+      - "comparar_dane() no excluye 'NINGUN GRUPO ETNICO' del denominador, diluyendo la subrepresentación (verificado)."
     estadistica_observacion: >
       Tratamientos: eliminación de 22 atípicos de edad (>100 años) con
       justificación documentada (0.028% del padrón, sesgo despreciable) y
@@ -177,6 +198,13 @@ objetivos:
       correcta o si se usaron herramientas, pasos o flujos de trabajo
       incorrectos o no óptimos.
     secciones_principales: ["logica"]
+    lite_veredicto: >
+      Arquitectura y lógica general correctas; la ejecución fue buena en lo
+      analítico pero no óptima en la industrialización (despliegue, pruebas,
+      automatización).
+    lite_hallazgos:
+      - "CI/CD rota y Dockerfile que despliega un placeholder en vez del dashboard real."
+      - "10 de 16 scripts corren en un clon fresco; los 6 fallos tienen causa documentada."
     logica_observacion: >
       La construcción siguió dos etapas: (1) fase académica inicial (ago-oct
       2025): notebooks tarea_* con análisis por convocatoria, join, dimensiones
@@ -209,9 +237,10 @@ objetivos:
     titulo: "Línea de tiempo de commits y construcción del repositorio"
     resumen_simple: >
       Este criterio documenta cómo se construyó el repositorio a lo largo del
-      tiempo: 133 commits entre agosto de 2025 y mayo de 2026, con la autoría
-      de cada uno. Se distinguen tres fases: académica inicial, de ingeniería
-      de datos y de cierre con los ajustes del director.
+      tiempo: 133 commits entre agosto de 2025 y mayo de 2026 por 11 autores,
+      con la autoría de cada uno. Se distinguen tres momentos: fase académica
+      inicial (ago-nov 2025), un hiato de ~100 días sin commits (nov 2025 -
+      feb 2026) y la fase de ingeniería y cierre (feb-may 2026).
     descripcion: >
       Criterio 6 de la rúbrica: línea de tiempo con cada commit y su autor para
       entender cómo se construyó el repositorio a lo largo del tiempo. Incluye
@@ -219,6 +248,14 @@ objetivos:
       lectura por fases y por autor.
     secciones_principales: ["timeline"]
     timeline_completa: true
+    lite_veredicto: >
+      El repositorio se construyó con 133 commits (ago 2025 - may 2026) por 11
+      autores: fase académica (ago-nov 2025), hiato de ~100 días y fase de
+      ingeniería y cierre (feb-may 2026); la autoría refleja el rol de cada
+      miembro del equipo.
+    lite_hallazgos:
+      - "Los estudiantes lideraron la fase académica y el responsable de pipeline la fase de ingeniería, con revisión del director."
+      - "Los mensajes de commit evolucionaron de genéricos a convenciones feat:/docs:/chore:, evidencia de buenas prácticas progresivas."
     conclusiones: >
       La línea de tiempo confirma las dos grandes etapas de construcción y el
       rol de cada autor: los estudiantes (Paula, JulianMendez27, camiloacr1322,

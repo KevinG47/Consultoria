@@ -8,29 +8,32 @@ Este documento desarrolla el \textbf{criterio 2 de la rúbrica}:
 Observatorio de investigadores reconocidos del Ministerio de Ciencia,
 Tecnología e Innovación de Colombia (MinCiencias), que consolida y analiza
 \textbf{6 convocatorias (2013--2021)} del padrón oficial de investigadores
-y su producción científica.
+y su producción científica. Esta serie cubre los \textbf{6 criterios} de la
+rúbrica en documentos separados, más el documento maestro que los integra.
 
 \textbf{En resumen:} Este criterio evalúa si los datos del proyecto eran suficientes y correctos. Conclusión principal: los datos correctos existen y son suficientes (30.086 investigadores únicos, 3.166.629 productos), pero el archivo consolidado versionado en el repositorio está incompleto: solo contiene 3 de las 6 convocatorias, por lo que un clon del repositorio no reproduce todos los resultados del informe.
+
+
 
 
 \begin{tcolorbox}[nota]
 \textbf{Cómo leer este documento:} cada PDF de esta serie desarrolla \emph{un}
 criterio de la rúbrica. Los demás criterios se tratan a fondo en sus propios
-documentos y en el \textbf{documento maestro} (\texttt{maestro\_auditoria.pdf},
-114 págs.). Si este es tu primer acercamiento, lee primero la portada y este
-contexto; al final encontrarás las conclusiones del criterio.
+documentos y en el \textbf{documento maestro} (\texttt{maestro\_auditoria.pdf}).
+Si este es tu primer acercamiento, lee primero la portada y este contexto; al
+final encontrarás las conclusiones del criterio.
 \end{tcolorbox}
 
-\subsection{Glosario para lectores sin formación en programación}
+\subsection{Glosario (solo los términos que usa este documento)}
 
-Los documentos usan términos técnicos con moderación; cuando aparecen, esta
-tabla los explica en lenguaje sencillo:
+Esta tabla incluye únicamente los términos técnicos que aparecen en este
+documento, explicados en lenguaje sencillo:
 
 \begingroup
 \small
 \setlength{\tabcolsep}{3pt}
 \begin{longtable}{>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{9.8cm}}
-\caption{Glosario de términos en lenguaje llano}
+\caption{Glosario de términos presentes en este documento}
 \label{tab:glosario}\\
 \toprule
 \textbf{Término} & \textbf{Qué significa} \\
@@ -40,20 +43,14 @@ tabla los explica en lenguaje sencillo:
 \textbf{Término} & \textbf{Qué significa} \\
 \midrule
 \endhead
-    HHI (Herfindahl-Hirschman) & Índice que mide si algo está concentrado o repartido. Va de 0 (todo repartido) a 1 (todo en un solo lugar). En el informe se usa para ver si los investigadores se concentran en pocos departamentos. \\
-    Matriz de transición & Tabla que muestra con qué probabilidad un investigador pasa de una categoría (p. ej. Junior) a otra (p. ej. Asociado) entre dos convocatorias. Permite ver si el sistema 'sube', 'mantiene' o 'pierde' investigadores. \\
-    Tasa de retención & Porcentaje de investigadores que siguen presentes en la siguiente convocatoria. Una retención baja puede indicar abandono o cambio de reglas. \\
-    Representación relativa & Cuántas veces aparece un grupo (p. ej. afrocolombianos) en el padrón frente a lo que correspondería según su peso en la población colombiana (DANE). Un valor de 0.3 indica que aparece 3 veces menos de lo esperado. \\
-    k-prototypes & Algoritmo de agrupamiento (clustering) que agrupa personas con perfiles similares cuando los datos mezclan números (edad) y categorías (área, género). \\
-    MCA / FAMD & Técnicas para resumir tablas con muchas categorías en pocos ejes visualizables, de modo que se puedan ver patrones (p. ej. qué áreas se asocian con qué géneros). \\
-    CRISP-DM & Metodología estándar de proyectos de datos: entender el problema, preparar los datos, modelar, evaluar y desplegar. El proyecto la usa como guía general. \\
-    Modelo dimensional (esquema estrella) & Forma de organizar los datos en tablas de 'hechos' (métricas: quién, cuándo, qué categoría) y 'dimensiones' (descripciones: área, región, institución), para hacer consultas rápidas y reportes. \\
-    DuckDB & Base de datos analítica ligera que se ejecuta dentro del propio proyecto (sin instalar un servidor). Se usa para almacenar el modelo dimensional. \\
-    Mojibake & Texto ilegible por un problema de codificación (p. ej. 'FÃ­sica' en lugar de 'Física'). Detectado en el CSV del repositorio. \\
-    Contrato de esquema & Validación automática que garantiza que un archivo de datos tenga las columnas, tipos y valores esperados antes de analizarlo. \\
-    ETL / pipeline & Cadena de procesos que extrae los datos de la fuente (ETL: Extraer, Transformar, Cargar), los limpia y los deja listos para analizar. \\
-    CI/CD y Docker & Automatización de pruebas y despliegue (CI/CD) y empaquetado de la aplicación en un contenedor (Docker) para que funcione igual en cualquier máquina. \\
-    Sprint & Ciclo corto de trabajo (en este proyecto, de 2 semanas) con objetivos concretos. \\
+    Matriz de transición & Tabla que muestra con qué probabilidad un investigador pasa de una categoría (p. ej. Junior) a otra (p. ej. Asociado) entre dos convocatorias. Permite ver si el sistema 'sube', 'mantiene' o 'pierde' investigadores.
+ \\
+    Mojibake & Texto ilegible por un problema de codificación (p. ej. 'FÃ­sica' en lugar de 'Física'). Detectado en el CSV del repositorio.
+ \\
+    Contrato de esquema & Validación automática que garantiza que un archivo de datos tenga las columnas, tipos y valores esperados antes de analizarlo.
+ \\
+    Pipeline & Cadena de procesos que lleva los datos desde la fuente hasta el análisis (ingesta, limpieza, transformación, modelado). También llamada 'cadena de procesamiento' o 'flujo de datos'.
+ \\
 \bottomrule
 \end{longtable}
 \endgroup

@@ -1,24 +1,14 @@
-% ============ Criterio: datos ============
+% ============ Criterio datos (LITE) ============
 \section{Datos utilizados: suficiencia y corrección}
 
-VERIFICADO EMPÍRICAMENTE: el consolidado versionado (XLSX y CSV en datos/tarea\_join/) contiene solo 50.891 filas y 3 convocatorias (2017: 13.001, 2019: 16.796, 2021: 21.094), frente a las 77.237 filas y 6 convocatorias (2013-2021) declaradas en el README y el catálogo. Las evidencias versionadas (p. ej. matrices de transición 2013-2014) sí cubren las 6 convocatorias, lo que indica que el artefacto versionado es un snapshot de la fase inicial de 3 convocatorias nunca actualizado. Consecuencia verificada: ejecutar el pipeline en un clon fresco genera solo 2 periodos de transición (2017-2019, 2019-2021) en vez de 5, y los resultados no reproducen el README. El CSV paralelo además presenta mojibake (UTF-8/Latin-1). El dataset de producción (\textasciitilde{}1.2 GB) está gitignored y no es reproducible desde el clon. En cuanto a la corrección de las fuentes: el padrón es la fuente oficial del sistema de reconocimiento y el dataset de producción su complemento natural; la elección de datos abiertos (datos.gov.co/Socrata) es apropiada y verificable.
+\begin{tcolorbox}[hallazgo]
+\textbf{Veredicto:} Datos correctos y suficientes en origen (30.086 investigadores, 6 convocatorias, 3.166.629 productos), pero el consolidado versionado solo tiene 3 de 6 convocatorias (50.891 de 77.237 filas).
 
+\end{tcolorbox}
 
-\subsection{Fuentes del repositorio}
+\subsection{Hallazgos de mayor impacto}
 
 \begin{itemize}
-  \item \textbf{Padrón de investigadores} (Socrata \texttt{bqtm-4y2h}):
-        convocatorias 2013--2021, 30 variables, \textbf{77\,237 registros
-        declarados} y 30\,086 investigadores únicos.
-  \item \textbf{Producción de grupos} (Socrata \texttt{33dq-ab5a}):
-        3\,166\,629 filas producto-autor; dataset grande, no versionado en git.
-  \item \textbf{Catálogo}: \texttt{datos/catalogo.yaml} con metadatos,
-        diccionario de datos y llaves de cruce (\texttt{id\_persona\_pr} ↔
-        \texttt{id\_persona\_pd}).
+  \item Un clon del repositorio no reproduce los resultados del informe (verificado: 2 periodos de transición en vez de 5).
+  \item Mojibake en el CSV y dataset de producción (\textasciitilde{}1.2 GB) sin versionar.
 \end{itemize}
-
-\begin{tcolorbox}[nota]
-Los datos no son solo los archivos: también se evaluó \emph{cómo se
-versionaron} en el repositorio. El detalle de la verificación (conteos reales,
-codificación, hallazgos) está en este documento y en el maestro.
-\end{tcolorbox}

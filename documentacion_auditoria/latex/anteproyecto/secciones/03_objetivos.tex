@@ -1,0 +1,53 @@
+% ============ 3. Objetivos (D3) ============
+\section{Objetivos}
+
+\subsection{Objetivo general}
+
+\textbf{Cuantificar y auditar de forma reproducible la fiabilidad,
+comparabilidad y equidad del padrón de investigadores reconocidos de
+MinCiencias (convocatorias 2013--2021), a partir de los datos abiertos
+oficiales y su cruce con la producción de grupos, y entregar un marco de
+indicadores y un tablero de auditoría que orienten la mejora del observatorio
+de capital humano científico en Colombia.}
+
+El objetivo general responde exactamente al problema planteado: no es más
+ancho (se limita al padrón y su cruce con producción, 2013--2021) ni más
+angosto (abarca las tres dimensiones de la pregunta: fiabilidad,
+comparabilidad y equidad).
+
+\subsection{Objetivos específicos}
+
+Los tres objetivos específicos son secuenciales: cada uno habilita al
+siguiente, y cumplidos todos agotan el objetivo general sin solaparse.
+
+\begin{enumerate}
+  \item \textbf{Cuantificar la calidad del registro} del padrón de
+        investigadores reconocidos de MinCiencias (2013--2021) según las
+        dimensiones de completitud, unicidad, validez y consistencia, usando
+        el dataset abierto oficial \texttt{bqtm-4y2h} y su artefacto
+        consolidado.
+        \emph{Evidencia de cumplimiento:} tabla de indicadores de calidad por
+        convocatoria con conteos verificables (filas reales vs.\ declaradas,
+        duplicados de \texttt{id\_persona}, atípicos de edad, errores de
+        codificación) y código reproducible que la genera.
+
+  \item \textbf{Estimar la dinámica longitudinal} (retención, transición de
+        categoría y tiempo hasta la salida) de los investigadores entre
+        convocatorias consecutivas, contrastando cadenas de Markov y modelos
+        de supervivencia.
+        \emph{Evidencia de cumplimiento:} matrices de transición con IC,
+        curvas de Kaplan--Meier y un modelo de Cox con covariables (área,
+        género, región), todos reproducibles sobre los datos abiertos.
+
+  \item \textbf{Cuantificar la equidad} del sistema en sus dimensiones
+        territorial, de género y de diversidad (etnia, discapacidad, víctimas),
+        con indicadores de concentración (HHI/Gini/Theil) y razones de
+        representación frente al censo DANE 2018.
+        \emph{Evidencia de cumplimiento:} tabla de indicadores de equidad con
+        intervalos de confianza y figura resumen por convocatoria.
+\end{enumerate}
+
+Cada objetivo especifica \emph{con qué evidencia se declarará cumplido}, y la
+secuencia es visible: sin el registro limpio (OE1) no hay panel longitudinal
+fiable (OE2), y sin ambos no hay lectura de equidad comparable (OE3). El
+marco de indicadores y el tablero de auditoría se derivan de los tres.

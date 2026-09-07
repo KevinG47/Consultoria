@@ -69,6 +69,95 @@ ROLES_ORDEN = [
 ]
 
 # ---------------------------------------------------------------------------
+# Capas arquitectónicas (fuente de verdad: data/capas.yaml)
+# ---------------------------------------------------------------------------
+CAPAS_YAML = DATA / "capas.yaml"
+CAPA_TITULOS = dict(ROLES_ORDEN) | {
+    "otro": "Otros archivos",
+}
+_CAPAS_CACHE: dict | None = None
+
+
+def _cargar_capas() -> tuple[list[str], dict[str, list[str]]]:
+    """Carga orden y reglas de capas desde data/capas.yaml (fuente de verdad)."""
+    global _CAPAS_CACHE
+    if _CAPAS_CACHE is not None:
+        return _CAPAS_CACHE
+    if not CAPAS_YAML.exists():
+        _CAPAS_CACHE = (["otro"], {"otro": []})
+        return _CAPAS_CACHE
+    import yaml as _yaml
+    with open(CAPAS_YAML, encoding="utf-8-sig") as fh:
+        data = _yaml.safe_load(fh)
+    orden = data.get("orden", ["otro"])
+    reglas = data.get("reglas", {})
+    _CAPAS_CACHE = (orden, reglas)
+    return _CAPAS_CACHE
+
+
+def capa_de_ruta(ruta: str) -> str:
+    """Asigna la capa canónica de un archivo según data/capas.yaml.
+    Se evalúa en el orden de 'orden'; el primer prefijo que coincida gana."""
+    orden, reglas = _cargar_capas()
+    r = ruta.replace("\\", "/").lower()
+    for capa in orden:
+        for prefijo in reglas.get(capa, []):
+            if r.startswith(prefijo.lower()):
+                return capa
+    return "otro"
+
+
+def titulo_capa(capa: str) -> str:
+    return CAPA_TITULOS.get(capa, capa.capitalize())
+
+
+# ---------------------------------------------------------------------------
+# Fragmentos de código reales (para hallazgos archivo.py:N-M)
+# ---------------------------------------------------------------------------
+REPO = RAIZ.parent / "Observatorio_Ministerio_de_Ciencias_Grupo8"
+_FRAG_CACHE: dict[str, list[str]] = {}
+
+
+def _leer_lineas_repo(ruta: str) -> list[str]:
+    """Lee las líneas de un archivo del repositorio auditado (con caché)."""
+    if ruta in _FRAG_CACHE:
+        return _FRAG_CACHE[ruta]
+    candidatos = [REPO / ruta]
+    if "\\" in ruta or "/" in ruta:
+        candidatos.append(REPO / ruta.replace("\\", "/"))
+    else:  # solo nombre base: buscar en todo el repo
+        candidatos = [p for p in REPO.rglob(ruta) if p.is_file()]
+    for cand in candidatos:
+        if cand and cand.exists():
+            try:
+                lineas = cand.read_text(encoding="utf-8", errors="replace").splitlines()
+            except OSError:
+                lineas = []
+            _FRAG_CACHE[ruta] = lineas
+            return lineas
+    _FRAG_CACHE[ruta] = []
+    return []
+
+
+def fragmento_latex(ruta: str, inicio: int, fin: int | None = None,
+                    max_lineas: int = 6) -> str:
+    """Extrae el fragmento real de código (ruta:N-M) y lo envuelve en un
+    bloque lstlisting de máximo `max_lineas` líneas. Devuelve '' si no hay."""
+    lineas = _leer_lineas_repo(ruta)
+    if not lineas:
+        return ""
+    n = max(1, inicio)
+    m = fin if fin is not None else n
+    m = max(m, n)
+    recorte = lineas[n - 1:m]
+    truncado = len(recorte) > max_lineas
+    recorte = recorte[:max_lineas]
+    cuerpo = "\n".join(recorte)
+    if truncado:
+        cuerpo += "\n[...]"
+    return ("\\begin{lstlisting}\n" + cuerpo + "\n\\end{lstlisting}\n")
+
+# ---------------------------------------------------------------------------
 # Utilidades LaTeX
 # ---------------------------------------------------------------------------
 
@@ -162,6 +251,29 @@ def _leer_analisis() -> list[dict]:
     return resultados
 
 
+def _bugs_con_fragmentos(bugs: list[str]) -> str:
+    """Renderiza la lista de bugs y, para cada referencia archivo.py:N-M,
+    incrusta el fragmento real del código (máx. 6 líneas)."""
+    partes: list[str] = ["\\begin{itemize}"]
+    patron = re.compile(r"([A-Za-z0-9_\-./\\]+\.(?:py|R|ipynb)):(\d+)(?:-(\d+))?")
+    for bug in bugs:
+        partes.append("  \\item " + escapar(bug))
+        for m in patron.finditer(bug):
+            ruta = m.group(1).replace("\\", "/")
+            inicio = int(m.group(2))
+            fin = int(m.group(3)) if m.group(3) else None
+            frag = fragmento_latex(ruta, inicio, fin)
+            if frag:
+                partes.append("\\begin{quote}\\footnotesize\\ttfamily\n"
+                              + f"\\noindent\\emph{{Evidencia en {escapar(ruta)} "
+                              + f"(línea{'' if inicio == (fin or inicio) else 's'} "
+                              + f"{inicio}{'-' + str(fin) if fin and fin != inicio else ''}):}}"
+                              + "\n\\end{quote}")
+                partes.append(frag)
+    partes.append("\\end{itemize}")
+    return "\n".join(partes)
+
+
 def _render_ficha(a: dict) -> str:
     """Renderiza una ficha LaTeX por archivo de código."""
     archivo = a.get("archivo", "desconocido")
@@ -200,7 +312,7 @@ def _render_ficha(a: dict) -> str:
         partes += [
             "\\begin{tcolorbox}[riesgo]",
             "\\textbf{Bugs / problemas detectados:}",
-            lista_latex(a["bugs"]),
+            _bugs_con_fragmentos(a["bugs"]),
             "\\end{tcolorbox}",
             "",
         ]
@@ -237,19 +349,21 @@ def generar_05() -> Path:
 
     # Agrupar por rol
     grupos: dict[str, list[dict]] = {}
+    # Agrupar por capa canónica (data/capas.yaml), no por rol del JSON
+    orden_capas, _ = _cargar_capas()
+    grupos: dict[str, list[dict]] = {}
     for a in analisis:
-        rol = a.get("rol", "legacy")
-        grupos.setdefault(rol, []).append(a)
+        capa = capa_de_ruta(a.get("archivo", ""))
+        grupos.setdefault(capa, []).append(a)
 
     cuerpo: list[str] = []
-    roles_presentes = [r for r, _ in ROLES_ORDEN if r in grupos]
-    roles_extra = [r for r in grupos if r not in dict(ROLES_ORDEN)]
-    for rol in roles_presentes + roles_extra:
-        titulo = dict(ROLES_ORDEN).get(rol, rol.capitalize())
+    capas_presentes = [c for c in orden_capas if c in grupos]
+    for capa in capas_presentes:
+        titulo = titulo_capa(capa)
         cuerpo.append("\\subsection{" + escapar(titulo) + "}")
-        cuerpo.append(f"\\noindent Archivos: {len(grupos[rol])}.")
+        cuerpo.append(f"\\noindent Archivos: {len(grupos[capa])}.")
         cuerpo.append("")
-        for a in sorted(grupos[rol], key=lambda x: x.get("archivo", "")):
+        for a in sorted(grupos[capa], key=lambda x: x.get("archivo", "")):
             cuerpo.append(_render_ficha(a))
 
     contenido = "\n".join(header + cuerpo) + "\n"
@@ -362,11 +476,12 @@ def generar_08() -> Path:
 \\subsection{{Resumen general}}
 
 El repositorio fue construido con \\textbf{{{n} commits}} entre
-\\textbf{{{commits[0]['fecha']}}} y \\textbf{{{commits[-1]['fecha']}}} por
-\\textbf{{{len(por_autor)}}} identidades de autor (12 personas/roles
-distintos). La construcción muestra dos etapas claras: una fase académica
-inicial (tareas de análisis por convocatoria, ago--oct 2025) y una fase de
-ingeniería de datos (pipelines, sprints 2--6, oct 2025 -- may 2026).
+\\textbf{{{commits[0]['fecha']}}} y \\textbf{{{commits[-1]['fecha']}}} por 11
+autores (\\textbf{{{len(por_autor)}}} identidades nombre+correo; la tabla
+siguiente desglosa por identidad). La actividad no fue continua: tras la fase
+académica (ago--nov 2025) hubo un \\textbf{{hiato de ~100 días}} (2025-11-18 a
+2026-02-26) sin commits, y la fase de ingeniería de datos (pipelines,
+sprints 2--6, DuckDB, dashboard) se concentró en feb--may 2026.
 
 \\subsection{{Distribución de autoría}}
 
@@ -422,11 +537,13 @@ ingeniería de datos (pipelines, sprints 2--6, oct 2025 -- may 2026).
   \\item El commit inicial (2025-08-24) y los primeros mensajes son de
         documentación y carga de tareas (\\texttt{{README}}, \\texttt{{Add files
         via upload}}), característicos de la fase académica.
-  \\item A partir de oct/nov 2025 se observa la consolidación del pipeline:
-        ingesta, transformación, modelo dimensional y sprints de análisis.
-  \\item Los sprints 5 y 6 (abr--may 2026), liderados por Victor-Diaz-Usta,
-        incorporan producción, calidad, tabla maestra IES y Sankeys, cerrando
-        los ajustes del director.
+  \\item Entre el 2025-11-18 y el 2026-02-26 no hay actividad (\\textbf{{hiato de
+        ~100 días}}); la consolidación del pipeline (ingesta, transformación,
+        modelo dimensional y sprints) se concentra en feb--may 2026.
+  \\item Los sprints 5 y 6 (abr--may 2026), liderados por Victor-Diaz-Usta
+        (39 commits por nombre; 34 con un correo y 5 con otro), incorporan
+        producción, calidad, tabla maestra IES y Sankeys, cerrando los ajustes
+        del director.
 \\end{{itemize}}
 """
     destino.write_text(contenido, encoding="utf-8")

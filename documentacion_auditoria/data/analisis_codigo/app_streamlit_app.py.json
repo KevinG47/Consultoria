@@ -1,4 +1,4 @@
-﻿{
+{
   "archivo": "app/streamlit_app.py",
   "lenguaje": "Python",
   "lineas": 17,
@@ -20,7 +20,7 @@
     "Mover el dashboard real a app/streamlit_app.py (haciendo app/ la entrada canonica) y actualizar README y Streamlit Cloud en consecuencia, o",
     "Si se mantiene como esqueleto, excluirlo del Dockerfile y documentar que no es el dashboard de produccion"
   ],
-  "ejecutabilidad": "SÃ­, se ejecuta tal cual (solo requiere streamlit instalado), pero solo muestra el aviso de 'Dashboard en construccion'. No lee ningun dato ni modulo del proyecto.",
+  "ejecutabilidad": "Sí, se ejecuta tal cual (solo requiere streamlit instalado), pero solo muestra el aviso de 'Dashboard en construccion'. No lee ningun dato ni modulo del proyecto.",
   "produce_esperado": "NO produce el dashboard de 7 capitulos documentado: renderiza un cartel estatico. En el despliegue Docker, el contenedor (python:3.12-slim + poetry + datos/) muestra este placeholder en vez del dashboard real, contradiciendo el README y el proposito del observatorio.",
   "bugs": [
     "Bug de deploy (no de sintaxis): el Dockerfile ejecuta `streamlit run app/streamlit_app.py` (linea 22) -> el contenedor despliega el placeholder y no el dashboard real; ademas streamlit_app.py de la raiz ni siquiera se copia a la imagen (COPY src/, app/, datos/ solamente)",

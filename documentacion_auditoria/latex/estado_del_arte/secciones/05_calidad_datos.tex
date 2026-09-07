@@ -1,0 +1,53 @@
+% ============ 05. Calidad de datos y gobernanza ============
+\section{Calidad de datos, gobernanza y reproducibilidad para observatorios}
+
+\subsection{Qué dice la literatura}
+
+La gobernanza de datos para observatorios de investigación se apoya en tres
+pilares consolidados: (i) las \textbf{dimensiones de calidad de datos} de
+\citet{wang1996beyond} (exactitud, completitud, consistencia, oportunidad,
+unicidad, validez) y su operacionalización en marcos de gestión (DAMA-DMBOK,
+\citet{dama2017dmbok}; ISO/IEC 25012); (ii) los \textbf{principios FAIR}
+\citep{wilkinson2016fair} (Findable, Accessible, Interoperable, Reusable) como
+estándar para datos de investigación; y (iii) la \textbf{reproducibilidad
+técnica}: contenedores, gestión de versiones de datos (\texttt{DVC}, Git LFS),
+gestores de flujos de trabajo (Nextflow, Snakemake) y \emph{data observability}
+— monitoreo de la salud de los datos dentro del pipeline
+\citep{souza2023observability} (preprint IEEE eScience 2023, sección 13.2). La
+literatura reciente enfatiza el \textbf{linaje/provenance} (de dónde vino cada
+valor y qué transformaciones sufrió) como condición para auditar resultados.
+
+\subsection{Relación con este repositorio}
+
+La auditoría del proyecto (documento maestro) verificó: catálogo YAML con
+diccionario de datos y decisiones documentadas (buena base FAIR); pero
+dimensiones de calidad evaluadas como parciales (exactitud sin contraste
+externo; consistencia afectada por mojibake y duplicidad de artefactos;
+oportunidad con pull 2021--2026); datos crudos y procesados sin versionar
+(ausencia de DVC pese a la nota del \texttt{.gitignore}); CI/CD rota
+(módulos inexistentes en el workflow); contrato de esquema (\texttt{pandera})
+declarado y sin uso; y ausencia de linaje explícito entre ingesta,
+transformación y evidencias.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Formalizar una \textbf{auditoría de calidad por las 6 dimensiones} de
+        \citet{wang1996beyond} con reportes automáticos por convocatoria, y
+        declarar el estado por dimensión (completitud, unicidad, validez,
+        consistencia, exactitud, oportunidad).
+  \item Implementar \textbf{FAIR práctico}: documentando en el catálogo con
+        identificadores persistentes, contratos de esquema
+        (\texttt{pandera}/\texttt{great\_expectations}) en ingesta y
+        transformación, y un registro de \textbf{linaje} (archivo→transformación
+        →evidencia).
+  \item Versionar datos críticos con \textbf{DVC o Git LFS} (incluido el
+        consolidado completo de 6 convocatorias, hoy ausente del clon) y
+        reparar CI/CD para que la ingesta periódica sea realmente reproducible
+        (recomendación de \citep{souza2023observability} sobre observabilidad
+        en pipelines). La arquitectura dimensional del repositorio (esquema
+        estrella en DuckDB) sigue el modelo de \citet{kimball2013data},
+        apropiado para consultas analíticas; la literatura recomienda
+        complementarlo con linaje y validación de contratos para convertirlo en
+        un observatorio auditable.
+\end{enumerate}

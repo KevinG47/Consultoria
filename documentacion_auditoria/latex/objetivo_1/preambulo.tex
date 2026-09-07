@@ -155,7 +155,15 @@
   commentstyle=\color{usta!70}, keywordstyle=\color{usta}\bfseries,
   stringstyle=\color{accent}, numbers=left, numberstyle=\tiny\color{rule},
   frame=single, rulecolor=\color{rule}, breaklines=true,
-  showstringspaces=false, tabsize=4, captionpos=b
+  showstringspaces=false, tabsize=4, captionpos=b,
+  % UTF-8 dentro de lstlisting (pdfLaTeX): mapeo literate de acentos/símbolos
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+    {¿}{{?`}}1 {¡}{{!`}}1
+    {→}{{$\rightarrow$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1
+    {—}{{---}}1 {–}{{--}}1 {·}{{$\cdot$}}1 {…}{{\dots}}1 {≈}{{$\approx$}}1
 }
 \lstset{style=auditoria}
 
@@ -169,6 +177,7 @@
 \newcommand{\doctitulo}{Documento de Auditoría}
 \newcommand{\docsubtitulo}{}
 \newcommand{\docautor}{Consultor Estadístico Senior · Auditoría de Proyectos de Datos}
+\newcommand{\doccommit}{no-disponible}
 
 % ---- Portada simple ------------------------------------------------
 \newcommand{\hacerportada}{
@@ -183,6 +192,7 @@
 {\normalsize \docautor}\\[0.3cm]
 {\small Universidad Santo Tomás · Ustadistica · 2026-I}\\[0.3cm]
 {\small Repositorio auditado: \texttt{Observatorio\_Ministerio\_de\_Ciencias\_Grupo8}}\\[0.3cm]
+{\small \textbf{Commit auditado}: \texttt{\doccommit}}\\[0.3cm]
 {\small Versión \docversion{} · \docfecha}\\
 \end{minipage}\\[1.6cm]
 {\color{usta}\rule{\linewidth}{1.5pt}}

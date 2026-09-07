@@ -1,0 +1,85 @@
+% ============ 4. Datos y método preliminar (D4) ============
+\section{Datos disponibles y aproximación metodológica preliminar}
+
+\subsection{Fuentes de datos (modalidad datos abiertos)}
+
+Las fuentes son \textbf{datos abiertos oficiales} publicados por el Ministerio
+de Ciencia, Tecnología e Innovación en el portal nacional
+\texttt{datos.gov.co} (plataforma Socrata). Ya fueron \textbf{abiertas y
+verificadas por el equipo} (conteo real de filas, columnas y valores), no
+supuestas:
+
+\begin{longtable}{p{2.6cm}p{4.4cm}p{4.2cm}p{2.8cm}}
+\caption{Descripción de las fuentes de datos}
+\label{tab:fuentes}\\
+\toprule
+\textbf{Atributo} & \textbf{Padrón de investigadores} & \textbf{Producción de grupos} & \textbf{Observaciones} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Atributo} & \textbf{Padrón} & \textbf{Producción} & \textbf{Observaciones} \\
+\midrule
+\endhead
+Entidad & MinCiencias & MinCiencias & datos.gov.co \\
+Identificador & \texttt{bqtm-4y2h} & \texttt{33dq-ab5a} & Enlace en referencias \\
+Periodo & 2013--2021 & 2013--2021 & 6 ventanas \\
+Unidad de observación & Investigador $\times$ convocatoria & Producto $\times$ autor & — \\
+Volumen declarado & 77\,237 filas; 30\,086 únicos & 3\,166\,629 filas & Verificado: el XLSX del clon tiene 50\,891 \\
+Variables & 30 (categoría, área OCDE, género, geografía, diversidad, filiación) & 15 (producto, categoría, tipo, grupo, autor) & Diccionario en el catálogo \\
+Acceso & API Socrata / descarga CSV & API Socrata (paginada) & Sin autenticación \\
+Licencia & Datos abiertos del portal (uso libre con atribución) & Ídem & Verificar enlace oficial \\
+Llave de cruce & \texttt{id\_persona\_pr} & \texttt{id\_persona\_pd} & $\leftrightarrow$ + \texttt{id\_convocatoria} \\
+\bottomrule
+\end{longtable}
+
+\subsection{Variables ligadas a cada objetivo}
+
+\begin{itemize}
+  \item \textbf{OE1 (calidad):} \texttt{ID\_CONVOCATORIA}, \texttt{ANO\_CONVO},
+        \texttt{ID\_PERSONA\_PR} (unicidad), \texttt{EDAD\_ANOS\_PR} (validez),
+        codificación del archivo (consistencia).
+  \item \textbf{OE2 (longitudinal):} \texttt{ID\_PERSONA\_PR},
+        \texttt{ANO\_CONVO}, \texttt{ID\_CLAS\_PR}/\texttt{NME\_CLASIFICACION\_PR}
+        (transiciones), más covariables área y región.
+  \item \textbf{OE3 (equidad):} \texttt{NME\_DEPARTAMENTO\_RES\_PR},
+        \texttt{NME\_GENERO\_PR}, \texttt{TXT\_GRUPO\_ETNICO},
+        \texttt{TXT\_POBLACION\_DISCA}, \texttt{ID\_VICTIMA\_CONFLICTO}.
+\end{itemize}
+
+\subsection{Ruta metodológica preliminar}
+
+El diseño sigue un flujo en tres etapas alineado con los objetivos:
+\textbf{(1) auditoría de calidad} del registro (perfilado por las dimensiones
+de Wang \& Strong, contratos de esquema y normalización reproducible);
+\textbf{(2) construcción del panel longitudinal} y estimación de transiciones
+(matrices de Markov con test de la propiedad markoviana, complementadas con
+supervivencia Kaplan--Meier/Cox); y \textbf{(3) medición de equidad} (HHI,
+Gini y Theil con intervalos de confianza bootstrap para lo territorial; razones
+de representación con IC frente al censo DANE 2018 para género, etnia y
+discapacidad). Todo se implementa en Python sobre un almacén DuckDB, con el
+código, los datos y los resultados versionados y reproducibles.
+
+\textbf{Alternativa considerada y descartada:} se evaluó complementar con
+indicadores de producción individual (índice $h$ y variantes) a partir del
+dataset de producción; se descartó en esta fase porque el cruce de 3,2
+millones de filas requiere descargar ~1,2\,GB y su disponibilidad es
+intermitente, y porque el objetivo de esta entrega es la auditoría del padrón;
+el análisis de productividad queda como extensión (se declara en el alcance).
+
+\textbf{Plan si el dato no llega o cambia:} ambas fuentes tienen descarga
+directa por API Socrata y respaldo versionado; si el dataset de producción no
+estuviera disponible a tiempo, los objetivos OE1--OE3 no dependen de él (se
+audita el padrón y su artefacto consolidado). Si cambiara el esquema del
+padrón, los contratos de esquema detectarán el cambio y se documentará la
+re-ingesta.
+
+\subsection{¿Por qué no está ya resuelto con estos datos?}
+
+Aunque los datos son públicos desde 2021 y existen análisis descriptivos, no se
+ha publicado —hasta donde alcanza esta revisión— una \textbf{auditoría
+estadística reproducible} del padrón que combine las tres dimensiones (calidad
++ longitudinal + equidad) con los métodos de la ciencia de la ciencia y que
+documente explícitamente los defectos del registro (discrepancia 77\,237 vs.\
+50\,891, atípicos, mojibake). Nuestro aporte es ese: no repetir un análisis
+descriptivo, sino \textbf{auditar el instrumento} y entregar un marco de
+indicadores reutilizable.

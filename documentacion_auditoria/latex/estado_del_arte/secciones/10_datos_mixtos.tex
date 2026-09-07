@@ -1,0 +1,44 @@
+% ============ 10. Análisis de datos mixtos ============
+\section{Segmentación con datos mixtos: métodos y validación moderna}
+
+\subsection{Qué dice la literatura}
+
+Cuando los datos combinan variables numéricas y categóricas (edad, órdenes,
+área, género, región), el estándar de reducción de dimensión es el
+\textbf{análisis factorial de datos mixtos (FAMD)} \citep{husson2017exploratory}
+y el \textbf{análisis de correspondencias (MCA)} \citep{greenacre2017correspondence}.
+Para agrupar, \textbf{k-prototypes} \citep{huang1998extensions} sigue siendo el
+método de referencia para datos mixtos, pero la literatura de evaluación
+comparada recomienda: (i) comparar varios algoritmos (k-prototypes, k-means
+sobre codificación, agrupamiento basado en distancia de Gower) — existe un
+benchmark abierto reciente de agrupamiento mixto (sección 13.2); (ii) validar
+el número de grupos con \textbf{silhouette, Calinski--Harabasz y
+Davies--Bouldin}; (iii) manejar los faltantes con \textbf{imputación múltiple}
+(marco estándar de \citet{vanbuuren2018flexible}) en lugar de eliminar casos
+completos; y (iv) cuando hay subgrupos pequeños, reportar estabilidad de los
+clusters (bootstrap o remuestreo).
+
+\subsection{Relación con este repositorio}
+
+La segmentación del proyecto vive en scripts R \emph{legacy}
+(\texttt{kproto} con $k=3$ fijo, sin validación) y en análisis multivariado
+(CA/FAMD) también en R con rutas hardcodeadas (\texttt{Downloads/}); la "gran
+tabla" sin identificadores se construyó con tipos degradados
+(\texttt{dtype='object'}). La auditoría verificó: $k=3$ sin curvas de
+withinss/silhouette; pérdida del 8.4\,\% de la muestra por eliminar casos
+incompletos; y no reproducibilidad del pipeline de clustering en Python pese a
+declarar \texttt{scikit-learn}.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item \textbf{Migrar la segmentación al pipeline Python} con FAMD
+        (\texttt{prince} o \texttt{scikit-learn}) + comparación de algoritmos
+        (k-prototypes vs.\ k-means sobre codificación) y validación interna
+        (silhouette, Calinski--Harabasz), siguiendo el benchmark citado en 12.2.
+  \item Aplicar \textbf{imputación múltiple} (o al menos documentar el sesgo
+        del análisis de casos completos) antes de clusterizar.
+  \item \textbf{Perfilar los clusters} contra las variables de política
+        (género, región, categoría) y reportar estabilidad por remuestreo;
+        conectar la segmentación con el marco de indicadores del observatorio.
+\end{enumerate}

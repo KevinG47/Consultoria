@@ -1,0 +1,65 @@
+% ============ 06. Dinámica longitudinal de carreras ============
+\section{Dinámica longitudinal de carreras científicas: retención, transición y atrición}
+
+\subsection{Qué dice la literatura}
+
+El estudio cuantitativo de carreras científicas combina: (i) \textbf{cadenas de
+Markov} para transiciones de estado \citep{kemeny1976finite} — ya usadas en
+bibliometría para movilidad entre categorías de productividad; (ii)
+\textbf{modelos de supervivencia} (Kaplan--Meier y riesgos proporcionales de
+Cox) para el \emph{tiempo hasta el evento} (abandono o salida), con manejo de
+censura; y (iii) \textbf{modelos de crecimiento} (efectos mixtos) para
+trayectorias individuales de productividad. Los clásicos de la física de
+carreras establecen resultados robustos: el impacto individual evoluciona con
+reglas universales en las que el azar pesa tanto como la productividad
+\citep{sinatra2016quantifying}; la persistencia y la incertidumbre marcan el
+arranque académico \citep{petersen2012persistence}; y la movilidad geográfica
+estratifica la carrera y el impacto \citep{deville2014career}. La evidencia
+empírica reciente es abundante: la atrición de científicos es alta y
+estructural — estudios recientes sobre abandono en países OCDE estiman que una
+fracción importante de quienes publican una primera vez no persiste (p.~ej.,
+atrición de biólogos en 38 países OCDE, 2024, sección 13.2; patrones de
+atrición científica de Kwiek y Szymula, sección 13.2). La \textbf{movilidad}
+geográfica e institucional se asocia con mayor impacto (Science,
+\citet{sugimoto2017scientists}), y la
+desigualdad de impacto se acumula desde las carreras tempranas
+(estudio 2023 sobre movilidad y desigualdad de impacto en carreras tempranas,
+sección 13.2).
+
+\subsection{Relación con este repositorio}
+
+El proyecto implementa matrices de transición de Markov entre categorías
+(Junior/Asociado/Senior/Emérito) y tasas de retención por periodo, con las 6
+convocatorias; su hallazgo de que Bogotá "retiene 92\,\% y absorbe 1\,000+
+investigadores" dialoga directamente con la literatura de movilidad. La
+auditoría identificó las brechas metodológicas frente a esta literatura: (a)
+no se testea la propiedad markoviana ni la homogeneidad temporal; (b) no hay
+modelos de supervivencia para el tiempo hasta la salida (los "desaparecen"
+mezclan abandono real con diseño del sistema, p.~ej. eméritos vitalicios); (c)
+las ventanas irregulares entre convocatorias (2013, 2014, 2015, 2017, 2019,
+2021) impiden comparar tasas directamente; (d) no hay análisis por cohorte de
+entrada ni modelos de crecimiento; y (e) el seguimiento individual depende de
+la estabilidad de \texttt{id\_persona\_pr} entre convocatorias, un supuesto de
+\textbf{vinculación de registros} (record linkage) que la literatura trata con
+métodos formales de desambiguación de identidades \citep{christen2012data} y
+que la adopción de identificadores persistentes tipo \textbf{ORCID} ayudaría
+a resolver en la fuente.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Añadir \textbf{análisis de supervivencia} (Kaplan--Meier y Cox) sobre
+        el panel: tiempo hasta la salida, con covariables (área OCDE, género,
+        categoría, región) y manejo de la censura por diseño (eméritos como
+        estado absorbente).
+  \item Testear la \textbf{propiedad markoviana} y reportar matrices de orden
+        superior o modelos condicionados a historia (coherente con
+        \citet{kemeny1976finite} y la práctica bibliométrica).
+  \item Analizar \textbf{cohortes de entrada} y \textbf{atrición por cohorte}
+        (estilo de los estudios de atrición citados en 12.2), separando
+        abandono real de artefactos del sistema (eméritos, cambio de
+        convocatoria).
+  \item Modelar \textbf{movilidad geográfica} (flujos entre departamentos, ya
+        esbozados en el Sprint 6) como insumo de la literatura de movilidad e
+        impacto \citep{sugimoto2017scientists}.
+\end{enumerate}

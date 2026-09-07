@@ -1,0 +1,50 @@
+% ============ 12. Visualización para observatorios ============
+\section{Visualización y comunicación para observatorios}
+
+\subsection{Qué dice la literatura}
+
+El producto público de un observatorio es su capa visual, y existe literatura
+madura al respecto. El concepto de \textbf{visualización narrativa}
+\citep{segel2010narrative} formaliza cómo contar historias con datos
+(estructuras tipo magazine, flujo descendente, paneles tipo "martini glass"),
+exactamente el patrón \emph{Pregunta $\rightarrow$ Hallazgo $\rightarrow$ Caveat}
+que el proyecto ya usa en su dashboard. Los principios clásicos de diseño
+siguen vigentes (datos-ink, eliminación de ruido visual; Tufte, 1983) y los
+marcos modernos de dashboards analíticos (Few, 2009) recomiendan jerarquía
+visual, contexto y encadenamiento pregunta-respuesta. La literatura de
+\emph{visual analytics} enfatiza la \textbf{interacción como medio de
+exploración} (filtros, drill-down) y la \textbf{transparencia del dato}
+(mostrar la fuente y los supuestos de cada cifra junto a la visualización).
+Para observatorios de política, el desafío no es dibujar más, sino
+\textbf{auditar qué se muestra}: cada gráfico debe poder trazarse a su dato y a
+su método.
+
+\subsection{Relación con este repositorio}
+
+El proyecto entrega un dashboard Streamlit de 7 pestañas (calidad, trayectoria,
+territorio, género/diversidad, redes, productividad, datos crudos) con el
+patrón Pregunta $\rightarrow$ Hallazgo $\rightarrow$ Caveat, mapas, heatmaps,
+Sankeys y grafos interactivos (Pyvis). La auditoría verificó: el gráfico HHI
+del dashboard \textbf{nunca se dibuja} por un bug silencioso (ValueError
+capturado); la sección de productividad se degrada sin el dataset de
+producción; y el manual ejecutable no es reproducible. Frente a la literatura,
+faltan: (a) la \textbf{traza de cada visualización a su dato y método} (botón o
+nota "fuente y cálculo"), (b) indicadores de \textbf{incertidumbre} en los
+gráficos (intervalos de confianza), y (c) una política de auditoría visual de
+los gráficos antes de publicarlos.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Documentar cada visualización con su \textbf{fuente, definición del
+        cálculo y limitaciones} (encadenando con el marco de indicadores de la
+        sección 3 y con el linaje de la sección 4).
+  \item Reparar el bug del HHI y añadir \textbf{incertidumbre} (IC) a los
+        gráficos de indicadores principales, siguiendo la práctica de
+        visualización honesta de la literatura narrativa \citep{segel2010narrative}.
+  \item Mantener el patrón \emph{Pregunta $\rightarrow$ Hallazgo $\rightarrow$
+        Caveat} como guía de diseño (ya es una fortaleza) y añadir una
+        \textbf{vista de auditoría de datos crudos} que permita verificar cada
+        hallazgo desde el propio dashboard (tab 7 ya existe; fortalecerla con
+        descarga y con la traza metodológica).
+\end{enumerate}

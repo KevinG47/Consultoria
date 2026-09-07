@@ -1,0 +1,9 @@
+
+Hallazgo
+Veredicto: El repositorio se construyó con 133 commits (ago 2025 - may 2026) en tres fases:
+académica, de ingeniería de datos y de cierre; la autoría refleja el rol de cada miembro del equipo.
+2.1 Hallazgos de mayor impacto
+Los estudiantes lideraron la fase académica y el responsable de pipeline la fase de
+ingeniería, con revisión del director.
+Los mensajes de commit evolucionaron de genéricos a convenciones feat:/docs:/chore:,
+evidencia de buenas prácticas progresivas.

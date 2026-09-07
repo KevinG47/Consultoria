@@ -1,0 +1,51 @@
+% ============ 07. Desigualdad y concentración ============
+\section{Desigualdad y concentración de la ciencia (territorio, productividad e instituciones)}
+
+\subsection{Qué dice la literatura}
+
+La medición de la desigualdad en ciencia usa la familia estándar de índices:
+\textbf{HHI} (Herfindahl--Hirschman), \textbf{Gini}, \textbf{Theil}
+\citep{theil1967economics} y la curva de Lorenz. La \textbf{geografía de la
+ciencia} es un campo activo con programa de investigación acumulativo
+\citep{frenken2009spatial}: un artículo reciente en \emph{Journal of
+Informetrics} (2023) cuantifica simultáneamente \emph{competitividad y
+desigualdad} de la producción científica entre países (sección 13.2),
+mostrando que la concentración coexiste con dinámicas de cambio de liderazgo.
+A nivel institucional, \citet{clauset2015systematic} demostró en redes de
+contratación de profesores en EE.~UU. que la jerarquía institucional es
+extrema, persistente y resistente a cambios tras controlar por productividad;
+replicaciones recientes siguen confirmando la \emph{estratificación por
+prestigio} desde la carrera temprana (sección 13.2). La literatura clásica de
+productividad (\textbf{ley de Lotka}, \citet{lotka1926frequency}) sigue siendo
+el marco nulo para testar concentración de producción. El índice h
+\citep{hirsch2005index} y sus críticas marcan los límites de los indicadores de
+output individuales: la revisión sistemática de indicadores de impacto de cita
+\citep{waltman2016review} documenta la necesidad de normalizar por campo y
+carrera, y de reportar incertidumbre, antes de comparar perfiles individuales.
+
+\subsection{Relación con este repositorio}
+
+El proyecto calcula \textbf{HHI por departamento y región} (hallazgo: Bogotá y
+Antioquia concentran 51\,\%), productividad media por categoría (Junior 30 /
+Asociado 65 / Senior 121) y comparaciones per cápita DANE 2018. La auditoría
+verificó: HHI sin intervalos de confianza ni complemento de Gini/Theil;
+denominador per cápita fijo (DANE 2018) sin considerar dinámica poblacional
+2013--2021; concentración de productividad sin contraste con la ley de Lotka;
+y duplicidad de artefactos de matrices que dificulta la trazabilidad de los
+índices.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Ampliar la familia de índices: \textbf{HHI + Gini/Lorenz + Theil
+        (descomponible entre/intra regiones)} con intervalos de confianza
+        bootstrap, siguiendo \citep{theil1967economics} y la práctica de la
+        geografía de la ciencia (sección 13.2).
+  \item Testar la \textbf{concentración de productividad} contra la ley de
+        Lotka \citep{lotka1926frequency} y normalizar la productividad por área
+        y ventana antes de comparar categorías.
+  \item Analizar la \textbf{jerarquía institucional} con los métodos de
+        \citet{clauset2015systematic} (redes de "contratación" observables en el
+        padrón: retención, absorción y flujos entre instituciones) y reportar
+        la persistencia temporal de la concentración.
+\end{enumerate}

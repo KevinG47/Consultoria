@@ -1,0 +1,70 @@
+% ============ 6. Declaración de IA y reparto (S3) ============
+\section{Declaración de uso de herramientas de IA y reparto del trabajo}
+
+\subsection{Reparto del trabajo}
+
+\begin{itemize}
+  \item \textbf{Kevin Leonardo Chaparro Reyes} — rol principal: ingesta y
+        auditoría de calidad de los datos (OE1); responsable de la
+        reproducibilidad del pipeline; revisó el conjunto.
+  \item \textbf{Valentina Muñoz Palma} — rol principal: análisis longitudinal
+        (OE2: panel, transiciones y supervivencia) y programación estadística;
+        revisó el conjunto.
+  \item \textbf{Paula Margarita Triana Ancinez} — rol principal: estado del
+        arte, análisis de equidad (OE3) y coordinación de la redacción y la
+        sustentación; revisó el conjunto.
+\end{itemize}
+Todos los integrantes leyeron y pueden defender la totalidad del anteproyecto;
+ninguna sección fue redactada por un solo integrante sin revisión de los demás.
+\textit{(Ajustable a la división real del trabajo.)}
+
+\subsection{Uso declarado de herramientas de IA}
+
+Usamos herramientas de IA generativa y agentes autónomos como \textbf{apoyo},
+no como autores. Específicamente:
+
+\begin{itemize}
+  \item \textbf{Cuánto se usó:} de forma \textbf{intensiva como asistente de
+        análisis y redacción}: la mayoría de los borradores, fichas de
+        auditoría y material de apoyo se generaron con IA; \textbf{todo el
+        contenido final fue revisado, corregido y aprobado por los tres
+        integrantes} antes de la entrega.
+  \item \textbf{Para qué se usó:} análisis y documentación de código del
+        repositorio de referencia, generación de fichas de auditoría, búsqueda
+        y síntesis de literatura para el estado del arte, redacción de
+        borradores y revisión de redacción, y propuesta de estructura del
+        documento.
+  \item \textbf{Validación en dos niveles, como lo solicitó el equipo:}
+        (i) el \textbf{propio agente} que generó el material autoverificó cada
+        afirmación \textbf{empíricamente} (ejecución real de los scripts, filas
+        reales del XLSX, 133 commits con \texttt{git log}, exit codes de 16
+        scripts) y con reglas automáticas; (ii) \textbf{agentes de validación
+        independientes solicitados por el equipo} revisaron hechos, reglas de
+        construcción, referencias (0 inventadas) y la rúbrica (bloques D y S);
+        sus informes quedaron archivados en \texttt{data/validacion/}.
+  \item \textbf{Qué se descartó porque estaba mal (casos concretos):}
+        (1) un agente afirmó que el código comparaba la cadena \texttt{"SÍ"}
+        con un dato \texttt{"SI"} y que la métrica de víctimas colapsaría a
+        cero; al leer el código y ejecutarlo se verificó que la normalización
+        previa lo resolvía: la afirmación se corrigió. (2) Un agente reportó un
+        "orden alfabético" de archivos que en realidad era canónico por capa
+        (artefacto de su propio verificador); se corrigió. (3) Un agente generó
+        texto con un error de codificación (\texttt{SÃ} por \texttt{Sí}) que se
+        detectó y corrigió en la revisión final.
+\end{itemize}
+
+\subsection{Riesgos éticos del proyecto y marco legal}
+
+El proyecto trata \textbf{datos personales} del padrón público (identificadores
+de persona, edad, geolocalización) e incluye \textbf{categorías sensibles}
+auto-declaradas: grupo étnico, condición de discapacidad y condición de
+víctima del conflicto. El marco legal aplicable en Colombia es la
+\textbf{Ley 1581 de 2012} (protección de datos personales). Nuestras medidas:
+(i) no publicar microdatos identificables: los análisis se publican agregados y
+se mantiene la "gran tabla sin identificadores" como estándar, porque incluso
+los datos seudonimizados pueden ser reidentificables en ciertas condiciones
+(Rocher et al., 2019); (ii) declarar la finalidad y el tratamiento en la
+documentación del proyecto; (iii) tratar las
+variables sensibles con especial cuidado interpretativo (son auto-declaradas y
+solo comparables en la ventana 2021). El riesgo de sesgo se mitiga declarando
+explícitamente los supuestos y las limitaciones de cada indicador.

@@ -1,0 +1,208 @@
+% =====================================================================
+% TARJETAS DE SUSTENTACIÓN — frase por frase, por integrante
+% Entrega 1 · Anteproyecto · Consultoría Estadística USTA 2026-II
+% 10 minutos · 3 tarjetas (Kevin / Valentina / Paula)
+% =====================================================================
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=1.7cm,bottom=1.7cm,left=1.9cm,right=1.9cm]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{usta}{RGB}{30,55,128}
+\definecolor{accent}{RGB}{183,135,30}
+\definecolor{gris}{RGB}{110,110,110}
+\usepackage{parskip}
+\usepackage{enumitem}
+\setlist{itemsep=1pt,topsep=2pt,parsep=0pt}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{usta}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{4pt}{6pt}
+\titleformat{\subsection}[runin]{\bfseries\color{accent}}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{6pt}{4pt}
+
+\sloppy
+\emergencystretch=2em
+
+\newcommand{\tiempo}[1]{\textbf{\color{accent}#1}}
+\newcommand{\lamina}[1]{\textbf{\color{usta}#1}}
+
+\begin{document}
+
+% ============================ KEVIN ============================
+\section{Tarjeta 1 — Kevin Leonardo Chaparro Reyes \quad (3:30 total)}
+
+\textit{Rol en la exposición: apertura (lámina 1--2), evidencia (lámina 3) y
+datos/método (lámina 7). Lee una frase a la vez; cada bloque indica su tiempo.}
+
+\subsection{Lámina 1--2 · Presentación y problema — 0:00--1:30 (90 s)}
+\begin{itemize}
+  \item ``Buenos días. Somos Kevin Leonardo Chaparro, Valentina Muñoz Palma y
+        Paula Margarita Triana Ancinez, del equipo de Consultoría Estadística.''
+  \item ``Presentamos el anteproyecto de una auditoría estadística reproducible
+        del sistema de reconocimiento de investigadores de MinCiencias.''
+  \item ``MinCiencias reconoce a los investigadores por convocatorias y los
+        clasifica en Junior, Asociado, Senior y Emérito.''
+  \item ``Ese padrón es la principal fuente administrativa de capital humano
+        científico: alimenta decisiones de política, de financiación y de
+        carrera.''
+  \item ``El problema es doble. \emph{Primero}: nadie audita la calidad y la
+        comparabilidad del registro. \emph{Segundo}: la inequidad estructural
+        no está cuantificada con rigor.''
+  \item ``¿A quién le importa? A MinCiencias, a los investigadores y a quienes
+        toman decisiones de política de ciencia.''
+\end{itemize}
+
+\subsection{Lámina 3 · Evidencia propia — 1:30--2:45 (75 s)}
+\begin{itemize}
+  \item ``No lo decimos por intuición: lo medimos.''
+  \item ``El padrón público declara 77\,237 registros y 6 convocatorias. Al
+        abrirlo, encontramos 50\,891 filas, 26\,662 personas únicas y solo 3
+        convocatorias: 781 de 2017, 833 de 2018 y 894 de 2021.''
+  \item ``Hay 22 registros con edad mayor a 100 años —uno con 956— y errores de
+        codificación.''
+  \item ``La concentración territorial es extrema: Bogotá y Antioquia suman el
+        51\,\%. Bogotá retiene el 92\,\% de sus investigadores y absorbe a más
+        de mil de otros departamentos.''
+  \item ``La brecha de género es estructural: 24\,\% de mujeres en Ingeniería,
+        frente a 48\,\% en ciencias médicas.''
+  \item ``Y frente al censo: afrocolombianos 3 veces subrepresentados,
+        indígenas 7{,}9 veces y personas con discapacidad 8 veces.''
+  \item ``Conclusión: el problema existe y es cuantificable.'' \hfill
+        \tiempo{(cambio a Valentina)}
+\end{itemize}
+
+\subsection{Lámina 7 · Datos y método — 6:00--7:15 (75 s)}
+\begin{itemize}
+  \item ``Todo lo que haremos es sobre datos abiertos, ya abiertos por
+        nosotros.''
+  \item ``Tres fuentes: el padrón \texttt{bqtm-4y2h}; la producción de grupos
+        \texttt{33dq-ab5a}; y el censo DANE 2018 como referencia de equidad.''
+  \item ``La ruta es reproducible —Python con DuckDB— en tres etapas.''
+  \item ``Primero, auditoría de calidad con contratos de esquema. Segundo,
+        panel longitudinal con cadenas de Markov y supervivencia:
+        Kaplan--Meier y Cox. Tercero, equidad con HHI, Gini y Theil, y razones
+        de representación con intervalos de confianza.''
+  \item ``¿Qué descartamos? El análisis de producción individual, el índice
+        $h$: requiere 1{,}2 gigabytes y no define esta entrega.''
+  \item ``Y si el dato no llega, los objetivos no dependen de él.'' \hfill
+        \tiempo{(cambio a Paula)}
+\end{itemize}
+
+\newpage
+% ============================ VALENTINA ============================
+\section{Tarjeta 2 — Valentina Muñoz Palma \quad (2:45 total)}
+
+\textit{Rol en la exposición: pregunta (lámina 4), objetivos (lámina 6) y
+por qué cabe en el semestre (lámina 9).}
+
+\subsection{Lámina 4 · La pregunta estadística — 2:45--3:30 (45 s)}
+\begin{itemize}
+  \item ``Traducimos todo eso a una pregunta estadística respondible.''
+  \item ``¿El padrón de investigadores reconocidos de MinCiencias, entre 2013
+        y 2021, es fiable, comparable entre convocatorias y equitativo?''
+  \item ``Y además: ¿qué mejoras metodológicas y de gobernanza de datos lo
+        convertirían en la base sólida de un observatorio?''
+  \item ``Si nadie hace nada, seguiremos decidiendo política sobre un
+        instrumento no auditado.'' \hfill \tiempo{(cambio a Paula)}
+\end{itemize}
+
+\subsection{Lámina 6 · Objetivos — 5:00--6:00 (60 s)}
+\begin{itemize}
+  \item ``El objetivo general: cuantificar y auditar, de forma reproducible,
+        la fiabilidad, la comparabilidad y la equidad del padrón, y entregar un
+        marco de indicadores y un tablero de auditoría.''
+  \item ``Tres objetivos específicos, en secuencia.''
+  \item ``Primero, \emph{cuantificar} la calidad del registro —completitud,
+        unicidad, validez y consistencia— por convocatoria. Evidencia: tabla de
+        indicadores con conteos verificables.''
+  \item ``Segundo, \emph{estimar} la dinámica longitudinal: retención,
+        transición de categoría y tiempo hasta la salida. Evidencia: matrices
+        de transición con intervalos de confianza, curvas de Kaplan--Meier y un
+        modelo de Cox.''
+  \item ``Tercero, \emph{cuantificar} la equidad: concentración territorial y
+        representación de género, etnia, discapacidad y víctimas frente al
+        censo. Evidencia: indicadores con intervalos de confianza.''
+  \item ``Sin registro limpio no hay panel fiable; sin panel no hay lectura de
+        equidad. Por eso ese orden.'' \hfill \tiempo{(cambio a Kevin)}
+\end{itemize}
+
+\subsection{Lámina 9 · Por qué cabe en el semestre — 8:00--9:00 (60 s)}
+\begin{itemize}
+  \item ``El plan cabe en 12 semanas, con hitos y holgura.''
+  \item ``Semanas 1--2, datos y contratos. 3--4, calidad. 5--6, panel y
+        transiciones. 7--8, supervivencia. 9--10, equidad. 11, marco y tablero.
+        12, informe final y sustentación.''
+  \item ``Horas: una hora diaria después de clases, en la noche, seis días a la
+        semana, por cada integrante.''
+  \item ``Seis horas por tres integrantes por doce semanas: 216 horas.
+        Estimamos 180 de carga: queda un 17\,\% de holgura.'' \hfill
+        \tiempo{(cambio a Paula)}
+\end{itemize}
+
+\newpage
+% ============================ PAULA ============================
+\section{Tarjeta 3 — Paula Margarita Triana Ancinez \quad (3:15 total)}
+
+\textit{Rol en la exposición: estado del arte (lámina 5), alcance y riesgos
+(lámina 8) y cierre (lámina 10).}
+
+\subsection{Lámina 5 · Estado del arte y vacío — 3:30--5:00 (90 s)}
+\begin{itemize}
+  \item ``¿Qué se sabe ya? En el mundo, la \emph{science of science} y las
+        métricas responsables fijaron cómo auditar indicadores: el Manifiesto
+        de Leiden, la declaración DORA y CoARA.''
+  \item ``También hay estándares de calidad de datos y reproducibilidad: los
+        principios FAIR.''
+  \item ``Y se ha estudiado la dinámica de las carreras con métodos
+        longitudinales: Markov, supervivencia, movilidad.''
+  \item ``En Colombia y la región hay sistemas consolidados: Lattes en Brasil;
+        ScienTI, CVLAC y Publindex aquí; y el CONPES 4069 de ciencia abierta.''
+  \item ``Pero hay críticas al modelo de categorización, y no existe una
+        evidencia cuantitativa reproducible que audite el padrón combinando
+        calidad, trayectoria y equidad. \emph{Ese es el vacío que atendemos}.''
+  \item ``Metodológicamente contrastamos dos enfoques: las cadenas de Markov
+        suponen homogeneidad; la supervivencia modela el tiempo al evento con
+        covariables. Los contrastamos porque el supuesto markoviano puede
+        violarse.'' \hfill \tiempo{(cambio a Valentina)}
+\end{itemize}
+
+\subsection{Lámina 8 · Alcance y riesgos — 7:15--8:00 (45 s)}
+\begin{itemize}
+  \item ``¿Qué no haremos y por qué?''
+  \item ``No validaremos contra registros internos de MinCiencias: no son
+        accesibles. No haremos modelos predictivos individuales ni análisis
+        causal. No profundizaremos en el índice $h$ en esta fase.''
+  \item ``Riesgos con contingencia: la discrepancia entre 77 mil y 50 mil ya es
+        un hallazgo del objetivo, no un bloqueo.''
+  \item ``La producción no descargable no detiene los objetivos, y el tiempo
+        tiene dos semanas de holgura.'' \hfill \tiempo{(cambio a Valentina)}
+\end{itemize}
+
+\subsection{Lámina 10 · Cierre — 9:00--10:00 (60 s)}
+\begin{itemize}
+  \item ``Cerramos con cuatro ideas.''
+  \item ``Primera: el problema es real y ya está medido con cifras propias
+        verificables.''
+  \item ``Segunda: la literatura deja un vacío claro: falta la auditoría
+        reproducible del registro.''
+  \item ``Tercera: los datos son abiertos, accesibles y ya abiertos por el
+        equipo.''
+  \item ``Cuarta: el plan es realista —tiene hitos, holgura y horas.''
+  \item ``Nuestro aporte: un marco de indicadores y un tablero para que
+        MinCiencias y la comunidad sepan qué tan confiable, comparable y
+        equitativo es su sistema de reconocimiento.''
+  \item ``Muchas gracias. Quedamos atentos a sus preguntas.''
+\end{itemize}
+
+\vfill
+\begin{center}
+{\color{gris}\rule{0.6\linewidth}{0.4pt}}\\[2mm]
+{\small\color{gris} Regla S1: aunque cada quien presenta su bloque, cualquier
+integrante debe poder responder cualquier pregunta. Practiquen la rotación.}
+\end{center}
+
+\end{document}

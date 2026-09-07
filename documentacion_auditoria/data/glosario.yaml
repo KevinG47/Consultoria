@@ -1,0 +1,176 @@
+# =====================================================================
+# Glosario — FUENTE DE VERDAD (una sola vez)
+# =====================================================================
+# Cada PDF incluye ÚNICAMENTE las entradas cuyos términos (claves) aparecen
+# efectivamente en su propio texto. "claves" son subcadenas distintivas
+# (minúsculas) para la búsqueda case-insensitive; pueden ser varias por
+# término para cubrir variantes (singular/plural, sigla/nombre).
+# =====================================================================
+
+glosario:
+  - termino: "HHI (Herfindahl-Hirschman)"
+    definicion: >
+      Índice que mide si algo está concentrado o repartido. Va de 0 (todo
+      repartido) a 1 (todo en un solo lugar). En el informe se usa para ver si
+      los investigadores se concentran en pocos departamentos.
+    claves:
+      - "hhi"
+      - "herfindahl"
+
+  - termino: "Matriz de transición"
+    definicion: >
+      Tabla que muestra con qué probabilidad un investigador pasa de una
+      categoría (p. ej. Junior) a otra (p. ej. Asociado) entre dos
+      convocatorias. Permite ver si el sistema 'sube', 'mantiene' o 'pierde'
+      investigadores.
+    claves:
+      - "matriz de transición"
+      - "matrices de transición"
+
+  - termino: "Tasa de retención"
+    definicion: >
+      Porcentaje de investigadores que siguen presentes en la siguiente
+      convocatoria. Una retención baja puede indicar abandono o cambio de
+      reglas.
+    claves:
+      - "tasa de retención"
+      - "retención"
+
+  - termino: "Representación relativa"
+    definicion: >
+      Cuántas veces aparece un grupo (p. ej. afrocolombianos) en el padrón
+      frente a lo que correspondería según su peso en la población colombiana
+      (DANE). Un valor de 0.3 indica que aparece 3 veces menos de lo esperado.
+    claves:
+      - "representación relativa"
+      - "subrepresentación"
+      - "subrepresentad"
+
+  - termino: "k-prototypes"
+    definicion: >
+      Algoritmo de agrupamiento (clustering) que agrupa personas con perfiles
+      similares cuando los datos mezclan números (edad) y categorías (área,
+      género).
+    claves:
+      - "k-prototypes"
+      - "kproto"
+
+  - termino: "MCA / FAMD"
+    definicion: >
+      Técnicas para resumir tablas con muchas categorías en pocos ejes
+      visualizables, de modo que se puedan ver patrones (p. ej. qué áreas se
+      asocian con qué géneros).
+    claves:
+      - "mca"
+      - "famd"
+      - "correspondencia"
+
+  - termino: "CRISP-DM"
+    definicion: >
+      Metodología estándar de proyectos de datos: entender el problema,
+      preparar los datos, modelar, evaluar y desplegar. El proyecto la usa como
+      guía general.
+    claves:
+      - "crisp-dm"
+      - "crisp dm"
+
+  - termino: "Modelo dimensional (esquema estrella)"
+    definicion: >
+      Forma de organizar los datos en tablas de 'hechos' (métricas: quién,
+      cuándo, qué categoría) y 'dimensiones' (descripciones: área, región,
+      institución), para hacer consultas rápidas y reportes.
+    claves:
+      - "modelo dimensional"
+      - "esquema estrella"
+      - "dimensional"
+
+  - termino: "DuckDB"
+    definicion: >
+      Base de datos analítica ligera que se ejecuta dentro del propio proyecto
+      (sin instalar un servidor). Se usa para almacenar el modelo dimensional.
+    claves:
+      - "duckdb"
+
+  - termino: "Mojibake"
+    definicion: >
+      Texto ilegible por un problema de codificación (p. ej. 'FÃ­sica' en lugar
+      de 'Física'). Detectado en el CSV del repositorio.
+    claves:
+      - "mojibake"
+      - "codificación"
+
+  - termino: "Contrato de esquema"
+    definicion: >
+      Validación automática que garantiza que un archivo de datos tenga las
+      columnas, tipos y valores esperados antes de analizarlo.
+    claves:
+      - "contrato de esquema"
+      - "pandera"
+
+  - termino: "ETL"
+    definicion: >
+      Sigla de Extraer, Transformar y Cargar: procesos que extraen los datos de
+      la fuente, los limpian y los dejan listos para analizar.
+    claves:
+      - "etl"
+
+  - termino: "Pipeline"
+    definicion: >
+      Cadena de procesos que lleva los datos desde la fuente hasta el análisis
+      (ingesta, limpieza, transformación, modelado). También llamada 'cadena de
+      procesamiento' o 'flujo de datos'.
+    claves:
+      - "pipeline"
+
+  - termino: "Markovianidad"
+    definicion: >
+      Propiedad de un proceso en el que la probabilidad de pasar al siguiente
+      estado solo depende del estado actual (y no de toda la historia). Se usa
+      para validar si las matrices de transición de categorías son adecuadas.
+    claves:
+      - "markovianidad"
+
+  - termino: "Modelos de supervivencia (Kaplan-Meier / Cox)"
+    definicion: >
+      Técnicas estadísticas para analizar 'tiempo hasta que ocurre un evento'
+      (p. ej. cuánto tarda un investigador en salir del sistema), incluyendo
+      datos incompletos.
+    claves:
+      - "kaplan-meier"
+      - "supervivencia"
+      - "cox"
+
+  - termino: "Intervalo de confianza (IC) y bootstrap"
+    definicion: >
+      El intervalo de confianza indica el rango plausible de una estimación
+      (p. ej. 0.15-0.19). El bootstrap es un método que lo calcula remuestreando
+      los datos muchas veces, sin fórmulas complejas.
+    claves:
+      - "bootstrap"
+      - "intervalo de confianza"
+      - "ic bootstrap"
+
+  - termino: "DVC (versionado de datos)"
+    definicion: >
+      Herramienta para versionar archivos de datos grandes junto con el código
+      (como Git, pero para datos), lo que permite reproducir análisis desde
+      versiones exactas.
+    claves:
+      - "dvc"
+
+  - termino: "CI/CD y Docker"
+    definicion: >
+      Automatización de pruebas y despliegue (CI/CD) y empaquetado de la
+      aplicación en un contenedor (Docker) para que funcione igual en cualquier
+      máquina.
+    claves:
+      - "ci/cd"
+      - "dockerfile"
+      - "docker"
+
+  - termino: "Sprint"
+    definicion: >
+      Ciclo corto de trabajo (en este proyecto, de 2 semanas) con objetivos
+      concretos.
+    claves:
+      - "sprint"

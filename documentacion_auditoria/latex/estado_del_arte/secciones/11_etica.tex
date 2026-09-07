@@ -1,0 +1,48 @@
+% ============ 11. Ética y protección de datos ============
+\section{Ética y protección de datos personales en registros de ciencia}
+
+\subsection{Qué dice la literatura}
+
+El tratamiento de registros administrativos de investigadores implica datos
+personales y, con frecuencia, \textbf{categorías sensibles} (etnia, condición
+de discapacidad, condición de víctima del conflicto). La literatura sobre
+privacidad de datos muestra que la \textbf{anonimización ingenua no es
+suficiente}: los ataques de reidentificación tienen éxito incluso sobre datos
+incompletos o con seudónimos \citep{rocher2019estimating}, y el riesgo crece
+cuando se combinan múltiples variables cuasi-identificadoras (departamento,
+área, edad, cargo). Las prácticas recomendadas incluyen: minimización
+(recolectar solo lo necesario), seudonimización y anonimización robusta
+(k-anonimato y variantes), agregación de microdatos antes de publicar, y
+análisis de riesgo de reidentificación previo a cualquier liberación de datos.
+En Colombia, el marco normativo es la \textbf{Ley 1581 de 2012} (protección de
+datos personales) y sus decretos reglamentarios, con reglas específicas para
+datos sensibles (autorización explícita, finalidad, seguridad).
+
+\subsection{Relación con este repositorio}
+
+El proyecto procesa el padrón de MinCiencias con variables sensibles
+(auto-declaradas): grupo étnico, discapacidad y condición de víctima, además de
+identificadores de persona (\texttt{id\_persona\_pr}) y ubicación. Buena
+práctica ya adoptada: la construcción de una "gran tabla sin identificadores"
+para análisis y la publicación de agregados (evidencias y figuras). La
+auditoría identificó riesgos a formalizar: (a) el consolidado versionado
+(XLSX/CSV) incluye \texttt{ID\_PERSONA\_PR}, edad y geolocalización — microdatos
+personales en un repositorio público; (b) no hay documento de tratamiento de
+datos personales ni análisis formal de riesgo de reidentificación de la "gran
+tabla"; (c) la descarga pública por convocatoria de la fuente (Socrata) es
+legítima, pero el proyecto debe declarar su régimen de tratamiento y retención.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Publicar una \textbf{nota de tratamiento de datos personales} (Ley
+        1581/2012): finalidad, base de legitimación, categorías sensibles,
+        medidas de seguridad y política de retención del consolidado.
+  \item Realizar un \textbf{análisis de riesgo de reidentificación} de la
+        "gran tabla" y de los microdatos publicados (estilo
+        \citet{rocher2019estimating}); si el riesgo es no despreciable,
+        agregar o generalizar las variables cuasi-identificadoras.
+  \item Mantener la política de \textbf{no publicar microdatos identificables}
+        (ya correcta en el diseño) y documentarla explícitamente en el README y
+        en el catálogo, indicando qué archivos son de acceso restringido.
+\end{enumerate}

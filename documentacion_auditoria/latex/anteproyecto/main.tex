@@ -1,0 +1,88 @@
+% =====================================================================
+% ANTEPROYECTO — Entrega 1 · Consultoría Estadística USTA 2026-II
+% Modalidad: datos abiertos. Documento 6–10 págs. (sin portada ni refs).
+% Citación: APA 7. Estilo académico limpio (sin marca de auditoría).
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=2.4cm,bottom=2.4cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\definecolor{usta}{RGB}{30,55,128}
+\usepackage[colorlinks=true,linkcolor=usta,urlcolor=usta]{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{setspace}
+\setstretch{1.08}
+\usepackage{parskip}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+
+\sloppy
+\emergencystretch=3em
+
+% Permitir salto de línea tras guion bajo (nombres técnicos largos)
+\makeatletter
+\def\_{\leavevmode \kern.06em\vbox{\hrule width.3em}\allowbreak}
+\makeatother
+\usepackage{xurl}
+
+% Referencias APA 7: sangría francesa, sin corchetes, con DOI/URL
+\usepackage{etoolbox}
+\newenvironment{referencias}
+  {\begin{list}{}{\setlength{\leftmargin}{1.5em}\setlength{\itemindent}{-1.5em}
+   \setlength{\itemsep}{6pt}\setlength{\parsep}{0pt}}}
+  {\end{list}}
+\newcommand{\refapa}[1]{\item #1}
+
+% Portada (no cuenta en las 6–10 págs.)
+\newcommand{\portada}{%
+\begin{titlepage}
+\centering
+\vspace*{1.6cm}
+{\color{usta}\rule{\linewidth}{1.2pt}}\\[0.7cm]
+{\LARGE\bfseries Auditoría estadística reproducible del sistema de\\[0.15em]
+reconocimiento de investigadores de MinCiencias\\[0.2em]
+(2013--2021) con datos abiertos\\[0.4cm] y propuesta de mejora para su observatorio}\\[0.9cm]
+{\large Consultoría Estadística · Universidad Santo Tomás · 2026-II}\\[0.5cm]
+{\normalsize \textbf{Entrega 1 — Anteproyecto} · Modalidad: proyecto con datos abiertos}\\[1.4cm]
+\begin{minipage}{0.8\linewidth}\centering
+{\normalsize \textbf{Integrantes}}\\[0.2cm]
+{\normalsize Kevin Leonardo Chaparro Reyes}\\[0.1cm]
+{\normalsize Valentina Muñoz Palma}\\[0.1cm]
+{\normalsize Paula Margarita Triana Ancinez}\\[1.0cm]
+{\small Experto temático: Javier Mauricio Sierra}\\[0.2cm]
+{\small Fecha: \today}\\[1.2cm]
+\end{minipage}
+{\color{usta}\rule{\linewidth}{1.2pt}}
+\vfill
+{\small \textbf{Declaración:} este documento fue elaborado con apoyo de herramientas de IA
+generativa; el uso está declarado en la sección 6 conforme a la rúbrica.}
+\end{titlepage}}
+
+\begin{document}
+\portada
+\tableofcontents
+\newpage
+
+\input{secciones/01_problema.tex}
+\input{secciones/02_estado_arte.tex}
+\input{secciones/03_objetivos.tex}
+\input{secciones/04_datos_metodo.tex}
+\input{secciones/05_alcance.tex}
+\input{secciones/06_ia_reparto.tex}
+
+\newpage
+\section*{Referencias}
+\addcontentsline{toc}{section}{Referencias}
+\begin{referencias}
+\input{secciones/07_referencias.tex}
+\end{referencias}
+
+\end{document}

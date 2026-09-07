@@ -1,0 +1,71 @@
+% ============ 5. Alcance, riesgos y cronograma (D5) ============
+\section{Alcance, riesgos y cronograma}
+
+\subsection{Qué hará y qué no hará el proyecto}
+
+\textbf{Sí hará:} auditar la calidad del padrón de investigadores reconocidos
+(2013--2021) y de su artefacto consolidado; construir el panel longitudinal y
+estimar transiciones y supervivencia; medir concentración territorial y
+equidad de género y diversidad frente al censo DANE 2018; entregar un marco de
+indicadores, un tablero de auditoría y documentación reproducible.
+
+\textbf{No hará (y por qué):}
+\begin{itemize}
+  \item \textbf{No} validará el padrón contra registros internos de MinCiencias
+        (no accesibles): se audita la fuente pública, que es el objeto
+        declarado.
+  \item \textbf{No} construirá modelos predictivos de carreras individuales ni
+        análisis causal (requieren diseños fuera del alcance semestral y de los
+        datos).
+  \item \textbf{No} profundizará en el análisis de producción individual
+        (índice $h$): exige el dataset de ~1,2\,GB y se declara como extensión.
+  \item \textbf{No} incluirá convocatorias posteriores a 2021 (si 2023 se
+        publicara a tiempo, se documenta como limitación, no se re-escopea).
+\end{itemize}
+
+\subsection{Riesgos principales y plan de contingencia}
+
+\begin{enumerate}
+  \item \textbf{Discrepancia de datos (77\,237 declarados vs.\ 50\,891 en el
+        artefacto).} Ya detectada y caracterizada. Contingencia: se audita
+        sobre el artefacto disponible y se documenta la discrepancia como
+        hallazgo (es parte del objetivo, no un bloqueo).
+  \item \textbf{Dataset de producción no descargable} (~1,2\,GB, disponibilidad
+        intermitente). Contingencia: OE1--OE3 no dependen de él; se procesa si
+        está disponible y se documenta la extensión.
+  \item \textbf{Tiempo insuficiente para la inferencia completa.} Contingencia:
+        se priorizan los entregables por hito y la holgura del cronograma (2
+        semanas) absorbe retrasos puntuales.
+\end{enumerate}
+
+\subsection{Cronograma por hitos (12 semanas)}
+
+\begin{longtable}{p{2.1cm}p{6.4cm}p{4.9cm}}
+\caption{Cronograma por hitos con entregables verificables}
+\label{tab:cronograma}\\
+\toprule
+\textbf{Semanas} & \textbf{Hito} & \textbf{Entregable verificable} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Semanas} & \textbf{Hito} & \textbf{Entregable verificable} \\
+\midrule
+\endhead
+1--2 & Datos abiertos y contratos & Scripts de ingesta/validación + catálogo actualizado (enlace y licencia verificados) \\
+3--4 & Auditoría de calidad (OE1) & Tabla de indicadores de calidad por convocatoria + informe breve \\
+5--6 & Panel longitudinal (OE2, parte 1) & Matrices de transición con IC y test de markovianidad \\
+7--8 & Supervivencia (OE2, parte 2) & Curvas Kaplan--Meier + modelo Cox con covariables \\
+9--10 & Equidad (OE3) & Indicadores HHI/Gini/Theil + razones de representación con IC \\
+11 & Marco de indicadores y tablero & Tablero de auditoría + marco de indicadores \\
+12 & Documentación y sustentación & Informe final reproducible + guion de sustentación \\
+\midrule
+\multicolumn{3}{l}{\emph{Holgura: semanas 6 y 11 incluyen margen de ~2 semanas
+acumuladas para imprevistos.}} \\
+\bottomrule
+\end{longtable}
+
+\textbf{Presupuesto de horas:} cada integrante dedicará \textbf{6 horas
+semanales} (1 hora diaria después de clases, en la noche, 6 días a la semana)
+$\times$ 3 integrantes $\times$ 12 semanas $\approx$ \textbf{216 horas}
+disponibles; la carga estimada del plan es de \textbf{~180 horas}, dejando
+\textbf{~36 horas (~17\,\%)} de holgura.

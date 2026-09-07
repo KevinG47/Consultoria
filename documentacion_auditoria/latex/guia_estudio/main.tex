@@ -1,0 +1,220 @@
+% =====================================================================
+% GUÍA DE ESTUDIO — Sustentación · Entrega 1 · Anteproyecto (10 minutos)
+% Consultoría Estadística USTA 2026-II · Guion de estudio en PDF
+% Fuente de verdad del contenido: documentacion_auditoria/guion_sustentacion.md
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,top=2.2cm,bottom=2.2cm,left=2.2cm,right=2.2cm]{geometry}
+\usepackage{microtype}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\definecolor{usta}{RGB}{30,55,128}
+\usepackage[colorlinks=true,linkcolor=usta,urlcolor=usta]{hyperref}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{setspace}
+\setstretch{1.05}
+\usepackage{parskip}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=3pt,parsep=0pt}
+
+\sloppy
+\emergencystretch=3em
+
+\newcommand{\quien}[1]{\textbf{[#1]}}
+
+\begin{document}
+
+\begin{center}
+{\color{usta}\rule{\linewidth}{1.2pt}}\\[0.4cm]
+{\LARGE\bfseries Guía de estudio — Sustentación}\\[0.15cm]
+{\large Entrega 1 · Anteproyecto · Consultoría Estadística · USTA 2026-II}\\[0.25cm]
+{\normalsize Kevin Leonardo Chaparro Reyes · Valentina Muñoz Palma · Paula Margarita Triana Ancinez}\\[0.3cm]
+{\color{usta}\rule{\linewidth}{1.2pt}}
+\end{center}
+
+\section*{Reglas de la rúbrica (60\,\% de la nota)}
+\begin{itemize}
+  \item La sustentación pesa 60\,\%; \textbf{S1 es individual}: cada quien debe
+        poder defender el \emph{conjunto}, no solo su bloque.
+  \item Este guion reparte los bloques, pero \textbf{todos deben poder responder
+        cualquier pregunta} (banco al final).
+  \item Nota individual $\le$ S1 $+$ 1{,}0: quien no defienda bien su S1 arrastra
+        a su nota individual, sin importar el resto.
+\end{itemize}
+
+\section*{Reparto sugerido de la exposición (10 min)}
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}c l l X@{}}
+\toprule
+\textbf{\#} & \textbf{Diapositiva} & \textbf{Quién presenta} & \textbf{Tiempo} \\
+\midrule
+1 & Título (presentación) & Cualquiera (30 s) & 0:00--0:30 \\
+2 & El problema: qué audita & Kevin & 0:30--1:30 \\
+3 & Evidencia propia (cifras) & Kevin & 1:30--2:45 \\
+4 & La pregunta estadística & Valentina & 2:45--3:30 \\
+5 & Estado del arte y vacío & Paula & 3:30--5:00 \\
+6 & Objetivos & Valentina & 5:00--6:00 \\
+7 & Datos y método & Kevin & 6:00--7:15 \\
+8 & Alcance y riesgos & Paula & 7:15--8:00 \\
+9 & Por qué cabe en el semestre & Valentina & 8:00--9:00 \\
+10 & Cierre & Paula & 9:00--10:00 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section*{Frases clave por bloque (decirlas, no leerlas)}
+\begin{enumerate}
+  \item \textbf{Problema} \quien{Kevin}: ``MinCiencias reconoce a los
+        investigadores por convocatorias y ese padrón alimenta decisiones de
+        política y de carrera. Nadie ha auditado si ese registro es confiable,
+        comparable y equitativo.''
+  \item \textbf{Evidencia} \quien{Kevin}: ``No lo decimos por intuición: el
+        padrón público declara 77\,237 registros, pero al abrirlo encontramos
+        50\,891 filas con 26\,662 personas únicas y solo 3 de 6 convocatorias
+        (781/2017, 833/2018 y 894/2021); 22 edades superan los 100 años;
+        Bogotá y Antioquia concentran el 51\,\%; 24\,\% de mujeres en
+        Ingeniería frente a 48\,\% en ciencias médicas.''
+  \item \textbf{Pregunta} \quien{Valentina}: ``Traducimos eso a una pregunta
+        estadística respondible: ¿el padrón es fiable, comparable entre
+        convocatorias y equitativo?''
+  \item \textbf{Estado del arte} \quien{Paula}: ``La literatura de la
+        \emph{science of science} y las métricas responsables ya fijó cómo
+        auditar indicadores; en Colombia hay crítica al modelo pero no
+        evidencia cuantitativa reproducible. Ese es el vacío que atendemos.
+        Contrastamos dos enfoques: Markov y supervivencia.''
+  \item \textbf{Objetivos} \quien{Valentina}: ``Un general y tres específicos:
+        calidad, dinámica longitudinal y equidad. Cada uno tiene evidencia de
+        cumplimiento.''
+  \item \textbf{Datos} \quien{Kevin}: ``Todo son datos abiertos ya abiertos
+        por nosotros: \texttt{bqtm-4y2h} y \texttt{33dq-ab5a} en
+        datos.gov.co. Método reproducible en Python.''
+  \item \textbf{Riesgos} \quien{Paula}: ``El riesgo principal —la discrepancia
+        de datos— ya es un hallazgo del objetivo, no un bloqueo; tenemos
+        holgura de dos semanas.''
+  \item \textbf{Cierre} \quien{Paula}: ``Entregamos un marco de indicadores y
+        un tablero para que MinCiencias sepa qué tan confiable y equitativo es
+        su sistema.''
+\end{enumerate}
+
+\section*{Banco de preguntas probables (rúbrica págs. 12--13) y respuestas-plantilla}
+\begin{enumerate}[label=\textbf{P\arabic*.}]
+  \item \textbf{¿Quién sufre este problema y desde cuándo?} \quien{Kevin/Paula}
+        --- MinCiencias y el SNCTI desde 2013 (6 convocatorias); investigadores
+        cuya categoría condiciona su carrera; política pública que usa el padrón.
+  \item \textbf{¿Cómo se resuelve hoy sin ustedes?} --- Con análisis
+        descriptivos y críticas normativas; sin auditoría reproducible de
+        calidad/equidad del registro.
+  \item \textbf{¿Qué pasa si nadie hace nada?} --- Decisiones de política sobre
+        un instrumento no auditado; inequidades no cuantificadas.
+  \item \textbf{¿Qué fuente los hizo cambiar de idea?} \quien{Paula} --- Las
+        críticas al modelo de categorización colombiano + la evidencia propia de
+        50\,891 vs.\ 77\,237: el problema no era solo de diseño, era de registro.
+  \item \textbf{¿Qué hicieron distinto los dos enfoques que contrastan?}
+        \quien{Valentina} --- Markov supone homogeneidad; supervivencia modela
+        el tiempo al evento con covariables; los contrastamos porque el supuesto
+        markoviano puede violarse.
+  \item \textbf{¿Por qué no es una repetición de lo ya leído?} \quien{Paula} ---
+        Porque no existe la combinación calidad + longitudinal + equidad
+        reproducible sobre estos datos abiertos.
+  \item \textbf{Si cumplen los tres específicos, ¿ya resolvieron el general?}
+        \quien{Valentina} --- Sí: calidad + comparabilidad + equidad agotan el
+        general; el tablero y el marco de indicadores son producto final.
+  \item \textbf{¿Con qué evidencia declaran cumplido el objetivo 2?} ---
+        Matrices de transición con IC, curvas Kaplan--Meier y un modelo Cox
+        reproducibles.
+  \item \textbf{¿Cuál de sus objetivos es en realidad una actividad?}
+        \quien{todos} --- Ninguno: los tres empiezan con verbos verificables
+        (cuantificar, estimar, cuantificar) y declaran evidencia.
+  \item \textbf{¿Alguien ya abrió el archivo? ¿Cuántas filas tiene?}
+        \quien{Kevin} --- Sí: XLSX verificado con 50\,891 filas $\times$ 30
+        columnas; \textbf{26\,662 personas únicas} (\texttt{ID\_PERSONA\_PR});
+        3 convocatorias (781/2017, 833/2018 y 894/2021). Ojo: la 833 es ``de
+        2018'', pero su \texttt{ANO\_CONVO} dice 06/12/2019 (fecha de
+        resolución): el ``2019'' no es una cuarta convocatoria.
+  \item \textbf{¿Qué variable responde al primer objetivo específico?} ---
+        \texttt{EDAD\_ANOS\_PR}, \texttt{ID\_PERSONA\_PR} (unicidad),
+        \texttt{ID\_CONVOCATORIA}/\texttt{ANO\_CONVO}.
+  \item \textbf{¿Qué hacen si en octubre el dato no llega?} \quien{Kevin} ---
+        OE1--OE3 no dependen de la producción ($\sim$1,2\,GB); el cruce con
+        producción ya se ejecutó para la línea base (el 36,9\,\% es resultado
+        archivado), así que ningún objetivo específico queda bloqueado; si hace
+        falta actualizar, redescarga por API Socrata con contratos.
+  \item \textbf{¿Qué decidieron dejar por fuera y por qué?} \quien{Paula} ---
+        producción individual ($h$), modelos predictivos individuales y
+        causalidad: fuera del alcance semestral y/o del dato.
+  \item \textbf{¿Qué es lo más probable que salga mal?} \quien{Kevin} --- La
+        discrepancia del consolidado; ya está caracterizada y es parte del
+        hallazgo.
+  \item \textbf{¿Cuántas horas por semana reales?} --- 1 h diaria después de
+        clases, en la noche, 6 días a la semana por integrante = 6 h $\times$
+        3 integrantes $\times$ 12 semanas = 216 h; carga estimada 180 h; 36 h
+        de holgura (17\,\%).
+  \item \textbf{Explíquemelo usted, que no redactó esa sección} --- Cada quien
+        practica el bloque de los demás (rotar: Kevin explica objetivos; Paula
+        explica datos; Valentina explica riesgos).
+  \item \textbf{¿Qué alternativa consideraron y por qué la descartaron?}
+        \quien{Kevin} --- Producción individual con $h$: descartada por volumen
+        ($\sim$1,2\,GB) y foco.
+  \item \textbf{Si le digo que su tercer objetivo sobra, ¿qué responde?}
+        \quien{Valentina} --- Sin equidad el general queda incompleto: la
+        pregunta incluye la dimensión distributiva explícitamente.
+  \item \textbf{Resuma el problema en dos frases} --- ``El registro oficial de
+        investigadores reconocidos no ha sido auditado. Queremos saber si es
+        confiable, comparable y equitativo, con evidencia reproducible.''
+  \item \textbf{¿Qué les devolvió la IA que descartaron?} \quien{cualquiera}
+        --- Un agente afirmó un bug falso (el ``SÍ'' de
+        \texttt{diversidad.py}) y un orden alfabético que era canónico; se
+        corrigieron al verificar el código.
+  \item \textbf{¿Qué riesgo ético tiene este proyecto?} \quien{Paula} --- Datos
+        personales y categorías sensibles (etnia, discapacidad, víctimas):
+        Ley 1581 de 2012; no publicamos microdatos identificables (la
+        seudonimización no elimina el riesgo de reidentificación; Rocher et
+        al., 2019).
+  \item \textbf{¿Cuál fue exactamente su aporte humano frente a la IA?}
+        \quien{cualquiera} --- El problema, el alcance y las exclusiones
+        (D1/D5) los decidió el equipo; la pregunta, los objetivos y el
+        contraste Markov vs.\ supervivencia (D2/D3/D4) los eligió el equipo;
+        los scripts se ejecutaron y auditaron con criterio humano; la
+        interpretación, qué se descarta, qué se publica y la revisión final
+        fueron humanas. La IA fue asistente, no autora.
+  \item \textbf{¿Quién escribió qué y quién revisó qué?} \quien{cualquiera}
+        --- Kevin: ingesta y calidad (OE1) + reproducibilidad; Valentina:
+        longitudinal (OE2) + programación estadística; Paula: estado del arte +
+        equidad (OE3) + coordinación. Todos revisaron el conjunto (sección
+        6.1); cualquiera responde cualquier bloque (S1).
+  \item \textbf{¿Por qué empezaron por el problema y no por los datos?}
+        \quien{Kevin} --- Porque el problema es la puerta bloqueante (D1) y
+        determina qué datos se necesitan, no al revés; además ya tenía
+        evidencia propia (50\,891 vs.\ 77\,237) que orientó el diseño.
+  \item \textbf{Con solo dos transiciones (2017$\rightarrow$2019$\rightarrow$2021),
+        ¿qué estiman con Kaplan--Meier/Cox?} \quien{Valentina} --- Modelamos la
+        permanencia entre ondas consecutivas como supervivencia
+        discreta/por intervalos; es un análisis acotado y exploratorio, y el
+        contraste con Markov es metodológico (supuestos distintos), no una
+        promesa de inferencia fina.
+\end{enumerate}
+
+\section*{Checklist 5 minutos antes}
+\begin{itemize}
+  \item [$\square$] Portada con los tres nombres (PDF del anteproyecto).
+  \item [$\square$] Llevar el PDF del anteproyecto, las diapositivas y esta guía.
+  \item [$\square$] Memorizar los números críticos y que coincidan en documento,
+        láminas y boca: 77\,237 declarados vs.\ 50\,891 filas y \textbf{26\,662
+        personas únicas} verificadas; convocatorias 781/2017, 833/2018 y
+        894/2021 (el ``2019'' es la fecha de resolución de la 833/2018).
+  \item [$\square$] Cada quien domina los bloques de los demás (rotación de 5 min).
+  \item [$\square$] Respuestas orales de IA listas (cuánto/para qué/validación
+        en 2 niveles/3 descartes) coherentes con la sección 6.2.
+  \item [$\square$] Plan B si falla el proyector: las cifras clave van en esta guía.
+  \item [$\square$] Cronómetro: 10 min sin recortar el cierre.
+\end{itemize}
+
+\end{document}

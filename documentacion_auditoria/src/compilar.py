@@ -55,8 +55,9 @@ def compilar_proyecto(nombre: str) -> bool:
     )
     if r.returncode != 0:
         print(f"[!] Error compilando {nombre} (código {r.returncode})")
-        tail = "\n".join(r.stdout.splitlines()[-30:])
-        print(tail)
+        salida = (r.stdout or "") + "\n" + (r.stderr or "")
+        tail = "\n".join(salida.splitlines()[-30:])
+        print(tail or "Sin salida del compilador.")
         return False
 
     pdf_src = proyecto / "main.pdf"

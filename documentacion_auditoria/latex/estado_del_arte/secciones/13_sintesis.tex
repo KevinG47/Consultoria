@@ -1,0 +1,66 @@
+% ============ 13. Síntesis: matriz de mejora ============
+\section{Síntesis: matriz de mejora del repositorio}
+
+La tabla consolida la revisión: cada fila vincula un eje del proyecto con la
+referencia principal y una acción concreta de mejora. La prioridad se justifica
+por el riesgo o el valor esperado para el proyecto: \emph{alta} = corrige un
+riesgo legal/metodológico o desbloquea la reproducibilidad; \emph{media} =
+añade inferencia o profundidad analítica; \emph{secundaria} = amplía el valor
+informativo.
+
+\begin{longtable}{p{3.1cm}p{3.4cm}p{4.4cm}p{2.3cm}}
+\caption{Matriz de mejora del repositorio según el estado del arte}
+\label{tab:matriz}\\
+\toprule
+\textbf{Eje} & \textbf{Referencia(s)} & \textbf{Mejora prioritaria} & \textbf{Prioridad} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Eje} & \textbf{Referencia(s)} & \textbf{Mejora prioritaria} & \textbf{Prioridad} \\
+\midrule
+\endhead
+Evaluación responsable & Leiden \cite{hicks2015leiden}; DORA \cite{dora2012}; CoARA \cite{coara2022} &
+Marco de indicadores (fórmula, fuente, límites); robustez (IC) en cada hallazgo &
+Alta \\
+Ética y datos personales & Ley 1581/2012; reidentificación \cite{rocher2019estimating} &
+Nota de tratamiento; análisis de riesgo de reidentificación de la "gran tabla"; no publicar microdatos &
+Alta \\
+Calidad de datos & Wang \& Strong \cite{wang1996beyond}; FAIR \cite{wilkinson2016fair} &
+Auditoría DQ por 6 dimensiones; contratos de esquema; versionar datos (DVC); linaje &
+Alta \\
+Longitudinal & Markov \cite{kemeny1976finite}; carreras \cite{sinatra2016quantifying}; movilidad \cite{sugimoto2017scientists} &
+Supervivencia (KM/Cox); test de markovianidad; cohortes; modelos predictivos de carrera &
+Alta \\
+Visualización & Narrativa \cite{segel2010narrative} &
+Traza fuente/método por gráfico; IC visuales; reparar bug HHI &
+Media \\
+Desigualdad & Theil \cite{theil1967economics}; geografía \cite{frenken2009spatial}; Lotka \cite{lotka1926frequency} &
+HHI+Gini+Theil con IC; contraste con ley de Lotka &
+Media \\
+Género y diversidad & Larivière \cite{lariviere2013global}; interseccionalidad \cite{crenshaw1989demarginalizing} &
+Modelos ajustados (odds ratios con IC); robustez interseccional &
+Media \\
+Redes & Newman \cite{newman2001structure}; jerarquía \cite{clauset2015systematic} &
+Modelos nulos de red; corregir extracción de pares; declarar corte 2019 &
+Media \\
+Datos mixtos & FAMD \cite{husson2017exploratory}; k-prototypes \cite{huang1998extensions}; imputación \cite{vanbuuren2018flexible} &
+Migrar clustering a Python con validación (silhouette) e imputación &
+Media \\
+Sistema nacional & CV method \cite{canibano2009curriculum}; ScriptLattes \cite{menachalco2009scriptlattes} &
+Posicionar hallazgos en el debate regional (Brasil--Colombia, ciencia abierta CONPES 4069) &
+Secundaria \\
+\bottomrule
+\end{longtable}
+
+\begin{tcolorbox}[hallazgo]
+En síntesis: el repositorio está bien alineado con el \textbf{paradigma SciSci}
+y la \textbf{evaluación responsable}, pero su siguiente nivel de madurez exige
+(i) atender primero los riesgos de \textbf{datos personales} y la
+\textbf{gobernanza reproducible} (FAIR + DVC + contratos de esquema + CI/CD),
+(ii) añadir \textbf{inferencia formal con robustez} (supervivencia, IC, modelos
+nulos, validación de clusters), y (iii) consolidar la capa de
+\textbf{visualización auditable} (traza dato-método en cada gráfico del
+dashboard). La literatura no sugiere abandonar el diseño actual (observatorio
+descriptivo-crítico sobre registro administrativo) sino profundizarlo con los
+métodos aquí referenciados.
+\end{tcolorbox}

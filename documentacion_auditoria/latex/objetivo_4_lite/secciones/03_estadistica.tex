@@ -1,13 +1,14 @@
-% ============ Criterio: estadística ============
+% ============ Criterio estadistica (LITE) ============
 \section{Validación de la calidad de pruebas, tratamientos y lógica estadística}
 
-Tratamientos: eliminación de 22 atípicos de edad (>100 años) con justificación documentada (0.028\% del padrón, sesgo despreciable) y comparación con imputación por mediana del grupo; imputación por mediana en numéricas (reduce varianza; aplicada a ordinales --- cuestionable); etiqueta NO REPORTADO en categóricas; verificación de unicidad de IDs por coherencia de edad (+-4 años) y género (heurística razonable sin formalizar). Veredicto por eje: (a) longitudinal: matrices de Markov empíricas correctas, pero sin test de markovianidad ni homogeneidad temporal, y sin supervivencia (Kaplan-Meier/Cox) para el tiempo hasta la salida; (b) territorial: HHI correcto pero sin IC bootstrap ni Gini/Theil; (c) género/diversidad: proporciones y representación relativa vs DANE correctas en concepto, pero sin modelos ajustados y con el bug del denominador 'NINGUN GRUPO ETNICO' (comentario vs código, diluye la subrepresentación); (d) redes: métricas sin modelos nulos, red = corte transversal (captura solo 2019); (e) clustering legacy: k-prototypes con k=3 fijo sin validación (silhouette/Calinski-Harabasz) y pérdida del 8.4\% de la muestra; (f) pruebas: chi-cuadrado mencionado sin verificar frecuencias esperadas. La estadística descriptiva es sólida; la inferencia formal es la principal debilidad.
+\begin{tcolorbox}[hallazgo]
+\textbf{Veredicto:} Estadística descriptiva sólida y transparente; la debilidad es la falta de inferencia formal (intervalos de confianza, supuestos, modelos ajustados).
 
-
-\begin{tcolorbox}[nota]
-\textbf{Principio de la auditoría:} la crítica es constructiva. Cuando un
-análisis o un archivo está bien construido se dice explícitamente; las
-debilidades se presentan como oportunidades de mejora, no como reproches.
-El detalle metodológico por eje (Markov, HHI, brechas, redes, clustering)
-está en el documento maestro, sección 6.
 \end{tcolorbox}
+
+\subsection{Hallazgos de mayor impacto}
+
+\begin{itemize}
+  \item Sin test de markovianidad ni supervivencia (Kaplan-Meier/Cox) para la retención.
+  \item comparar\_dane() no excluye 'NINGUN GRUPO ETNICO' del denominador, diluyendo la subrepresentación (verificado).
+\end{itemize}

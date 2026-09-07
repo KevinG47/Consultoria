@@ -1,0 +1,638 @@
+
+===== PAGINA 1 =====
+Auditoría estadística reproducible del sistema de
+reconocimiento de investigadores de MinCiencias
+(2013–2021) con datos abiertos
+y propuesta de mejora para su observatorio
+Consultoría Estadística · Universidad Santo Tomás · 2026-II
+Entrega 1 — Anteproyecto · Modalidad: proyecto con datos abiertos
+Integrantes
+Kevin Leonardo Chaparro Reyes
+Valentina Muñoz Palma
+Paula Margarita Triana Ancinez
+Experto temático: Javier Mauricio Sierra
+Fecha: 6 de septiembre de 2026
+Declaración: este documento fue elaborado con apoyo de herramientas de IA generativa; el uso está
+declarado en la sección 6 conforme a la rúbrica.
+
+
+===== PAGINA 2 =====
+Índice
+1. Planteamiento del problema y contexto
+2
+1.1. El problema y a quién afecta
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.2. Estado actual del problema: evidencia propia . . . . . . . . . . . . . . . . . . . .
+2
+1.3. La pregunta que este proyecto responde
+. . . . . . . . . . . . . . . . . . . . . . .
+3
+2. Estado del arte y antecedentes
+3
+2.1. Enfoques 1–2: Ciencia de la Ciencia, evaluación responsable y sistemas nacionales
+3
+2.2. Enfoques 3–4: calidad de datos y dinámica longitudinal
+. . . . . . . . . . . . . .
+3
+2.3. Enfoques 5–6: desigualdad, género, diversidad y redes
+. . . . . . . . . . . . . . .
+4
+2.4. Contraste de aproximaciones y vacío . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+3. Objetivos
+4
+3.1. Objetivo general
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+3.2. Objetivos específicos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+4. Datos disponibles y aproximación metodológica preliminar
+5
+4.1. Fuentes de datos (modalidad datos abiertos) . . . . . . . . . . . . . . . . . . . . .
+5
+4.2. Variables ligadas a cada objetivo
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+4.3. Ruta metodológica preliminar . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+4.4. ¿Por qué no está ya resuelto con estos datos? . . . . . . . . . . . . . . . . . . . .
+6
+5. Alcance, riesgos y cronograma
+6
+5.1. Qué hará y qué no hará el proyecto . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+5.2. Riesgos principales y plan de contingencia . . . . . . . . . . . . . . . . . . . . . .
+7
+5.3. Cronograma por hitos (12 semanas)
+. . . . . . . . . . . . . . . . . . . . . . . . .
+7
+6. Declaración de uso de herramientas de IA y reparto del trabajo
+8
+6.1. Reparto del trabajo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+6.2. Uso declarado de herramientas de IA . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+6.3. Riesgos éticos del proyecto y marco legal . . . . . . . . . . . . . . . . . . . . . . .
+8
+Referencias
+10
+1
+
+
+===== PAGINA 3 =====
+1.
+Planteamiento del problema y contexto
+1.1.
+El problema y a quién afecta
+Desde 2013, el Ministerio de Ciencia, Tecnología e Innovación de Colombia (MinCiencias) reconoce
+periódicamente a los investigadores activos del país a través de convocatorias nacionales
+(640/2013, 693/2014, 737/2015, 781/2017, 833/2018 y 894/2021). El resultado es un padrón
+oficial que clasifica a los investigadores en categorías —Junior, Asociado, Senior y Emérito— y
+que alimenta decisiones de política de ciencia, financiación, ascenso y visibilidad. Este padrón es,
+en la práctica, la principal fuente administrativa de capital humano científico del país y
+la base de su observatorio de ciencia y tecnología.
+El problema que aborda este anteproyecto es doble. En primer lugar, no existe una evaluación
+estadística sistemática y reproducible de la calidad y comparabilidad de ese registro oficial: ¿la
+información publicada por MinCiencias es fiable entre convocatorias? ¿el padrón permite seguir a
+los investigadores a lo largo del tiempo? ¿qué distorsiones introduce el propio sistema de captura?
+En segundo lugar, el padrón exhibe patrones de inequidad estructural (concentración
+territorial, brechas de género y subrepresentación de minorías) cuya magnitud exacta y evolución
+no están cuantificadas con rigor estadístico en una sola fuente. A quién le importa: a MinCiencias
+y al Sistema Nacional de Ciencia, Tecnología e Innovación (SNCTI) —porque sus convocatorias
+son el instrumento—, a los investigadores reconocidos —porque su categoría condiciona su
+carrera— y a los tomadores de decisión de política de CTI en el país —porque necesitan saber si
+el instrumento mide lo que dice medir.
+Este problema no es un síntoma ni una preferencia metodológica: es una pregunta sobre
+la validez de un instrumento público de medición. La literatura regional lo considera un tema
+vigente: la categorización de grupos e investigadores ante el SNCTI ha sido objeto de análisis
+críticos recientes (Categorización de grupos e investigadores ante el sistema nacional de ciencia,
+tecnología e innovación en Colombia, 2023), y Colombia es, junto con Brasil, uno de los pocos
+países latinoamericanos con un sistema de información curricular consolidado (Revista CTS,
+2010), lo que hace especialmente relevante auditar la calidad de ese registro.
+1.2.
+Estado actual del problema: evidencia propia
+Como parte de este trabajo ya se construyó y verificó evidencia empírica propia sobre el registro,
+que constituye la línea base del anteproyecto:
+El dataset público bqtm-4y2h declara 77 237 registros y 6 convocatorias (2013–2021)
+con 30 086 investigadores únicos; sin embargo, la verificación directa del archivo consolidado
+disponible muestra solo 50 891 filas y 3 convocatorias (2017, 2019, 2021): el artefacto
+versionado no corresponde al alcance declarado, lo que impide reproducir los análisis
+completos desde un clon del repositorio.
+Se detectaron 22 registros con edad mayor a 100 años (máximo 956) y errores de
+codificación (mojibake) en el archivo canónico.
+La concentración territorial es extrema: Bogotá y Antioquia concentran el 51 % de
+los investigadores reconocidos; la retención de Bogotá alcanza el 92 % y absorbe más de
+1 000 investigadores de otros departamentos.
+La brecha de género por área es estructural: 24 % de mujeres en Ingeniería frente a
+48 % en ciencias médicas y de la salud.
+Frente a la población (censo DANE 2018), la población afrocolombiana está 3 veces
+2
+
+
+===== PAGINA 4 =====
+subrepresentada, la indígena 7,9 veces y las personas con discapacidad 8 veces.
+Solo el 36,9 % de los autores únicos que firman la producción declarada de grupos son
+investigadores reconocidos: el sistema de medición captura coautoría externa al padrón.
+Estas cifras son propias y verificables (obtenidas y auditadas en este trabajo, con métodos
+reproducibles) y muestran que el problema existe, es cuantificable y tiene consecuencias: decisiones
+de política y de carrera apoyadas en un instrumento cuya fiabilidad, comparabilidad y equidad
+no están garantizadas.
+1.3.
+La pregunta que este proyecto responde
+El problema se traduce en una pregunta estadística respondible:
+¿El padrón de investigadores reconocidos de MinCiencias (2013–2021)
+es fiable (calidad del registro), comparable entre convocatorias (traza-
+bilidad longitudinal) y equitativo (distribución territorial, de género y
+de diversidad), y qué mejoras metodológicas y de gobernanza de datos
+permitirían convertirlo en la base sólida de un observatorio de capital
+humano científico en Colombia?
+Responderla importa porque si nadie hace nada, el país seguirá tomando decisiones de
+política de ciencia sobre un registro cuya calidad no ha sido auditada de forma sistemática y
+reproducible, con el riesgo de perpetuar inequidades y de basar evaluaciones individuales en
+datos no comparables.
+2.
+Estado del arte y antecedentes
+Esta revisión sintetiza, por enfoque y no por autor, la literatura relevante, distinguiendo lo
+hecho en el mundo de lo hecho en Colombia. Se apoya en el estado del arte completo del equipo
+(20 págs., 39 referencias verificadas).
+2.1.
+Enfoques 1–2: Ciencia de la Ciencia, evaluación responsable y sistemas
+nacionales
+La science of science estudia el sistema científico con datos masivos y métodos cuantitativos
+(Fortunato et al., 2018; Wang & Barabási, 2021), y la agenda de evaluación responsable
+—DORA (2012), Principios de Leiden (Hicks et al., 2015), CoARA (2022)— fijó el estándar de
+uso de indicadores. En América Latina, Brasil (Lattes) y Colombia (ScienTI-CVLAC/Publindex)
+son referentes de registros curriculares (Revista CTS, 2010), con herramientas como ScriptLattes
+(Mena-Chalco & Cesar Júnior, 2009) y el método del currículum vitae (Cañibano & Bozeman,
+2009). Para Colombia existen análisis críticos del modelo de categorización ante el SNCTI (2023)
+y estudios de métricas responsables y ciencia abierta (CONPES 4069, 2021). Nuestro proyecto se
+inscribe en esta intersección: auditar un instrumento público de medición bajo estándares de
+métricas responsables.
+2.2.
+Enfoques 3–4: calidad de datos y dinámica longitudinal
+La evaluación de registros administrativos usa las dimensiones de Wang & Strong (1996) y
+los principios FAIR (Wilkinson et al., 2016); la reproducibilidad exige versionado de datos y
+observabilidad de pipelines (Souza et al., 2023). El seguimiento de carreras se apoya en cadenas
+3
+
+
+===== PAGINA 5 =====
+de Markov (Kemeny & Snell, 1976), modelos de supervivencia y análisis de cohortes; los clásicos
+de física de carreras muestran que el impacto individual evoluciona con reglas cuantificables
+(Sinatra et al., 2016; Petersen et al., 2012) y que la movilidad geográfica estratifica la carrera
+(Deville et al., 2014; Sugimoto et al., 2017).
+2.3.
+Enfoques 5–6: desigualdad, género, diversidad y redes
+La medición de la desigualdad usa HHI, Gini y Theil (Theil, 1967) y la geografía de la ciencia
+(Frenken et al., 2009); la brecha de género global se documentó en Larivière et al. (2013), con
+análisis interseccional (Crenshaw, 1989); las redes de colaboración (Newman, 2001) y la jerarquía
+institucional extrema y persistente (Clauset et al., 2015) proveen los métodos de estructura de
+poder del sistema.
+2.4.
+Contraste de aproximaciones y vacío
+Dos aproximaciones compiten para la pregunta longitudinal con supuestos distintos: las cadenas
+de Markov suponen que la transición depende solo del estado actual (homogeneidad), mientras
+los modelos de supervivencia modelan el tiempo hasta el evento con covariables y censura.
+Nuestro diseño las contrasta: primero se testea la propiedad markoviana y luego se complementa
+con supervivencia. Vacío que el proyecto atiende: no se ha publicado una auditoría estadística
+reproducible del padrón de investigadores reconocidos de MinCiencias que combine, sobre los
+datos abiertos oficiales, calidad del registro + trazabilidad longitudinal + equidad con métodos
+de la ciencia de la ciencia; lo publicado en Colombia es descriptivo o normativo, no evidencia
+cuantitativa auditable.
+3.
+Objetivos
+3.1.
+Objetivo general
+Cuantificar y auditar de forma reproducible la fiabilidad, comparabilidad y equidad
+del padrón de investigadores reconocidos de MinCiencias (convocatorias 2013–2021),
+a partir de los datos abiertos oficiales y su cruce con la producción de grupos, y
+entregar un marco de indicadores y un tablero de auditoría que orienten la mejora
+del observatorio de capital humano científico en Colombia.
+El objetivo general responde exactamente al problema planteado: no es más ancho (se limita al
+padrón y su cruce con producción, 2013–2021) ni más angosto (abarca las tres dimensiones de la
+pregunta: fiabilidad, comparabilidad y equidad).
+3.2.
+Objetivos específicos
+Los tres objetivos específicos son secuenciales: cada uno habilita al siguiente, y cumplidos todos
+agotan el objetivo general sin solaparse.
+1. Cuantificar la calidad del registro del padrón de investigadores reconocidos de Min-
+Ciencias (2013–2021) según las dimensiones de completitud, unicidad, validez y consistencia,
+usando el dataset abierto oficial bqtm-4y2h y su artefacto consolidado. Evidencia de cum-
+plimiento: tabla de indicadores de calidad por convocatoria con conteos verificables (filas
+reales vs. declaradas, duplicados de id persona, atípicos de edad, errores de codificación)
+y código reproducible que la genera.
+4
+
+
+===== PAGINA 6 =====
+2. Estimar la dinámica longitudinal (retención, transición de categoría y tiempo hasta
+la salida) de los investigadores entre convocatorias consecutivas, contrastando cadenas de
+Markov y modelos de supervivencia. Evidencia de cumplimiento: matrices de transición
+con IC, curvas de Kaplan–Meier y un modelo de Cox con covariables (área, género, región),
+todos reproducibles sobre los datos abiertos.
+3. Cuantificar la equidad del sistema en sus dimensiones territorial, de género y de diversidad
+(etnia, discapacidad, víctimas), con indicadores de concentración (HHI/Gini/Theil) y
+razones de representación frente al censo DANE 2018. Evidencia de cumplimiento: tabla de
+indicadores de equidad con intervalos de confianza y figura resumen por convocatoria.
+Cada objetivo especifica con qué evidencia se declarará cumplido, y la secuencia es visible: sin
+el registro limpio (OE1) no hay panel longitudinal fiable (OE2), y sin ambos no hay lectura de
+equidad comparable (OE3). El marco de indicadores y el tablero de auditoría se derivan de los
+tres.
+4.
+Datos disponibles y aproximación metodológica preliminar
+4.1.
+Fuentes de datos (modalidad datos abiertos)
+Las fuentes son datos abiertos oficiales publicados por el Ministerio de Ciencia, Tecnología
+e Innovación en el portal nacional datos.gov.co (plataforma Socrata). Ya fueron abiertas y
+verificadas por el equipo (conteo real de filas, columnas y valores), no supuestas:
+Tabla 1: Descripción de las fuentes de datos
+Atributo
+Padrón de investigado-
+res
+Producción de grupos
+Observaciones
+Entidad
+MinCiencias
+MinCiencias
+datos.gov.co
+Identificador
+bqtm-4y2h
+33dq-ab5a
+Enlace en refe-
+rencias
+Periodo
+2013–2021
+2013–2021
+6 ventanas
+Unidad de ob-
+servación
+Investigador × convocato-
+ria
+Producto × autor
+—
+Volumen decla-
+rado
+77 237 filas; 30 086 únicos
+3 166 629 filas
+Verificado:
+el
+XLSX del clon
+tiene 50 891
+Variables
+30 (categoría, área OCDE,
+género, geografía, diversi-
+dad, filiación)
+15 (producto, categoría,
+tipo, grupo, autor)
+Diccionario en el
+catálogo
+Acceso
+API Socrata / descarga
+CSV
+API Socrata (paginada)
+Sin autenticación
+Licencia
+Datos abiertos del portal
+(uso libre con atribución)
+Ídem
+Verificar
+enlace
+oficial
+Llave de cruce
+id persona pr
+id persona pd
+↔
++
+id
+convocatoria
+5
+
+
+===== PAGINA 7 =====
+4.2.
+Variables ligadas a cada objetivo
+OE1 (calidad): ID CONVOCATORIA, ANO CONVO, ID PERSONA PR (unicidad), EDAD ANOS PR
+(validez), codificación del archivo (consistencia).
+OE2 (longitudinal): ID PERSONA PR, ANO CONVO, ID CLAS PR/NME CLASIFICACION PR
+(transiciones), más covariables área y región.
+OE3 (equidad): NME DEPARTAMENTO RES PR, NME GENERO PR, TXT GRUPO ETNICO, TXT
+POBLACION DISCA, ID VICTIMA CONFLICTO.
+4.3.
+Ruta metodológica preliminar
+El diseño sigue un flujo en tres etapas alineado con los objetivos: (1) auditoría de calidad del
+registro (perfilado por las dimensiones de Wang & Strong, contratos de esquema y normalización
+reproducible); (2) construcción del panel longitudinal y estimación de transiciones (matrices
+de Markov con test de la propiedad markoviana, complementadas con supervivencia Kaplan–
+Meier/Cox); y (3) medición de equidad (HHI, Gini y Theil con intervalos de confianza
+bootstrap para lo territorial; razones de representación con IC frente al censo DANE 2018 para
+género, etnia y discapacidad). Todo se implementa en Python sobre un almacén DuckDB, con el
+código, los datos y los resultados versionados y reproducibles.
+Alternativa considerada y descartada: se evaluó complementar con indicadores de producción
+individual (índice h y variantes) a partir del dataset de producción; se descartó en esta fase porque
+el cruce de 3,2 millones de filas requiere descargar 1,2 GB y su disponibilidad es intermitente, y
+porque el objetivo de esta entrega es la auditoría del padrón; el análisis de productividad queda
+como extensión (se declara en el alcance).
+Plan si el dato no llega o cambia: ambas fuentes tienen descarga directa por API Socrata y
+respaldo versionado; si el dataset de producción no estuviera disponible a tiempo, los objetivos
+OE1–OE3 no dependen de él (se audita el padrón y su artefacto consolidado). Si cambiara
+el esquema del padrón, los contratos de esquema detectarán el cambio y se documentará la
+re-ingesta.
+4.4.
+¿Por qué no está ya resuelto con estos datos?
+Aunque los datos son públicos desde 2021 y existen análisis descriptivos, no se ha publicado
+—hasta donde alcanza esta revisión— una auditoría estadística reproducible del padrón que
+combine las tres dimensiones (calidad + longitudinal + equidad) con los métodos de la ciencia
+de la ciencia y que documente explícitamente los defectos del registro (discrepancia 77 237 vs.
+50 891, atípicos, mojibake). Nuestro aporte es ese: no repetir un análisis descriptivo, sino auditar
+el instrumento y entregar un marco de indicadores reutilizable.
+5.
+Alcance, riesgos y cronograma
+5.1.
+Qué hará y qué no hará el proyecto
+Sí hará: auditar la calidad del padrón de investigadores reconocidos (2013–2021) y de su
+artefacto consolidado; construir el panel longitudinal y estimar transiciones y supervivencia;
+medir concentración territorial y equidad de género y diversidad frente al censo DANE 2018;
+entregar un marco de indicadores, un tablero de auditoría y documentación reproducible.
+No hará (y por qué):
+6
+
+
+===== PAGINA 8 =====
+No validará el padrón contra registros internos de MinCiencias (no accesibles): se audita la
+fuente pública, que es el objeto declarado.
+No construirá modelos predictivos de carreras individuales ni análisis causal (requieren
+diseños fuera del alcance semestral y de los datos).
+No profundizará en el análisis de producción individual (índice h): exige el dataset de
+1,2 GB y se declara como extensión.
+No incluirá convocatorias posteriores a 2021 (si 2023 se publicara a tiempo, se documenta
+como limitación, no se re-escopea).
+5.2.
+Riesgos principales y plan de contingencia
+1. Discrepancia de datos (77 237 declarados vs. 50 891 en el artefacto). Ya detectada
+y caracterizada. Contingencia: se audita sobre el artefacto disponible y se documenta la
+discrepancia como hallazgo (es parte del objetivo, no un bloqueo).
+2. Dataset de producción no descargable ( 1,2 GB, disponibilidad intermitente). Con-
+tingencia: OE1–OE3 no dependen de él; se procesa si está disponible y se documenta la
+extensión.
+3. Tiempo insuficiente para la inferencia completa. Contingencia: se priorizan los
+entregables por hito y la holgura del cronograma (2 semanas) absorbe retrasos puntuales.
+5.3.
+Cronograma por hitos (12 semanas)
+Tabla 2: Cronograma por hitos con entregables verificables
+Semanas
+Hito
+Entregable verificable
+1–2
+Datos abiertos y contratos
+Scripts de ingesta/validación
++ catálogo actualizado (enlace
+y licencia verificados)
+3–4
+Auditoría de calidad (OE1)
+Tabla de indicadores de cali-
+dad por convocatoria + infor-
+me breve
+5–6
+Panel longitudinal (OE2, parte 1)
+Matrices de transición con IC
+y test de markovianidad
+7–8
+Supervivencia (OE2, parte 2)
+Curvas Kaplan–Meier + mo-
+delo Cox con covariables
+9–10
+Equidad (OE3)
+Indicadores HHI/Gini/Theil
++ razones de representación
+con IC
+11
+Marco de indicadores y tablero
+Tablero de auditoría + marco
+de indicadores
+12
+Documentación y sustentación
+Informe final reproducible +
+guion de sustentación
+Holgura: semanas 6 y 11 incluyen margen de 2 semanas acumuladas para imprevistos.
+Presupuesto de horas: 6 horas semanales por integrante × 3 integrantes × 12 semanas ≈216
+horas disponibles; la carga estimada del plan es de 180 horas, dejando 36 horas ( 17 %) de
+holgura. (Ajustable a la dedicación real declarada por cada integrante.)
+7
+
+
+===== PAGINA 9 =====
+6.
+Declaración de uso de herramientas de IA y reparto del trabajo
+6.1.
+Reparto del trabajo
+Kevin Leonardo Chaparro Reyes — rol principal: ingesta y auditoría de calidad de los
+datos (OE1); responsable de la reproducibilidad del pipeline; revisó el conjunto.
+Valentina Muñoz Palma — rol principal: análisis longitudinal (OE2: panel, transiciones
+y supervivencia) y programación estadística; revisó el conjunto.
+Paula Margarita Triana Ancinez — rol principal: estado del arte, análisis de equidad
+(OE3) y coordinación de la redacción y la sustentación; revisó el conjunto.
+Todos los integrantes leyeron y pueden defender la totalidad del anteproyecto; ninguna sección
+fue redactada por un solo integrante sin revisión de los demás. (Ajustable a la división real del
+trabajo.)
+6.2.
+Uso declarado de herramientas de IA
+Usamos herramientas de IA generativa y agentes autónomos como apoyo, no como autores.
+Específicamente:
+Cuánto se usó: de forma intensiva como asistente de análisis y redacción: la mayoría
+de los borradores, fichas de auditoría y material de apoyo se generaron con IA; todo el
+contenido final fue revisado, corregido y aprobado por los tres integrantes antes
+de la entrega.
+Para qué se usó: análisis y documentación de código del repositorio de referencia,
+generación de fichas de auditoría, búsqueda y síntesis de literatura para el estado del arte,
+redacción de borradores y revisión de redacción, y propuesta de estructura del documento.
+Validación en dos niveles, como lo solicitó el equipo: (i) el propio agente que
+generó el material autoverificó cada afirmación empíricamente (ejecución real de los
+scripts, filas reales del XLSX, 133 commits con git log, exit codes de 16 scripts) y con
+reglas automáticas; (ii) agentes de validación independientes solicitados por el
+equipo revisaron hechos, reglas de construcción, referencias (0 inventadas) y la rúbrica
+(bloques D y S); sus informes quedaron archivados en data/validacion/.
+Qué se descartó porque estaba mal (casos concretos): (1) un agente afirmó que el
+código comparaba la cadena "SÍ" con un dato "SI" y que la métrica de víctimas colapsaría
+a cero; al leer el código y ejecutarlo se verificó que la normalización previa lo resolvía:
+la afirmación se corrigió. (2) Un agente reportó un .orden alfabético"de archivos que en
+realidad era canónico por capa (artefacto de su propio verificador); se corrigió. (3) Un
+agente generó texto con un error de codificación (SÃ por Sí) que se detectó y corrigió en la
+revisión final.
+6.3.
+Riesgos éticos del proyecto y marco legal
+El proyecto trata datos personales del padrón público (identificadores de persona, edad,
+geolocalización) e incluye categorías sensibles auto-declaradas: grupo étnico, condición de
+discapacidad y condición de víctima del conflicto. El marco legal aplicable en Colombia es
+la Ley 1581 de 2012 (protección de datos personales). Nuestras medidas: (i) no publicar
+microdatos identificables: los análisis se publican agregados y se mantiene la "gran tabla sin
+identificadoresçomo estándar; (ii) declarar la finalidad y el tratamiento en la documentación
+8
+
+
+===== PAGINA 10 =====
+del proyecto; (iii) tratar las variables sensibles con especial cuidado interpretativo (son auto-
+declaradas y solo comparables en la ventana 2021). El riesgo de sesgo se mitiga declarando
+explícitamente los supuestos y las limitaciones de cada indicador.
+9
+
+
+===== PAGINA 11 =====
+Referencias
+Cañibano, C., & Bozeman, B. (2009). Curriculum vitae method in science policy research.
+Research Policy, 38(2), 259–266. https://doi.org/10.1016/j.respol.2008.09.014
+Categorización
+de
+grupos
+e
+investigadores
+ante
+el
+sistema
+nacional
+de
+ciencia,
+tecnología
+e
+innovación
+en
+Colombia.
+(2023).
+Universidad
+y
+Sociedad,
+15(5).
+http://scielo.sld.cu/scielo.php?script=sci abstract&pid=S2218-36202023000500133
+Clauset,
+A.,
+Arbesman,
+S.,
+&
+Larremore,
+D.
+B.
+(2015).
+Systematic
+inequality
+and
+hierarchy
+in
+faculty
+hiring
+networks.
+Science
+Advances,
+1(1),
+e1400005.
+https://doi.org/10.1126/sciadv.1400005
+CoARA. (2022). Agreement on reforming research assessment. https://coara.eu/agreement/the-
+agreement-full-text/
+Crenshaw, K. (1989). Demarginalizing the intersection of race and sex: A Black feminist critique
+of antidiscrimination doctrine, feminist theory and antiracist politics. University of Chicago
+Legal Forum, 1989, 139–167.
+Departamento Nacional de Planeación. (2021). CONPES 4069: Política Nacional de Ciencia
+Abierta. https://colaboracion.dnp.gov.co/CDT/Conpes/Económicos/4069.pdf
+Deville, P., Song, C., Sinatra, R., Wang, D., & Barabási, A.-L. (2014). Career on the move:
+Geography, stratification, and scientific impact. Proceedings of the National Academy of
+Sciences, 111(42), 14472–14476. https://doi.org/10.1073/pnas.1407385111
+DORA. (2012). San Francisco Declaration on Research Assessment. https://sfdora.org/
+Fortunato, S., Bergstrom, C. T., Börner, K., Evans, J. A., Helbing, D., Milojević, S., Petersen, A.
+M., Radicchi, F., Sinatra, R., Uzzi, B., et al. (2018). Science of science. Science, 359(6379),
+eaao0185. https://doi.org/10.1126/science.aao0185
+Frenken,
+K.,
+Hardeman,
+S.,
+&
+Hoekman,
+J.
+(2009).
+Spatial
+scientometrics:
+To-
+wards
+a
+cumulative
+research
+program.
+Journal
+of
+Informetrics,
+3(3),
+222–232.
+https://doi.org/10.1016/j.joi.2009.03.005
+Hicks, D., Wouters, P., Waltman, L., de Rijcke, S., & Rafols, I. (2015). The Leiden Manifesto for
+research metrics. Nature, 520(7548), 429–431. https://doi.org/10.1038/520429a
+Kemeny, J. G., & Snell, J. L. (1976). Finite Markov chains. Springer.
+Larivière, V., Ni, C., Gingras, Y., Cronin, B., & Sugimoto, C. R. (2013). Bibliometrics: Global
+gender disparities in science. Nature, 504(7479), 211–213. https://doi.org/10.1038/504211a
+Ley 1581 de 2012. Por la cual se dictan disposiciones generales para la protección de datos
+personales. Congreso de la República de Colombia.
+Mena-Chalco, J. P., & Cesar Júnior, R. M. (2009). ScriptLattes: integração de dados curriculares
+à plataforma Lattes. Conferência sobre Tecnologia, Cultura e Sociedade.
+Ministerio de Ciencia, Tecnología e Innovación. (2021). Investigadores reconocidos por convocatoria
+[Conjunto de datos]. datos.gov.co. https://www.datos.gov.co/resource/bqtm-4y2h.csv
+Ministerio de Ciencia, Tecnología e Innovación. (2021). Producción de grupos de investigación
+[Conjunto de datos]. datos.gov.co. https://www.datos.gov.co/resource/33dq-ab5a.csv
+Newman, M. E. J. (2001). The structure of scientific collaboration networks. Proceedings of the
+10
+
+
+===== PAGINA 12 =====
+National Academy of Sciences, 98(2), 404–409. https://doi.org/10.1073/pnas.98.2.404
+Petersen, A. M., Riccaboni, M., Stanley, H. E., & Pammolli, F. (2012). Persistence and uncertainty
+in the academic career. Proceedings of the National Academy of Sciences, 109(14), 5213–5218.
+https://doi.org/10.1073/pnas.1121429109
+Revista Iberoamericana de Ciencia, Tecnología y Sociedad. (2010). Dos países latinoamericanos
+cuentan actualmente con sistemas de información curricular consolidados: Brasil y Colombia.
+CTS, 5(13). https://www.revistacts.net/wp-content/uploads/2020/01/vol5-nro13-cts13.pdf
+Rocher, L., Hendrickx, J. M., & de Montjoye, Y.-A. (2019). Estimating the success of re-
+identifications in incomplete datasets: Generating insights from attacks. Nature Communica-
+tions, 10, 3069. https://doi.org/10.1038/s41467-019-10933-3
+Sinatra,
+R.,
+Wang,
+D.,
+Deville,
+P.,
+Song,
+C.,
+&
+Barabási,
+A.-L.
+(2016).
+Quan-
+tifying
+the
+evolution
+of
+individual
+scientific
+impact.
+Science, 354(6312),
+aaf5239.
+https://doi.org/10.1126/science.aaf5239
+Souza, R., Skluzacek, T., Wilkinson, S., Ziatdinov, M., & da Silva, R. (2023). Towards lightweight
+data integration using multi-workflow provenance and data observability. IEEE eScience
+(preprint). https://arxiv.org/abs/2308.09004
+Sugimoto, C. R., Robinson-García, N., Murray, D. S., Yegros-Yegros, A., Costas, R., & Larivière,
+V. (2017). Scientists have most impact when they’re free to move. Nature, 550(7674), 29–31.
+https://doi.org/10.1038/550029a
+Theil, H. (1967). Economics and information theory. North-Holland.
+Wang, D., & Barabási, A.-L. (2021). The science of science. Cambridge University Press.
+Wang, R. Y., & Strong, D. M. (1996). Beyond accuracy: What data quality means
+to
+data
+consumers.
+Journal
+of
+Management
+Information
+Systems,
+12(4),
+5–33.
+https://doi.org/10.1080/07421222.1996.11518099
+Wilkinson, M. D., Dumontier, M., Aalbersberg, I. J., Appleton, G., Axton, M., Baak, A., et
+al. (2016). The FAIR Guiding Principles for scientific data management and stewardship.
+Scientific Data, 3, 160018. https://doi.org/10.1038/sdata.2016.18
+11

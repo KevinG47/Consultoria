@@ -27,7 +27,7 @@
   "ejecutabilidad": "Ejecutable con red: python -m src.ingesta.produccion (completa) o --limit N. Requiere sodapy, pandas y PyYAML (este último no declarado en el proyecto). Escribe en datos/raw/ (gitignored; en el clon el directorio existe con .gitkeep y es escribible localmente, pero la salida NO está versionada ni presente en el clon).",
   "produce_esperado": "Produce datos/raw/produccion_grupos.csv (gitignored, ~1,2 GB), el input que exige cargar_produccion(). No genera evidencias/ ni artifacts/ directamente; coincide con lo documentado en README (ingesta por API Socrata paginada, Sprint 5).",
   "bugs": [
-    "src/ingesta/produccion.py:26: import yaml no cubierto por pyproject.toml -> falla en instalación reproducible (probablemente ejecutado ad-hoc con PyYAML instalado manualmente).",
+    "src/ingesta/produccion.py:24: import yaml no cubierto por pyproject.toml -> falla en instalación reproducible (probablemente ejecutado ad-hoc con PyYAML instalado manualmente).",
     "src/ingesta/produccion.py:47-53: en modo limit main() igualmente guarda el DataFrame como CSV 'completo' en SALIDA: si alguien corre --limit sin querer, sobrescribe el archivo crudo con una muestra.",
     "src/ingesta/produccion.py:59-65: si la última página devuelve exactamente PAGE_SIZE y la siguiente viene vacía, el loop hace una petición extra vacía (ineficiencia menor, no error)."
   ],

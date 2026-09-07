@@ -1,0 +1,59 @@
+% ============ 03. Ciencia de la ciencia y evaluación responsable ============
+\section{Ciencia de la Ciencia (SciSci) y evaluación responsable}
+
+\subsection{Qué dice la literatura}
+
+La revisión fundacional de \citet{fortunato2018science} consolidó la
+\textbf{Ciencia de la Ciencia (SciSci)}: el estudio empírico del sistema
+científico con datos masivos (publicaciones, registros administrativos, redes)
+y métodos de la física estadística, las redes complejas y el aprendizaje
+automático. Sus líneas maduras — dinámicas de carrera, productividad,
+colaboración, movilidad, desigualdad y estructura institucional — son
+exactamente los ejes que aborda este repositorio. La síntesis de
+\citet{zeng2021science} y el libro de \citet{wang2021sciencebook} ordenan esos
+resultados; \citet{clauset2017data} mostró que los datos bibliométricos y de
+registro permiten predicciones cuantitativas sobre carreras individuales
+(edad de pico, probabilidad de alta productividad), con implicaciones directas
+para un observatorio de capital humano científico.
+
+En paralelo, el movimiento de \textbf{evaluación responsable} fijó los límites
+de uso de los indicadores: la Declaración de San Francisco
+\citep{dora2012} (2012), los \textbf{Principios de Leiden}
+\citep{hicks2015leiden} (2015) y el informe \emph{Metric Tide}
+\citep{wilsdon2015metric} (2015) coinciden en que (i) los indicadores
+cuantitativos apoyan, no sustituyen, el juicio; (ii) deben ser robustos al
+contexto de campo; y (iii) sus definiciones y límites deben ser transparentes.
+El \textbf{Acuerdo de CoARA} \citep{coara2022} (2022) lleva esta agenda a la
+práctica institucional en Europa (reforma de la evaluación de la
+investigación), y existe debate activo sobre su aplicación en América Latina,
+donde se ha señalado que ciertos indicadores "desestimulan" formas legítimas de
+producción de conocimiento (por ejemplo, los libros en ciencias sociales y
+humanidades; véase la crítica de CLACSO citada en la sección 13.2).
+
+\subsection{Relación con este repositorio}
+
+El proyecto ya adopta el espíritu SciSci (patrón \emph{Pregunta →
+Hallazgo → Caveat} y hallazgos sobre retención, concentración, brechas y
+productividad) y su crítica del sistema de reconocimiento colombiano está
+alineada con la agenda de métricas responsables. La auditoría verificó, sin
+embargo, dos brechas frente a esta literatura: (a) \textbf{no existe un marco
+formal de indicadores} (definición operativa, fórmula, fuente y límites de cada
+métrica), condición mínima del enfoque de Leiden/CoARA; y (b) la inferencia es
+descriptiva, sin modelos predictivos ni de robustez, cuando SciSci ofrece
+herramientas maduras para ello.
+
+\subsection{Mejoras recomendadas}
+
+\begin{enumerate}
+  \item Publicar un \textbf{marco de indicadores responsable}: para cada métrica
+        del observatorio (retención, transición, HHI, brechas, representación),
+        declarar fórmula, fuente, población, supuestos y usos permitidos
+        (Leiden; DORA; CoARA).
+  \item Adoptar \textbf{análisis de robustez} (bootstrap, sensibilidad a
+        exclusiones) como estándar de publicación de cada hallazgo
+        (recomendado por \citet{hicks2015leiden} para evitar sobreinterpretación).
+  \item Explorar \textbf{modelos predictivos de carreras} (estilo
+        \citet{clauset2017data} y \citet{wang2021sciencebook}) como siguiente
+        fase del observatorio: probabilidad de promoción/deserción por cohorte,
+        edad y área — insumo de política de alto valor.
+\end{enumerate}

@@ -10,38 +10,7 @@ si produce los resultados que los investigadores buscaban.
 \noindent Archivos documentados: \textbf{51}.
 
 \subsection{Ingesta de datos}
-\noindent Archivos: 4.
-
-\subsubsection{src/\_\_init\_\_.py}
-\textbf{Rol:} ingesta · \textbf{Líneas:} 2
-
-\paragraph{Descripción funcional}
-Marcador de paquete Python para src/. Convierte la carpeta src/ en un paquete importable (los módulos se importan como 'from ingesta import ...' vía sys.path en los scripts).
-
-\paragraph{Análisis de la lógica}
-Sin lógica: archivo vacío/de marcador (2 líneas).
-
-\paragraph{Fortalezas}
-\begin{itemize}
-  \item Correcto por convención: permite imports del paquete.
-\end{itemize}
-
-\paragraph{Debilidades}
-\begin{itemize}
-  \item Ninguna relevante; es boilerplate estándar.
-\end{itemize}
-
-\paragraph{Ejecutabilidad}
-N/A (marcador de paquete).
-
-\paragraph{¿Produce lo esperado?}
-N/A.
-
-\paragraph{Recomendación de auditoría}
-\textbf{mantener --- estándar de Python.}
-
-\medskip
-\hrule
+\noindent Archivos: 3.
 
 \subsubsection{src/ingesta/\_\_init\_\_.py}
 \textbf{Rol:} ingesta · \textbf{Líneas:} 53
@@ -85,8 +54,39 @@ No produce archivos; es capa de lectura. Sus salidas (DataFrames) alimentan tran
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/ingesta/\_\_init\_\_.py:44-48: cargar\_produccion() lanza FileNotFoundError sin alternativa; en el clon (sin datos/raw) todos los scripts sprint5/sprint6 de producción mueren en el arranque.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/ingesta/\_\_init\_\_.py (líneas 44-48):}
+\end{quote}
+\begin{lstlisting}
+    if not _PROD.exists():
+        raise FileNotFoundError(
+            "Dataset de producción no encontrado. "
+            "Ejecute: python -m src.ingesta.produccion"
+        )
+\end{lstlisting}
+
   \item src/ingesta/\_\_init\_\_.py:26: read\_csv(low\_memory=False) + read\_excel sin dtype explícito -> ID\_PERSONA\_PR puede inferirse como int en un lado y str en otro, rompiendo el cruce id\_persona\_pd <-> id\_persona\_pr.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/ingesta/\_\_init\_\_.py (línea 26):}
+\end{quote}
+\begin{lstlisting}
+        df = pd.read_csv(_RAW, low_memory=False)
+\end{lstlisting}
+
   \item src/ingesta/\_\_init\_\_.py:18-36: no verifica duplicados por (ID\_PERSONA\_PR, ID\_CONVOCATORIA) pese a que el README define esa granularidad para el dataset.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/ingesta/\_\_init\_\_.py (líneas 18-36):}
+\end{quote}
+\begin{lstlisting}
+def cargar_consolidado() -> pd.DataFrame:
+    """Carga el dataset consolidado de investigadores (77 237 registros, 30 cols).
+
+    Prioridad: datos/raw/investigadores_consolidado.csv (Socrata)
+               datos/tarea_join/investigadores_consolidado.xlsx (Excel local)
+    """
+[...]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -189,9 +189,42 @@ Produce datos/raw/produccion\_grupos.csv (gitignored, \textasciitilde{}1,2 GB), 
 \begin{tcolorbox}[riesgo]
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
-  \item src/ingesta/produccion.py:26: import yaml no cubierto por pyproject.toml -> falla en instalación reproducible (probablemente ejecutado ad-hoc con PyYAML instalado manualmente).
+  \item src/ingesta/produccion.py:24: import yaml no cubierto por pyproject.toml -> falla en instalación reproducible (probablemente ejecutado ad-hoc con PyYAML instalado manualmente).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/ingesta/produccion.py (línea 24):}
+\end{quote}
+\begin{lstlisting}
+import yaml
+\end{lstlisting}
+
   \item src/ingesta/produccion.py:47-53: en modo limit main() igualmente guarda el DataFrame como CSV 'completo' en SALIDA: si alguien corre --limit sin querer, sobrescribe el archivo crudo con una muestra.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/ingesta/produccion.py (líneas 47-53):}
+\end{quote}
+\begin{lstlisting}
+    if limit:
+        registros = client.get(SOCRATA_ID, limit=limit)
+        client.close()
+        df = pd.DataFrame.from_records(registros)
+        log.info("Descargados (modo limit=%d): %d filas, %d columnas",
+                 limit, len(df), len(df.columns))
+[...]
+\end{lstlisting}
+
   \item src/ingesta/produccion.py:59-65: si la última página devuelve exactamente PAGE\_SIZE y la siguiente viene vacía, el loop hace una petición extra vacía (ineficiencia menor, no error).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/ingesta/produccion.py (líneas 59-65):}
+\end{quote}
+\begin{lstlisting}
+        chunk = client.get(SOCRATA_ID, limit=PAGE_SIZE, offset=offset, order=":id")
+        if not chunk:
+            break
+        paginas.append(pd.DataFrame.from_records(chunk))
+        offset += len(chunk)
+        if len(chunk) < PAGE_SIZE:
+[...]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -246,8 +279,33 @@ No escribe archivos (solo devuelve DataFrame y print de shape); el volcado a CSV
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item Transformacion.py:107-109: la regex r'\textbackslash\{\}b(20[0-9]\{2\})\textbackslash\{\}b' solo captura años 2000-2099; correcto para el dominio, pero un año fuera de rango quedaría como NaT sin aviso.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en Transformacion.py (líneas 107-109):}
+\end{quote}
+\begin{lstlisting}
+    # Intento 3: año de 4 dígitos embebido en el texto
+    anio_regex = s.str.extract(r"\b(20[0-9]{2})\b")[0]
+    fecha_regex = pd.to_datetime(anio_regex, format="%Y", errors="coerce")
+\end{lstlisting}
+
   \item Transformacion.py:99-100: pd.to\_datetime(s, dayfirst=True) sobre un texto numérico tipo '640' (id de convocatoria) produciría NaT; depende del contenido real de ANO\_CONVO, que el catálogo documenta como año o timestamp.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en Transformacion.py (líneas 99-100):}
+\end{quote}
+\begin{lstlisting}
+    fecha = pd.to_datetime(s, dayfirst=True, errors="coerce")
+
+\end{lstlisting}
+
   \item Transformacion.py:140-141: si una columna numérica fuera 100\% NaN, mediana=NaN y fillna(NaN) no corrige nada (caso límite no manejado).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en Transformacion.py (líneas 140-141):}
+\end{quote}
+\begin{lstlisting}
+            mediana = df[col].median()
+            df[col] = df[col].fillna(mediana)
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -257,7 +315,7 @@ No escribe archivos (solo devuelve DataFrame y print de shape); el volcado a CSV
 \medskip
 \hrule
 
-\subsection{Modelado dimensional}
+\subsection{Modelo}
 \noindent Archivos: 2.
 
 \subsubsection{src/modelo/\_\_init\_\_.py}
@@ -330,9 +388,54 @@ Sí (con datos): genera las tablas documentadas y evidencias/duckdb\_resumen\_mo
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/modelo/dimensional.py:69-74: sort solo por ID\_PERSONA\_PR -> 'keep first' no es la primera aparición temporal; los atributos del snapshot (género, región) pueden pertenecer a una convocatoria posterior.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/modelo/dimensional.py (líneas 69-74):}
+\end{quote}
+\begin{lstlisting}
+    dim = (
+        df[cols]
+        .sort_values("ID_PERSONA_PR")
+        .drop_duplicates(subset=["ID_PERSONA_PR"], keep="first")
+        .reset_index(drop=True)
+    )
+\end{lstlisting}
+
   \item src/modelo/dimensional.py:41-44: \_drop\_and\_create nunca se usa (código muerto).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/modelo/dimensional.py (líneas 41-44):}
+\end{quote}
+\begin{lstlisting}
+def _drop_and_create(con: duckdb.DuckDBPyConnection, ddl: str) -> None:
+    table = ddl.split("(")[0].split()[-1]
+    con.execute(f"DROP TABLE IF EXISTS {table}")
+    con.execute(ddl)
+\end{lstlisting}
+
   \item src/modelo/dimensional.py:192-197: el merge por columnas geográficas con NaN (código DANE ausente) no empareja en pandas (NaN != NaN) -> fact con sk\_territorio NULL para filas sin geografía, sin contarlas ni advertirlo.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/modelo/dimensional.py (líneas 192-197):}
+\end{quote}
+\begin{lstlisting}
+    fact = fact.merge(
+        dim_territorio[["sk_territorio", *geo_cols]],
+        on=geo_cols,
+        how="left",
+    )
+    fact = fact.drop(columns=geo_cols)
+\end{lstlisting}
+
   \item src/modelo/dimensional.py:52-56: construir\_dim\_convocatoria conserva ANO\_CONVO\_INT = 2019 para la convocatoria id 20 (año nominal 2018), propagando la anomalía de datos documentada al modelo.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/modelo/dimensional.py (líneas 52-56):}
+\end{quote}
+\begin{lstlisting}
+    cols = ["ID_CONVOCATORIA", "NME_CONVOCATORIA", "ANO_CONVO_INT", "ANO_CONVO_FECHA"]
+    dim = df[cols].drop_duplicates(subset=["ID_CONVOCATORIA"]).copy()
+    dim = dim.sort_values("ANO_CONVO_INT").reset_index(drop=True)
+    dim.columns = dim.columns.str.lower()
+    return dim
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -343,7 +446,69 @@ Sí (con datos): genera las tablas documentadas y evidencias/duckdb\_resumen\_mo
 \hrule
 
 \subsection{Análisis estadístico}
-\noindent Archivos: 7.
+\noindent Archivos: 8.
+
+\subsubsection{src/analisis/\_\_init\_\_.py}
+\textbf{Rol:} orquestacion · \textbf{Líneas:} 80
+
+\paragraph{Descripción funcional}
+Fachada del paquete analisis: re-exporta las funciones públicas de genero, territorial, redes, diversidad, longitudinal y produccion, y declara \_\_all\_\_. Define la API estable que consumen scripts/sprint*\_*.py y streamlit\_app.py.
+
+\paragraph{Análisis de la lógica}
+Importa explícitamente cada función/constante de los 6 submódulos y las lista en \_\_all\_\_. No contiene lógica de negocio; su función es el contrato de importación (from analisis import pct\_femenino\_por\_area, hhi, construir\_grafo, comparar\_dane, ...). Cualquier script que importe analisis dispara la importación de networkx (vía redes) y de longitudinal en el arranque.
+
+\paragraph{Fortalezas}
+\begin{itemize}
+  \item API pública explícita y bien documentada para todos los análisis del proyecto.
+  \item \_\_all\_\_ completo y ordenado facilita autocompletado e inspección.
+  \item Permite a scripts y dashboard importar sin conocer la estructura interna del paquete.
+\end{itemize}
+
+\paragraph{Debilidades}
+\begin{itemize}
+  \item Importación eager de los 6 submódulos: importar 'analisis' carga networkx y longitudinal (peso y acoplamiento); si una dependencia opcional falta, todo el paquete falla al importar.
+  \item Duplicación de símbolos entre el bloque de imports y \_\_all\_\_ (mantenimiento manual: añadir una función exige tocar dos lugares).
+  \item No hay validación de esquema en la frontera: las funciones asumen columnas MAYÚSCULAS y ANO\_CONVO\_INT sin verificar (contrato implícito con Transformacion.py).
+\end{itemize}
+
+\paragraph{Mejoras propuestas}
+\begin{itemize}
+  \item Convertir redes (y pyvis) en import perezoso o submódulo opcional para no penalizar al dashboard.
+  \item Generar \_\_all\_\_ a partir de una sola lista de nombres para evitar duplicación.
+  \item Añadir una función validate\_esquema(df) que verifique columnas requeridas antes de los análisis.
+\end{itemize}
+
+\paragraph{Ejecutabilidad}
+Sí, importable en el clon si las dependencias están instaladas (pandas, numpy, networkx; pyvis solo dentro de generar\_html\_pyvis). No lee archivos: la carga la hace ingesta. El fallo de cargar\_produccion en el clon no afecta el import, pero sí a las funciones de .produccion al ejecutarlas.
+
+\paragraph{¿Produce lo esperado?}
+No produce outputs; habilita el resto del pipeline. Coincide con la estructura documentada en el README (src/analisis como 'lógica reutilizable').
+
+\begin{tcolorbox}[riesgo]
+\textbf{Bugs / problemas detectados:}
+\begin{itemize}
+  \item src/analisis/\_\_init\_\_.py:4-36: importa funciones que no usa directamente; si analisis/longitudinal.py fallara al importar (dependencias), derriba también genero/territorial, que son independientes (acoplamiento innecesario).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/\_\_init\_\_.py (líneas 4-36):}
+\end{quote}
+\begin{lstlisting}
+from .genero import pct_femenino_por_area, tabla_pivot_pct_femenino, brecha_genero, evolucion_pct_femenino
+from .territorial import hhi, hhi_por_convocatoria, top_territorios, tabla_cuotas
+from .redes import (
+    construir_pares, construir_grafo, metricas_grafo,
+    tabla_nodos, tabla_aristas, metricas_por_convocatoria,
+    subgrafo_grado_minimo, generar_html_pyvis, normalizar_institucion,
+[...]
+\end{lstlisting}
+
+\end{itemize}
+\end{tcolorbox}
+
+\paragraph{Recomendación de auditoría}
+\textbf{mantener --- fachada correcta; refactorizar a imports perezosos o dividir el paquete para reducir el acoplamiento del dashboard.}
+
+\medskip
+\hrule
 
 \subsubsection{src/analisis/calidad.py}
 \textbf{Rol:} analisis · \textbf{Líneas:} 105
@@ -352,7 +517,7 @@ Sí (con datos): genera las tablas documentadas y evidencias/duckdb\_resumen\_mo
 Validación documentada de la calidad de los datos del padrón, con foco en atípicos de edad (EDAD\_ANOS\_PR). Documenta explícitamente la decisión metodológica (eliminación frente a imputación por mediana del grupo) para que cualquier auditor pueda reproducirla y discutirla. Expone detectar\_atipicos\_edad, resumen\_tratamiento, filtrar (método elegido) e imputar\_mediana (alternativa comparativa).
 
 \paragraph{Análisis de la lógica}
-Umbral UMBRAL\_EDAD\_MAX=100. detectar\_atipicos\_edad devuelve los registros con edad>100 (mínimas columnas de identificación). resumen\_tratamiento produce el reporte antes/después con justificación. filtrar aplica eliminación (decisión por defecto). imputar\_mediana reemplaza los atípicos por la mediana del grupo (gran área, clasificación, género) como alternativa reproducible. El docstring documenta el razonamiento: 22 casos sobre 77.237 (0.028\%), sesgo despreciable, eliminación preferida por trazabilidad.
+Umbral UMBRAL\_EDAD\_MAX=100. detectar\_atipicos\_edad devuelve los registros con edad>100 (mínimas columnas de identificación). resumen\_tratamiento produce el reporte antes/después con justificación. filtrar aplica eliminación (decisión por defecto). imputar\_mediana reemplaza los atípicos por la mediana del grupo (gran área, clasificación, género) como alternativa reproducible. El docstring documenta el razonamiento con la cifra de su momento ('diez registros' sobre el total entonces disponible, 0.013\%); el conteo vigente en el README y en las evidencias versionadas (git HEAD) es de 22 casos sobre 77.237 (0.028\%), sesgo despreciable, eliminación preferida por trazabilidad.
 
 \paragraph{Fortalezas}
 \begin{itemize}
@@ -381,7 +546,7 @@ Umbral UMBRAL\_EDAD\_MAX=100. detectar\_atipicos\_edad devuelve los registros co
 Sí, verificada empíricamente: sprint6\_validacion\_calidad.py (que lo usa) ejecutado en clon fresco con EXIT=0 en 61.6 s. Requiere el XLSX consolidado (presente).
 
 \paragraph{¿Produce lo esperado?}
-Sí: evidencias/calidad\_atipicos\_edad.csv, calidad\_comparacion.csv y calidad\_resumen.json existen en el clon y coinciden con el tratamiento documentado (22 atípicos, eliminación).
+Sí: evidencias/calidad\_atipicos\_edad.csv, calidad\_comparacion.csv y calidad\_resumen.json existen. Matiz verificable: la versión versionada en git (HEAD) reporta 22 atípicos sobre 77.237 (0.0285\%); el working tree regenerado por la propia ejecución de la auditoría sobre el XLSX parcial (3 convocatorias, 50.891 filas) reporta 19 (0.0373\%). El tratamiento documentado (eliminación) es el mismo en ambos casos.
 
 \begin{tcolorbox}[riesgo]
 \textbf{Bugs / problemas detectados:}
@@ -418,7 +583,7 @@ Define DANE\_REFERENCIA (constantes poblacionales) y VALORES\_NULOS por variable
   \item ACOPLAMIENTO ROTO CON Transformacion.py: éste convierte NaN categórico en 'NO REPORTADO', pero diversidad espera 'NO REGISTRA'/'NO DISPONIBLE'; los faltantes reales etiquetados 'NO REPORTADO' no se cuentan como nulos -> cobertura inflada.
   \item Bug metodológico en comparar\_dane(): el comentario (línea 78) dice excluir 'NINGUN GRUPO ETNICO' del denominador, pero el código (línea 79) solo excluye 'NO DISPONIBLE'; 'NINGUN GRUPO ETNICO' queda en el denominador y diluye la subrepresentación de las minorías (verificado: comentario vs código).
   \item Comparación 'SÍ' con tilde (línea 121): funciona con los datos actuales porque transformar() pone en mayúsculas 'Sí' -> 'SÍ', pero es frágil ante variantes sin tilde ('Si'/'SI') --- el catálogo documenta 'Si'.
-  \item interseccional\_genero\_etnia() puede lanzar KeyError 'FEMENINO' si algún grupo étnico no tiene mujeres (la columna no existe tras unstack).
+  \item interseccional\_genero\_etnia() puede lanzar KeyError 'FEMENINO' solo si NINGÚN grupo étnico tiene mujeres (con unstack(fill\_value=0) la columna existe si al menos un grupo tiene mujeres); caso límite, crash en runtime.
 \end{itemize}
 
 \paragraph{Mejoras propuestas}
@@ -440,9 +605,40 @@ Sí: evidencias/diversidad\_cobertura\_por\_convocatoria.csv, diversidad\_compar
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/analisis/diversidad.py:78-79: contradicción comentario-código sobre 'NINGUN GRUPO ETNICO' en el denominador de comparar\_dane() --- diluye la subrepresentación de minorías (verificado por lectura directa).
-  \item src/analisis/diversidad.py:145: d['FEMENINO'] puede lanzar KeyError si el unstack no crea la columna (grupo étnico sin mujeres) --- crash en caso límite.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/diversidad.py (líneas 78-79):}
+\end{quote}
+\begin{lstlisting}
+    # Etnia: excluir "NINGUN GRUPO ETNICO" del denominador para ver minorias
+    etnia = df_2021[df_2021["TXT_GRUPO_ETNICO"] != "NO DISPONIBLE"]
+\end{lstlisting}
+
+  \item src/analisis/diversidad.py:145: d['FEMENINO'] puede lanzar KeyError solo si NINGÚN grupo étnico tiene mujeres (con unstack(fill\_value=0) la columna no se crea en ese caso) --- crash en caso límite (reproducido).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/diversidad.py (línea 145):}
+\end{quote}
+\begin{lstlisting}
+        .assign(pct_femenino=lambda d: (d["FEMENINO"] / d["total"] * 100).round(1))
+\end{lstlisting}
+
   \item src/analisis/diversidad.py:44-46: los NaN convertidos a 'NO REPORTADO' por Transformacion.py no se cuentan como nulos -> pct\_no\_registra subestimado y cobertura sobreestimada para registros con faltante real.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/diversidad.py (líneas 44-46):}
+\end{quote}
+\begin{lstlisting}
+            pct_nulo = (grupo[col] == val_nulo).mean() * 100
+            fila[f"{col}_pct_no_registra"] = round(pct_nulo, 2)
+            fila[f"{col}_pct_cobertura"] = round(100 - pct_nulo, 2)
+\end{lstlisting}
+
   \item src/analisis/diversidad.py:121: comparación 'SÍ' sensible a acentos; no es un bug activo (los datos traen 'Sí' y transformar() lo pone en mayúsculas), pero fallaría si la fuente usara 'Si' sin tilde.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/diversidad.py (línea 121):}
+\end{quote}
+\begin{lstlisting}
+    n_vict = (vict["ID_VICTIMA_CONFLICTO"] == "SÍ").sum()
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -493,7 +689,22 @@ Sí: evidencias/genero\_pct\_femenino\_por\_area.csv, genero\_pct\_femenino\_por
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/analisis/genero.py:32-33: conteos.get('FEMENINO', 0) funciona porque DataFrame.get acepta default escalar, pero si un grupo queda sin filas reportadas, n\_total=0 y pct\_femenino=NaN (división por cero) sin advertencia --- caso límite real si una convocatoria tuviera 100\% NO REPORTADO.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/genero.py (líneas 32-33):}
+\end{quote}
+\begin{lstlisting}
+    resultado["n_femenino"] = conteos.get("FEMENINO", 0)
+    resultado["n_masculino"] = conteos.get("MASCULINO", 0)
+\end{lstlisting}
+
   \item src/analisis/genero.py:67: pct\_masculino = 1 - pct\_femenino asume universo binario; correcto tras el filtro, pero la columna n\_masculino ya existe y no se usa (inconsistencia menor).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/genero.py (línea 67):}
+\end{quote}
+\begin{lstlisting}
+    base["pct_masculino"] = 1 - base["pct_femenino"]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -598,9 +809,52 @@ Sí (con datos): evidencias/produccion\_cobertura\_por\_convocatoria.csv, produc
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/analisis/produccion.py:43: pd.to\_datetime(ANO\_CONVO) sin manejo de ints/seriales -> año 1970 si el campo es numérico (inconsistente con Transformacion.py:99-116).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/produccion.py (línea 43):}
+\end{quote}
+\begin{lstlisting}
+        df["ANO_CONVO_INT"] = pd.to_datetime(df["ANO_CONVO"], errors="coerce").dt.year.astype("Int64")
+\end{lstlisting}
+
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en Transformacion.py (líneas 99-116):}
+\end{quote}
+\begin{lstlisting}
+    fecha = pd.to_datetime(s, dayfirst=True, errors="coerce")
+
+    # Intento 2: serial numérico de Excel
+    s_num = pd.to_numeric(s, errors="coerce")
+    fecha_serial = pd.to_datetime(
+        s_num, unit="D", origin="1899-12-30", errors="coerce"
+[...]
+\end{lstlisting}
+
   \item src/analisis/produccion.py:199: pivot.rename no falla si falta 'FEMENINO', pero pivot['prom\_femenino'] sí lanza KeyError en áreas sin mujeres.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/produccion.py (línea 199):}
+\end{quote}
+\begin{lstlisting}
+    pivot["razon_f_m"] = (pivot["prom_femenino"] / pivot["prom_masculino"]).round(3)
+\end{lstlisting}
+
   \item src/analisis/produccion.py:89: división por len(autores\_unicos) -> ZeroDivisionError si prod está vacío (caso límite).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/produccion.py (línea 89):}
+\end{quote}
+\begin{lstlisting}
+        "pct_autores_reconocidos": round(len(overlap) / len(autores_unicos) * 100, 2),
+\end{lstlisting}
+
   \item src/analisis/produccion.py:63-65: isin usa IDs normalizados a Int64; si id\_persona\_pr llega con ceros a la izquierda desde el XLSX (leído como str) y prod como int, el cruce pierde matches (depende de la inferencia de tipos).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/produccion.py (líneas 63-65):}
+\end{quote}
+\begin{lstlisting}
+    ids_reconocidos = set(inv["ID_PERSONA_PR"].dropna().astype("Int64"))
+    p = prod.copy()
+    p["es_reconocido"] = p["ID_PERSONA_PD"].isin(ids_reconocidos)
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -654,9 +908,55 @@ Sí: evidencias/redes\_pares\_cofiliacion.csv, redes\_nodos\_global.csv, redes\_
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/analisis/redes.py:62-64: str.split('|', n=1) descarta afiliaciones 3+; red incompleta (subestimación de aristas y nodos).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/redes.py (líneas 62-64):}
+\end{quote}
+\begin{lstlisting}
+    multi[["inst_a", "inst_b"]] = (
+        multi["INST_FILIA"]
+        .str.split("|", n=1, expand=True)
+\end{lstlisting}
+
   \item src/analisis/redes.py:74-79: sorted() sobre pares que contienen '' (de 'A | ') crea un nodo vacío en el grafo; con tipos no comparables podría lanzar TypeError.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/redes.py (líneas 74-79):}
+\end{quote}
+\begin{lstlisting}
+    multi = multi[multi["inst_a"] != multi["inst_b"]].copy()
+    # Normalizar orden para que (A,B) == (B,A)
+    multi[["inst_a", "inst_b"]] = pd.DataFrame(
+        [sorted([a, b]) for a, b in zip(multi["inst_a"], multi["inst_b"])],
+        index=multi.index,
+    )
+\end{lstlisting}
+
   \item src/analisis/redes.py:93-98: el peso del grafo global cuenta filas investigador x convocatoria, no investigadores únicos: 'investigadores compartidos' queda inflado entre años.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/redes.py (líneas 93-98):}
+\end{quote}
+\begin{lstlisting}
+    for (a, b), grp in pares.groupby(["inst_a", "inst_b"]):
+        peso = len(grp)
+        if G.has_edge(a, b):
+            G[a][b]["weight"] += peso
+        else:
+            G.add_edge(a, b, weight=peso)
+\end{lstlisting}
+
   \item src/analisis/redes.py:16-48: normalizar\_institucion devuelve el valor original (posiblemente sin estandarizar) en el caso base.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/redes.py (líneas 16-48):}
+\end{quote}
+\begin{lstlisting}
+def normalizar_institucion(nombre) -> str:
+    """
+    Colapsa variantes (sedes, parentesis, mayusculas) a una sola entidad.
+
+    Reglas:
+    - Si hay parentesis y contiene una institucion (Universidad/Instituto/etc),
+[...]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -708,7 +1008,27 @@ Sí: evidencias/territorial\_hhi\_por\_convocatoria.csv, territorial\_hhi\_regio
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/analisis/territorial.py:81-87: el top-n global combinado con pct anual puede producir tablas donde ningún año muestre el territorio \#1 de ese año; no es error de cálculo, pero distorsiona el concepto de 'top territorios por convocatoria'.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/territorial.py (líneas 81-87):}
+\end{quote}
+\begin{lstlisting}
+    top = (
+        sub[col_geo]
+        .value_counts()
+        .head(n)
+        .index.tolist()
+    )
+[...]
+\end{lstlisting}
+
   \item src/analisis/territorial.py:44 y 71: si col\_geo contuviera valores no-cadena (el NaN ya se dropea, pero p.ej. códigos numéricos), .str.strip() lanzaría AttributeError --- depende del contrato de ingesta.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/territorial.py (línea 44):}
+\end{quote}
+\begin{lstlisting}
+    sub = sub[sub[col_geo].str.strip().str.upper() != "NO REPORTADO"]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -720,6 +1040,103 @@ Sí: evidencias/territorial\_hhi\_por\_convocatoria.csv, territorial\_hhi\_regio
 
 \subsection{Orquestación de análisis (scripts por sprint)}
 \noindent Archivos: 17.
+
+\subsubsection{scripts/generar\_manual.py}
+\textbf{Rol:} documentacion · \textbf{Líneas:} 610
+
+\paragraph{Descripción funcional}
+Genera docs/manual.ipynb, un notebook ejecutable de 49 celdas (23 markdown + 26 código) que reproduce los doce hallazgos del observatorio de investigadores MinCiencias. Construye el notebook programáticamente con nbformat: va apilando celdas markdown y de código mediante los helpers md()/code() y las escribe en docs/ al final. Cada sección (1-14) combina texto explicativo con cifras del observatorio y celdas que reutilizan el pipeline moderno (src/ingesta, src/Transformacion.py, src/analisis/*) en lugar de duplicar lógica.
+
+\paragraph{Análisis de la lógica}
+El script no ejecuta análisis: solo ensambla el notebook. Declara ROOT como el padre del directorio del script y crea docs/ con mkdir(exist\_ok=True). Luego encadena 14 secciones: portada, setup (celda que inserta src/ en sys.path), carga de datos (from ingesta import cargar\_consolidado, cargar\_produccion; transformar; normalizar\_produccion), y secciones temáticas que importan funciones de src/analisis (calidad, longitudinal, territorial, genero, diversidad, produccion). Incrusta figuras mediante IFrame con rutas relativas a artifacts/sprint6\_sankey/*.html y CSV ya generados en evidencias/ (tabla\_maestra\_ies.csv, geografia\_*.csv, ocde\_*.csv). Cuatro celdas lanzan subprocess.run(["python3", "scripts/sprint6\_*.py"], cwd=ROOT, check=True) para regenerar Sankeys y CSVs. Al final, main() crea nbformat.v4.new\_notebook() con metadata kernelspec python3 y escribe el JSON en docs/manual.ipynb con codificación utf-8.
+
+\paragraph{Fortalezas}
+\begin{itemize}
+  \item Estructura clara y reproducible: 49 celdas en 14 secciones numeradas, con markdown explicativo de cada hallazgo, incluyendo citas textuales del director y caveats metodológicos (Emérito vitalicio, diversidad solo capturada desde 2021, comparación DANE vs población con educación superior).
+  \item Reutiliza el pipeline moderno (ingesta, Transformacion, analisis.*) en las celdas en lugar de duplicar lógica de análisis, lo que mantiene coherencia con scripts/sprint*.py.
+  \item Documenta explícitamente la decisión metodológica de tratamiento de atípicos (eliminación sobre imputación) con justificación cuantitativa, y ofrece la alternativa imputar\_mediana aunque no se aplique por defecto.
+  \item El notebook generado es versionable y el script es idempotente (siempre escribe el mismo manual.ipynb desde cero).
+  \item El notebook existente en el clon coincide con lo que el script genera: 49 celdas (23 markdown + 26 código), mismo título UTF-8 correcto y mismas celdas clave (carga, subprocess, matrices) --- verificado byte a byte en la sección relevante.
+\end{itemize}
+
+\paragraph{Debilidades}
+\begin{itemize}
+  \item Cifras hardcodeadas en markdown (22 atípicos de edad, 77.237 filas, 51\% Bogotá+Antioquia, 242 investigadores Antioquia$\rightarrow$Bogotá, retención del 92\%) que nunca se recalculan; ya hay discrepancia real: el docstring de src/analisis/calidad.py dice 'diez registros' y '0.013\%', mientras el manual dice 22 y 0,03\%.
+  \item El script asume el dataset completo de 6 convocatorias (77.237 filas), pero el clon solo dispone del XLSX de respaldo datos/tarea\_join/investigadores\_consolidado.xlsx con 3 convocatorias (2017, 2019, 2021) y 50.891 filas, por lo que las cifras regeneradas no coincidirían con el texto (p. ej. 'Cinco diagramas' de Sankey solo podrían ser 2 pares).
+  \item No declara dependencias del script ni del notebook: nbformat (necesario para ejecutar el script), seaborn e IPython (importados por las celdas) no están en requirements.txt.
+  \item Depende de subprocess con 'python3' hardcodeado en 4 celdas, lo que lo hace no portable a Windows.
+  \item Rutas relativas en IFrame ("../artifacts/...") dependen del cwd del kernel de Jupyter; frágiles si el notebook se abre desde otro directorio.
+  \item No valida que los CSV leídos existan ni que los subprocess tengan éxito con mensajes claros (check=True lanza excepción genérica).
+\end{itemize}
+
+\paragraph{Mejoras propuestas}
+\begin{itemize}
+  \item Corregir la celda de matrices: matrices\_todos\_periodos() retorna dict de tuplas (conteos, probs); usar m[0] o cambiar la función para retornar dict con claves 'conteos'/'probabilidades'.
+  \item Reemplazar "python3" por sys.executable (o "python") en los subprocess.run para portabilidad a Windows.
+  \item Agregar nbformat, seaborn e IPython a requirements.txt.
+  \item Recalcular cifras clave en celdas (n\_atipicos, top departamentos, flujos) y compararlas con asserts contra los valores del texto, o generar el markdown de hallazgos dinámicamente.
+  \item Documentar que el XLSX de respaldo cubre solo 3 convocatorias y que las secciones 11-13 requieren datos/raw/produccion\_grupos.csv; añadir try/except en la carga de producción con mensaje de acción clara.
+  \item Reemplazar subprocess por llamadas directas a funciones de src/analisis dentro del notebook (más robusto y auditable), o usar rutas basadas en ROOT en lugar de rutas relativas en IFrame.
+\end{itemize}
+
+\paragraph{Ejecutabilidad}
+El script en sí (python scripts/generar\_manual.py) es ejecutable tal cual en el clon siempre que nbformat esté instalado (no está en requirements.txt, aunque probablemente sí en .venv por Jupyter); escribe docs/manual.ipynb y no requiere datos. El notebook generado NO es ejecutable de punta a punta en el clon: (1) la celda de carga llama cargar\_produccion(), que lanza FileNotFoundError porque datos/raw/produccion\_grupos.csv está ausente (gitignored), rompiendo las secciones 11-13; (2) las 4 celdas con subprocess.run(["python3", ...]) fallan en Windows (python3 no es ejecutable estándar; sería python o py); (3) la celda de matrices accede m["conteos"] sobre tuplas y lanza TypeError; (4) los IFrame usan rutas relativas a artifacts/ que dependen del cwd. Los CSV de evidencias/ y los HTML de artifacts/sprint6\_sankey/ existen (generados previamente con el dataset completo), por lo que las celdas de solo-lectura (IFrame, read\_csv) funcionarían si las anteriores no fallaran.
+
+\paragraph{¿Produce lo esperado?}
+Sí genera docs/manual.ipynb con 49 celdas (23 markdown + 26 código) y metadata kernelspec python3 / language\_info 3.11. El notebook existente en el clon coincide con lo que el script generaría: misma estructura (49 celdas), mismo título (em-dash UTF-8 correcto, sin BOM) y las mismas celdas clave (carga de datasets, subprocess con python3, IFrame y las celdas bugueadas con m["conteos"] y con columna= en HHI); el notebook no tiene outputs ni execution\_count, es decir, nunca fue ejecutado. El notebook resultante NO es totalmente ejecutable: además del TypeError de m["conteos"] y del FileNotFoundError de cargar\_produccion(), la celda HHI lanza TypeError por el kwarg 'columna=' (el parámetro real es col\_geo), usa import seaborn e IPython.display sin declarar dependencias y rutas relativas frágiles; solo la sección 1 y parcialmente la 2 serían viables de forma inmediata con el XLSX de respaldo.
+
+\begin{tcolorbox}[riesgo]
+\textbf{Bugs / problemas detectados:}
+\begin{itemize}
+  \item Línea 197 (celda 'Trayectoria longitudinal'): matrices\_todos\_periodos() (src/analisis/longitudinal.py:164-179) retorna \{periodo: (conteos\_df, probs\_df)\}, pero la celda hace m["conteos"] $\rightarrow$ TypeError: tuple indices must be integers or slices, not str en runtime; el notebook existente contiene el mismo bug.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/longitudinal.py (líneas 164-179):}
+\end{quote}
+\begin{lstlisting}
+def matrices_todos_periodos(
+    panel: pd.DataFrame, incluir_desaparece: bool = True
+) -> dict:
+    """
+    Calcula matrices de transición para todos los pares consecutivos.
+
+[...]
+\end{lstlisting}
+
+  \item Línea 251 (celda HHI de la sección 5): hhi\_por\_convocatoria(inv\_clean, columna="NME\_DEPARTAMENTO\_RES\_PR") pasa el kwarg 'columna', pero el parámetro real de la función es 'col\_geo' (src/analisis/territorial.py:32) $\rightarrow$ TypeError en runtime; la sección 5 no es viable aunque no requiera producción.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/territorial.py (línea 32):}
+\end{quote}
+\begin{lstlisting}
+def hhi_por_convocatoria(
+\end{lstlisting}
+
+  \item Líneas 213, 318, 357 y 509: subprocess.run(["python3", "scripts/sprint6\_*.py"], ...) --- 'python3' no existe en Windows (el clon vive en Windows); falla con FileNotFoundError. Debería ser sys.executable o 'python'.
+  \item Celda de carga (líneas 107-117): prod = normalizar\_produccion(cargar\_produccion()) lanza FileNotFoundError en el clon porque datos/raw/produccion\_grupos.csv no existe; rompe secciones 11, 12 y 13.
+  \item Línea 136-140 vs src/analisis/calidad.py:1-26: el manual afirma '22 registros con edad superior a 100 años' y '0,03\%', pero el módulo de calidad documenta 'diez registros' y '0.013\%' --- cifras contradictorias sin recalcular.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/calidad.py (líneas 1-26):}
+\end{quote}
+\begin{lstlisting}
+"""
+analisis/calidad.py
+
+Validación documentada de calidad de los datos del padrón de investigadores
+reconocidos. La decisión metodológica adoptada se documenta de forma explícita
+para que cualquier auditor pueda reproducirla y discutirla.
+[...]
+\end{lstlisting}
+
+  \item Líneas 44-47 de la portada: dice 'los doce hallazgos' pero enumera 14 secciones numeradas (1-14) --- incoherencia menor de numeración.
+  \item requirements.txt no incluye nbformat (necesario para ejecutar el script), ni seaborn ni IPython (importados por celdas del notebook).
+  \item Celda setup (líneas 89-94): ROOT = pathlib.Path.cwd() depende del directorio desde donde se lance el kernel; el fallback a ROOT.parent solo cubre un nivel, frágil en Jupyter Lab/VS Code con cwd distinto.
+\end{itemize}
+\end{tcolorbox}
+
+\paragraph{Recomendación de auditoría}
+\textbf{mejorar --- El script cumple bien su rol documental (estructura clara, reuso de src/, notebook reproducible y coincidente con el del clon), pero no es ejecutable de punta a punta en el estado actual del repositorio: hay un bug de API real (m["conteos"]), dependencia de un CSV de producción ausente, subprocess no portables a Windows y cifras hardcodeadas que ya divergen del código de calidad. Se recomienda una mejora enfocada: corregir la celda de matrices, usar sys.executable, declarar dependencias y recargar/validar las cifras --- sin necesidad de refactorizar la arquitectura del script.}
+
+\medskip
+\hrule
 
 \subsubsection{scripts/sprint2\_duckdb.py}
 \textbf{Rol:} orquestacion · \textbf{Líneas:} 127
@@ -766,8 +1183,35 @@ SÍ, con matiz: evidencias/duckdb\_resumen\_modelo.txt existe en el clon y su co
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint2\_duckdb.py:110 --- con.execute(sql).fetchdf(): fetchdf() está deprecado desde duckdb 0.9.0 (reemplazado por .df()); con duckdb \textasciicircum{}1.0 en pyproject.toml una versión reciente puede eliminarlo, rompiendo el script en runtime.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_duckdb.py (línea 110):}
+\end{quote}
+\begin{lstlisting}
+        resultado = con.execute(sql).fetchdf()
+\end{lstlisting}
+
   \item scripts/sprint2\_duckdb.py:104 --- resumen\_modelo(con) imprime a stdout pero su salida no se agrega a lineas\_reporte: la evidencia guardada (duckdb\_resumen\_modelo.txt) omite el resumen del modelo estrella que el propio docstring describe como parte de la validación.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_duckdb.py (línea 104):}
+\end{quote}
+\begin{lstlisting}
+    resumen_modelo(con)
+\end{lstlisting}
+
   \item scripts/sprint2\_duckdb.py:97-123 --- sin try/finally: cualquier excepción entre [2/3] y [3/3] deja la conexión duckdb sin cerrar y sin reporte parcial.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_duckdb.py (líneas 97-123):}
+\end{quote}
+\begin{lstlisting}
+def main() -> None:
+    print("[1/3] Cargando y transformando datos...")
+    df = transformar(cargar_consolidado())
+    print(f"      Shape: {df.shape}")
+
+    print("\n[2/3] Construyendo modelo estrella en DuckDB...")
+[...]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -820,8 +1264,32 @@ SÍ, coincidencia total: existen artifacts/sprint2\_genero\_ocde/fig01\_barras\_
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint2\_genero\_ocde.py:132-135 --- b0.reindex(areas) con areas derivada solo de b1: si el conjunto de gran áreas difiere entre convocatorias extremas, las barras de b0 quedan en NaN (no se dibujan) sin advertencia, y las áreas exclusivas de a0 desaparecen del gráfico.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_genero\_ocde.py (líneas 132-135):}
+\end{quote}
+\begin{lstlisting}
+    ax.bar([i - width / 2 for i in x], b0.reindex(areas), width,
+           label=str(a0), color="steelblue", alpha=0.8)
+    ax.bar([i + width / 2 for i in x], b1.reindex(areas), width,
+           label=str(a1), color="tomato", alpha=0.8)
+\end{lstlisting}
+
   \item scripts/sprint2\_genero\_ocde.py:81 --- sns.heatmap con vmin=0, vmax=60 fijos: cualquier gran área con \% femenino >60 (esperable en ciencias de la salud o educación) satura el rojo/verde de RdYlGn y pierde discriminación visual.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_genero\_ocde.py (línea 81):}
+\end{quote}
+\begin{lstlisting}
+        vmax=60,
+\end{lstlisting}
+
   \item scripts/sprint2\_genero\_ocde.py:108 --- ax.set\_ylim(0, 70) en fig03: series que superen 70\% (posible en áreas pequeñas) quedan cortadas en el borde superior sin indicación.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_genero\_ocde.py (línea 108):}
+\end{quote}
+\begin{lstlisting}
+    ax.set_ylim(0, 70)
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -876,7 +1344,27 @@ SÍ: existen artifacts/sprint2\_transiciones/fig01\_heatmaps\_ext.png y fig02\_h
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint2\_matrices\_transicion.py:83-95 --- las matrices se calculan dos veces (bucle de impresión y matrices\_todos\_periodos): doble costo de cómputo sobre 77.237 registros y riesgo de que las cifras impresas difieran de las exportadas si la función cambiara entre ambas llamadas.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_matrices\_transicion.py (líneas 83-95):}
+\end{quote}
+\begin{lstlisting}
+    for a0, a1 in zip(anios, anios[1:]):
+        comp = comparar_periodo(panel, a0, a1)
+        _, probs_obs = matriz_transicion(comp, incluir_desaparece=False)
+        _, probs_ext = matriz_transicion(comp, incluir_desaparece=True)
+        print(f"\n{'='*55}")
+        print(f"Periodo {a0}–{a1} — Observada (solo retenidos):")
+[...]
+\end{lstlisting}
+
   \item scripts/sprint2\_matrices\_transicion.py:49 --- plt.subplots(1, n) con n=1 devuelve un solo Axes (no iterable); el zip(axes, periodos) fallaría con TypeError si el panel tuviera un único periodo.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_matrices\_transicion.py (línea 49):}
+\end{quote}
+\begin{lstlisting}
+    fig, axes = plt.subplots(1, n, figsize=(5 * n, 4))
+\end{lstlisting}
+
   \item Evidencias/ legacy: los archivos matriz\_transicion\_extendida\_2017\_2019.csv, matriz\_probabilidades\_extendida\_2019\_2021.csv y matriz\_transicion\_2017\_2019.csv (sin prefijo) ya no son generados por este script; quedan como evidencia huérfana que puede confundir la trazabilidad.
 \end{itemize}
 \end{tcolorbox}
@@ -981,8 +1469,29 @@ SÍ, coincidencia total: existen artifacts/sprint2\_territorial/fig01\_top\_depa
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint2\_territorial.py:82 --- ax.annotate con x = str(int(row['ANO\_CONVO\_INT'])): se mezcla una cadena como coordenada de datos en un eje categórico (ploteado con astype(str)); funciona solo por la conversión unitaria implícita de matplotlib y es un punto de fallo frágil.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_territorial.py (línea 82):}
+\end{quote}
+\begin{lstlisting}
+                (str(int(row["ANO_CONVO_INT"])), row["hhi"]),
+\end{lstlisting}
+
   \item scripts/sprint2\_territorial.py:82 --- int(row['ANO\_CONVO\_INT']) lanza ValueError si el año es NaN; hhi\_por\_convocatoria filtra geo y año (dropna en sub), pero el DataFrame impreso/graficado aquí no garantiza ausencia de NaN en otras filas.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_territorial.py (línea 82):}
+\end{quote}
+\begin{lstlisting}
+                (str(int(row["ANO_CONVO_INT"])), row["hhi"]),
+\end{lstlisting}
+
   \item scripts/sprint2\_territorial.py:123 --- accede a NME\_REGION\_RES\_PR sin verificar su existencia: si Transformacion renombra/elimina esa columna, el script cae con KeyError sin mensaje orientativo.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint2\_territorial.py (línea 123):}
+\end{quote}
+\begin{lstlisting}
+    hhi_region = hhi_por_convocatoria(df, col_geo="NME_REGION_RES_PR")
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1035,7 +1544,35 @@ SÍ: hallazgos/sprint3\_grafo\_completo.html y hallazgos/sprint3\_grafo\_filtrad
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint3\_grafo\_interactivo.py:53 y 62 --- títulos hardcodeados 'Co-filiacion institucional --- Grafo completo (2019)' y '(2019)': el grafo se construye con todas las convocatorias (construir\_pares(df) línea 39 y construir\_grafo(pares) línea 40 con anio=None en src/analisis/redes.py:83-90), por lo que la etiqueta 2019 es incorrecta y contradice el alcance real del grafo.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint3\_grafo\_interactivo.py (línea 53):}
+\end{quote}
+\begin{lstlisting}
+        titulo="Co-filiacion institucional — Grafo completo (2019)",
+\end{lstlisting}
+
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/redes.py (líneas 83-90):}
+\end{quote}
+\begin{lstlisting}
+def construir_grafo(pares: pd.DataFrame, anio: int = None) -> nx.Graph:
+    """
+    Construye grafo de co-filiacion a partir de los pares.
+
+    Si anio != None filtra por convocatoria. Peso de arista = n investigadores compartidos.
+    """
+[...]
+\end{lstlisting}
+
   \item scripts/sprint3\_grafo\_interactivo.py:10-11 --- el docstring fija '498 nodos' y '146 nodos' como constantes; si el dataset cambia, el docstring y los HTML pueden divergir sin ningún aviso.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint3\_grafo\_interactivo.py (líneas 10-11):}
+\end{quote}
+\begin{lstlisting}
+    hallazgos/sprint3_grafo_completo.html      (498 nodos)
+    hallazgos/sprint3_grafo_filtrado.html      (146 nodos, grado >= 2)
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1088,8 +1625,45 @@ SÍ, coincidencia total: existen artifacts/sprint3\_redes/fig01\_distribucion\_g
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint3\_redes.py:102 --- pares['inst\_a'].nunique() + pares['inst\_b'].nunique() sobreestima 'instituciones mencionadas' al sumar cardinalidades de columnas que comparten elementos; la cifra impresa en consola no es el número real de instituciones.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint3\_redes.py (línea 102):}
+\end{quote}
+\begin{lstlisting}
+    print(f"      {pares['inst_a'].nunique() + pares['inst_b'].nunique()} instituciones mencionadas")
+\end{lstlisting}
+
   \item scripts/sprint3\_redes.py:48-57 --- fig\_distribucion\_grado genera una barra por nodo (len(grados) barras) sin eje X útil: con cientos de instituciones la figura se vuelve ilegible y aporta poco frente a un histograma de la distribución de grado.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint3\_redes.py (líneas 48-57):}
+\end{quote}
+\begin{lstlisting}
+def fig_distribucion_grado(G) -> None:
+    grados = sorted([d for _, d in G.degree()], reverse=True)
+    fig, ax = plt.subplots(figsize=(10, 4))
+    ax.bar(range(len(grados)), grados, color="steelblue", width=1.0)
+    ax.set_xlabel("Nodo (ordenado por grado)")
+    ax.set_ylabel("Grado")
+[...]
+\end{lstlisting}
+
   \item scripts/sprint3\_redes.py:100 --- construir\_pares(df) asume implícitamente el separador '|' en INST\_FILIA (src/analisis/redes.py:61-64); si la transformación cambia el formato, el grafo queda vacío sin ningún warning.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint3\_redes.py (línea 100):}
+\end{quote}
+\begin{lstlisting}
+    pares = construir_pares(df)
+\end{lstlisting}
+
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/redes.py (líneas 61-64):}
+\end{quote}
+\begin{lstlisting}
+    multi = df[df["INST_FILIA"].str.contains("|", na=False, regex=False)].copy()
+    multi[["inst_a", "inst_b"]] = (
+        multi["INST_FILIA"]
+        .str.split("|", n=1, expand=True)
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1144,9 +1718,39 @@ SÍ: existen artifacts/sprint4\_diversidad/fig01\_cobertura\_temporal.png, fig02
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/analisis/diversidad.py:78-80 --- comentario vs código: 'excluir NINGUN GRUPO ETNICO del denominador' pero el código filtra solo 'NO DISPONIBLE' (etnia = df\_2021[TXT\_GRUPO\_ETNICO != 'NO DISPONIBLE']; n\_etnia\_resp = len(etnia) incluye NINGUN GRUPO ETNICO): los pct\_minciencias y las razones de subrepresentación de minorías quedan diluidos por el denominador inflado. Bug metodológico que afecta la figura fig02 y evidencias/diversidad\_comparacion\_dane.csv.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/diversidad.py (líneas 78-80):}
+\end{quote}
+\begin{lstlisting}
+    # Etnia: excluir "NINGUN GRUPO ETNICO" del denominador para ver minorias
+    etnia = df_2021[df_2021["TXT_GRUPO_ETNICO"] != "NO DISPONIBLE"]
+    n_etnia_resp = len(etnia)
+\end{lstlisting}
+
   \item scripts/sprint4\_diversidad.py:105 --- lista hardcodeada con tildes ['INVESTIGADOR SÉNIOR', 'INVESTIGADOR EMÉRITO']: depende del casing/acentuación exacta que produzca Transformacion en NME\_CLASIFICACION\_PR; si difiere, la figura 03 muestra categorías faltantes en silencio.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint4\_diversidad.py (línea 105):}
+\end{quote}
+\begin{lstlisting}
+    cats = ["INVESTIGADOR JUNIOR", "INVESTIGADOR ASOCIADO", "INVESTIGADOR SÉNIOR", "INVESTIGADOR EMÉRITO"]
+\end{lstlisting}
+
   \item scripts/sprint4\_diversidad.py:103 --- cat\_etnia[...].str.contains('NING', case=False, na=False) es un filtro de subcadena: eliminaría también valores como 'NINGUNA...' si el vocabulario de la variable cambiara.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint4\_diversidad.py (línea 103):}
+\end{quote}
+\begin{lstlisting}
+    cat_etnia = cat_etnia[~cat_etnia["TXT_GRUPO_ETNICO"].str.contains("NING", case=False, na=False)]
+\end{lstlisting}
+
   \item scripts/sprint4\_diversidad.py:158 --- exporta diversidad\_distribucion\_victimas\_2021.csv sin declararlo en el docstring (líneas 12-22), generando evidencia no documentada.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint4\_diversidad.py (línea 158):}
+\end{quote}
+\begin{lstlisting}
+    dist_vict.to_csv(EVIDENCIAS / "diversidad_distribucion_victimas_2021.csv", index=False)
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1201,9 +1805,45 @@ SÍ: evidencias/duckdb\_resumen\_sprint5.txt existe y contiene las 5 consultas. 
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint5\_duckdb.py:155-157 --- el LEFT JOIN a fact\_clasificacion no valida que f.id\_convocatoria = fc.id\_convocatoria tenga coincidencias; si los dominios de convocatoria difieren (producción vs clasificación), toda la columna es\_reconocido queda en False y la cobertura reportada (51-63\%) sería espuria sin ningún error visible.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint5\_duckdb.py (líneas 155-157):}
+\end{quote}
+\begin{lstlisting}
+        LEFT JOIN fact_clasificacion fc
+               ON f.id_persona_pd = fc.id_persona_pr
+              AND f.id_convocatoria = fc.id_convocatoria
+\end{lstlisting}
+
   \item scripts/sprint5\_duckdb.py:59 --- COUNT(*)::DOUBLE es sintaxis válida en DuckDB, pero el SUM(CASE WHEN es\_reconocido THEN 1 ELSE 0 END) de la consulta cobertura\_reconocimiento devuelve tipo DOUBLE (visible como '123683.0' en el reporte) frente a COUNT(*) entero; inconsistencia de tipos menor en el output.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint5\_duckdb.py (línea 59):}
+\end{quote}
+\begin{lstlisting}
+               ROUND(COUNT(*)::DOUBLE / COUNT(DISTINCT v.id_persona_pd), 2) AS prom_productos
+\end{lstlisting}
+
   \item scripts/sprint5\_duckdb.py:162 --- valida COUNT(*) de fact\_produccion/dim\_producto/dim\_grupo pero nunca valida la vista vw\_investigador\_x\_produccion (el objeto más usado después).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint5\_duckdb.py (línea 162):}
+\end{quote}
+\begin{lstlisting}
+        n = con.execute(f"SELECT COUNT(*) FROM {tabla}").fetchone()[0]
+\end{lstlisting}
+
   \item scripts/sprint5\_duckdb.py:96-136 --- DROP TABLE IF EXISTS sin transacción; una excepción entre DROPs deja la DB parcialmente actualizada (riesgo de estado inconsistente).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint5\_duckdb.py (líneas 96-136):}
+\end{quote}
+\begin{lstlisting}
+    con.execute("DROP TABLE IF EXISTS fact_produccion")
+    con.execute("""
+        CREATE TABLE fact_produccion AS
+        SELECT
+            id_persona_pd,
+            id_convocatoria,
+[...]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1258,9 +1898,52 @@ SÍ: las 6 figuras de artifacts/sprint5\_produccion/ y las 8 evidencias (producc
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item src/analisis/produccion.py:63-65 (invocado desde sprint5\_produccion.py:203) --- cobertura\_reconocidos marca es\_reconocido sin condicionar la convocatoria: un producto de 2013 firmado por alguien reconocido solo en 2021 cuenta como 'firmado por reconocido', sobreestimando la cobertura frente a la definición por convocatoria del DuckDB (documentado en el docstring de la función como decisión, pero no advertido en el script orquestador).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/produccion.py (líneas 63-65):}
+\end{quote}
+\begin{lstlisting}
+    ids_reconocidos = set(inv["ID_PERSONA_PR"].dropna().astype("Int64"))
+    p = prod.copy()
+    p["es_reconocido"] = p["ID_PERSONA_PD"].isin(ids_reconocidos)
+\end{lstlisting}
+
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en sprint5\_produccion.py (línea 203):}
+\end{quote}
+\begin{lstlisting}
+    cov = cobertura_reconocidos(prod, inv)
+\end{lstlisting}
+
   \item scripts/sprint5\_produccion.py:75-78 --- la etiqueta de porcentaje se posiciona en total+5000 y el bucle itera zip(n\_reconocidos, n\_productos, pct\_reconocidos): si n\_productos < 5000 la etiqueta queda fuera del rango visible del eje (cosmético).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint5\_produccion.py (líneas 75-78):}
+\end{quote}
+\begin{lstlisting}
+    for i, (rec, total, pct) in enumerate(
+        zip(cob_df["n_reconocidos"], cob_df["n_productos"], cob_df["pct_reconocidos"])
+    ):
+        ax.text(i, total + 5000, f"{pct:.1f}%", ha="center", fontsize=9)
+\end{lstlisting}
+
   \item scripts/sprint5\_produccion.py:243-244 --- import json dentro de main() (estilo menor; debería ir al tope con los demás imports).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint5\_produccion.py (líneas 243-244):}
+\end{quote}
+\begin{lstlisting}
+    with open(EVIDENCIAS / "produccion_resumen_cobertura.json", "w", encoding="utf-8") as f:
+        json.dump(cov_unicos, f, ensure_ascii=False, indent=2)
+\end{lstlisting}
+
   \item src/analisis/produccion.py:38-40 --- pd.to\_numeric(errors='coerce') convierte IDs no numéricos a NA silenciosamente; si ID\_PERSONA\_PD tiene formatos mixtos, filas completas se pierden del análisis sin reporte.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en src/analisis/produccion.py (líneas 38-40):}
+\end{quote}
+\begin{lstlisting}
+    for c in ("ID_PERSONA_PD", "ID_CONVOCATORIA"):
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce").astype("Int64")
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1313,9 +1996,48 @@ SÍ: artifacts/sprint6\_geografia/\{fig\_heatmap\_residencia\_institucion,fig\_p
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint6\_geografia\_institucional.py:81-88 --- INST\_FILIA solo se pasa a upper/strip, sin quitar acentos, mientras las claves del mapping (generadas desde MAPEO y el dump) son mayúsculas sin acentos; cualquier tilde en el dato fuente rompe el match y degrada a NO\_MAPEADA sin aviso específico.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_geografia\_institucional.py (líneas 81-88):}
+\end{quote}
+\begin{lstlisting}
+    primera = (df["INST_FILIA"]
+               .fillna("")
+               .astype(str)
+               .str.split("|")
+               .str[0]
+               .str.strip()
+[...]
+\end{lstlisting}
+
   \item scripts/sprint6\_geografia\_institucional.py:88 --- el reemplazo cubre '', 'NAN' y 'NO REPORTADO', pero si el padrón usa otro marcador de ausencia (p. ej. 'NO DISPONIBLE' o 'SIN INFORMACION') quedaría como institución ficticia y se contaría en los flujos.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_geografia\_institucional.py (línea 88):}
+\end{quote}
+\begin{lstlisting}
+    df["INST_PRIMERA"] = primera.replace({"": np.nan, "NAN": np.nan, "NO REPORTADO": np.nan})
+\end{lstlisting}
+
   \item scripts/sprint6\_geografia\_institucional.py:118-119 --- se excluyen NO\_MAPEADA/SIN\_FILIA pero no 'EXTRANJERO'/'EXTERIOR'/'NO IDENTIFICADO': los flujos internacionales/desconocidos pueden dominar los top y desdibujar el mensaje territorial.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_geografia\_institucional.py (líneas 118-119):}
+\end{quote}
+\begin{lstlisting}
+    sub = df[~df["DPTO_INSTITUCION"].isin(["NO_MAPEADA", "SIN_FILIA"])]
+    sub = sub[sub["DPTO_RESIDENCIA"].notna()]
+\end{lstlisting}
+
   \item scripts/sprint6\_geografia\_institucional.py:141-145 --- fuera.iloc[0] depende de que el grupo mantenga el orden descendente global por n\_investigadores; correcto por construcción (flujo ya ordenado), pero frágil si tabla\_flujos se reordenara.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_geografia\_institucional.py (líneas 141-145):}
+\end{quote}
+\begin{lstlisting}
+        fuera = grupo[grupo["DPTO_INSTITUCION"] != dpto]
+        if len(fuera):
+            top = fuera.iloc[0]
+            top_destino = top["DPTO_INSTITUCION"]
+            top_n = int(top["n_investigadores"])
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1368,8 +2090,32 @@ SÍ: artifacts/sprint6\_ocde/\{fig\_volumen\_por\_area,fig\_composicion\_tipo\_p
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint6\_ocde\_composicion.py:151-154 --- n\_productos/n\_investigadores mezcla granularidades: numerador filas (persona$\times$convocatoria$\times$producto) y denominador personas únicas en todo el periodo; si una persona aparece en varias convocatorias, su producción completa se divide por 1, inflando sistemáticamente la productividad de todas las áreas.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_ocde\_composicion.py (líneas 151-154):}
+\end{quote}
+\begin{lstlisting}
+    prod_area = volumen.merge(inv_por_area, on="gran_area")
+    prod_area["productos_por_investigador"] = (
+        prod_area["n_productos"] / prod_area["n_investigadores"]
+    ).round(2)
+\end{lstlisting}
+
   \item scripts/sprint6\_ocde\_composicion.py:62 --- how='inner' descarta en silencio los productos sin autor reconocido o con ID\_CONVOCATORIA no coincidente; el print de [2/5] solo muestra len(df) del cruce y no la pérdida frente a len(prod).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_ocde\_composicion.py (línea 62):}
+\end{quote}
+\begin{lstlisting}
+    df = prod.merge(inv_slim, on=["ID_PERSONA_PD", "ID_CONVOCATORIA"], how="inner")
+\end{lstlisting}
+
   \item scripts/sprint6\_ocde\_composicion.py:64 --- el filtro solo cubre 'NO REGISTRA'/'NO REPORTADO'; variantes como 'SIN INFORMACIÓN' o NaN en NME\_GRAN\_AREA\_PR pasarían y crearían una categoría basura en volumen/composición.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_ocde\_composicion.py (línea 64):}
+\end{quote}
+\begin{lstlisting}
+    df = df[~df["NME_GRAN_AREA_PR"].isin(["NO REGISTRA", "NO REPORTADO"])]
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1423,8 +2169,33 @@ SÍ: artifacts/sprint6\_sankey/sankey\_2013\_2014.\{html,png\} \dots{} sankey\_2
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint6\_sankey\_categoria.py:52-55 --- fila\_orden filtra las categorías presentes en ORDEN\_CATEGORIAS, pero si construir\_panel produce una categoría no mapeada (p. ej. variante con acento 'INVESTIGADOR SÉNIOR' vs 'Senior'), esa fila se elimina del Sankey y del conteo sin ningún mensaje; el total del título quedaría subestimado.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_sankey\_categoria.py (líneas 52-55):}
+\end{quote}
+\begin{lstlisting}
+    conteos, _ = matriz_transicion(comp, incluir_desaparece=True)
+    # Reordenar filas siguiendo el orden canónico
+    fila_orden = [c for c in ORDEN_CATEGORIAS if c in conteos.index]
+    conteos = conteos.loc[fila_orden]
+\end{lstlisting}
+
   \item scripts/sprint6\_sankey\_categoria.py:105 --- total\_t = conteos.sum().sum() incluye la columna 'Desaparece'; el texto del título 'investigadores reconocidos en t' es correcto, pero si fila\_orden ya excluyó categorías, total\_t no coincide con el padrón de t.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_sankey\_categoria.py (línea 105):}
+\end{quote}
+\begin{lstlisting}
+    total_t = conteos.sum().sum()
+\end{lstlisting}
+
   \item scripts/sprint6\_sankey\_categoria.py:146-147 --- write\_image sin comprobación de kaleido: dependencia implícita que rompe la ejecución en entornos mínimos.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_sankey\_categoria.py (líneas 146-147):}
+\end{quote}
+\begin{lstlisting}
+        fig.write_image(ARTIFACTS / f"{nombre}.png",
+                        width=1100, height=520, scale=2)
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1478,8 +2249,36 @@ SÍ: artifacts/sprint6\_sankey/sankey\_territorial.html y sankey\_territorial.pn
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint6\_sankey\_territorial.py:125-129 --- write\_image sin comprobación de kaleido: dependencia implícita; en un entorno sin kaleido el script aborta tras haber generado el HTML (comportamiento no degradable).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_sankey\_territorial.py (líneas 125-129):}
+\end{quote}
+\begin{lstlisting}
+    fig.write_html(ARTIFACTS / "sankey_territorial.html",
+                    include_plotlyjs="cdn",
+                    full_html=True)
+    fig.write_image(ARTIFACTS / "sankey_territorial.png",
+                     width=1200, height=620, scale=2)
+\end{lstlisting}
+
   \item scripts/sprint6\_sankey\_territorial.py:69-70 --- top\_residencias.index(row['DPTO\_RESIDENCIA']) asume que toda fila de sub está en la lista top; correcto por el filtro isin previo (línea 56-58), pero si top\_residencias tuviera duplicados (no los tiene, viene de nlargest), el index() devolvería la primera aparición.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_sankey\_territorial.py (líneas 69-70):}
+\end{quote}
+\begin{lstlisting}
+        s_idx = top_residencias.index(row["DPTO_RESIDENCIA"])
+        t_idx = len(top_residencias) + top_instituciones.index(row["DPTO_INSTITUCION"])
+\end{lstlisting}
+
   \item scripts/sprint6\_sankey\_territorial.py:56-58 --- el filtro por umbral\_min $\geq$ 15 es absoluto, no proporcional al total del departamento: un flujo pequeño de VICHADA (dpto de pocos investigadores) puede quedar excluido justo donde el director quiere verlo; convendría umbral relativo por origen.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_sankey\_territorial.py (líneas 56-58):}
+\end{quote}
+\begin{lstlisting}
+    sub = flujo[flujo["DPTO_RESIDENCIA"].isin(top_residencias) &
+                flujo["DPTO_INSTITUCION"].isin(top_instituciones) &
+                (flujo["n_investigadores"] >= umbral_min)].copy()
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1533,9 +2332,46 @@ SÍ: evidencias/tabla\_maestra\_ies.csv, evidencias/mapping\_inst\_filia\_to\_ie
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint6\_tabla\_maestra\_ies.py:607 --- 'sedes\_registradas' = nunique de departamento\_sede: dos sedes en el mismo departamento (p. ej. dos campus de la UNAL en Bogotá) cuentan como 1, mientras dos sedes en departamentos distintos cuentan como 2; la métrica no es número de sedes.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_tabla\_maestra\_ies.py (línea 607):}
+\end{quote}
+\begin{lstlisting}
+            sedes_registradas=("departamento_sede", "nunique"),
+\end{lstlisting}
+
   \item scripts/sprint6\_tabla\_maestra\_ies.py:38-562 --- claves hardcodeadas sin validación de duplicados ni de normalización: si instituciones\_unicas\_raw.csv se regenera con otro case/acentos, la cobertura cae sin ninguna señal de error.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_tabla\_maestra\_ies.py (líneas 38-562):}
+\end{quote}
+\begin{lstlisting}
+MAPEO = {
+    # --- Top 20 por frecuencia -------------------------------------------
+    "UNIVERSIDAD DE ANTIOQUIA":
+        ("Universidad de Antioquia", "UdeA", "Antioquia", "publica"),
+    "UNIVERSIDAD NACIONAL DE COLOMBIA SEDE BOGOTA (UNIVERSIDAD NACIONAL DE COLOMBIA)":
+        ("Universidad Nacional de Colombia", "UNAL", "Bogotá D.C.", "publica"),
+[...]
+\end{lstlisting}
+
   \item scripts/sprint6\_tabla\_maestra\_ies.py:592 --- pd.concat([raw, asignaciones], axis=1) asume que aplicar\_mapeo devuelve una Series por fila alineada por índice; correcto aquí, pero frágil si se reordenara raw antes.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_tabla\_maestra\_ies.py (línea 592):}
+\end{quote}
+\begin{lstlisting}
+    asignaciones = raw.apply(aplicar_mapeo, axis=1)
+\end{lstlisting}
+
   \item scripts/sprint6\_tabla\_maestra\_ies.py:620-623 --- ies\_pendientes\_revision.csv incluye todas las entradas sin mapeo, pero el script no imprime las 10 pendientes más frecuentes para facilitar la revisión manual (solo cobertura agregada).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_tabla\_maestra\_ies.py (líneas 620-623):}
+\end{quote}
+\begin{lstlisting}
+    pendientes = mapping[mapping["estado"] == "pendiente_revision"].copy()
+    pendientes.to_csv(EVIDENCIAS / "ies_pendientes_revision.csv",
+                       index=False, encoding="utf-8")
+    cobertura_pendientes = pendientes["n_apariciones"].sum() / total_apariciones * 100
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
@@ -1588,62 +2424,44 @@ SÍ: evidencias/calidad\_atipicos\_edad.csv, evidencias/calidad\_comparacion.csv
 \textbf{Bugs / problemas detectados:}
 \begin{itemize}
   \item scripts/sprint6\_validacion\_calidad.py:62-84 --- edad\_stats mezcla unidades: len(df) cuenta filas (incluye NaN en EDAD) mientras mean/median/std de pandas ignoran NaN; si hubiera filas con edad faltante, n\_registros y las demás columnas no serían comparables.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_validacion\_calidad.py (líneas 62-84):}
+\end{quote}
+\begin{lstlisting}
+    edad_stats = pd.DataFrame({
+        "metodo": ["original", "eliminacion (>100)", "imputacion mediana por grupo"],
+        "n_registros": [len(df), len(df_filtrado), len(df_imputado)],
+        "media": [
+            round(df["EDAD_ANOS_PR"].mean(), 2),
+            round(df_filtrado["EDAD_ANOS_PR"].mean(), 2),
+[...]
+\end{lstlisting}
+
   \item scripts/sprint6\_validacion\_calidad.py:70-73 --- df['EDAD\_ANOS\_PR'].median() sin round frente a round(..., 2) en media (formato inconsistente; en el CSV aparece 43.29 por coincidencia del valor).
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_validacion\_calidad.py (líneas 70-73):}
+\end{quote}
+\begin{lstlisting}
+        "mediana": [
+            df["EDAD_ANOS_PR"].median(),
+            df_filtrado["EDAD_ANOS_PR"].median(),
+            df_imputado["EDAD_ANOS_PR"].median(),
+\end{lstlisting}
+
   \item scripts/sprint6\_validacion\_calidad.py:50-51 --- detectar\_atipicos\_edad solo imprime, no informa el conteo de NaN de EDAD\_ANOS\_PR, que podría alterar la interpretación del umbral.
+\begin{quote}\footnotesize\ttfamily
+\noindent\emph{Evidencia en scripts/sprint6\_validacion\_calidad.py (líneas 50-51):}
+\end{quote}
+\begin{lstlisting}
+    atipicos = detectar_atipicos_edad(df)
+    print(atipicos.to_string(index=False))
+\end{lstlisting}
+
 \end{itemize}
 \end{tcolorbox}
 
 \paragraph{Recomendación de auditoría}
 \textbf{mantener --- cumple su propósito (decisión metodológica auditable) con evidencia verificada; requiere solo ajustes menores de consistencia de conteos y redondeo.}
-
-\medskip
-\hrule
-
-\subsubsection{src/analisis/\_\_init\_\_.py}
-\textbf{Rol:} orquestacion · \textbf{Líneas:} 80
-
-\paragraph{Descripción funcional}
-Fachada del paquete analisis: re-exporta las funciones públicas de genero, territorial, redes, diversidad, longitudinal y produccion, y declara \_\_all\_\_. Define la API estable que consumen scripts/sprint*\_*.py y streamlit\_app.py.
-
-\paragraph{Análisis de la lógica}
-Importa explícitamente cada función/constante de los 6 submódulos y las lista en \_\_all\_\_. No contiene lógica de negocio; su función es el contrato de importación (from analisis import pct\_femenino\_por\_area, hhi, construir\_grafo, comparar\_dane, ...). Cualquier script que importe analisis dispara la importación de networkx (vía redes) y de longitudinal en el arranque.
-
-\paragraph{Fortalezas}
-\begin{itemize}
-  \item API pública explícita y bien documentada para todos los análisis del proyecto.
-  \item \_\_all\_\_ completo y ordenado facilita autocompletado e inspección.
-  \item Permite a scripts y dashboard importar sin conocer la estructura interna del paquete.
-\end{itemize}
-
-\paragraph{Debilidades}
-\begin{itemize}
-  \item Importación eager de los 6 submódulos: importar 'analisis' carga networkx y longitudinal (peso y acoplamiento); si una dependencia opcional falta, todo el paquete falla al importar.
-  \item Duplicación de símbolos entre el bloque de imports y \_\_all\_\_ (mantenimiento manual: añadir una función exige tocar dos lugares).
-  \item No hay validación de esquema en la frontera: las funciones asumen columnas MAYÚSCULAS y ANO\_CONVO\_INT sin verificar (contrato implícito con Transformacion.py).
-\end{itemize}
-
-\paragraph{Mejoras propuestas}
-\begin{itemize}
-  \item Convertir redes (y pyvis) en import perezoso o submódulo opcional para no penalizar al dashboard.
-  \item Generar \_\_all\_\_ a partir de una sola lista de nombres para evitar duplicación.
-  \item Añadir una función validate\_esquema(df) que verifique columnas requeridas antes de los análisis.
-\end{itemize}
-
-\paragraph{Ejecutabilidad}
-Sí, importable en el clon si las dependencias están instaladas (pandas, numpy, networkx; pyvis solo dentro de generar\_html\_pyvis). No lee archivos: la carga la hace ingesta. El fallo de cargar\_produccion en el clon no afecta el import, pero sí a las funciones de .produccion al ejecutarlas.
-
-\paragraph{¿Produce lo esperado?}
-No produce outputs; habilita el resto del pipeline. Coincide con la estructura documentada en el README (src/analisis como 'lógica reutilizable').
-
-\begin{tcolorbox}[riesgo]
-\textbf{Bugs / problemas detectados:}
-\begin{itemize}
-  \item src/analisis/\_\_init\_\_.py:4-36: importa funciones que no usa directamente; si analisis/longitudinal.py fallara al importar (dependencias), derriba también genero/territorial, que son independientes (acoplamiento innecesario).
-\end{itemize}
-\end{tcolorbox}
-
-\paragraph{Recomendación de auditoría}
-\textbf{mantener --- fachada correcta; refactorizar a imports perezosos o dividir el paquete para reducir el acoplamiento del dashboard.}
 
 \medskip
 \hrule
@@ -1682,7 +2500,7 @@ Estructura minima: import streamlit; st.set\_page\_config (page\_title 'Observat
 \end{itemize}
 
 \paragraph{Ejecutabilidad}
-SÃ­, se ejecuta tal cual (solo requiere streamlit instalado), pero solo muestra el aviso de 'Dashboard en construccion'. No lee ningun dato ni modulo del proyecto.
+Sí, se ejecuta tal cual (solo requiere streamlit instalado), pero solo muestra el aviso de 'Dashboard en construccion'. No lee ningun dato ni modulo del proyecto.
 
 \paragraph{¿Produce lo esperado?}
 NO produce el dashboard de 7 capitulos documentado: renderiza un cartel estatico. En el despliegue Docker, el contenedor (python:3.12-slim + poetry + datos/) muestra este placeholder en vez del dashboard real, contradiciendo el README y el proposito del observatorio.
@@ -1767,7 +2585,7 @@ Sí, el dashboard implementa los 7 capitulos del informe y coincide con el READM
 \hrule
 
 \subsection{Documentación ejecutable}
-\noindent Archivos: 2.
+\noindent Archivos: 1.
 
 \subsubsection{docs/manual.ipynb}
 \textbf{Rol:} documentacion · \textbf{Líneas:} 805
@@ -1826,69 +2644,6 @@ El manual documenta los 12 hallazgos y sus rutas de evidencias/artifacts existen
 
 \paragraph{Recomendación de auditoría}
 \textbf{refactorizar: el manual es valioso como documentacion de los hallazgos pero no es reproducible tal cual. Corregir los 2 bugs de API (m['conteos'], col\_geo), hacer portable el subprocess, documentar el prerequisito del dataset de produccion (o leer muestras de evidencias/) y armonizar las cifras con src/. Los mismos cambios deben aplicarse en scripts/generar\_manual.py para que el notebook se pueda regenerar.}
-
-\medskip
-\hrule
-
-\subsubsection{scripts/generar\_manual.py}
-\textbf{Rol:} documentacion · \textbf{Líneas:} 610
-
-\paragraph{Descripción funcional}
-Genera docs/manual.ipynb, un notebook ejecutable de 49 celdas (23 markdown + 26 código) que reproduce los doce hallazgos del observatorio de investigadores MinCiencias. Construye el notebook programáticamente con nbformat: va apilando celdas markdown y de código mediante los helpers md()/code() y las escribe en docs/ al final. Cada sección (1-14) combina texto explicativo con cifras del observatorio y celdas que reutilizan el pipeline moderno (src/ingesta, src/Transformacion.py, src/analisis/*) en lugar de duplicar lógica.
-
-\paragraph{Análisis de la lógica}
-El script no ejecuta análisis: solo ensambla el notebook. Declara ROOT como el padre del directorio del script y crea docs/ con mkdir(exist\_ok=True). Luego encadena 14 secciones: portada, setup (celda que inserta src/ en sys.path), carga de datos (from ingesta import cargar\_consolidado, cargar\_produccion; transformar; normalizar\_produccion), y secciones temáticas que importan funciones de src/analisis (calidad, longitudinal, territorial, genero, diversidad, produccion). Incrusta figuras mediante IFrame con rutas relativas a artifacts/sprint6\_sankey/*.html y CSV ya generados en evidencias/ (tabla\_maestra\_ies.csv, geografia\_*.csv, ocde\_*.csv). Cuatro celdas lanzan subprocess.run(["python3", "scripts/sprint6\_*.py"], cwd=ROOT, check=True) para regenerar Sankeys y CSVs. Al final, main() crea nbformat.v4.new\_notebook() con metadata kernelspec python3 y escribe el JSON en docs/manual.ipynb con codificación utf-8.
-
-\paragraph{Fortalezas}
-\begin{itemize}
-  \item Estructura clara y reproducible: 49 celdas en 14 secciones numeradas, con markdown explicativo de cada hallazgo, incluyendo citas textuales del director y caveats metodológicos (Emérito vitalicio, diversidad solo capturada desde 2021, comparación DANE vs población con educación superior).
-  \item Reutiliza el pipeline moderno (ingesta, Transformacion, analisis.*) en las celdas en lugar de duplicar lógica de análisis, lo que mantiene coherencia con scripts/sprint*.py.
-  \item Documenta explícitamente la decisión metodológica de tratamiento de atípicos (eliminación sobre imputación) con justificación cuantitativa, y ofrece la alternativa imputar\_mediana aunque no se aplique por defecto.
-  \item El notebook generado es versionable y el script es idempotente (siempre escribe el mismo manual.ipynb desde cero).
-  \item El notebook existente en el clon coincide con lo que el script genera: 49 celdas (23 markdown + 26 código), mismo título UTF-8 correcto y mismas celdas clave (carga, subprocess, matrices) --- verificado byte a byte en la sección relevante.
-\end{itemize}
-
-\paragraph{Debilidades}
-\begin{itemize}
-  \item Cifras hardcodeadas en markdown (22 atípicos de edad, 77.237 filas, 51\% Bogotá+Antioquia, 242 investigadores Antioquia$\rightarrow$Bogotá, retención del 92\%) que nunca se recalculan; ya hay discrepancia real: el docstring de src/analisis/calidad.py dice 'diez registros' y '0.013\%', mientras el manual dice 22 y 0,03\%.
-  \item El script asume el dataset completo de 6 convocatorias (77.237 filas), pero el clon solo dispone del XLSX de respaldo datos/tarea\_join/investigadores\_consolidado.xlsx con 3 convocatorias (2017, 2019, 2021) y 50.891 filas, por lo que las cifras regeneradas no coincidirían con el texto (p. ej. 'Cinco diagramas' de Sankey solo podrían ser 2 pares).
-  \item No declara dependencias del script ni del notebook: nbformat (necesario para ejecutar el script), seaborn e IPython (importados por las celdas) no están en requirements.txt.
-  \item Depende de subprocess con 'python3' hardcodeado en 4 celdas, lo que lo hace no portable a Windows.
-  \item Rutas relativas en IFrame ("../artifacts/...") dependen del cwd del kernel de Jupyter; frágiles si el notebook se abre desde otro directorio.
-  \item No valida que los CSV leídos existan ni que los subprocess tengan éxito con mensajes claros (check=True lanza excepción genérica).
-\end{itemize}
-
-\paragraph{Mejoras propuestas}
-\begin{itemize}
-  \item Corregir la celda de matrices: matrices\_todos\_periodos() retorna dict de tuplas (conteos, probs); usar m[0] o cambiar la función para retornar dict con claves 'conteos'/'probabilidades'.
-  \item Reemplazar "python3" por sys.executable (o "python") en los subprocess.run para portabilidad a Windows.
-  \item Agregar nbformat, seaborn e IPython a requirements.txt.
-  \item Recalcular cifras clave en celdas (n\_atipicos, top departamentos, flujos) y compararlas con asserts contra los valores del texto, o generar el markdown de hallazgos dinámicamente.
-  \item Documentar que el XLSX de respaldo cubre solo 3 convocatorias y que las secciones 11-13 requieren datos/raw/produccion\_grupos.csv; añadir try/except en la carga de producción con mensaje de acción clara.
-  \item Reemplazar subprocess por llamadas directas a funciones de src/analisis dentro del notebook (más robusto y auditable), o usar rutas basadas en ROOT en lugar de rutas relativas en IFrame.
-\end{itemize}
-
-\paragraph{Ejecutabilidad}
-El script en sí (python scripts/generar\_manual.py) es ejecutable tal cual en el clon siempre que nbformat esté instalado (no está en requirements.txt, aunque probablemente sí en .venv por Jupyter); escribe docs/manual.ipynb y no requiere datos. El notebook generado NO es ejecutable de punta a punta en el clon: (1) la celda de carga llama cargar\_produccion(), que lanza FileNotFoundError porque datos/raw/produccion\_grupos.csv está ausente (gitignored), rompiendo las secciones 11-13; (2) las 4 celdas con subprocess.run(["python3", ...]) fallan en Windows (python3 no es ejecutable estándar; sería python o py); (3) la celda de matrices accede m["conteos"] sobre tuplas y lanza TypeError; (4) los IFrame usan rutas relativas a artifacts/ que dependen del cwd. Los CSV de evidencias/ y los HTML de artifacts/sprint6\_sankey/ existen (generados previamente con el dataset completo), por lo que las celdas de solo-lectura (IFrame, read\_csv) funcionarían si las anteriores no fallaran.
-
-\paragraph{¿Produce lo esperado?}
-Sí genera docs/manual.ipynb con 49 celdas (23 markdown + 26 código) y metadata kernelspec python3 / language\_info 3.11. El notebook existente en el clon coincide con lo que el script generaría: misma estructura (49 celdas), mismo título (em-dash UTF-8 correcto, sin BOM) y las mismas celdas clave (carga de datasets, subprocess con python3, IFrame y la celda bugueada con m["conteos"]); el notebook no tiene outputs ni execution\_count, es decir, nunca fue ejecutado. El notebook resultante NO es totalmente ejecutable: además del TypeError de m["conteos"] y del FileNotFoundError de cargar\_produccion(), usa import seaborn e IPython.display sin declarar dependencias y rutas relativas frágiles; las secciones 1-2 y 5-6 (solo inv, sin producción) serían las únicas viables de forma inmediata con el XLSX de respaldo.
-
-\begin{tcolorbox}[riesgo]
-\textbf{Bugs / problemas detectados:}
-\begin{itemize}
-  \item Línea 197 (celda 'Trayectoria longitudinal'): matrices\_todos\_periodos() (src/analisis/longitudinal.py:164-179) retorna \{periodo: (conteos\_df, probs\_df)\}, pero la celda hace m["conteos"] $\rightarrow$ TypeError: tuple indices must be integers or slices, not str en runtime; el notebook existente contiene el mismo bug.
-  \item Líneas 213, 318, 357 y 509: subprocess.run(["python3", "scripts/sprint6\_*.py"], ...) --- 'python3' no existe en Windows (el clon vive en Windows); falla con FileNotFoundError. Debería ser sys.executable o 'python'.
-  \item Celda de carga (líneas 107-117): prod = normalizar\_produccion(cargar\_produccion()) lanza FileNotFoundError en el clon porque datos/raw/produccion\_grupos.csv no existe; rompe secciones 11, 12 y 13.
-  \item Línea 136-140 vs src/analisis/calidad.py:1-26: el manual afirma '22 registros con edad superior a 100 años' y '0,03\%', pero el módulo de calidad documenta 'diez registros' y '0.013\%' --- cifras contradictorias sin recalcular.
-  \item Líneas 44-47 de la portada: dice 'los doce hallazgos' pero enumera 14 secciones numeradas (1-14) --- incoherencia menor de numeración.
-  \item requirements.txt no incluye nbformat (necesario para ejecutar el script), ni seaborn ni IPython (importados por celdas del notebook).
-  \item Celda setup (líneas 89-94): ROOT = pathlib.Path.cwd() depende del directorio desde donde se lance el kernel; el fallback a ROOT.parent solo cubre un nivel, frágil en Jupyter Lab/VS Code con cwd distinto.
-\end{itemize}
-\end{tcolorbox}
-
-\paragraph{Recomendación de auditoría}
-\textbf{mejorar --- El script cumple bien su rol documental (estructura clara, reuso de src/, notebook reproducible y coincidente con el del clon), pero no es ejecutable de punta a punta en el estado actual del repositorio: hay un bug de API real (m["conteos"]), dependencia de un CSV de producción ausente, subprocess no portables a Windows y cifras hardcodeadas que ya divergen del código de calidad. Se recomienda una mejora enfocada: corregir la celda de matrices, usar sys.executable, declarar dependencias y recargar/validar las cifras --- sin necesidad de refactorizar la arquitectura del script.}
 
 \medskip
 \hrule
@@ -2775,6 +3530,40 @@ La deduplicación con jerarquía es una decisión válida para análisis a nivel
 
 \paragraph{Recomendación de auditoría}
 \textbf{Mantener como referencia del proceso de limpieza y deduplicación. No migrar: la limpieza moderna está en src/ingesta/minciencias.py y src/analisis/calidad.py; si se necesita la base persona-nivel, reimplementar con política de año explícita, desempate determinista y registro de decisiones de calidad.}
+
+\medskip
+\hrule
+
+\subsection{Otros archivos}
+\noindent Archivos: 1.
+
+\subsubsection{src/\_\_init\_\_.py}
+\textbf{Rol:} ingesta · \textbf{Líneas:} 2
+
+\paragraph{Descripción funcional}
+Marcador de paquete Python para src/. Convierte la carpeta src/ en un paquete importable (los módulos se importan como 'from ingesta import ...' vía sys.path en los scripts).
+
+\paragraph{Análisis de la lógica}
+Sin lógica: archivo vacío/de marcador (2 líneas).
+
+\paragraph{Fortalezas}
+\begin{itemize}
+  \item Correcto por convención: permite imports del paquete.
+\end{itemize}
+
+\paragraph{Debilidades}
+\begin{itemize}
+  \item Ninguna relevante; es boilerplate estándar.
+\end{itemize}
+
+\paragraph{Ejecutabilidad}
+N/A (marcador de paquete).
+
+\paragraph{¿Produce lo esperado?}
+N/A.
+
+\paragraph{Recomendación de auditoría}
+\textbf{mantener --- estándar de Python.}
 
 \medskip
 \hrule

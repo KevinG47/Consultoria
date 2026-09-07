@@ -1,0 +1,668 @@
+
+===== PAGINA 1 =====
+CONSULTORÍA ESTADÍSTICA · USTA 2026-II · PRIMERA ENTREGA
+Cómo se califica su anteproyecto
+En esta primera entrega no evalúo resultados: evalúo si entendieron el problema. Qué pasa hoy,
+qué se ha hecho antes, qué se proponen lograr y si cabe en el semestre. Esta es la rúbrica
+completa, sin nada oculto. Léanla al empezar, no la noche anterior — está escrita para guiarlos
+mientras redactan.
+8 criterios
+4 niveles
+Escala 0,0 – 5,0
+Documento 40 % · Sustentación 60 %
+La sustentación es individual
+
+Cómo leer esta rúbrica
+1 AL ELEGIR EL TEMA
+Lean la matriz completa antes de comprometerse con un problema. Lo que decidan esta semana —qué problema, con qué datos, con qué alcance— se califica en D1, D4
+y D5, y ya no se rehace después.
+2 MIENTRAS REDACTAN
+Úsenla como lista de pendientes. Cada vez que la columna «Ejemplar» pida algo que no tienen —una cifra de línea base, un enfoque contrastado, un objetivo verificable—
+eso es trabajo por hacer, no un reproche futuro.
+3 ANTES DE ENTREGAR
+Califíquense ustedes mismos con la matriz y con la calculadora de más abajo. Si no logran ubicarse en un nivel, es que falta evidencia — y la evidencia que ustedes no
+encuentran, yo tampoco.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+1/15
+
+
+===== PAGINA 2 =====
+Los cuatro niveles — y la ausencia de entrega
+Nivel
+Logro
+Nota
+Qué significa
+Ejemplar
+100 %
+5,0
+Nivel profesional. El anteproyecto podría presentarse a una convocatoria tal como está.
+Competente
+80 %
+4,0
+Cumplieron lo esperado. Vacíos menores y acotados.
+En desarrollo
+60 %
+3,0
+Aprueba al límite. Está escrito, pero no se ve el criterio detrás de lo escrito.
+Insuficiente
+40 %
+2,0
+Hay intento, sin logro verificable.
+No pertinente
+0 %
+0,0
+No se entregó, o lo entregado no corresponde a lo pedido. No es columna de la matriz: es la ausencia de ella.
+ Fíjense dónde queda el 3,0: en «En desarrollo», que es el nivel de quien escribió las secciones que se le pidieron pero no puede sostener por qué escribió eso y no otra
+cosa. Aprobar no es la meta; es el piso.
+ Si dudan entre dos niveles, están en el de abajo. Es la misma regla con la que yo califico, así que su autoevaluación y mi calificación deberían parecerse bastante.
+
+Cuánto pesa cada cosa
+Criterio
+Peso
+Ámbito
+Documento escrito · 40 %
+D1 Problema, contexto y estado actual 
+12 %
+equipo
+D2 Estado del arte y rigor bibliográfico
+9 %
+equipo
+D3 Objetivos, general y específicos 
+8 %
+equipo
+D4 Datos y aproximación metodológica preliminar
+6 %
+equipo
+D5 Alcance, viabilidad y plan de trabajo
+5 %
+equipo
+Sustentación oral · 60 %
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+2/15
+
+
+===== PAGINA 3 =====
+Criterio
+Peso
+Ámbito
+S1 Dominio del problema y defensa
+28 %
+individual
+S2 Claridad y estructura de la exposición
+18 %
+equipo
+S3 Trabajo en equipo, ética y uso declarado de IA
+14 %
+equipo
+Total
+100 %
+Los criterios marcados con candado son bloqueantes: véase el aviso de la derecha.
+LA FÓRMULA
+Nota ponderada = Σ (logro × peso ) × 5
+Nota individual = mín ( nota ponderada , nota de S1 + 1,0 )
+Puerta de aprobación
+D1 (problema) y D3 (objetivos) son bloqueantes. Si cualquiera de los dos queda en Insuficiente, el anteproyecto se devuelve para corrección aunque la nota global pase de 3,0: sin problema claro y sin
+objetivos verificables no hay proyecto que continuar.
+Por qué la sustentación pesa 60 %
+Un anteproyecto se puede escribir sin haberlo entendido. Un buen documento demuestra que alguien del equipo entendió el problema; no demuestra que lo
+entendieron todos, ni que lo entendieron ustedes.
+La sustentación es donde eso se verifica, y por eso pesa más que el documento. No es una exposición de lo que escribieron: es una conversación sobre las decisiones que
+tomaron. Por qué ese problema y no otro, por qué esos objetivos, qué encontraron en la literatura que los hizo cambiar de idea.
+Por qué existe el techo de autoría
+El documento se califica una vez para todo el equipo. Sin un ajuste, quien no participó recibiría la misma nota que quien lo escribió. El techo lo corrige: su nota
+individual no puede superar en más de 1,0 la nota que obtengan en S1, el criterio de dominio y defensa.
+i
+i
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+3/15
+
+
+===== PAGINA 4 =====
+Si en S1 obtienen…
+Su nota no puede pasar de…
+Ejemplar (5,0)
+sin tope
+Competente (4,0)
+5,0
+En desarrollo (3,0)
+4,0
+Insuficiente (2,0)
+3,0
+No se presenta (0,0)
+1,0
+Dicho al derecho: no repartan el anteproyecto en pedazos. Cada quien tiene que poder defender el conjunto.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+4/15
+
+
+===== PAGINA 5 =====
+
+La matriz completa
+Ocho criterios, cuatro niveles. La primera columna se queda fija al desplazarse a la derecha, así que no van a perder de vista de
+qué criterio están leyendo. En pantalla estrecha, deslicen la tabla horizontalmente.
+Criterio
+Ejemplar · 100 %
+Competente · 80 %
+En desarrollo · 60 %
+Insuficiente · 40 %
+D1 · 12 %
+Problema, contexto y
+estado actual
+Qué pasa hoy, a quién le pasa,
+con qué frecuencia y qué cuesta
+que siga pasando.
+BLOQUEANTE
+Delimita el problema con actor, alcance,
+frecuencia y consecuencia explícitos, y lo
+distingue de sus síntomas. Cuantifica el estado
+actual con al menos una cifra propia —no
+tomada de un informe general— sobre cómo se
+resuelve hoy: cuántos casos, cuánto tiempo, qué
+tasa de error, qué costo. Explica qué ocurre si
+nadie hace nada. El problema queda formulado
+como una pregunta estadística respondible, no
+como un deseo.
+Problema acotado, con actor y contexto claros,
+distinguible de sus síntomas. Describe cómo se
+resuelve hoy de forma cualitativa, sin cifras
+propias. La pregunta que se responderá se
+enuncia, aunque su formulación estadística
+todavía sea imprecisa.
+Enuncia el problema en términos generales
+(«mejorar la gestión», «analizar el
+comportamiento de X»). No distingue cómo se
+resuelve hoy de cómo debería resolverse. El
+contexto se afirma con generalidades y citas de
+segunda mano.
+El problema hay que inferirlo del título porque
+no se declara, o se confunde con la técnica que
+se quiere usar («el problema es que queremos
+aplicar series de tiempo»). Sin actor y sin
+consecuencia.
+D2 · 9 %
+Estado del arte y rigor
+bibliográfico
+Qué se ha hecho antes, quién lo
+hizo, en qué difieren esos
+enfoques y qué queda sin
+resolver.
+Sintetiza ≥ 8 fuentes recientes y verificables, las
+organiza por enfoque —no por autor—,
+contrasta al menos dos aproximaciones
+señalando en qué difieren sus supuestos, y
+declara explícitamente el vacío que su proyecto
+atiende. Distingue lo que se ha hecho en el
+mundo de lo que se ha hecho en Colombia.
+Citación APA 7 sin errores.
+Revisa ≥ 6 fuentes verificables y pertinentes, las
+agrupa temáticamente y conecta la revisión con
+el problema propio, aunque el vacío quede
+implícito. Citación APA 7 con errores menores de
+formato que no impiden rastrear la fuente.
+Lista fuentes pertinentes y las resume una por
+una, sin contrastarlas ni derivar de ellas ninguna
+consecuencia para su proyecto. La revisión
+podría pertenecer a cualquier otro trabajo del
+mismo tema.
+Fuentes escasas, no pertinentes o
+desactualizadas sin justificar; citación que no
+permite rastrear el original; o al menos una
+referencia inexistente, inaccesible o que no
+dice lo que se afirma que dice.
+D3 · 8 %
+Objetivos, general y
+específicos
+Qué se proponen lograr, en qué
+orden, y cómo sabrán que lo
+lograron.
+BLOQUEANTE
+Un objetivo general que responde exactamente
+al problema planteado en D1 —ni más ancho ni
+más angosto— y entre tres y cinco específicos
+que, cumplidos todos, lo agotan sin solaparse.
+Cada específico empieza por un verbo
+verificable y deja ver con qué evidencia se
+declarará cumplido. La secuencia entre ellos es
+visible: cada uno habilita al siguiente.
+Objetivo general coherente con el problema y
+específicos verificables que lo cubren. Algún
+específico se solapa con otro, o uno describe
+una actividad («revisar la literatura») en vez de
+un logro, pero el conjunto es sólido.
+Los objetivos están escritos y son legibles, pero
+son más anchos que el problema o más
+angostos que él. Varios describen actividades
+del cronograma en vez de resultados. No se sabe
+con qué evidencia se declararían cumplidos.
+Objetivos genéricos, intercambiables con los de
+cualquier otro proyecto, o que no se derivan del
+problema declarado. Verbos no verificables:
+«conocer», «entender», «profundizar en».
+D4 · 6 %
+Datos y aproximación
+metodológica
+preliminar
+Con qué datos van a trabajar, si
+de verdad existen y por dónde
+piensan entrarle.
+Identifica las fuentes con procedencia, periodo,
+unidad de observación, volumen aproximado y
+condiciones de acceso o licencia. Nombra las
+variables que responderían a cada objetivo
+específico. Propone una ruta metodológica con
+al menos una alternativa considerada y
+descartada con razón. Declara qué haría si el
+dato no llega.
+Fuentes identificadas con procedencia y acceso,
+variables relevantes nombradas y una ruta
+metodológica pertinente al problema, sin
+alternativas contrastadas. Los riesgos del dato se
+mencionan.
+Se dice de dónde saldrían los datos, pero sin
+verificar que existen ni cómo se accede a ellos.
+La metodología se enuncia como nombre de
+técnica («haremos un modelo predictivo») sin
+ligarla a los objetivos.
+No se sabe con qué datos se trabajará, o se da
+por hecho un acceso que nadie confirmó. La
+técnica se eligió antes que el problema y ahora
+se busca un problema que la justifique.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+5/15
+
+
+===== PAGINA 6 =====
+Criterio
+Ejemplar · 100 %
+Competente · 80 %
+En desarrollo · 60 %
+Insuficiente · 40 %
+D5 · 5 %
+Alcance, viabilidad y
+plan de trabajo
+Qué sí y qué no va a hacer el
+proyecto, en cuánto tiempo y con
+qué margen para lo que salga
+mal.
+Declara explícitamente qué hará y qué no hará
+el proyecto, con la razón de cada exclusión. El
+cronograma reparte el semestre en hitos con
+entregables verificables y deja holgura para lo
+que salga mal. Identifica dos o tres riesgos
+concretos con su plan de contingencia. El
+alcance es coherente con las horas reales de las
+que dispone el equipo.
+Alcance delimitado con exclusiones declaradas y
+cronograma por hitos coherente con el
+semestre. Los riesgos se mencionan, sin
+contingencia asociada.
+Hay cronograma, pero es una lista de semanas
+sin hitos verificables. El alcance se infiere de los
+objetivos porque no se declara aparte. No se
+dice qué queda fuera.
+El alcance es desproporcionado para el
+semestre —o tan pequeño que no hay proyecto
+—. Sin cronograma, o con uno que no distingue
+unas semanas de otras.
+S1 · 28 % · INDIVIDUAL
+Dominio del problema y
+defensa
+Si cada integrante puede
+sostener el conjunto del
+anteproyecto, no solo la parte
+que redactó.
+Responde sobre cualquier parte del
+anteproyecto, no solo la que redactó. Explica por
+qué tomaron cada decisión y qué alternativa
+descartaron. Ante una objeción, distingue lo que
+puede defender de lo que tiene que revisar, y lo
+dice sin rodeos. Usa la literatura revisada para
+sostener sus respuestas, recordando de dónde
+viene cada argumento.
+Domina el conjunto del anteproyecto y sostiene
+las decisiones principales. Ante una objeción
+imprevista titubea, pero razona en voz alta y
+llega a una respuesta defendible. Conoce las
+fuentes citadas aunque no recuerde los detalles.
+Domina la parte que redactó y responde de oído
+sobre el resto. Repite lo que dice el documento
+sin poder ir más allá cuando se le pregunta por
+qué. Ante una objeción, cede sin argumentar.
+No puede responder fuera de lo que expuso, o
+remite sistemáticamente a su compañero.
+Desconoce las fuentes que aparecen en su
+propio estado del arte.
+S2 · 18 %
+Claridad y estructura de
+la exposición
+Si en diez minutos alguien que
+no leyó el documento entiende el
+problema y lo que van a hacer.
+En diez minutos queda claro el problema, lo que
+ya se sabe, lo que van a hacer y por qué cabe en
+el semestre. El hilo es visible y el orden está
+pensado para quien escucha, no para quien
+escribió. Las diapositivas apoyan; no se leen. Se
+ajustan al tiempo sin recortar el final.
+La exposición cubre todo lo pedido y se
+entiende, con algún desbalance de tiempo o
+una sección resuelta más rápido de lo que
+merecía. Las diapositivas están cargadas pero no
+se leen textualmente.
+Se cubre el contenido, pero el hilo hay que
+reconstruirlo. Se lee de las diapositivas en varios
+tramos. El tiempo se descuadra y el cierre queda
+comprimido.
+Lectura literal de las diapositivas o del
+documento. La exposición no permite entender
+el problema sin haber leído antes el
+anteproyecto.
+S3 · 14 %
+Trabajo en equipo, ética
+y uso declarado de IA
+Cómo se repartieron el trabajo,
+qué riesgos éticos ven y qué
+papel tuvo la IA en lo que
+entregan.
+El reparto del trabajo se declara y se nota que
+todos leyeron el conjunto. La declaración de uso
+de IA es específica y verificable: en qué se usó,
+cómo se verificó y qué se descartó por estar mal,
+con al menos un caso concreto. Identifica los
+riesgos éticos del proyecto —datos personales,
+sesgo, uso indebido del resultado— y qué hará al
+respecto.
+Reparto declarado y equilibrado. La declaración
+de uso de IA dice en qué se usó y cómo se
+verificó, sin ejemplos concretos de lo descartado.
+Los riesgos éticos se identifican, sin decidir qué
+hacer con ellos.
+El reparto se menciona en general. La
+declaración de IA es genérica («usamos IA para
+redactar»). La ética se enuncia como párrafo de
+cumplimiento, sin ligarla a este proyecto en
+particular.
+No hay declaración de uso de IA, o es falsa a la
+luz de lo que muestra el documento. El trabajo
+lo hizo una parte del equipo y se presenta como
+colectivo. Se manejan datos personales sin
+mención del marco legal.
+Referencias inventadas
+Verifico las referencias del estado del arte. Una sola referencia inexistente, o que no diga lo que ustedes afirman que dice, deja D2 en «Insuficiente» sin importar lo bien escrito que esté el resto.
+No es una sanción moral: una revisión que no se puede rastrear no es una revisión. Esto aplica igual si la fuente la sugirió una IA o si la copiaron de otro trabajo: la responsabilidad de abrir el artículo y
+comprobarlo es de ustedes.
+
+Dos modalidades, una sola rúbrica
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+6/15
+
+
+===== PAGINA 7 =====
+Algunos equipos trabajan con una organización real que les planteó el problema; otros parten de datos abiertos y eligen el
+problema por su cuenta. Los criterios y los niveles son los mismos para todos — lo único que cambia es qué cuenta como
+evidencia en D1 y D4. Elijan su modalidad y la rúbrica se ajusta:
+🏢  Consultoría con organización real
+Hay una contraparte identificable con nombre, cargo y área.
+El problema lo declaró la organización; ustedes lo tradujeron a un problema estadístico.
+Se adjunta evidencia del contacto: acta, correo o resumen de la reunión con fecha.
+Las restricciones de acceso a los datos son reales y se declaran (qué hay, qué no, cuándo llega).
+📊  Proyecto con datos abiertos
+No hay cliente, así que la pertinencia hay que argumentarla: a quién le importaría este resultado y por qué.
+Se declara la procedencia del dato: entidad, periodo, licencia y enlace directo.
+Se muestra que no es un ejercicio ya resuelto y publicado con ese mismo dataset.
+Las limitaciones del dato abierto se asumen explícitamente, no se ocultan.
+ Ninguna de las dos vías es más fácil. La de consultoría gana un problema real pero hereda las restricciones de la organización; la de datos abiertos gana libertad pero
+tiene que construir la justificación que la otra recibe gratis.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+7/15
+
+
+===== PAGINA 8 =====
+
+Qué mira cada criterio
+La matriz dice cómo se gradúa cada criterio. Esto dice qué se espera y —lo más útil— cuál es la evidencia mínima para
+aprobar. Si no tienen ni siquiera eso, todavía están a tiempo.
+D1 Problema, contexto y estado actual 
+12 %
+Qué se espera: un problema delimitado con actor, alcance y consecuencia, distinguido de sus síntomas, y una descripción del estado actual que no se limite a afirmar
+que el problema existe.
+Evidencia mínima para aprobar: el problema está enunciado y se entiende de qué trata, aunque el estado actual se describa con generalidades y sin cifras.
+🏢 Consultoría real: Acta, correo o resumen fechado del contacto con la organización, y el problema tal como lo formuló la contraparte antes de que ustedes lo tradujeran.
+📊 Datos abiertos: Argumento explícito de a quién le importaría este resultado y por qué, sostenido con al menos una fuente que documente la magnitud del problema en Colombia.
+QUÉ MIRO EXACTAMENTE
+Actor afectado, alcance y frecuencia declarados
+Estado actual: cómo se resuelve hoy, con evidencia
+Consecuencia de no intervenir
+Traducción a una pregunta estadística respondible
+Dónde se pierde: El problema se define por la técnica que quieren usar, no por lo que le pasa a alguien.
+D2 Estado del arte y rigor bibliográfico
+9 %
+Qué se espera: una revisión organizada por enfoques que contraste al menos dos aproximaciones y termine señalando el vacío que su proyecto atiende. Toda fuente
+debe poder abrirse.
+Evidencia mínima para aprobar: fuentes pertinentes, verificables y correctamente citadas, aunque estén resumidas una por una sin contrastarse entre sí.
+QUÉ MIRO EXACTAMENTE
+Cantidad y pertinencia de las fuentes
+Organización por enfoque, no por autor
+Contraste explícito entre aproximaciones
+Vacío declarado y ligado al problema propio
+Citación APA 7 rastreable
+Dónde se pierde: Referencias que no se pueden abrir, o que al abrirlas no dicen lo que el texto afirma.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+8/15
+
+
+===== PAGINA 9 =====
+D3 Objetivos, general y específicos 
+8 %
+Qué se espera: un general que responda exactamente al problema de D1, y específicos verificables que lo agoten sin solaparse. Cada uno debe dejar ver con qué
+evidencia se declarará cumplido.
+Evidencia mínima para aprobar: los objetivos están escritos, son legibles y guardan relación con el problema, aunque describan actividades en vez de logros.
+QUÉ MIRO EXACTAMENTE
+General que responde al problema, sin desbordarlo
+Entre 3 y 5 específicos que lo agotan
+Verbos verificables y evidencia de cumplimiento
+Sin solapamiento entre específicos
+Dónde se pierde: Objetivos que servirían igual para otro proyecto de otro equipo.
+D4 Datos y aproximación metodológica preliminar
+6 %
+Qué se espera: fuentes con procedencia, periodo, unidad de observación y condiciones de acceso, y una ruta metodológica ligada a los objetivos, no una técnica elegida
+de antemano.
+Evidencia mínima para aprobar: se dice de dónde saldrían los datos y qué técnica se usaría, aunque el acceso no esté verificado.
+🏢 Consultoría real: Constancia de qué datos entregará la organización, en qué formato y cuándo, junto con lo que no entregará y por qué.
+📊 Datos abiertos: Enlace directo al conjunto de datos, entidad responsable, periodo cubierto, licencia de uso, y por qué este problema no está ya resuelto y publicado con esos mismos
+datos.
+QUÉ MIRO EXACTAMENTE
+Procedencia, periodo y unidad de observación
+Condiciones de acceso o licencia verificadas
+Variables ligadas a cada objetivo específico
+Ruta metodológica con alternativa descartada
+Plan si el dato no llega
+Dónde se pierde: Un dataset que nadie del equipo ha abierto todavía.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+9/15
+
+
+===== PAGINA 10 =====
+D5 Alcance, viabilidad y plan de trabajo
+5 %
+Qué se espera: exclusiones declaradas con su razón, un cronograma por hitos verificables con holgura, y dos o tres riesgos con contingencia.
+Evidencia mínima para aprobar: hay cronograma y se entiende el tamaño del proyecto, aunque no se declare qué queda fuera.
+QUÉ MIRO EXACTAMENTE
+Qué sí y qué no, con la razón de cada exclusión
+Cronograma por hitos con entregables verificables
+Holgura para imprevistos
+Riesgos concretos con contingencia
+Dónde se pierde: Un cronograma donde todas las semanas dicen lo mismo.
+S1 Dominio del problema y defensa
+28 %
+Qué se espera: que respondan sobre cualquier sección, expliquen por qué decidieron lo que decidieron y distingan lo que pueden defender de lo que tienen que revisar.
+Evidencia mínima para aprobar: dominan el conjunto lo suficiente para responder sin remitir al compañero, aunque repitan lo que dice el documento.
+QUÉ MIRO EXACTAMENTE
+Responde sobre secciones que no redactó
+Explica el porqué de cada decisión
+Distingue lo defendible de lo revisable
+Sostiene sus respuestas con la literatura revisada
+Dónde se pierde: «Esa parte la hizo mi compañera».
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+10/15
+
+
+===== PAGINA 11 =====
+S2 Claridad y estructura de la exposición
+18 %
+Qué se espera: un hilo pensado para quien escucha, diapositivas que apoyen en vez de leerse, y ajuste al tiempo sin comprimir el cierre.
+Evidencia mínima para aprobar: la exposición cubre lo pedido y se entiende, aunque el hilo haya que reconstruirlo y el tiempo se descuadre.
+QUÉ MIRO EXACTAMENTE
+Hilo visible y orden pensado para quien escucha
+Diapositivas que apoyan, no que se leen
+Ajuste al tiempo sin comprimir el cierre
+Reparto de la palabra entre integrantes
+Dónde se pierde: Diapositivas con párrafos completos leídos en voz alta.
+S3 Trabajo en equipo, ética y uso declarado de IA
+14 %
+Qué se espera: un reparto declarado donde todos leyeron el conjunto, una declaración de IA específica y verificable, y riesgos éticos propios de este proyecto.
+Evidencia mínima para aprobar: el reparto se declara y hay una declaración de uso de IA, aunque sea genérica y la ética se enuncie sin ligarla al proyecto.
+QUÉ MIRO EXACTAMENTE
+Reparto declarado y verificable en la sustentación
+Declaración de IA: en qué, cómo se verificó, qué se descartó
+Riesgos éticos propios del proyecto
+Tratamiento de datos personales y marco legal
+Dónde se pierde: Una declaración de IA que dice «no usamos» en un texto que se lee como generado.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+11/15
+
+
+===== PAGINA 12 =====
+
+Cómo transcurre la sustentación
+1 · EXPOSICIÓN · 10 MIN
+El equipo presenta el anteproyecto. No lean las diapositivas: cuenten el problema. Diez minutos alcanzan para el problema, lo que ya se ha hecho, sus objetivos y por qué
+creen que cabe en el semestre.
+2 · PREGUNTAS · 10 MIN
+Pregunto a cada integrante por separado, y no necesariamente sobre la parte que expuso. Aquí es donde se califica S1, que es individual y es el que fija el techo de su
+nota.
+3 · VEREDICTO DE LA PUERTA
+Al cierre les digo si el proyecto sigue como está o se devuelve por D1 o D3. Devolver no es reprobar: es evitar que dediquen el resto del semestre a un problema mal
+planteado.
+El reparto no se admite
+«Ella se encargó del estado del arte y yo de los objetivos» no es una respuesta válida en la ronda de preguntas. Si alguien no puede hablar del conjunto, el techo de autoría hará su trabajo. Prepárense
+juntos.
+Prepárense para estas preguntas
+No son un banco cerrado, pero sí el tipo de pregunta que hago. Si las pueden responder los dos sin mirar el documento, están listos.
+D1 Problema, contexto y estado actual
+¿Quién sufre este problema y desde cuándo?
+¿Cómo se está resolviendo hoy, sin ustedes?
+¿Qué pasa si nadie hace nada?
+D2 Estado del arte y rigor bibliográfico
+¿Cuál de las fuentes que citaron los hizo cambiar de idea, y en qué?
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+12/15
+
+
+===== PAGINA 13 =====
+¿Qué hicieron distinto los dos enfoques que contrastaron?
+¿Por qué su proyecto no es una repetición de lo que ya leyeron?
+D3 Objetivos, general y específicos
+Si cumplen los tres específicos, ¿ya resolvieron el general? Muéstrenmelo.
+¿Con qué evidencia van a declarar cumplido el segundo objetivo?
+¿Cuál de sus objetivos es en realidad una actividad?
+D4 Datos y aproximación metodológica preliminar
+¿Alguien del equipo ya abrió el archivo? ¿Cuántas filas tiene?
+¿Qué variable responde a su primer objetivo específico?
+¿Qué hacen si en octubre resulta que el dato no llega?
+D5 Alcance, viabilidad y plan de trabajo
+¿Qué decidieron dejar por fuera y por qué?
+¿Qué es lo más probable que les salga mal, y qué harían?
+¿Cuántas horas por semana le puede dedicar cada uno de verdad?
+S1 Dominio del problema y defensa
+Explíquemelo usted, que no redactó esa sección.
+¿Qué alternativa consideraron y por qué la descartaron?
+Si le digo que su tercer objetivo sobra, ¿qué me responde?
+S2 Claridad y estructura de la exposición
+Resúmame el problema en dos frases, sin diapositivas.
+¿Por qué empezaron por ahí y no por los datos?
+S3 Trabajo en equipo, ética y uso declarado de IA
+¿Qué les devolvió la IA que ustedes descartaron porque estaba mal?
+¿Qué riesgo ético tiene este proyecto, no los proyectos en general?
+¿Quién escribió qué, y quién revisó qué?
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+13/15
+
+
+===== PAGINA 14 =====
+
+Qué se entrega
+El documento
+Entre 6 y 10 páginas sin contar portada ni referencias, en PDF, citación APA 7. Estructura sugerida —y el criterio que evalúa cada parte:
+Sección
+Extensión
+Criterio
+Planteamiento del problema y contexto
+1½ – 2 págs.
+D1
+Estado del arte / antecedentes
+2 – 3 págs.
+D2
+Objetivos (general y específicos)
+½ pág.
+D3
+Datos disponibles y método preliminar
+1 – 2 págs.
+D4
+Alcance, riesgos y cronograma
+1 pág.
+D5
+Declaración de uso de IA y reparto del trabajo
+½ pág.
+S3
+Referencias (APA 7)
+no cuenta
+D2
+Uso de IA: permitido, declarado
+Pueden usar herramientas de IA generativa. Lo que pido es media página diciendo en qué la usaron (redacción, búsqueda, traducción, código), cómo verificaron lo que les devolvió, y qué
+descartaron porque estaba mal. Una declaración honesta que reconoce un error corregido vale más en S3 que un «no usamos IA» poco creíble. No declararla, o declararla en falso, deja S3 en
+Insuficiente.
+Antes de subirlo
+0/8 listos
+ Lo que falte aquí no lo puedo calificar, y un criterio sin evidencia es un criterio en No pertinente (0,0).
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+14/15
+
+
+===== PAGINA 15 =====
+Universidad Santo Tomás · Consultoría Estadística · 2026-II
+Entrega 1 — Anteproyecto · Experto temático: Javier Mauricio Sierra
+Los criterios y descriptores de esta matriz son idénticos a los del instrumento con que se califica. Si algo de lo que leen aquí no
+coincide con la nota que reciban, tráiganlo a la revisión: la rúbrica manda.
+6/9/26, 19:54
+Rúbrica — Entrega 1 · Anteproyecto
+file:///C:/Users/InfoPersonal/Downloads/Rubrica_Entrega1_Anteproyecto_Estudiantes.html
+15/15

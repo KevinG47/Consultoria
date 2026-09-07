@@ -15,7 +15,7 @@
     "ACOPLAMIENTO ROTO CON Transformacion.py: éste convierte NaN categórico en 'NO REPORTADO', pero diversidad espera 'NO REGISTRA'/'NO DISPONIBLE'; los faltantes reales etiquetados 'NO REPORTADO' no se cuentan como nulos -> cobertura inflada.",
     "Bug metodológico en comparar_dane(): el comentario (línea 78) dice excluir 'NINGUN GRUPO ETNICO' del denominador, pero el código (línea 79) solo excluye 'NO DISPONIBLE'; 'NINGUN GRUPO ETNICO' queda en el denominador y diluye la subrepresentación de las minorías (verificado: comentario vs código).",
     "Comparación 'SÍ' con tilde (línea 121): funciona con los datos actuales porque transformar() pone en mayúsculas 'Sí' -> 'SÍ', pero es frágil ante variantes sin tilde ('Si'/'SI') — el catálogo documenta 'Si'.",
-    "interseccional_genero_etnia() puede lanzar KeyError 'FEMENINO' si algún grupo étnico no tiene mujeres (la columna no existe tras unstack)."
+    "interseccional_genero_etnia() puede lanzar KeyError 'FEMENINO' solo si NINGÚN grupo étnico tiene mujeres (con unstack(fill_value=0) la columna existe si al menos un grupo tiene mujeres); caso límite, crash en runtime."
   ],
   "mejoras": [
     "Que las funciones filtren internamente por ANO_CONVO_INT == 2021 (parametrizado) para hacer la API autónoma.",
@@ -28,7 +28,7 @@
   "produce_esperado": "Sí: evidencias/diversidad_cobertura_por_convocatoria.csv, diversidad_comparacion_dane.csv, diversidad_distribucion_*.csv, diversidad_interseccional_genero_etnia.csv y diversidad_categorias_por_etnia.csv existen, junto con artifacts/sprint4_diversidad/fig01-03.png — consistente con el README (Issue #20, hallazgos 4-6).",
   "bugs": [
     "src/analisis/diversidad.py:78-79: contradicción comentario-código sobre 'NINGUN GRUPO ETNICO' en el denominador de comparar_dane() — diluye la subrepresentación de minorías (verificado por lectura directa).",
-    "src/analisis/diversidad.py:145: d['FEMENINO'] puede lanzar KeyError si el unstack no crea la columna (grupo étnico sin mujeres) — crash en caso límite.",
+    "src/analisis/diversidad.py:145: d['FEMENINO'] puede lanzar KeyError solo si NINGÚN grupo étnico tiene mujeres (con unstack(fill_value=0) la columna no se crea en ese caso) — crash en caso límite (reproducido).",
     "src/analisis/diversidad.py:44-46: los NaN convertidos a 'NO REPORTADO' por Transformacion.py no se cuentan como nulos -> pct_no_registra subestimado y cobertura sobreestimada para registros con faltante real.",
     "src/analisis/diversidad.py:121: comparación 'SÍ' sensible a acentos; no es un bug activo (los datos traen 'Sí' y transformar() lo pone en mayúsculas), pero fallaría si la fuente usara 'Si' sin tilde."
   ],

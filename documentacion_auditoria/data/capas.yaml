@@ -1,0 +1,47 @@
+# =====================================================================
+# Capas arquitectónicas — FUENTE DE VERDAD para el ORDEN de presentación
+# de archivos en TODOS los documentos (maestro y criterios), sin excepción.
+# =====================================================================
+# "orden" define la secuencia canónica de capas.
+# "reglas" son prefijos de ruta (minúsculas, con /) que asignan la capa;
+# se evalúan en el orden de "orden". Cualquier archivo no cubierto cae en
+# "otro" (al final).
+# =====================================================================
+
+orden:
+  - ingesta
+  - transformacion
+  - modelo
+  - analisis
+  - orquestacion
+  - visualizacion
+  - documentacion
+  - eda
+  - testing
+  - legacy
+  - otro
+
+reglas:
+  ingesta:
+    - "src/ingesta/"
+  transformacion:
+    - "src/transformacion"
+  modelo:
+    - "src/modelo/"
+  analisis:
+    - "src/analisis/"
+  orquestacion:
+    - "scripts/"
+  visualizacion:
+    - "streamlit_app.py"
+    - "app/"
+  documentacion:
+    - "docs/"
+    - "scripts/generar_manual.py"
+  eda:
+    - "notebooks/01_eda"
+  testing:
+    - "tests/"
+  legacy:
+    - "notebooks/tarea_"
+    - "notebooks/tarea"   # variante sin guion bajo al inicio
