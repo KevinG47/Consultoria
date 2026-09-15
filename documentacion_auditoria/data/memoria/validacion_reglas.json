@@ -1,0 +1,404 @@
+{
+  "fecha": "2026-09-15T17:00:59",
+  "commit_auditado": "1528939",
+  "grafo": {
+    "nodos": 255,
+    "aristas": 500,
+    "nodos_por_tipo": {
+      "Criterio": 6,
+      "Documento": 13,
+      "DocumentoValidacion": 11,
+      "TerminoGlosario": 19,
+      "Capa": 11,
+      "ArchivoCodigo": 51,
+      "Commit": 133,
+      "Autor": 11
+    },
+    "aristas_por_relacion": {
+      "tiene_documento": 12,
+      "consolidado_en": 6,
+      "verificado_por": 30,
+      "usa_termino": 84,
+      "documenta": 184,
+      "pertenece_a": 51,
+      "tiene_autor": 133
+    }
+  },
+  "rag": {
+    "fecha_construccion": "2026-09-15T16:54:15",
+    "n_fragmentos": 137,
+    "n_documentos": 24,
+    "n_terminos_vocabulario": 38327,
+    "por_coleccion": {
+      "criterio_completo": 24,
+      "criterio_lite": 24,
+      "maestro": 8,
+      "validacion": 81
+    },
+    "palabras_totales": 100707,
+    "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
+    "corpus": [
+      "maestro_auditoria",
+      "objetivo_1",
+      "objetivo_1_lite",
+      "objetivo_2",
+      "objetivo_2_lite",
+      "objetivo_3",
+      "objetivo_3_lite",
+      "objetivo_4",
+      "objetivo_4_lite",
+      "objetivo_5",
+      "objetivo_5_lite",
+      "objetivo_6",
+      "objetivo_6_lite",
+      "validacion_anteproyecto_D.md",
+      "validacion_anteproyecto_S.md",
+      "validacion_cierre_D.md",
+      "validacion_cierre_S.md",
+      "validacion_factica.md",
+      "validacion_final_D.md",
+      "validacion_final_S.md",
+      "validacion_reglas.md",
+      "validacion_rubrica.md",
+      "validacion_sota_cobertura.md",
+      "validacion_sota_referencias.md"
+    ]
+  },
+  "reglas": [
+    {
+      "id": "R1",
+      "descripcion": "Cada criterio tiene documento completo Y LITE",
+      "estado": "PASA",
+      "detalle": "6 criterios revisados; 0 sin el par completo/LITE.",
+      "evidencia": {
+        "criterios": 6,
+        "faltantes": [],
+        "documentos_por_criterio": {
+          "criterio_1": [
+            "maestro_auditoria",
+            "objetivo_1",
+            "objetivo_1_lite"
+          ],
+          "criterio_2": [
+            "maestro_auditoria",
+            "objetivo_2",
+            "objetivo_2_lite"
+          ],
+          "criterio_3": [
+            "maestro_auditoria",
+            "objetivo_3",
+            "objetivo_3_lite"
+          ],
+          "criterio_4": [
+            "maestro_auditoria",
+            "objetivo_4",
+            "objetivo_4_lite"
+          ],
+          "criterio_5": [
+            "maestro_auditoria",
+            "objetivo_5",
+            "objetivo_5_lite"
+          ],
+          "criterio_6": [
+            "maestro_auditoria",
+            "objetivo_6",
+            "objetivo_6_lite"
+          ]
+        }
+      }
+    },
+    {
+      "id": "R2",
+      "descripcion": "Todo documento completo tiene conclusiones registradas",
+      "estado": "PASA",
+      "detalle": "6/6 criterios con conclusiones en YAML y sección 05 presente. Secciones muy breves (<50 palabras): 0.",
+      "evidencia": {
+        "faltantes": [],
+        "muy_breves": []
+      }
+    },
+    {
+      "id": "R3",
+      "descripcion": "Todo documento LITE tiene veredicto resumido",
+      "estado": "FALLA",
+      "detalle": "5/6 LITE con veredicto declarado en objetivos.yaml (lite_veredicto) y sección 05 con contenido; 4 sin la palabra literal 'veredicto'.",
+      "evidencia": {
+        "faltantes": [
+          {
+            "criterio": 3,
+            "yaml_veredicto": false,
+            "hallazgos_yaml": 0,
+            "seccion_05_palabras": 100,
+            "menciona_palabra_veredicto": false
+          }
+        ],
+        "sin_palabra_veredicto": [
+          {
+            "criterio": 1,
+            "yaml_veredicto": true,
+            "hallazgos_yaml": 2,
+            "seccion_05_palabras": 67,
+            "menciona_palabra_veredicto": false
+          },
+          {
+            "criterio": 4,
+            "yaml_veredicto": true,
+            "hallazgos_yaml": 2,
+            "seccion_05_palabras": 78,
+            "menciona_palabra_veredicto": false
+          },
+          {
+            "criterio": 5,
+            "yaml_veredicto": true,
+            "hallazgos_yaml": 2,
+            "seccion_05_palabras": 52,
+            "menciona_palabra_veredicto": false
+          },
+          {
+            "criterio": 6,
+            "yaml_veredicto": true,
+            "hallazgos_yaml": 2,
+            "seccion_05_palabras": 83,
+            "menciona_palabra_veredicto": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "R4",
+      "descripcion": "Todo término del glosario está efectivamente usado en algún documento",
+      "estado": "FALLA",
+      "detalle": "18/19 términos aparecen en al menos un documento (búsqueda por claves sobre el texto de los 6 criterios, LITE y maestro).",
+      "evidencia": {
+        "no_usados": [
+          "ETL"
+        ]
+      }
+    },
+    {
+      "id": "R5",
+      "descripcion": "La línea de tiempo documentada coincide con el git log real",
+      "estado": "PASA",
+      "detalle": "git log real=133 commits; commits_timeline.csv=133; coinciden por hash=133; solo en git=0; solo en CSV=0; asunto distinto=0; fecha distinta=0.",
+      "evidencia": {
+        "solo_en_git": [],
+        "solo_en_csv": [],
+        "asuntos_distintos": [],
+        "n_autores_git": 11,
+        "n_autores_csv": 11
+      }
+    },
+    {
+      "id": "R6",
+      "descripcion": "Todo archivo de código real está referenciado en el documento del criterio de código",
+      "estado": "PASA",
+      "detalle": "51/51 archivos reales del repo auditado aparecen en latex/objetivo_3 (Criterio 3).",
+      "evidencia": {
+        "faltantes": [],
+        "n_faltantes": 0
+      }
+    },
+    {
+      "id": "R7",
+      "descripcion": "El commit auditado documentado coincide con el HEAD real del clon",
+      "estado": "PASA",
+      "detalle": "HEAD real=1528939; documentado en 12 proyectos: ['1528939'].",
+      "evidencia": {
+        "documentado_por_proyecto": {
+          "objetivo_1": "1528939",
+          "objetivo_1_lite": "1528939",
+          "objetivo_2": "1528939",
+          "objetivo_2_lite": "1528939",
+          "objetivo_3": "1528939",
+          "objetivo_3_lite": "1528939",
+          "objetivo_4": "1528939",
+          "objetivo_4_lite": "1528939",
+          "objetivo_5": "1528939",
+          "objetivo_5_lite": "1528939",
+          "objetivo_6": "1528939",
+          "objetivo_6_lite": "1528939"
+        },
+        "head_real": "1528939",
+        "proyectos_revisados": 12
+      }
+    },
+    {
+      "id": "R8",
+      "descripcion": "Toda ruta del inventario tiene capa asignada (no cae en 'otro')",
+      "estado": "FALLA",
+      "detalle": "1 archivo(s) sin capa en capas.yaml. Distribución: {'visualizacion': 2, 'documentacion': 1, 'eda': 1, 'legacy': 13, 'orquestacion': 17, 'transformacion': 1, 'otro': 1, 'analisis': 8, 'ingesta': 3, 'modelo': 2, 'testing': 2}.",
+      "evidencia": {
+        "sin_capa": [
+          "src/__init__.py"
+        ],
+        "distribucion": {
+          "visualizacion": 2,
+          "documentacion": 1,
+          "eda": 1,
+          "legacy": 13,
+          "orquestacion": 17,
+          "transformacion": 1,
+          "otro": 1,
+          "analisis": 8,
+          "ingesta": 3,
+          "modelo": 2,
+          "testing": 2
+        }
+      }
+    },
+    {
+      "id": "R9",
+      "descripcion": "Cobertura de fichas de análisis == archivos documentados y reales",
+      "estado": "PASA",
+      "detalle": "inventario=51; archivos reales (git ls-files)=51; fichas en data/analisis_codigo=51.",
+      "evidencia": {
+        "inventario": 51,
+        "reales": 51,
+        "fichas": 51,
+        "solo_reales": [],
+        "solo_documentados": []
+      }
+    },
+    {
+      "id": "R10",
+      "descripcion": "Integridad referencial del grafo (PDF, documentos y aristas)",
+      "estado": "PASA",
+      "detalle": "255 nodos y 500 aristas revisados; 0 problema(s).",
+      "evidencia": {
+        "problemas": []
+      }
+    },
+    {
+      "id": "R11",
+      "descripcion": "El índice RAG cubre todo el corpus declarado y responde consultas",
+      "estado": "PASA",
+      "detalle": "documentos en el índice=24; esperados=24; faltan=0; consulta de prueba devolvió 3 fragmento(s).",
+      "evidencia": {
+        "faltantes": [],
+        "prueba": [
+          {
+            "documento": "objetivo_1_lite",
+            "seccion": "02_contexto",
+            "puntaje": 0.1102
+          },
+          {
+            "documento": "objetivo_1",
+            "seccion": "02_contexto",
+            "puntaje": 0.108
+          },
+          {
+            "documento": "objetivo_2_lite",
+            "seccion": "02_contexto",
+            "puntaje": 0.1054
+          }
+        ]
+      }
+    },
+    {
+      "id": "R12",
+      "descripcion": "LITE ≤ 40 % de la sección principal del completo (y sin copias literales)",
+      "estado": "ADVERTENCIA",
+      "detalle": "Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones copiadas literalmente entre documentos: 7.",
+      "evidencia": {
+        "ratios": [
+          {
+            "criterio": 1,
+            "principal_completo": 185,
+            "principal_lite": 63,
+            "principal_pct": 34.1,
+            "cumple_40_principal": true,
+            "total_completo": 594,
+            "total_lite": 487,
+            "total_pct": 82.0
+          },
+          {
+            "criterio": 2,
+            "principal_completo": 254,
+            "principal_lite": 69,
+            "principal_pct": 27.2,
+            "cumple_40_principal": true,
+            "total_completo": 771,
+            "total_lite": 552,
+            "total_pct": 71.6
+          },
+          {
+            "criterio": 3,
+            "principal_completo": 28359,
+            "principal_lite": 3660,
+            "principal_pct": 12.9,
+            "cumple_40_principal": true,
+            "total_completo": 29262,
+            "total_lite": 4456,
+            "total_pct": 15.2
+          },
+          {
+            "criterio": 4,
+            "principal_completo": 238,
+            "principal_lite": 57,
+            "principal_pct": 23.9,
+            "cumple_40_principal": true,
+            "total_completo": 886,
+            "total_lite": 736,
+            "total_pct": 83.1
+          },
+          {
+            "criterio": 5,
+            "principal_completo": 254,
+            "principal_lite": 65,
+            "principal_pct": 25.6,
+            "cumple_40_principal": true,
+            "total_completo": 836,
+            "total_lite": 507,
+            "total_pct": 60.6
+          },
+          {
+            "criterio": 6,
+            "principal_completo": 1947,
+            "principal_lite": 86,
+            "principal_pct": 4.4,
+            "cumple_40_principal": true,
+            "total_completo": 2543,
+            "total_lite": 569,
+            "total_pct": 22.4
+          }
+        ],
+        "duplicados": {
+          "relación con los demás criterios este documento se centra en el criter": [
+            "objetivo_6::04_relacion",
+            "objetivo_6_lite::04_relacion"
+          ],
+          "conclusiones y recomendaciones del criterio el objetivo del repositori": [
+            "objetivo_1::05_conclusiones",
+            "objetivo_1_lite::05_conclusiones"
+          ],
+          "conclusiones y recomendaciones del criterio veredicto: los datos corre": [
+            "objetivo_2::05_conclusiones",
+            "objetivo_2_lite::05_conclusiones"
+          ],
+          "conclusiones y recomendaciones del criterio el código está bien constr": [
+            "objetivo_3::05_conclusiones",
+            "objetivo_3_lite::05_conclusiones"
+          ],
+          "conclusiones y recomendaciones del criterio la calidad de tratamientos": [
+            "objetivo_4::05_conclusiones",
+            "objetivo_4_lite::05_conclusiones"
+          ],
+          "conclusiones y recomendaciones del criterio la lógica de creación es c": [
+            "objetivo_5::05_conclusiones",
+            "objetivo_5_lite::05_conclusiones"
+          ],
+          "conclusiones y recomendaciones del criterio la línea de tiempo confirm": [
+            "objetivo_6::05_conclusiones",
+            "objetivo_6_lite::05_conclusiones"
+          ]
+        }
+      }
+    }
+  ],
+  "resumen": {
+    "total": 12,
+    "PASA": 8,
+    "FALLA": 3,
+    "ADVERTENCIA": 1
+  }
+}

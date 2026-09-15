@@ -71,11 +71,37 @@ def compilar_proyecto(nombre: str) -> bool:
     return False
 
 
+def _puerta_memoria() -> bool:
+    """
+    PASO PREVIO A LA COMPILACIÓN (integración con el sistema de memoria).
+
+    Ejecuta las reglas de validación sobre el grafo y los datos reales. Si alguna
+    regla FALLA, aborta la compilación del PDF final (salvo --forzar).
+    Se puede desactivar con --sin-validar.
+    """
+    if "--sin-validar" in sys.argv:
+        print("[memoria] puerta de validación desactivada (--sin-validar).")
+        return True
+    forzar = "--forzar" in sys.argv
+    try:
+        from memoria import flujo as memoria_flujo
+    except Exception as exc:                                    # noqa: BLE001
+        print(f"[memoria] no disponible ({exc}); se compila sin puerta de validación.")
+        return True
+    return memoria_flujo.puerta_compilacion(forzar=forzar)
+
+
 def main() -> None:
     PDF.mkdir(parents=True, exist_ok=True)
 
-    if len(sys.argv) > 1:
-        compilar_proyecto(sys.argv[1])
+    if not _puerta_memoria():
+        print("[memoria] COMPILACIÓN ABORTADA: hay reglas de validación en FALLA. "
+              "Revisa data/memoria/validacion_reglas.json o usa --forzar.")
+        raise SystemExit(2)
+
+    objetivo = [a for a in sys.argv[1:] if not a.startswith("--")]
+    if objetivo:
+        compilar_proyecto(objetivo[0])
         return
 
     proyectos = sorted(p.name for p in LATEX.iterdir() if (p / "main.tex").exists())

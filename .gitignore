@@ -32,3 +32,14 @@ desktop.ini
 # ── Datos grandes de producción (no versionar) ──
 *.1.2GB*
 datos/raw/
+
+# ── Memoria del agente: artefactos DERIVADOS del RAG (se regeneran con
+#    `python -m memoria indexar` y `python -m memoria grafo`).
+#    Sí se versiona la evidencia legible: evidencia_validacion.md,
+#    validacion_reglas.json, grafo.json, grafo_resumen.json,
+#    consultas_rag.jsonl y texto_seccion_6_2.md ──
+documentacion_auditoria/data/memoria/rag_corpus.jsonl
+documentacion_auditoria/data/memoria/rag_matriz.npz
+documentacion_auditoria/data/memoria/rag_vectorizer.pkl
+documentacion_auditoria/data/memoria/git_log_real.csv
+documentacion_auditoria/data/memoria/git_ls_files_real.txt

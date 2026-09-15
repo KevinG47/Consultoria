@@ -658,6 +658,14 @@ def main() -> None:
         return
 
     for gen in SECCIONES_DISPONIBLES.values():
+        # --- MEMORIA (RAG antes de redactar): antecedentes de la sección del maestro ---
+        try:
+            from memoria import flujo as _memoria_flujo
+            print(f"[memoria] antecedentes antes de redactar {gen.__name__}")
+            _memoria_flujo.revisar_antecedentes(gen.__name__.replace("generar_", "seccion maestro "))
+        except Exception as _exc:                                # noqa: BLE001
+            print(f"[memoria] consulta previa no disponible: {_exc}")
+
         destino = gen()
         _verificar_controles(destino)
     print("Generación de secciones completada.")

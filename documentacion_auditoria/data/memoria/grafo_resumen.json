@@ -1,0 +1,51 @@
+{
+  "fecha": "2026-09-15T17:00:59",
+  "nodos_por_tipo": {
+    "Criterio": 6,
+    "Documento": 13,
+    "DocumentoValidacion": 11,
+    "TerminoGlosario": 19,
+    "Capa": 11,
+    "ArchivoCodigo": 51,
+    "Commit": 133,
+    "Autor": 11
+  },
+  "aristas_por_relacion": {
+    "tiene_documento": 12,
+    "consolidado_en": 6,
+    "verificado_por": 30,
+    "usa_termino": 84,
+    "documenta": 184,
+    "pertenece_a": 51,
+    "tiene_autor": 133
+  },
+  "total_nodos": 255,
+  "total_aristas": 500,
+  "commit_auditado": "1528939",
+  "commits_reales": 133,
+  "commits_documentados": 133,
+  "archivos_codigo_reales": 51,
+  "archivos_documentados": 51,
+  "archivos_solo_reales": [],
+  "archivos_solo_documentados": [],
+  "terminos_usados": 18,
+  "terminos_no_usados": [
+    "ETL"
+  ],
+  "capas_usadas": {
+    "visualizacion": 2,
+    "documentacion": 1,
+    "eda": 1,
+    "legacy": 13,
+    "orquestacion": 17,
+    "transformacion": 1,
+    "otro": 1,
+    "analisis": 8,
+    "ingesta": 3,
+    "modelo": 2,
+    "testing": 2
+  },
+  "archivos_sin_capa": [
+    "src/__init__.py"
+  ]
+}

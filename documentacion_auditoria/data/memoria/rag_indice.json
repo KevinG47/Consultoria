@@ -1,0 +1,40 @@
+{
+  "fecha_construccion": "2026-09-15T16:54:15",
+  "n_fragmentos": 137,
+  "n_documentos": 24,
+  "n_terminos_vocabulario": 38327,
+  "por_coleccion": {
+    "criterio_completo": 24,
+    "criterio_lite": 24,
+    "maestro": 8,
+    "validacion": 81
+  },
+  "palabras_totales": 100707,
+  "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
+  "corpus": [
+    "maestro_auditoria",
+    "objetivo_1",
+    "objetivo_1_lite",
+    "objetivo_2",
+    "objetivo_2_lite",
+    "objetivo_3",
+    "objetivo_3_lite",
+    "objetivo_4",
+    "objetivo_4_lite",
+    "objetivo_5",
+    "objetivo_5_lite",
+    "objetivo_6",
+    "objetivo_6_lite",
+    "validacion_anteproyecto_D.md",
+    "validacion_anteproyecto_S.md",
+    "validacion_cierre_D.md",
+    "validacion_cierre_S.md",
+    "validacion_factica.md",
+    "validacion_final_D.md",
+    "validacion_final_S.md",
+    "validacion_reglas.md",
+    "validacion_rubrica.md",
+    "validacion_sota_cobertura.md",
+    "validacion_sota_referencias.md"
+  ]
+}

@@ -668,6 +668,14 @@ def main() -> None:
     for o in objetivos:
         if solo and int(o["id"]) not in solo:
             continue
+        # --- MEMORIA (RAG antes de redactar): recupera qué se dijo antes sobre este criterio ---
+        try:
+            from memoria import flujo as _memoria_flujo
+            print(f"[memoria] antecedentes del criterio {o['id']}: {o['titulo']}")
+            _memoria_flujo.revisar_antecedentes(o["titulo"], str(o.get("descripcion", ""))[:300])
+        except Exception as _exc:                                # noqa: BLE001
+            print(f"[memoria] consulta previa no disponible: {_exc}")
+
         carpeta = generar_objetivo(o, commits, idx, lite=lite)
         for tex in carpeta.glob("secciones/*.tex"):
             _verificar_controles(tex)
