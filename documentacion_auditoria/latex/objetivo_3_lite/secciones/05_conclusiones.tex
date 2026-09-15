@@ -1,5 +1,17 @@
-% ============ Conclusiones ============
-\section{Conclusiones y recomendaciones del criterio}
+% ============ Conclusiones (LITE) ============
+\section{Conclusiones y veredicto del criterio (versión LITE)}
 
-El código está bien construido en general (modular, documentado, trazable): 10/16 scripts corren en un clon fresco y los artefactos versionados demuestran que el equipo los ejecutó con los datos completos. Los hallazgos críticos de calidad: bug del HHI en el dashboard (ValueError tragado), denominador de minorías en comparar\_dane() (comentario vs código), redes.py pierde pares de 3+ afiliaciones (split n=1), mojibake en el CSV, CI/CD rota (módulos inexistentes), Dockerfile con placeholder, tests insuficientes (1 test) y kaleido no declarado. La crítica de cada archivo es constructiva: cuando un archivo está bien construido se dice explícitamente.
+\begin{tcolorbox}[hallazgo]
+\textbf{Veredicto:} El código está bien construido en general (modular, documentado y trazable) y los 51 archivos quedan documentados uno por uno; 10 de los 16 scripts principales corren en un clon fresco y los 6 fallos tienen causa identificada (datos no versionados y una dependencia no declarada).
 
+\end{tcolorbox}
+
+\subsection{Hallazgos de mayor impacto}
+
+\begin{itemize}
+  \item Bug del HHI en el dashboard (ValueError tragado) y denominador de minorías en comparar\_dane(): el comentario no coincide con el código.
+  \item Reproducibilidad: el flujo ETL de CI/CD referencia módulos inexistentes, el Dockerfile despliega un placeholder y kaleido no está declarado.
+\end{itemize}
+
+\noindent\textit{Esta versión resume el criterio; el análisis completo, las
+fichas por archivo y la evidencia están en el documento completo del criterio.}

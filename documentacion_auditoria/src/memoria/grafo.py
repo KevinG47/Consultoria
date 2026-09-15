@@ -156,6 +156,7 @@ class ResumenGrafo:
     terminos_no_usados: list
     capas_usadas: dict
     archivos_sin_capa: list
+    archivos_en_otro: list
 
 
 def construir(refrescar_git: bool = False, guardar: bool = True) -> tuple[nx.DiGraph, ResumenGrafo]:
@@ -229,8 +230,8 @@ def construir(refrescar_git: bool = False, guardar: bool = True) -> tuple[nx.DiG
         for capa in capas["orden"]:
             for pref in capas["reglas"].get(capa, []):
                 if norm.startswith(pref.lower()):
-                    return capa
-        return "otro"
+                    return capa, True      # clasificado por una regla EXPLÍCITA
+        return "otro", False               # cae al valor por defecto: NO declarado
 
     codigo_real = git_archivos_reales(refrescar=refrescar_git)
     doc_inv = {str(r).replace("\\", "/") for r in inventario["ruta"]}
@@ -239,15 +240,19 @@ def construir(refrescar_git: bool = False, guardar: bool = True) -> tuple[nx.DiG
     solo_doc = sorted(doc_inv - real_norm)
 
     capas_usadas: dict[str, int] = {}
-    archivos_sin_capa: list[str] = []
+    archivos_sin_capa: list[str] = []      # sin regla explícita (clasificados por defecto)
+    archivos_en_otro: list[str] = []       # en la capa "otro" (por regla explícita o por defecto)
     for ruta in sorted(real_norm | doc_inv):
         nodo = f"archivo::{ruta}"
-        capa = capa_de(ruta)
-        g.add_node(nodo, tipo="ArchivoCodigo", ruta=ruta,
+        capa, explicito = capa_de(ruta)
+        g.add_node(nodo, tipo="ArchivoCodigo", ruta=ruta, capa=capa,
+                   capa_explicita=explicito,
                    documentado=ruta in doc_inv, real=ruta in real_norm)
         g.add_edge(nodo, f"capa::{capa}", rel="pertenece_a")
         capas_usadas[capa] = capas_usadas.get(capa, 0) + 1
         if capa == "otro":
+            archivos_en_otro.append(ruta)
+        if not explicito:
             archivos_sin_capa.append(ruta)
 
     # --- Documento del criterio de código -> archivos que documenta ---
@@ -305,6 +310,7 @@ def construir(refrescar_git: bool = False, guardar: bool = True) -> tuple[nx.DiG
         terminos_no_usados=terminos_no_usados,
         capas_usadas=capas_usadas,
         archivos_sin_capa=archivos_sin_capa,
+        archivos_en_otro=archivos_en_otro,
     )
 
     if guardar:

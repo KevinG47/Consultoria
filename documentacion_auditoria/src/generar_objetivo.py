@@ -257,7 +257,37 @@ profundiza en lo suyo.
 """
 
 
-def _seccion_conclusiones(o: dict) -> str:
+def _seccion_conclusiones(o: dict, lite: bool = False) -> str:
+    """
+    Conclusiones del criterio.
+
+    En la versión LITE la conclusión NO repite la del documento completo: se
+    redacta como veredicto + hallazgos de mayor impacto. Motivo: la validación
+    del grafo (regla R12) detectó que las secciones de conclusión del completo y
+    del LITE eran idénticas palabra por palabra, de modo que el LITE no aportaba
+    un cierre propio.
+    """
+    if lite:
+        veredicto = o.get("lite_veredicto", "") or o.get("resumen_simple", "")
+        hallazgos = o.get("lite_hallazgos", []) or []
+        if not veredicto and not hallazgos:
+            return ""
+        cuerpo = lista_latex(hallazgos) if hallazgos else (
+            "\\noindent Ver el documento completo para el detalle de hallazgos.")
+        return f"""% ============ Conclusiones (LITE) ============
+\\section{{Conclusiones y veredicto del criterio (versión LITE)}}
+
+\\begin{{tcolorbox}}[hallazgo]
+\\textbf{{Veredicto:}} {escapar(veredicto)}
+\\end{{tcolorbox}}
+
+\\subsection{{Hallazgos de mayor impacto}}
+
+{cuerpo}
+
+\\noindent\\textit{{Esta versión resume el criterio; el análisis completo, las
+fichas por archivo y la evidencia están en el documento completo del criterio.}}
+"""
     texto = o.get("conclusiones", "")
     if not texto:
         return ""
@@ -590,7 +620,11 @@ def generar_objetivo(o: dict, commits: list[dict], idx: dict,
             contenidos[k] = _seccion_principal(o, k, idx, commits, lite=lite)
 
     relacion = _seccion_relacion_maestro(o, secciones_sel)
-    conclusiones = _seccion_conclusiones(o) if o.get("conclusiones") else ""
+    # El LITE lleva su propio cierre (veredicto + hallazgos), no la copia del completo.
+    if lite:
+        conclusiones = _seccion_conclusiones(o, lite=True)
+    else:
+        conclusiones = _seccion_conclusiones(o) if o.get("conclusiones") else ""
 
     # Texto del documento (sin glosario) para filtrar términos
     texto_doc = "\n".join(contenidos.values()) + relacion + conclusiones

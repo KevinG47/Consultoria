@@ -1,15 +1,15 @@
 {
-  "fecha_construccion": "2026-09-15T16:54:15",
+  "fecha_construccion": "2026-09-15T17:22:14",
   "n_fragmentos": 137,
   "n_documentos": 24,
-  "n_terminos_vocabulario": 38327,
+  "n_terminos_vocabulario": 38385,
   "por_coleccion": {
     "criterio_completo": 24,
     "criterio_lite": 24,
     "maestro": 8,
     "validacion": 81
   },
-  "palabras_totales": 100707,
+  "palabras_totales": 100750,
   "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
   "corpus": [
     "maestro_auditoria",

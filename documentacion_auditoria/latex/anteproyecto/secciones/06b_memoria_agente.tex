@@ -23,7 +23,7 @@ antecedentes (\texttt{data/memoria/consultas\_rag.jsonl}); si la similitud super
 0{,}35 avisa de posible solapamiento.
 
 \textbf{(ii) Memoria estructural (grafo).} El proyecto se modela como un grafo
-dirigido de \textbf{255 nodos y 500 aristas}:
+dirigido de \textbf{255 nodos y 498 aristas}:
 \texttt{Criterio\,$\rightarrow$\,Documento} (completo/LITE),
 \texttt{Documento\,$\rightarrow$\,T\'erminoGlosario},
 \texttt{ArchivoCodigo\,$\rightarrow$\,Capa},
@@ -36,21 +36,24 @@ commit \texttt{1528939}. No se usó un motor de grafos externo
 (Neo4j/Memgraph): con decenas de nodos y consultas simples no aporta ventaja y
 sí costo de operación.
 
-\textbf{(iii) Validación antes de compilar.} Doce reglas se ejecutan como
+\textbf{(iii) Validación antes de compilar.} Trece reglas se ejecutan como
 \textbf{puerta previa a la compilación del PDF final}, integradas en
 \texttt{compilar.py} (si alguna falla, la compilación se aborta; puede omitirse
 con \texttt{--forzar}). Las seis mínimas exigidas ---cada criterio con completo y
 LITE; conclusiones registradas; veredicto resumido en el LITE; términos del
 glosario realmente usados; línea de tiempo coincidente con el \texttt{git log}
 real; y todo archivo de código referenciado en el documento del criterio de
-código--- más seis adicionales (commit auditado, capas asignadas, cobertura de
-fichas, integridad del grafo, cobertura del índice y LITE\,$\le$\,40\,\%).
-Resultado real de la última ejecución: \textbf{8 PASA, 3 FALLA, 1 ADVERTENCIA},
-con coincidencia exacta de \textbf{133/133 commits} y \textbf{51/51 archivos}
-entre lo documentado y el repositorio real.
+código--- más siete adicionales (commit auditado, capas asignadas por regla
+explícita, cobertura de fichas, integridad del grafo, cobertura y frescura del
+índice, y LITE\,$\le$\,40\,\%). Resultado de la ejecución final:
+\textbf{12 PASA, 0 FALLA, 1 ADVERTENCIA}, con coincidencia exacta de
+\textbf{133/133 commits} y \textbf{51/51 archivos} entre lo documentado y el
+repositorio real.
 
-Declaramos también lo que \textbf{no} pasa, porque es parte del resultado: el
-LITE del criterio~3 no tiene \texttt{lite\_veredicto} declarado; el término
-``ETL'' está en el glosario pero no se usa en ningún documento; y
-\texttt{src/\_\_init\_\_.py} no tiene capa asignada. Los tres quedan registrados
-con su evidencia en \texttt{data/memoria/validacion\_reglas.json}.
+Las reglas detectaron tres defectos reales del material, corregidos en la fuente
+de verdad y registrados con su evidencia en
+\texttt{data/memoria/validacion\_reglas.json}: el LITE del criterio~3 no tenía
+veredicto declarado; el término ``ETL'' figuraba en el glosario sin usarse en
+ningún documento; y el inicializador \texttt{src/\_\_init\_\_.py} no tenía capa
+asignada. La única advertencia restante es una sección de relación entre
+criterios que el LITE comparte con el documento completo de forma deliberada.

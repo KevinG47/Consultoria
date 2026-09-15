@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-09-15T17:00:59",
+  "fecha": "2026-09-15T17:23:53",
   "nodos_por_tipo": {
     "Criterio": 6,
     "Documento": 13,
@@ -14,13 +14,13 @@
     "tiene_documento": 12,
     "consolidado_en": 6,
     "verificado_por": 30,
-    "usa_termino": 84,
+    "usa_termino": 82,
     "documenta": 184,
     "pertenece_a": 51,
     "tiene_autor": 133
   },
   "total_nodos": 255,
-  "total_aristas": 500,
+  "total_aristas": 498,
   "commit_auditado": "1528939",
   "commits_reales": 133,
   "commits_documentados": 133,
@@ -28,10 +28,8 @@
   "archivos_documentados": 51,
   "archivos_solo_reales": [],
   "archivos_solo_documentados": [],
-  "terminos_usados": 18,
-  "terminos_no_usados": [
-    "ETL"
-  ],
+  "terminos_usados": 19,
+  "terminos_no_usados": [],
   "capas_usadas": {
     "visualizacion": 2,
     "documentacion": 1,
@@ -45,7 +43,8 @@
     "modelo": 2,
     "testing": 2
   },
-  "archivos_sin_capa": [
+  "archivos_sin_capa": [],
+  "archivos_en_otro": [
     "src/__init__.py"
   ]
 }

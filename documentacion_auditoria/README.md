@@ -79,19 +79,19 @@ python -m memoria indexar                    # memoria semántica (TF-IDF + cose
 python -m memoria consultar "tema" -k 5      # consulta el corpus ya escrito
 python -m memoria antes-de-redactar "tema"   # RAG antes de escribir (queda en bitácora)
 python -m memoria grafo                      # memoria estructural (networkx) + git real
-python -m memoria validar                    # 12 reglas (exit 1 si alguna FALLA)
+python -m memoria validar                    # 13 reglas (exit 1 si alguna FALLA)
 python -m memoria evidencia                  # informe legible de la última ejecución
 ```
 
 - **Memoria semántica:** 137 fragmentos de 24 documentos (6 criterios + LITE +
   maestro + 11 informes de validación). Bitácora en
   `data/memoria/consultas_rag.jsonl`.
-- **Memoria estructural:** grafo de 255 nodos / 500 aristas construido desde los
+- **Memoria estructural:** grafo de 255 nodos / 498 aristas construido desde los
   YAML/CSV **más datos vivos** del clon auditado (`git log`, `git ls-files`,
   commit `1528939`).
 - **Reglas:** puerta previa a la compilación dentro de `compilar.py` (aborta si
   algo FALLA; `--forzar` continúa, `--sin-validar` la desactiva).
-  Última ejecución real: **8 PASA · 3 FALLA · 1 ADVERTENCIA**.
+  Última ejecución real: **12 PASA · 0 FALLA · 1 ADVERTENCIA** (13 reglas).
 - **Evidencia:** `data/memoria/evidencia_validacion.md` y `validacion_reglas.json`.
   Texto justificativo de §6.2: `data/memoria/texto_seccion_6_2.md`, ya integrado
   como `latex/anteproyecto/secciones/06b_memoria_agente.tex`.

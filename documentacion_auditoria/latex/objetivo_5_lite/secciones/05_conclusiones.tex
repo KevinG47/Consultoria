@@ -1,5 +1,17 @@
-% ============ Conclusiones ============
-\section{Conclusiones y recomendaciones del criterio}
+% ============ Conclusiones (LITE) ============
+\section{Conclusiones y veredicto del criterio (versión LITE)}
 
-La lógica de creación es correcta en lo esencial y los entregables cumplen el objetivo declarado; la ejecución fue correcta en lo analítico pero no óptima en la industrialización (reproducibilidad, automatización, pruebas). Acciones: corregir CI/CD y Dockerfile, unificar apps, migrar el legacy, versionar datos y ampliar tests.
+\begin{tcolorbox}[hallazgo]
+\textbf{Veredicto:} Arquitectura y lógica general correctas; la ejecución fue buena en lo analítico pero no óptima en la industrialización (despliegue, pruebas, automatización).
 
+\end{tcolorbox}
+
+\subsection{Hallazgos de mayor impacto}
+
+\begin{itemize}
+  \item CI/CD rota y Dockerfile que despliega un placeholder en vez del dashboard real.
+  \item 10 de 16 scripts corren en un clon fresco; los 6 fallos tienen causa documentada.
+\end{itemize}
+
+\noindent\textit{Esta versión resume el criterio; el análisis completo, las
+fichas por archivo y la evidencia están en el documento completo del criterio.}

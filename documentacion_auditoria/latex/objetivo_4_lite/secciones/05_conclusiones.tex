@@ -1,5 +1,17 @@
-% ============ Conclusiones ============
-\section{Conclusiones y recomendaciones del criterio}
+% ============ Conclusiones (LITE) ============
+\section{Conclusiones y veredicto del criterio (versión LITE)}
 
-La calidad de tratamientos y la lógica descriptiva son adecuadas y transparentes; la inferencia formal requiere ampliación. Acciones prioritarias: (1) test de markovianidad + modelos de supervivencia; (2) IC bootstrap en HHI y Gini/Theil; (3) modelos logísticos ajustados para brechas; (4) modelos nulos de red; (5) validación formal de clusters y migración del legacy R al pipeline Python; (6) corregir el denominador de comparar\_dane() y unificar el conteo de atípicos (10 vs 22).
+\begin{tcolorbox}[hallazgo]
+\textbf{Veredicto:} Estadística descriptiva sólida y transparente; la debilidad es la falta de inferencia formal (intervalos de confianza, supuestos, modelos ajustados).
 
+\end{tcolorbox}
+
+\subsection{Hallazgos de mayor impacto}
+
+\begin{itemize}
+  \item Sin test de markovianidad ni supervivencia (Kaplan-Meier/Cox) para la retención.
+  \item comparar\_dane() no excluye 'NINGUN GRUPO ETNICO' del denominador, diluyendo la subrepresentación (verificado).
+\end{itemize}
+
+\noindent\textit{Esta versión resume el criterio; el análisis completo, las
+fichas por archivo y la evidencia están en el documento completo del criterio.}

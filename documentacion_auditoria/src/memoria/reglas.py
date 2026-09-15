@@ -185,12 +185,24 @@ def r7_commit_auditado(resumen) -> dict:
 
 
 def r8_capas_asignadas(resumen, inventario: pd.DataFrame) -> dict:
+    """
+    ¿Cada archivo queda clasificado por una REGLA EXPLÍCITA de capas.yaml?
+
+    Se distingue "no clasificado" (cae al valor por defecto 'otro' sin que ninguna
+    regla lo mencione) de "clasificado explícitamente como 'otro'" (decisión
+    declarada en el YAML). Solo lo primero es un fallo: significa que un archivo
+    nuevo podría entrar al orden canónico sin que nadie lo haya decidido.
+    """
+    sin_regla = resumen.archivos_sin_capa
     return _regla(
-        "R8", "Toda ruta del inventario tiene capa asignada (no cae en 'otro')",
-        PASA if not resumen.archivos_sin_capa else FALLA,
-        f"{len(resumen.archivos_sin_capa)} archivo(s) sin capa en capas.yaml. "
+        "R8", "Todo archivo tiene capa asignada por una regla explícita en capas.yaml",
+        PASA if not sin_regla else FALLA,
+        f"{len(sin_regla)} archivo(s) sin regla explícita; "
+        f"clasificados explícitamente como 'otro': {len(resumen.archivos_en_otro)}. "
         f"Distribución: {resumen.capas_usadas}.",
-        {"sin_capa": resumen.archivos_sin_capa, "distribucion": resumen.capas_usadas},
+        {"sin_regla_explicita": sin_regla,
+         "explicitamente_otro": resumen.archivos_en_otro,
+         "distribucion": resumen.capas_usadas},
     )
 
 
@@ -299,6 +311,45 @@ def r12_duplicados_y_lite(mem: rag.MemoriaSemantica) -> dict:
     )
 
 
+def r13_frescura_indice(mem: rag.MemoriaSemantica) -> dict:
+    """
+    ¿El índice RAG está actualizado respecto a los documentos fuente?
+
+    Motivo (defecto detectado al aplicar los fixes): tras regenerar los
+    documentos desde el YAML, el índice seguía apuntando al texto antiguo, de
+    modo que R4 y R12 daban resultados obsoletos (falsos duplicados). Esta regla
+    compara la fecha del índice con la del documento fuente más reciente.
+    """
+    import datetime as _dt
+
+    # Solo se vigilan las fuentes que PERTENECEN al corpus indexado (criterios +
+    # LITE + maestro + informes de validación). Así, editar el anteproyecto —que
+    # no forma parte de la memoria semántica— no invalida el índice ni genera
+    # advertencias falsas.
+    fuentes: list = []
+    for proyecto in config.PROYECTOS_CORPUS:
+        fuentes += list((config.LATEX / proyecto).rglob("secciones/*.tex"))
+    fuentes += list(config.VALIDACION_DIR.glob("*.md"))
+    if not fuentes or not config.RAG_INDICE_META.exists():
+        return _regla("R13", "El índice RAG está actualizado respecto a las fuentes",
+                      ADVERTENCIA, "No se pudo comparar: faltan fuentes o metadatos del índice.", {})
+    fuente_max = max(f.stat().st_mtime for f in fuentes)
+    indice_mtime = config.RAG_INDICE_META.stat().st_mtime
+    desfase_min = (indice_mtime - fuente_max) / 60.0
+    viejo = indice_mtime < fuente_max
+    return _regla(
+        "R13", "El índice RAG está actualizado respecto a las fuentes",
+        ADVERTENCIA if viejo else PASA,
+        ("El índice es MÁS ANTIGUO que algún documento fuente: hay que reindexar "
+         "(`python -m memoria indexar`) antes de confiar en R4/R12."
+         if viejo else
+         f"Índice al día: posterior al documento fuente más reciente por {desfase_min:.1f} min."),
+        {"documento_fuente_mas_reciente": _dt.datetime.fromtimestamp(fuente_max).isoformat(timespec="seconds"),
+         "indice": _dt.datetime.fromtimestamp(indice_mtime).isoformat(timespec="seconds"),
+         "desfase_min": round(desfase_min, 1), "desactualizado": viejo},
+    )
+
+
 # --------------------------------------------------------------------------
 # Runner
 # --------------------------------------------------------------------------
@@ -331,6 +382,7 @@ def ejecutar(refrescar_git: bool = False, verbose: bool = True) -> dict:
         r10_integridad_grafo(g, objetivos),
         r11_rag_cubre_corpus(mem, objetivos),
         r12_duplicados_y_lite(mem),
+        r13_frescura_indice(mem),
     ]
     conteo = Counter(r["estado"] for r in resultados)
     informe = {
@@ -363,13 +415,15 @@ def antes_de_compilar(forzar: bool = False) -> dict:
     """
     informe = ejecutar(verbose=False)
     fallos = [r for r in informe["reglas"] if r["estado"] == FALLA]
+    avisos = [r for r in informe["reglas"] if r["estado"] == ADVERTENCIA]
     informe["abortar"] = bool(fallos) and not forzar
-    if fallos:
-        print(f"[memoria] validación previa a compilación: {len(fallos)} regla(s) FALLA")
-        for r in fallos:
-            print(f"  [FALLA] {r['id']}: {r['descripcion']}\n          {r['detalle']}")
-        if forzar:
-            print("[memoria] --forzar activo: se continúa pese a los fallos.")
-    else:
-        print("[memoria] validación previa a compilación: todas las reglas PASA.")
+    conteo = informe["resumen"]
+    print(f"[memoria] validación previa: {conteo['PASA']} PASA, {conteo['FALLA']} FALLA, "
+          f"{conteo['ADVERTENCIA']} ADVERTENCIA (de {conteo['total']} reglas)")
+    for r in avisos:
+        print(f"  [ADVERTENCIA] {r['id']}: {r['detalle']}")
+    for r in fallos:
+        print(f"  [FALLA] {r['id']}: {r['descripcion']}\n          {r['detalle']}")
+    if fallos and forzar:
+        print("[memoria] --forzar activo: se continúa pese a los fallos.")
     return informe

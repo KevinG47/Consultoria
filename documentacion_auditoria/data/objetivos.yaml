@@ -120,6 +120,14 @@ objetivos:
       archivos (Python, R y notebooks) y la verificación empírica de ejecución.
     secciones_principales: ["codigo"]
     todos_los_archivos: true
+    lite_veredicto: >
+      El código está bien construido en general (modular, documentado y trazable)
+      y los 51 archivos quedan documentados uno por uno; 10 de los 16 scripts
+      principales corren en un clon fresco y los 6 fallos tienen causa
+      identificada (datos no versionados y una dependencia no declarada).
+    lite_hallazgos:
+      - "Bug del HHI en el dashboard (ValueError tragado) y denominador de minorías en comparar_dane(): el comentario no coincide con el código."
+      - "Reproducibilidad: el flujo ETL de CI/CD referencia módulos inexistentes, el Dockerfile despliega un placeholder y kaleido no está declarado."
     conclusiones: >
       El código está bien construido en general (modular, documentado,
       trazable): 10/16 scripts corren en un clon fresco y los artefactos
@@ -216,7 +224,8 @@ objetivos:
       (Sprint 6). La arquitectura final es correcta (ingesta -> transformación
       -> modelo dimensional -> análisis por sprint -> visualización) y la
       separación de responsabilidades en src/ es limpia. Flujos INCORRECTOS o
-      NO ÓPTIMOS detectados: (1) CI/CD rota (GitHub Actions referencia módulos
+      NO ÓPTIMOS detectados: (1) CI/CD rota (el flujo ETL de GitHub Actions,
+      .github/workflows/etl_update.yml, referencia módulos
       inexistentes src.ingesta.main / src.transformacion.main); (2) Dockerfile
       ejecuta app/streamlit_app.py (placeholder) en lugar del dashboard real y
       no copia hallazgos/; (3) duplicación de apps (raíz vs app/); (4) legacy R

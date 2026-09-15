@@ -45,3 +45,8 @@ reglas:
   legacy:
     - "notebooks/tarea_"
     - "notebooks/tarea"   # variante sin guion bajo al inicio
+  otro:
+    # Decisión explícita: el inicializador del paquete raíz no pertenece a
+    # ninguna capa funcional (ingesta/transformación/modelo/análisis/...).
+    # Se declara aquí para que NINGÚN archivo quede clasificado por defecto.
+    - "src/__init__"

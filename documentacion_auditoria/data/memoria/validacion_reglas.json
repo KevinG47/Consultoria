@@ -1,9 +1,9 @@
 {
-  "fecha": "2026-09-15T17:00:59",
+  "fecha": "2026-09-15T17:23:53",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
-    "aristas": 500,
+    "aristas": 498,
     "nodos_por_tipo": {
       "Criterio": 6,
       "Documento": 13,
@@ -18,24 +18,24 @@
       "tiene_documento": 12,
       "consolidado_en": 6,
       "verificado_por": 30,
-      "usa_termino": 84,
+      "usa_termino": 82,
       "documenta": 184,
       "pertenece_a": 51,
       "tiene_autor": 133
     }
   },
   "rag": {
-    "fecha_construccion": "2026-09-15T16:54:15",
+    "fecha_construccion": "2026-09-15T17:22:14",
     "n_fragmentos": 137,
     "n_documentos": 24,
-    "n_terminos_vocabulario": 38327,
+    "n_terminos_vocabulario": 38385,
     "por_coleccion": {
       "criterio_completo": 24,
       "criterio_lite": 24,
       "maestro": 8,
       "validacion": 81
     },
-    "palabras_totales": 100707,
+    "palabras_totales": 100750,
     "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
     "corpus": [
       "maestro_auditoria",
@@ -120,59 +120,20 @@
     {
       "id": "R3",
       "descripcion": "Todo documento LITE tiene veredicto resumido",
-      "estado": "FALLA",
-      "detalle": "5/6 LITE con veredicto declarado en objetivos.yaml (lite_veredicto) y sección 05 con contenido; 4 sin la palabra literal 'veredicto'.",
+      "estado": "PASA",
+      "detalle": "6/6 LITE con veredicto declarado en objetivos.yaml (lite_veredicto) y sección 05 con contenido; 0 sin la palabra literal 'veredicto'.",
       "evidencia": {
-        "faltantes": [
-          {
-            "criterio": 3,
-            "yaml_veredicto": false,
-            "hallazgos_yaml": 0,
-            "seccion_05_palabras": 100,
-            "menciona_palabra_veredicto": false
-          }
-        ],
-        "sin_palabra_veredicto": [
-          {
-            "criterio": 1,
-            "yaml_veredicto": true,
-            "hallazgos_yaml": 2,
-            "seccion_05_palabras": 67,
-            "menciona_palabra_veredicto": false
-          },
-          {
-            "criterio": 4,
-            "yaml_veredicto": true,
-            "hallazgos_yaml": 2,
-            "seccion_05_palabras": 78,
-            "menciona_palabra_veredicto": false
-          },
-          {
-            "criterio": 5,
-            "yaml_veredicto": true,
-            "hallazgos_yaml": 2,
-            "seccion_05_palabras": 52,
-            "menciona_palabra_veredicto": false
-          },
-          {
-            "criterio": 6,
-            "yaml_veredicto": true,
-            "hallazgos_yaml": 2,
-            "seccion_05_palabras": 83,
-            "menciona_palabra_veredicto": false
-          }
-        ]
+        "faltantes": [],
+        "sin_palabra_veredicto": []
       }
     },
     {
       "id": "R4",
       "descripcion": "Todo término del glosario está efectivamente usado en algún documento",
-      "estado": "FALLA",
-      "detalle": "18/19 términos aparecen en al menos un documento (búsqueda por claves sobre el texto de los 6 criterios, LITE y maestro).",
+      "estado": "PASA",
+      "detalle": "19/19 términos aparecen en al menos un documento (búsqueda por claves sobre el texto de los 6 criterios, LITE y maestro).",
       "evidencia": {
-        "no_usados": [
-          "ETL"
-        ]
+        "no_usados": []
       }
     },
     {
@@ -224,11 +185,12 @@
     },
     {
       "id": "R8",
-      "descripcion": "Toda ruta del inventario tiene capa asignada (no cae en 'otro')",
-      "estado": "FALLA",
-      "detalle": "1 archivo(s) sin capa en capas.yaml. Distribución: {'visualizacion': 2, 'documentacion': 1, 'eda': 1, 'legacy': 13, 'orquestacion': 17, 'transformacion': 1, 'otro': 1, 'analisis': 8, 'ingesta': 3, 'modelo': 2, 'testing': 2}.",
+      "descripcion": "Todo archivo tiene capa asignada por una regla explícita en capas.yaml",
+      "estado": "PASA",
+      "detalle": "0 archivo(s) sin regla explícita; clasificados explícitamente como 'otro': 1. Distribución: {'visualizacion': 2, 'documentacion': 1, 'eda': 1, 'legacy': 13, 'orquestacion': 17, 'transformacion': 1, 'otro': 1, 'analisis': 8, 'ingesta': 3, 'modelo': 2, 'testing': 2}.",
       "evidencia": {
-        "sin_capa": [
+        "sin_regla_explicita": [],
+        "explicitamente_otro": [
           "src/__init__.py"
         ],
         "distribucion": {
@@ -263,7 +225,7 @@
       "id": "R10",
       "descripcion": "Integridad referencial del grafo (PDF, documentos y aristas)",
       "estado": "PASA",
-      "detalle": "255 nodos y 500 aristas revisados; 0 problema(s).",
+      "detalle": "255 nodos y 498 aristas revisados; 0 problema(s).",
       "evidencia": {
         "problemas": []
       }
@@ -277,19 +239,19 @@
         "faltantes": [],
         "prueba": [
           {
+            "documento": "objetivo_2_lite",
+            "seccion": "02_contexto",
+            "puntaje": 0.1116
+          },
+          {
             "documento": "objetivo_1_lite",
             "seccion": "02_contexto",
-            "puntaje": 0.1102
+            "puntaje": 0.1107
           },
           {
             "documento": "objetivo_1",
             "seccion": "02_contexto",
-            "puntaje": 0.108
-          },
-          {
-            "documento": "objetivo_2_lite",
-            "seccion": "02_contexto",
-            "puntaje": 0.1054
+            "puntaje": 0.1082
           }
         ]
       }
@@ -298,7 +260,7 @@
       "id": "R12",
       "descripcion": "LITE ≤ 40 % de la sección principal del completo (y sin copias literales)",
       "estado": "ADVERTENCIA",
-      "detalle": "Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones copiadas literalmente entre documentos: 7.",
+      "detalle": "Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones copiadas literalmente entre documentos: 1.",
       "evidencia": {
         "ratios": [
           {
@@ -308,8 +270,8 @@
             "principal_pct": 34.1,
             "cumple_40_principal": true,
             "total_completo": 594,
-            "total_lite": 487,
-            "total_pct": 82.0
+            "total_lite": 507,
+            "total_pct": 85.4
           },
           {
             "criterio": 2,
@@ -318,8 +280,8 @@
             "principal_pct": 27.2,
             "cumple_40_principal": true,
             "total_completo": 771,
-            "total_lite": 552,
-            "total_pct": 71.6
+            "total_lite": 547,
+            "total_pct": 70.9
           },
           {
             "criterio": 3,
@@ -328,8 +290,8 @@
             "principal_pct": 12.9,
             "cumple_40_principal": true,
             "total_completo": 29262,
-            "total_lite": 4456,
-            "total_pct": 15.2
+            "total_lite": 4500,
+            "total_pct": 15.4
           },
           {
             "criterio": 4,
@@ -338,18 +300,18 @@
             "principal_pct": 23.9,
             "cumple_40_principal": true,
             "total_completo": 886,
-            "total_lite": 736,
-            "total_pct": 83.1
+            "total_lite": 633,
+            "total_pct": 71.4
           },
           {
             "criterio": 5,
-            "principal_completo": 254,
+            "principal_completo": 259,
             "principal_lite": 65,
-            "principal_pct": 25.6,
+            "principal_pct": 25.1,
             "cumple_40_principal": true,
-            "total_completo": 836,
-            "total_lite": 507,
-            "total_pct": 60.6
+            "total_completo": 864,
+            "total_lite": 539,
+            "total_pct": 62.4
           },
           {
             "criterio": 6,
@@ -358,47 +320,35 @@
             "principal_pct": 4.4,
             "cumple_40_principal": true,
             "total_completo": 2543,
-            "total_lite": 569,
-            "total_pct": 22.4
+            "total_lite": 596,
+            "total_pct": 23.4
           }
         ],
         "duplicados": {
           "relación con los demás criterios este documento se centra en el criter": [
             "objetivo_6::04_relacion",
             "objetivo_6_lite::04_relacion"
-          ],
-          "conclusiones y recomendaciones del criterio el objetivo del repositori": [
-            "objetivo_1::05_conclusiones",
-            "objetivo_1_lite::05_conclusiones"
-          ],
-          "conclusiones y recomendaciones del criterio veredicto: los datos corre": [
-            "objetivo_2::05_conclusiones",
-            "objetivo_2_lite::05_conclusiones"
-          ],
-          "conclusiones y recomendaciones del criterio el código está bien constr": [
-            "objetivo_3::05_conclusiones",
-            "objetivo_3_lite::05_conclusiones"
-          ],
-          "conclusiones y recomendaciones del criterio la calidad de tratamientos": [
-            "objetivo_4::05_conclusiones",
-            "objetivo_4_lite::05_conclusiones"
-          ],
-          "conclusiones y recomendaciones del criterio la lógica de creación es c": [
-            "objetivo_5::05_conclusiones",
-            "objetivo_5_lite::05_conclusiones"
-          ],
-          "conclusiones y recomendaciones del criterio la línea de tiempo confirm": [
-            "objetivo_6::05_conclusiones",
-            "objetivo_6_lite::05_conclusiones"
           ]
         }
+      }
+    },
+    {
+      "id": "R13",
+      "descripcion": "El índice RAG está actualizado respecto a las fuentes",
+      "estado": "PASA",
+      "detalle": "Índice al día: posterior al documento fuente más reciente por 8.1 min.",
+      "evidencia": {
+        "documento_fuente_mas_reciente": "2026-09-15T17:14:08",
+        "indice": "2026-09-15T17:22:14",
+        "desfase_min": 8.1,
+        "desactualizado": false
       }
     }
   ],
   "resumen": {
-    "total": 12,
-    "PASA": 8,
-    "FALLA": 3,
+    "total": 13,
+    "PASA": 12,
+    "FALLA": 0,
     "ADVERTENCIA": 1
   }
 }
