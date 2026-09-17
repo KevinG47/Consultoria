@@ -110,6 +110,8 @@ def _chunks_latex() -> list[Fragmento]:
             continue
         if proyecto.startswith("objetivo_"):
             coleccion = "criterio_lite" if proyecto.endswith("_lite") else "criterio_completo"
+        elif proyecto == "anteproyecto":
+            coleccion = "anteproyecto"      # documento que califica el docente
         else:
             coleccion = "maestro"
         for tex in sorted(d.rglob("secciones/*.tex")):

@@ -75,23 +75,31 @@ Sistema de gestión de información del agente, en `src/memoria/`, ejecutado sob
 los datos reales del proyecto:
 
 ```bash
-python -m memoria indexar                    # memoria semántica (TF-IDF + coseno)
+python -m memoria indexar                    # memoria semántica (TF-IDF; ver decisión D007)
 python -m memoria consultar "tema" -k 5      # consulta el corpus ya escrito
 python -m memoria antes-de-redactar "tema"   # RAG antes de escribir (queda en bitácora)
 python -m memoria grafo                      # memoria estructural (networkx) + git real
-python -m memoria validar                    # 13 reglas (exit 1 si alguna FALLA)
+python -m memoria dibujar --tipos Criterio,Documento   # figura para diapositiva (+ --html)
+python -m memoria validar                    # 16 reglas (exit 1 si alguna FALLA)
 python -m memoria evidencia                  # informe legible de la última ejecución
 ```
 
-- **Memoria semántica:** 137 fragmentos de 24 documentos (6 criterios + LITE +
-  maestro + 11 informes de validación). Bitácora en
+- **Memoria semántica:** 145 fragmentos de 25 documentos (6 criterios + LITE +
+  maestro + 11 informes de validación + **el anteproyecto**). Bitácora en
   `data/memoria/consultas_rag.jsonl`.
 - **Memoria estructural:** grafo de 255 nodos / 498 aristas construido desde los
   YAML/CSV **más datos vivos** del clon auditado (`git log`, `git ls-files`,
   commit `1528939`).
+- **Trazabilidad (requisito del docente):** `data/memoria/fuentes_externas.yaml`
+  (fuentes consultadas, con URL verificada y archivo dependiente) y
+  `data/memoria/decisiones.yaml` (bitácora de decisiones con supersesión
+  explícita, p. ej. D007 supera a D002). R15 falla si una decisión **superada**
+  sigue en el código o se presenta como vigente; R16 falla si queda alguna URL
+  en "PENDIENTE".
 - **Reglas:** puerta previa a la compilación dentro de `compilar.py` (aborta si
   algo FALLA; `--forzar` continúa, `--sin-validar` la desactiva).
-  Última ejecución real: **12 PASA · 0 FALLA · 1 ADVERTENCIA** (13 reglas).
+  Última ejecución real: **14 PASA · 1 FALLA · 1 ADVERTENCIA** (16 reglas).
+  La FALLA es el desfase declarado D002→D007 (el código sigue en TF-IDF).
 - **Evidencia:** `data/memoria/evidencia_validacion.md` y `validacion_reglas.json`.
   Texto justificativo de §6.2: `data/memoria/texto_seccion_6_2.md`, ya integrado
   como `latex/anteproyecto/secciones/06b_memoria_agente.tex`.

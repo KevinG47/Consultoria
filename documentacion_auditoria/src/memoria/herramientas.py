@@ -142,6 +142,26 @@ def _cmd_evidencia(args) -> int:
     return 0
 
 
+def _cmd_dibujar(args) -> int:
+    from . import visual
+
+    tipos = [t.strip() for t in args.tipos.split(",") if t.strip()] or None
+    salida = Path(args.salida) if args.salida else None
+    res = visual.dibujar(tipos=tipos, salida=salida,
+                         titulo=args.titulo or None, html=args.html,
+                         refrescar_git=args.refrescar_git)
+    print(f"[dibujar] {res['salida']}")
+    print(f"[dibujar] dibujados {res['nodos_dibujados']} nodos / {res['aristas_dibujadas']} aristas "
+          f"de {res['nodos_totales_grafo']} nodos / {res['aristas_totales_grafo']} aristas totales")
+    print(f"[dibujar] tipos: {', '.join(res['tipos'])}")
+    if "salida_html" in res:
+        print(f"[dibujar] HTML interactivo: {res['salida_html']}")
+    if "aviso_html" in res:
+        print(f"[dibujar] {res['aviso_html']}")
+    print("[dibujar] pista: para una diapositiva usa --tipos Criterio,Documento")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="memoria", description="Memoria del agente (RAG + grafo + reglas)")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -171,6 +191,15 @@ def main(argv: list[str] | None = None) -> int:
     e = sub.add_parser("evidencia", help="genera el informe de evidencia en markdown")
     e.add_argument("--refrescar-git", action="store_true")
     e.set_defaults(func=_cmd_evidencia)
+
+    d = sub.add_parser("dibujar", help="dibuja el grafo (PNG legible para diapositiva)")
+    d.add_argument("--tipos", default="",
+                   help="tipos de nodo separados por coma (por defecto: los estructurales)")
+    d.add_argument("--salida", default="", help="ruta del PNG de salida")
+    d.add_argument("--titulo", default="", help="título de la figura")
+    d.add_argument("--html", action="store_true", help="además, HTML interactivo (plotly)")
+    d.add_argument("--refrescar-git", action="store_true")
+    d.set_defaults(func=_cmd_dibujar)
 
     args = p.parse_args(argv)
     return args.func(args)

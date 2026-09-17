@@ -68,22 +68,20 @@ def _contar_preguntas(tex: str) -> int:
     return -1
 
 
-def main() -> None:
+def ejecutar() -> list[dict]:
+    """
+    Ejecuta las comprobaciones y devuelve resultados ESTRUCTURADOS (reutilizable
+    desde memoria.reglas como regla R14, sin duplicar lógica).
+
+    Devuelve una lista de {nombre, ok, detalle}.
+    """
     tex = _leer_tex()
-    fallos = 0
-    total = 0
+    resultados: list[dict] = []
 
     def comprobar(nombre: str, cond: bool, detalle: str = "") -> None:
-        nonlocal fallos, total
-        total += 1
-        estado = "OK  " if cond else "FALLO"
-        if not cond:
-            fallos += 1
-        print(f"[{estado}] {nombre} {detalle}")
+        resultados.append({"nombre": nombre, "ok": bool(cond), "detalle": detalle})
 
     # 1. Cifras canónicas (deben aparecer con el valor exacto esperado).
-    #    Se verifican frases completas ("133 commits", "16 scripts") para no
-    #    confundir con conteos de subgrupos mencionados en prosa.
     n_commits = _contar_csv("commits_timeline.csv")
     n_archivos = _contar_csv("inventario_codigo.csv")
     n_scripts = _contar_csv("ejecucion_resumen.csv")
@@ -91,31 +89,39 @@ def main() -> None:
     n_fichas = len(list((DATA / "analisis_codigo").glob("*.json")))
 
     comprobar(f"cifra canónica de commits ('{n_commits} commits')",
-              f"{n_commits} commits" in tex, "(esperado presente)")
+              f"{n_commits} commits" in tex, "esperado presente")
     comprobar(f"cifra canónica de scripts ('{n_scripts} scripts')",
-              f"{n_scripts} scripts" in tex, "(esperado presente)")
+              f"{n_scripts} scripts" in tex, "esperado presente")
     comprobar(f"cifra canónica de criterios ('{n_criterios} criterios')",
-              f"{n_criterios} criterios" in tex, "(esperado presente)")
+              f"{n_criterios} criterios" in tex, "esperado presente")
 
     # 2. Preguntas enumeradas vs cifra citada
     n_preg = _contar_preguntas(tex)
     for m in re.finditer(r"declara (\d+) preguntas", tex, re.I):
         comprobar("preguntas enumeradas vs cifra citada",
                   n_preg > 0 and int(m.group(1)) == n_preg,
-                  f"('{m.group(0)}' -> {n_preg} enumeradas)")
+                  f"'{m.group(0)}' -> {n_preg} enumeradas")
 
     # 3. Líneas de cobertura (X de Y) vs conteos reales.
-    #    Tolerante a 'Cobertura:' dentro de \textbf{...}
     for m in re.finditer(r"Cobertura:?[^\d]*(\d+) de (\d+) archivos", tex, re.I):
         x, y = int(m.group(1)), int(m.group(2))
         comprobar(f"cobertura {x} de {y}", x <= y <= n_archivos,
-                  f"(archivos reales {n_archivos})")
+                  f"archivos reales {n_archivos}")
 
     # 4. Fichas de código: 100% de cobertura en el maestro
     comprobar("fichas JSON == inventario", n_fichas == n_archivos,
-              f"(fichas {n_fichas} vs inventario {n_archivos})")
+              f"fichas {n_fichas} vs inventario {n_archivos}")
 
-    print(f"\n{total} comprobaciones, {fallos} fallos.")
+    return resultados
+
+
+def main() -> None:
+    resultados = ejecutar()
+    fallos = sum(1 for r in resultados if not r["ok"])
+    for r in resultados:
+        estado = "OK  " if r["ok"] else "FALLO"
+        print(f"[{estado}] {r['nombre']} ({r['detalle']})")
+    print(f"\n{len(resultados)} comprobaciones, {fallos} fallos.")
     sys.exit(1 if fallos else 0)
 
 

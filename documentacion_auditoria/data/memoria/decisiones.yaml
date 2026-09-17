@@ -1,0 +1,159 @@
+# =====================================================================
+# BITÁCORA DE DECISIONES DE DISEÑO — registro de trazabilidad
+# =====================================================================
+# Requisito del docente: que quede explícito qué se decidió al inicio y qué se
+# está usando ahora, porque las decisiones cambiaron sobre la marcha. Nada debe
+# quedar "perdido en una conversación".
+#
+# Estados permitidos:
+#   vigente                  -> es la decisión actualmente en uso
+#   superada                 -> fue reemplazada (debe apuntar a quién la reemplaza)
+#   propuesta                -> considerada, aún no adoptada
+#   pendiente_implementacion -> adoptada pero todavía no implementada en el código
+#
+# Verificación automática (regla R15): ninguna decisión "superada" puede seguir
+# reflejada en el código o en los documentos actuales. Si el código no coincide
+# con la decisión vigente, R15 FALLA y nombra el archivo y el marcador.
+#
+# Campos de verificación por decisión (`implementacion`):
+#   archivos        -> rutas del proyecto donde debería verse esa decisión
+#   marcador_codigo -> texto que debe estar presente si está implementada
+#   marcador_doc    -> texto que la delata en la documentación
+#   excepto_si      -> (opcional) excepción temporal declarada y auditable
+#
+# Nota sobre fechas: no se registraron timestamps exactos durante las sesiones.
+# `fecha` usa la fecha de la sesión en que se decidió y `secuencia` conserva el
+# orden relativo real (1 = primera decisión).
+# =====================================================================
+
+decisiones:
+  - id: D001
+    fecha: "2026-09-15"
+    secuencia: 1
+    tema: "memoria_semantica"
+    decision: "Usar RAG para la memoria semántica del corpus documental"
+    justificacion: >
+      El corpus (criterios + LITE + maestro) es texto libre que crece y necesita
+      mantenerse consistente entre documentos; sin recuperación previa el agente
+      repite o contradice lo ya escrito.
+    alternativas_descartadas: ["no tener memoria (solo contexto de la conversación)"]
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/rag.py"]
+      marcador_codigo: "MemoriaSemantica"
+      marcador_doc: "memoria semántica"
+    fuente: F001
+
+  - id: D002
+    fecha: "2026-09-15"
+    secuencia: 2
+    tema: "tecnica_recuperacion"
+    decision: "Usar TF-IDF (no embeddings) para el RAG"
+    justificacion: >
+      Corpus pequeño (~24 documentos, 137 fragmentos) y homogéneo en vocabulario
+      técnico; TF-IDF resuelve el problema sin dependencias externas ni costo, y
+      es determinista y explicable.
+    alternativas_descartadas: ["embeddings vía API", "embeddings locales"]
+    estado: superada
+    superada_por: D007
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/rag.py"]
+      marcador_codigo: "TfidfVectorizer"
+      marcador_doc: "TF-IDF"
+    fuente: F004
+
+  - id: D003
+    fecha: "2026-09-15"
+    secuencia: 3
+    tema: "memoria_estructural"
+    decision: "Usar un grafo en memoria (networkx), no un motor externo"
+    justificacion: >
+      Escala real del proyecto (255 nodos / 498 aristas); un motor como Neo4j o
+      Memgraph exigiría infraestructura y operación desproporcionadas para este
+      volumen, sin aportar consultas que el proyecto necesite.
+    alternativas_descartadas: ["Neo4j", "Memgraph"]
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/grafo.py"]
+      marcador_codigo: "networkx"
+      marcador_doc: "networkx"
+    fuente: F002
+
+  - id: D004
+    fecha: "2026-09-15"
+    secuencia: 4
+    tema: "herramienta_externa"
+    decision: "Descartar Obsidian Vault del pipeline automatizado"
+    justificacion: >
+      No tiene API programática que el agente pueda consultar ni validar; su rol
+      queda como navegación humana del equipo, fuera de la arquitectura del
+      agente.
+    alternativas_descartadas: ["integrar Obsidian Vault como capa de memoria"]
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/grafo.py"]
+      marcador_codigo: "networkx"
+      marcador_doc: "Obsidian"
+    fuente: F004
+
+  - id: D005
+    fecha: "2026-09-15"
+    secuencia: 5
+    tema: "fuente_de_verdad"
+    decision: >
+      Extender el grafo con datos EN VIVO del repo auditado (clon real + git log),
+      no solo con los YAML/CSV ya procesados
+    justificacion: >
+      Permite verificar que lo documentado coincide con el repositorio auditado
+      real, y no con una copia que puede quedar desactualizada.
+    alternativas_descartadas: ["usar solo los CSV de data/ ya procesados"]
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/grafo.py"]
+      marcador_codigo: "git_log_real"
+      marcador_doc: "git log"
+    fuente: F001
+
+  - id: D006
+    fecha: "2026-09-15"
+    secuencia: 6
+    tema: "validacion"
+    decision: >
+      Conectar la validación como puerta antes de compilar (compilar.py aborta con
+      exit 2 si hay reglas en FALLA)
+    justificacion: >
+      El requisito del docente es que el sistema esté funcionando, no solo
+      descrito; una puerta real que aborta la compilación lo demuestra.
+    alternativas_descartadas: ["dejar la validación como script que se corre aparte"]
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/src/compilar.py"]
+      marcador_codigo: "_puerta_memoria"
+      marcador_doc: "puerta"
+    fuente: F003
+
+  - id: D007
+    fecha: "2026-09-15"
+    secuencia: 7
+    tema: "tecnica_recuperacion"
+    decision: "Migrar el RAG de TF-IDF a embeddings vía API key"
+    justificacion: >
+      Decisión del docente: un "diccionario" (TF-IDF) es incómodo de mantener y
+      transferir; el proyecto debe dejar reproducibilidad para futuros trabajos y
+      otros equipos.
+    alternativas_descartadas: ["mantener TF-IDF"]
+    estado: pendiente_implementacion
+    supersede: D002
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/rag.py"]
+      marcador_codigo: "embedding"
+      marcador_doc: "embeddings"
+      # Mientras la migración no esté implementada, R15 reportará el desfase
+      # (el código sigue usando TF-IDF, decisión D002 superada). Si el docente
+      # prefiere no bloquear la compilación durante la transición, se puede
+      # declarar una excepción temporal auditables descomentando el bloque:
+      # excepto_si:
+      #   motivo: "Migración planificada; requiere API key de embeddings"
+      #   autorizado_por: "Decisión del docente (D007)"
+      #   hasta: "2026-10-31"
+    fuente: F004

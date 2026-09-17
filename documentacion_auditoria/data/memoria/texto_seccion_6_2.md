@@ -18,18 +18,20 @@ Usamos IA generativa como **asistente**, no como autora. Para que ese uso fuera
 proyecto, implementamos una estrategia de gestión de información del agente con
 tres piezas, todas ejecutables y ejecutadas sobre los datos reales:
 
-**(i) Memoria semántica (RAG ligero).** Indexamos el corpus ya redactado —las
-secciones LaTeX de los seis criterios, sus versiones LITE, el documento maestro
-y los once informes de validación— en **137 fragmentos de 24 documentos**
-(≈100 700 palabras). La recuperación usa **TF-IDF (1–2 gramas, `sublinear_tf`)
-con similitud coseno** (scikit-learn). Se eligió TF-IDF y no *embeddings* por
-cuatro razones concretas a esta escala: el corpus es pequeño (137 fragmentos), el
-vocabulario es técnico y estable, no se depende de un proveedor externo ni de
-red, y el resultado es determinista y explicable (podemos mostrar qué términos
-pesan en cada recuperación). Antes de redactar cualquier sección, el generador
-consulta esta memoria y registra los antecedentes en
-`data/memoria/consultas_rag.jsonl`; si la similitud supera 0,35 avisa de posible
-solapamiento. Así evitamos repetir o contradecir lo ya escrito entre documentos.
+**(i) Memoria semántica (RAG).** Indexamos el corpus documental —las secciones
+LaTeX de los seis criterios, sus versiones LITE, el documento maestro, los once
+informes de validación y este anteproyecto— en **145 fragmentos de 25 documentos**
+(≈105 000 palabras). En su primera versión la recuperación se resolvió con
+**TF-IDF (1–2 gramas, `sublinear_tf`) y similitud coseno** (decisión **D002**),
+suficiente a esa escala y sin dependencias externas. **El docente decidió después
+migrar a *embeddings* vía API key** (decisión **D007**) para que el proyecto sea
+transferible y reproducible por otros equipos, dado que un "diccionario" de
+términos es incómodo de mantener; esa migración queda **pendiente de
+implementación** y así lo declara la bitácora, de modo que el cambio no se
+pierde: la regla R15 lo detecta y falla mientras el código siga en TF-IDF. Antes
+de redactar cualquier sección, el generador consulta esta memoria y registra los
+antecedentes en `data/memoria/consultas_rag.jsonl`; si la similitud supera 0,35
+avisa de posible solapamiento. Así evitamos repetir o contradecir lo ya escrito.
 
 **(ii) Memoria estructural (grafo).** Modelamos explícitamente el proyecto como
 un grafo dirigido de **255 nodos y 498 aristas**: `Criterio → Documento`
@@ -48,12 +50,28 @@ falla, la compilación se aborta; puede omitirse con `--forzar`). Las seis
 mínimas exigidas —cada criterio con completo y LITE; conclusiones registradas;
 veredicto resumido en el LITE; términos del glosario realmente usados; línea de
 tiempo coincidente con el `git log` real; y todo archivo de código referenciado
-en el documento del criterio de código— más siete adicionales (commit auditado,
+en el documento del criterio de código— más diez adicionales: commit auditado,
 capas asignadas por regla explícita, cobertura de fichas, integridad referencial
-del grafo, cobertura y frescura del índice, y la regla LITE ≤ 40 %). Resultado de
-la ejecución final: **12 PASA, 0 FALLA, 1 ADVERTENCIA**, con la coincidencia
-exacta de **133/133 commits** y **51/51 archivos** entre lo documentado y el
-repositorio real.
+del grafo, cobertura y frescura del índice, la regla LITE ≤ 40 %,
+**contradicciones numéricas entre documentos** (R14), **coherencia entre las
+decisiones y el código** (R15) e **integridad de los registros de trazabilidad**
+(R16). Resultado de la ejecución final: **14 PASA, 1 FALLA, 1 ADVERTENCIA**, con
+la coincidencia exacta de **133/133 commits** y **51/51 archivos** entre lo
+documentado y el repositorio real. La única falla es, precisamente, el desfase
+declarado de D007 (el código sigue en TF-IDF), que la regla reporta con archivo y
+marcador.
+
+**(iv) Trazabilidad de fuentes externas y de decisiones.** Dos registros en
+`data/memoria/` documentan el trabajo del agente. `fuentes_externas.yaml` registra
+cada fuente consultada (documentación, comparativas, especificaciones) con su URL
+verificada, fecha, para qué se usó y qué archivo del proyecto depende de ella; la
+regla R16 falla si alguna URL queda como "PENDIENTE". `decisiones.yaml` es la
+bitácora de decisiones de diseño (**7 registradas**) con justificación,
+alternativas descartadas, estado (*vigente*, *superada*, *propuesta*,
+*pendiente_implementacion*) y la relación de supersesión explícita (p. ej. D007
+supera a D002). La regla R15 verifica que ninguna decisión superada siga
+implementada en el código ni presentada como vigente en los documentos, y que
+exista una sola decisión actual por tema.
 
 Las reglas detectaron **tres defectos reales** del material, corregidos en la
 fuente de verdad y registrados con su evidencia en

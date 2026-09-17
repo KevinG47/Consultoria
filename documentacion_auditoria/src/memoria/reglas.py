@@ -251,6 +251,7 @@ def r11_rag_cubre_corpus(mem: rag.MemoriaSemantica, objetivos) -> dict:
         esperados.add(f"objetivo_{o['id']}")
         esperados.add(f"objetivo_{o['id']}_lite")
     esperados.add("maestro_auditoria")
+    esperados.add("anteproyecto")          # documento que califica el docente
     esperados |= {p.name for p in config.VALIDACION_DIR.glob("*.md")}
     faltan = sorted(esperados - docs_indexados)
     # consulta de humo: debe recuperar algo
@@ -350,6 +351,210 @@ def r13_frescura_indice(mem: rag.MemoriaSemantica) -> dict:
     )
 
 
+def r14_consistencia_numerica() -> dict:
+    """
+    Contradicciones NUMÉRICAS entre documentos (no solo duplicados literales).
+
+    Reutiliza la lógica de `src/verificar_consistencia.py` (importada, no
+    duplicada): compara las cifras citadas en prosa contra los conteos reales de
+    las fuentes (commits, archivos, scripts, criterios, fichas y líneas de
+    cobertura). Así R12 cubre el texto repetido y R14 las cifras incoherentes.
+    """
+    import importlib.util
+
+    ruta = config.DOC / "src" / "verificar_consistencia.py"
+    if not ruta.exists():
+        return _regla("R14", "Sin contradicciones numéricas entre documentos",
+                      ADVERTENCIA, f"No se encontró {ruta.name}; no se pudo verificar.", {})
+    spec = importlib.util.spec_from_file_location("verificar_consistencia", ruta)
+    modulo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(modulo)              # type: ignore[union-attr]
+    comprobaciones = modulo.ejecutar()
+    fallos = [c for c in comprobaciones if not c["ok"]]
+    return _regla(
+        "R14", "Sin contradicciones numéricas entre documentos",
+        FALLA if fallos else PASA,
+        f"{len(comprobaciones) - len(fallos)}/{len(comprobaciones)} comprobaciones numéricas OK "
+        f"(cifras de commits/archivos/scripts/criterios, preguntas enumeradas y cobertura).",
+        {"fallos": [c["nombre"] + " — " + c["detalle"] for c in fallos],
+         "comprobaciones": len(comprobaciones)},
+    )
+
+
+# --------------------------------------------------------------------------
+# R15 / R16 — trazabilidad de decisiones y fuentes externas
+# --------------------------------------------------------------------------
+def _cargar_decisiones() -> list[dict]:
+    if not config.DECISIONES_YAML.exists():
+        return []
+    d = yaml.safe_load(config.DECISIONES_YAML.read_text(encoding="utf-8")) or {}
+    return d.get("decisiones", [])
+
+
+def _texto_archivo(rel: str) -> str:
+    p = config.RAIZ / rel
+    return p.read_text(encoding="utf-8", errors="replace") if p.exists() else ""
+
+
+def r15_decisiones_vs_codigo(mem: rag.MemoriaSemantica) -> dict:
+    """
+    Coherencia trazable entre lo decidido y lo que se está usando.
+
+    Comprueba:
+      1. Integridad de la cadena de supersesión (referencias existentes, sin ciclos).
+      2. Una sola decisión actual por tema (no puede haber dos vigentes).
+      3. Ninguna decisión SUPERADA puede seguir implementada en el código.
+      4. El código debe reflejar la decisión ACTUAL del tema; si la actual está
+         `pendiente_implementacion` y el marcador no existe, es un desfase real
+         y la regla FALLA (salvo excepción temporal declarada, que la degrada a
+         ADVERTENCIA y queda registrada).
+      5. Los documentos del corpus no deben presentar una decisión superada como
+         si fuera la actual.
+    """
+    decisiones = _cargar_decisiones()
+    if not decisiones:
+        return _regla("R15", "Las decisiones vigentes coinciden con el código y los documentos",
+                      ADVERTENCIA, "No hay bitácora de decisiones (decisiones.yaml).", {})
+
+    por_id = {d["id"]: d for d in decisiones}
+    problemas: list[str] = []
+    avisos: list[str] = []
+    evidencia: dict = {"decisiones": len(decisiones)}
+
+    # 1. Integridad de la cadena de supersesión
+    for d in decisiones:
+        for campo in ("superada_por", "supersede"):
+            ref = d.get(campo)
+            if not ref:
+                continue
+            if ref not in por_id:
+                problemas.append(f"{d['id']}: {campo} apunta a un id inexistente ({ref})")
+            elif campo == "superada_por" and por_id[ref].get("supersede") != d["id"]:
+                problemas.append(f"{d['id']}: {ref} no declara supersede de {d['id']} (relación asimétrica)")
+        if d.get("estado") == "superada" and not (d.get("superada_por") or d.get("supersede")):
+            problemas.append(f"{d['id']}: estado 'superada' sin referencia a quién la reemplaza")
+
+    # 2. Una sola decisión actual por tema
+    por_tema: dict[str, list[dict]] = {}
+    for d in decisiones:
+        if d.get("estado") in ("vigente", "pendiente_implementacion"):
+            por_tema.setdefault(d.get("tema", "sin_tema"), []).append(d)
+    for tema, ds in por_tema.items():
+        if len(ds) > 1:
+            problemas.append(f"tema '{tema}' tiene {len(ds)} decisiones actuales: "
+                             + ", ".join(x["id"] for x in ds))
+
+    # 3 y 4. Código vs decisión superada / actual
+    corpus = "\n".join(f.texto for f in mem.fragmentos)
+    for d in decisiones:
+        impl = d.get("implementacion") or {}
+        marcador = impl.get("marcador_codigo")
+        archivos = impl.get("archivos") or []
+        if not marcador or not archivos:
+            continue
+        textos = {a: _texto_archivo(a) for a in archivos}
+        presente = {a: (marcador.lower() in t.lower()) for a, t in textos.items()}
+        if d.get("estado") == "superada" and any(presente.values()):
+            donde = ", ".join(a for a, v in presente.items() if v)
+            problemas.append(
+                f"{d['id']} está SUPERADA ({d.get('superada_por') or d.get('supersede')}) "
+                f"pero su implementación sigue en el código: '{marcador}' en {donde}")
+        if d.get("estado") in ("vigente", "pendiente_implementacion") and not any(presente.values()):
+            excepcion = impl.get("excepto_si")
+            msg = (f"{d['id']} (estado {d['estado']}) no está implementada: no aparece "
+                   f"'{marcador}' en {', '.join(archivos)}")
+            if excepcion:
+                avisos.append(msg + f" — excepción declarada: {excepcion.get('motivo','')} "
+                                    f"(hasta {excepcion.get('hasta','sin fecha')})")
+            else:
+                problemas.append(msg)
+
+    # 5. Documentos que presentan una decisión superada como actual
+    docs_superados: list[str] = []
+    for d in decisiones:
+        if d.get("estado") != "superada":
+            continue
+        marca_doc = (d.get("implementacion") or {}).get("marcador_doc")
+        if not marca_doc:
+            continue
+        en_corpus = marca_doc.lower() in corpus.lower()
+        sucesor = por_id.get(d.get("superada_por") or d.get("supersede") or "")
+        # Si los documentos mencionan TAMBIÉN la técnica sucesora, la transición
+        # está declarada explícitamente y no es un problema (es justo lo que el
+        # docente pide: que el cambio quede por escrito).
+        marca_sucesor = ((sucesor or {}).get("implementacion") or {}).get("marcador_doc")
+        transicion_declarada = bool(marca_sucesor and marca_sucesor.lower() in corpus.lower())
+        if en_corpus and not transicion_declarada:
+            docs_superados.append(
+                f"{d['id']}: los documentos siguen citando '{marca_doc}' sin declarar el cambio a "
+                f"{sucesor['id'] if sucesor else 'su sucesora'} "
+                f"(basta mencionar '{marca_sucesor or 'la técnica sucesora'}' para declararlo)")
+
+    evidencia.update({"problemas": problemas, "avisos": avisos,
+                      "documentos_con_decision_superada": docs_superados,
+                      "decisiones_actuales_por_tema": {k: [x["id"] for x in v] for k, v in por_tema.items()}})
+    if problemas:
+        estado = FALLA
+    elif avisos:
+        estado = ADVERTENCIA
+    else:
+        estado = PASA
+    detalle = (f"{len(decisiones)} decisiones registradas; {len(problemas)} desfase(s) "
+               f"código/documentos, {len(avisos)} excepción(es) declarada(s), "
+               f"{len(docs_superados)} mención(es) de decisiones superadas en documentos.")
+    return _regla("R15", "Las decisiones vigentes coinciden con el código y los documentos",
+                  estado, detalle, evidencia)
+
+
+def r16_integridad_registros() -> dict:
+    """
+    Integridad de los registros de trazabilidad (fuentes_externas.yaml y
+    decisiones.yaml): ids únicos, campos obligatorios y — sobre todo — que no
+    queden URLs en "PENDIENTE" en la versión que se entrega.
+    """
+    problemas: list[str] = []
+    fuentes: list[dict] = []
+    if config.FUENTES_YAML.exists():
+        fuentes = (yaml.safe_load(config.FUENTES_YAML.read_text(encoding="utf-8")) or {}).get("fuentes", [])
+    else:
+        problemas.append("No existe data/memoria/fuentes_externas.yaml")
+
+    requeridos_f = ["id", "url", "fecha_consulta", "usado_para", "documento"]
+    vistos: set[str] = set()
+    for f in fuentes:
+        faltan = [c for c in requeridos_f if not str(f.get(c, "")).strip()]
+        if faltan:
+            problemas.append(f"{f.get('id','?')}: faltan campos {faltan}")
+        if f.get("id") in vistos:
+            problemas.append(f"id de fuente duplicado: {f.get('id')}")
+        vistos.add(f.get("id"))
+        url = str(f.get("url", ""))
+        if "PENDIENTE" in url.upper() or not url.strip():
+            problemas.append(f"{f.get('id','?')}: URL sin confirmar (marcador PENDIENTE o vacía)")
+        elif not (url.startswith("http") or url.startswith("local:")):
+            problemas.append(f"{f.get('id','?')}: URL con formato no reconocido ({url[:40]})")
+
+    decisiones = _cargar_decisiones()
+    ids_d: set[str] = set()
+    for d in decisiones:
+        for c in ("id", "fecha", "decision", "justificacion", "estado"):
+            if not str(d.get(c, "")).strip():
+                problemas.append(f"decisión {d.get('id','?')}: falta '{c}'")
+        if d.get("id") in ids_d:
+            problemas.append(f"id de decisión duplicado: {d.get('id')}")
+        ids_d.add(d.get("id"))
+        if d.get("estado") not in ("vigente", "superada", "propuesta", "pendiente_implementacion"):
+            problemas.append(f"{d.get('id')}: estado no permitido ({d.get('estado')})")
+
+    return _regla(
+        "R16", "Registros de trazabilidad íntegros y sin marcadores PENDIENTE",
+        PASA if not problemas else FALLA,
+        f"{len(fuentes)} fuentes externas y {len(decisiones)} decisiones registradas; "
+        f"{len(problemas)} problema(s) de integridad.",
+        {"problemas": problemas, "fuentes": len(fuentes), "decisiones": len(decisiones)},
+    )
+
+
 # --------------------------------------------------------------------------
 # Runner
 # --------------------------------------------------------------------------
@@ -383,6 +588,9 @@ def ejecutar(refrescar_git: bool = False, verbose: bool = True) -> dict:
         r11_rag_cubre_corpus(mem, objetivos),
         r12_duplicados_y_lite(mem),
         r13_frescura_indice(mem),
+        r14_consistencia_numerica(),
+        r15_decisiones_vs_codigo(mem),
+        r16_integridad_registros(),
     ]
     conteo = Counter(r["estado"] for r in resultados)
     informe = {

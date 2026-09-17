@@ -37,7 +37,9 @@ VALIDACION_DIR = DATA / "validacion"
 # Criterios (completo y LITE): objetivo_1..6 / objetivo_1_lite..6_lite
 CRITERIOS = [f"objetivo_{i}" for i in range(1, 7)]
 CRITERIOS_LITE = [f"objetivo_{i}_lite" for i in range(1, 7)]
-PROYECTOS_CORPUS = CRITERIOS + CRITERIOS_LITE + ["maestro_auditoria"]
+PROYECTOS_CORPUS = CRITERIOS + CRITERIOS_LITE + ["maestro_auditoria", "anteproyecto"]
+# Nota: el anteproyecto se incluye porque es el documento que califica el
+# docente; así la memoria puede detectar contradicciones contra él.
 
 # Extensiones de código consideradas "código real" del repo auditado
 EXTS_CODIGO = {".py", ".r", ".ipynb"}
@@ -56,6 +58,11 @@ GRAFO_RESUMEN = MEMORIA / "grafo_resumen.json"
 CONSULTAS_LOG = MEMORIA / "consultas_rag.jsonl"     # bitácora de consultas (antes de redactar)
 VALIDACION_JSON = MEMORIA / "validacion_reglas.json"
 EVIDENCIA_MD = MEMORIA / "evidencia_validacion.md"
+
+# --- Registros de trazabilidad (requisito del docente) --------------------
+FUENTES_YAML = MEMORIA / "fuentes_externas.yaml"   # fuentes externas consultadas
+DECISIONES_YAML = MEMORIA / "decisiones.yaml"      # bitácora de decisiones de diseño
+GRAFICO_PNG = MEMORIA / "grafo_visual.png"         # salida de `python -m memoria dibujar`
 
 
 def asegurar_memoria() -> Path:

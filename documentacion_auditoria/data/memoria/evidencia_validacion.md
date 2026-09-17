@@ -1,10 +1,10 @@
 # Evidencia de ejecución — sistema de memoria del agente
 
-**Fecha de ejecución:** 2026-09-15T17:22:21  
+**Fecha de ejecución:** 2026-09-17T17:43:35  
 **Commit auditado (HEAD real del clon):** `1528939`  
 **Grafo:** 255 nodos / 498 aristas  
-**RAG:** 137 fragmentos de 24 documentos (38385 términos)  
-**Reglas:** 12 PASA · 0 FALLA · 1 ADVERTENCIA
+**RAG:** 145 fragmentos de 25 documentos (40571 términos)  
+**Reglas:** 14 PASA · 1 FALLA · 1 ADVERTENCIA
 
 ## Nodos del grafo
 
@@ -33,9 +33,12 @@
 | R8 | Todo archivo tiene capa asignada por una regla explícita en capas.yaml | **PASA** | 0 archivo(s) sin regla explícita; clasificados explícitamente como 'otro': 1. Distribución: {'visualizacion': 2, 'documentacion': 1, 'eda': 1, 'legacy': 13, 'orquestacion': 17, 'transformacion': 1, 'otro': 1, 'analisis': 8, 'ingesta': 3, 'modelo': 2, 'testing': 2}. |
 | R9 | Cobertura de fichas de análisis == archivos documentados y reales | **PASA** | inventario=51; archivos reales (git ls-files)=51; fichas en data/analisis_codigo=51. |
 | R10 | Integridad referencial del grafo (PDF, documentos y aristas) | **PASA** | 255 nodos y 498 aristas revisados; 0 problema(s). |
-| R11 | El índice RAG cubre todo el corpus declarado y responde consultas | **PASA** | documentos en el índice=24; esperados=24; faltan=0; consulta de prueba devolvió 3 fragmento(s). |
+| R11 | El índice RAG cubre todo el corpus declarado y responde consultas | **PASA** | documentos en el índice=25; esperados=25; faltan=0; consulta de prueba devolvió 3 fragmento(s). |
 | R12 | LITE ≤ 40 % de la sección principal del completo (y sin copias literales) | **ADVERTENCIA** | Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones copiadas literalmente entre documentos: 1. |
-| R13 | El índice RAG está actualizado respecto a las fuentes | **PASA** | Índice al día: posterior al documento fuente más reciente por 8.1 min. |
+| R13 | El índice RAG está actualizado respecto a las fuentes | **PASA** | Índice al día: posterior al documento fuente más reciente por 4.0 min. |
+| R14 | Sin contradicciones numéricas entre documentos | **PASA** | 7/7 comprobaciones numéricas OK (cifras de commits/archivos/scripts/criterios, preguntas enumeradas y cobertura). |
+| R15 | Las decisiones vigentes coinciden con el código y los documentos | **FALLA** | 7 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos. |
+| R16 | Registros de trazabilidad íntegros y sin marcadores PENDIENTE | **PASA** | 4 fuentes externas y 7 decisiones registradas; 0 problema(s) de integridad. |
 
 ## Detalle de reglas no aprobadas
 
@@ -111,6 +114,41 @@ Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones
     "relación con los demás criterios este documento se centra en el criter": [
       "objetivo_6::04_relacion",
       "objetivo_6_lite::04_relacion"
+    ]
+  }
+}
+```
+
+### R15 — FALLA: Las decisiones vigentes coinciden con el código y los documentos
+
+7 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos.
+
+```json
+{
+  "decisiones": 7,
+  "problemas": [
+    "D002 está SUPERADA (D007) pero su implementación sigue en el código: 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py"
+  ],
+  "avisos": [],
+  "documentos_con_decision_superada": [],
+  "decisiones_actuales_por_tema": {
+    "memoria_semantica": [
+      "D001"
+    ],
+    "memoria_estructural": [
+      "D003"
+    ],
+    "herramienta_externa": [
+      "D004"
+    ],
+    "fuente_de_verdad": [
+      "D005"
+    ],
+    "validacion": [
+      "D006"
+    ],
+    "tecnica_recuperacion": [
+      "D007"
     ]
   }
 }

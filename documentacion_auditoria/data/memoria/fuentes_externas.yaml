@@ -1,0 +1,103 @@
+# =====================================================================
+# FUENTES EXTERNAS CONSULTADAS — registro de trazabilidad
+# =====================================================================
+# Requisito del docente: toda fuente externa (documentación, artículo, spec)
+# que se consulte al tomar una decisión de diseño o al redactar queda aquí,
+# con la URL real, la fecha de consulta, para qué se usó y qué archivo del
+# proyecto depende de ella.
+#
+# Reglas del registro (verificadas automáticamente por la regla R16):
+#   - `url` no puede quedar como "PENDIENTE": o es una URL verificada o una
+#     ruta local declarada con el prefijo "local:".
+#   - Cada entrada debe declarar id único, url, fecha_consulta, usado_para y
+#     documento.
+#   - `tipo`: documentacion | articulo | comparativa | spec | local
+#
+# Nota sobre fechas: no se registraron timestamps exactos durante las sesiones.
+# `fecha_consulta` usa la fecha de la sesión en que se consultó la fuente y
+# `secuencia` conserva el orden relativo real de consulta.
+# =====================================================================
+
+fuentes:
+  - id: F001
+    tema: "Gestión de memoria en agentes: corto plazo (thread-scoped) vs largo plazo"
+    tipo: documentacion
+    url: "https://docs.langchain.com/oss/python/langgraph/add-memory"
+    url_alt: "https://docs.langchain.com/oss/javascript/concepts/memory"
+    fecha_consulta: "2026-09-15"
+    secuencia: 1
+    usado_para: >
+      Justificar el modelo de memoria en capas al diseñar el sistema: memoria de
+      corto plazo del hilo (conversación) frente a memoria de largo plazo
+      persistida y consultable (aquí: RAG semántico sobre el corpus + grafo
+      estructural). Fundamenta las decisiones D001 y D003.
+    documento: >
+      documentacion_auditoria/src/memoria/rag.py;
+      documentacion_auditoria/src/memoria/grafo.py;
+      documentacion_auditoria/data/memoria/decisiones.yaml
+
+  - id: F002
+    tema: "Comparación técnica Neo4j vs Memgraph (y alternativas) para grafos de agente"
+    tipo: comparativa
+    url: "https://db-engines.com/en/system/Amazon+Neptune%3BMemgraph%3BNeo4j"
+    url_alt: "https://memgraph.com/memgraph-lower-cost-8x-performance"
+    fecha_consulta: "2026-09-15"
+    secuencia: 2
+    usado_para: >
+      Evaluar si el proyecto necesitaba un motor de grafos dedicado. Con la
+      escala real medida (255 nodos / 498 aristas) se concluyó que no: un grafo
+      en memoria con networkx es suficiente y evita infraestructura y operación.
+      Fundamenta la decisión D003 y el descarte de Neo4j/Memgraph.
+    documento: >
+      documentacion_auditoria/src/memoria/grafo.py;
+      documentacion_auditoria/data/memoria/decisiones.yaml
+
+  - id: F003
+    tema: "Métricas de evaluación de RAG: faithfulness, answer relevancy, context precision (RAGAS)"
+    tipo: documentacion
+    url: "https://docs.ragas.io/en/v0.1.21/references/metrics.html"
+    url_alt: "https://docs.ragas.io/en/v0.1.21/getstarted/evaluation.html"
+    fecha_consulta: "2026-09-15"
+    secuencia: 3
+    usado_para: >
+      Diseñar la validación de lo que produce el agente: en lugar de métricas
+      generativas (que exigirían otro LLM y red), se adoptó su idea de fondo —
+      que toda afirmación sea verificable contra el contexto recuperado — como
+      reglas deterministas de fidelidad (R6: cada archivo real referenciado en
+      el documento; R11: cobertura del índice) y como exigencia de no inventar
+      referencias en el estado del arte.
+    documento: >
+      documentacion_auditoria/src/memoria/reglas.py;
+      documentacion_auditoria/data/validacion/validacion_sota_referencias.md
+
+  - id: F004
+    tema: "Arquitectura de DeepSeek Harness (basada en plugins, agnóstica al modelo)"
+    tipo: local
+    url: "local:C:/Users/InfoPersonal/AppData/Roaming/npm/node_modules/@deepseek-ai/dsh"
+    url_alt: "https://deepinfra.com/blog/deepseek-harness-review"
+    fecha_consulta: "2026-09-15"
+    secuencia: 4
+    usado_para: >
+      Diseñar cómo exponer rag.py / grafo.py / reglas.py como herramientas
+      invocables por el agente (comando de línea de comandos con subcomandos y
+      función importable), en coherencia con una arquitectura de plugins y
+      agnóstica al modelo. La versión consultada del paquete local es
+      @deepseek-ai/dsh 0.1.1-rc.2.
+    documento: >
+      documentacion_auditoria/src/memoria/herramientas.py;
+      documentacion_auditoria/src/memoria/__main__.py;
+      documentacion_auditoria/src/compilar.py
+
+# ---------------------------------------------------------------------
+# Plantilla para nuevas consultas (copiar y completar; nunca dejar
+# "PENDIENTE" en la versión final: la regla R16 lo detecta y falla).
+# ---------------------------------------------------------------------
+#  - id: F005
+#    tema: "..."
+#    tipo: documentacion | articulo | comparativa | spec | local
+#    url: "https://..."            # o "local:<ruta absoluta>" si es local
+#    url_alt: "https://..."        # opcional
+#    fecha_consulta: "AAAA-MM-DD"
+#    secuencia: 5
+#    usado_para: "Qué decisión de diseño o texto se apoyó en esta fuente"
+#    documento: "Archivo(s) del proyecto que dependen de esta fuente"
