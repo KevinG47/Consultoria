@@ -7,7 +7,7 @@
 
 | Archivo | Rol en la rúbrica |
 |---|---|
-| `anteproyecto.pdf` | **Documento (D1-D5, 40%)** — cuerpo 8 págs., APA 7, declaración de IA en la seccion 6 |
+| `anteproyecto.pdf` | **Documento (D1-D5, 40%)** — cuerpo 9 págs. (dentro del rango 6-10), APA 7, declaración de IA en la seccion 6 |
 | `diapositivas_anteproyecto.pdf` | **Sustentacion (S1-S3, 60%)** — apoyo visual, 10 laminas / 10 minutos |
 | `guia_estudio.pdf` | Apoyo: reparto, frases clave, banco de preguntas |
 | `tarjetas_sustentacion.pdf` | Apoyo: guion frase por frase, una pagina por integrante |
