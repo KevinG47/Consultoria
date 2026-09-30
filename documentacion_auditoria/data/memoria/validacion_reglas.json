@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-09-17T17:43:35",
+  "fecha": "2026-09-30T17:26:51",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
@@ -25,10 +25,10 @@
     }
   },
   "rag": {
-    "fecha_construccion": "2026-09-17T17:42:33",
+    "fecha_construccion": "2026-09-30T17:26:43",
     "n_fragmentos": 145,
     "n_documentos": 25,
-    "n_terminos_vocabulario": 40571,
+    "n_terminos_vocabulario": 40573,
     "por_coleccion": {
       "criterio_completo": 24,
       "criterio_lite": 24,
@@ -338,11 +338,11 @@
       "id": "R13",
       "descripcion": "El índice RAG está actualizado respecto a las fuentes",
       "estado": "PASA",
-      "detalle": "Índice al día: posterior al documento fuente más reciente por 4.0 min.",
+      "detalle": "Índice al día: posterior al documento fuente más reciente por 2.8 min.",
       "evidencia": {
-        "documento_fuente_mas_reciente": "2026-09-17T17:38:33",
-        "indice": "2026-09-17T17:42:34",
-        "desfase_min": 4.0,
+        "documento_fuente_mas_reciente": "2026-09-30T17:23:55",
+        "indice": "2026-09-30T17:26:43",
+        "desfase_min": 2.8,
         "desactualizado": false
       }
     },

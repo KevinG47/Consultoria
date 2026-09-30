@@ -25,6 +25,10 @@ del repositorio son fuente LaTeX, datos de respaldo o material de fases previas.
 > La **declaración de uso de IA** (cuánto se usó, para qué, cómo se validó con
 > agentes independientes) está en la **sección 6.2 del anteproyecto**, con los
 > informes de validación en `documentacion_auditoria/data/validacion/`.
+>
+> **Declaración ampliada y verificable (S3):** [`DECLARACION_IA_Y_REPARTO.md`](DECLARACION_IA_Y_REPARTO.md)
+> — qué se generó con asistencia de IA y qué no, qué herramientas se usaron y para
+> qué, y el reparto del trabajo **con lo verificado y lo que falta confirmar**.
 
 ---
 
@@ -33,6 +37,7 @@ del repositorio son fuente LaTeX, datos de respaldo o material de fases previas.
 ```
 consultoria/
 ├── README.md                        ← este archivo (guía de entrada)
+├── DECLARACION_IA_Y_REPARTO.md      ← declaración de IA y reparto (S3)
 ├── Rúbrica — Entrega 1 · Anteproyecto.pdf   (rúbrica oficial del curso)
 ├── informe_consultoria_observatorio_minciencias.md
 │                                     ← fase previa 2026-I (diagnóstico del repo

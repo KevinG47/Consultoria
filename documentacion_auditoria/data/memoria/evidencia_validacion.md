@@ -1,9 +1,9 @@
 # Evidencia de ejecución — sistema de memoria del agente
 
-**Fecha de ejecución:** 2026-09-17T17:43:35  
+**Fecha de ejecución:** 2026-09-30T17:26:51  
 **Commit auditado (HEAD real del clon):** `1528939`  
 **Grafo:** 255 nodos / 498 aristas  
-**RAG:** 145 fragmentos de 25 documentos (40571 términos)  
+**RAG:** 145 fragmentos de 25 documentos (40573 términos)  
 **Reglas:** 14 PASA · 1 FALLA · 1 ADVERTENCIA
 
 ## Nodos del grafo
@@ -35,7 +35,7 @@
 | R10 | Integridad referencial del grafo (PDF, documentos y aristas) | **PASA** | 255 nodos y 498 aristas revisados; 0 problema(s). |
 | R11 | El índice RAG cubre todo el corpus declarado y responde consultas | **PASA** | documentos en el índice=25; esperados=25; faltan=0; consulta de prueba devolvió 3 fragmento(s). |
 | R12 | LITE ≤ 40 % de la sección principal del completo (y sin copias literales) | **ADVERTENCIA** | Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones copiadas literalmente entre documentos: 1. |
-| R13 | El índice RAG está actualizado respecto a las fuentes | **PASA** | Índice al día: posterior al documento fuente más reciente por 4.0 min. |
+| R13 | El índice RAG está actualizado respecto a las fuentes | **PASA** | Índice al día: posterior al documento fuente más reciente por 2.8 min. |
 | R14 | Sin contradicciones numéricas entre documentos | **PASA** | 7/7 comprobaciones numéricas OK (cifras de commits/archivos/scripts/criterios, preguntas enumeradas y cobertura). |
 | R15 | Las decisiones vigentes coinciden con el código y los documentos | **FALLA** | 7 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos. |
 | R16 | Registros de trazabilidad íntegros y sin marcadores PENDIENTE | **PASA** | 4 fuentes externas y 7 decisiones registradas; 0 problema(s) de integridad. |
