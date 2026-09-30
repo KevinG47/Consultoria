@@ -109,21 +109,41 @@ mismo nombre de configuración de git; el correo es el mismo en todos:
 `kevin47gremory@gmail.com`). El repositorio **no contiene evidencia de commits,
 ramas o autorías de Valentina ni de Paula**.
 
-> **Declaración honesta:** por lo anterior, **no es posible certificar desde el
-> repositorio el reparto real del trabajo entre los tres integrantes.** Escribir aquí
-> un reparto "parejo" sería inventarlo. Lo que sigue es lo *declarado* por el equipo,
-> y requiere su confirmación explícita.
+> **Declaración honesta:** por lo anterior, **el repositorio no puede certificar por sí
+> solo el reparto real del trabajo entre los tres integrantes** (el trabajo de revisión y
+> verificación no deja commits). Escribir aquí un reparto "parejo" habría sido inventarlo.
+> Lo que sigue es el reparto **declarado por el equipo**, que asume su veracidad con la
+> firma de la §5.
 
-### 4.2 Reparto declarado por el equipo (pendiente de confirmación escrita)
+### 4.2 Reparto del trabajo declarado por el equipo
 
-Proviene de la sección 6.1 del anteproyecto, redactada a solicitud del equipo y
-marcada allí como *"(Ajustable a la división real del trabajo)"*:
+Los roles provienen de la sección 6.1 del anteproyecto (redactada a solicitud del equipo
+y marcada allí como *"Ajustable a la división real del trabajo"*); la naturaleza del
+aporte fue precisada por el equipo para esta declaración:
 
-| Integrante | Rol declarado | Confirmación |
+| Integrante | Rol declarado | Naturaleza del aporte |
 |---|---|---|
-| **Kevin Leonardo Chaparro Reyes** | Ingesta y auditoría de calidad de datos (OE1); reproducibilidad del pipeline; operación del repositorio y de las herramientas | ☐ por confirmar |
-| **Valentina Muñoz Palma** | Análisis longitudinal (OE2: panel, transiciones, supervivencia) y programación estadística | ☐ por confirmar |
-| **Paula Margarita Triana Ancinez** | Estado del arte, análisis de equidad (OE3) y coordinación de la redacción y la sustentación | ☐ por confirmar |
+| **Kevin Leonardo Chaparro Reyes** | Ingesta y auditoría de calidad de datos (OE1); reproducibilidad del pipeline; operación del repositorio y de las herramientas | **Desarrollo**: código del sistema de memoria, documentos de auditoría, integración con la IA y ejecución de la carga de desarrollo |
+| **Valentina Muñoz Palma** | Análisis longitudinal (OE2) y programación estadística | **Auditoría manual y verificación** (ver abajo) |
+| **Paula Margarita Triana Ancinez** | Estado del arte, análisis de equidad (OE3) y coordinación de la redacción y la sustentación | **Auditoría manual y verificación** (ver abajo) |
+
+**Aporte de Valentina Muñoz Palma y Paula Margarita Triana Ancinez.** Contribuyeron
+mediante **auditoría manual**: verificación directa de las referencias bibliográficas del
+estado del arte (abriendo cada enlace y confirmando que el contenido correspondiera a la
+cita), y verificación cruzada de cifras del proyecto contra el *dashboard* de Streamlit
+del repositorio auditado. Adicionalmente, **Valentina ejecutó el pipeline de ingesta
+completo sobre el repositorio original** para confirmar cifras clave contra la fuente
+primaria. Estas contribuciones fueron de **revisión y verificación, no de desarrollo de
+código**, razón por la cual **no generaron commits** en el repositorio: el trabajo de
+implementación (código del sistema de memoria, documentos de auditoría, integración con
+la IA) fue ejecutado por **Kevin Leonardo Chaparro Reyes**, quien concentró la mayor parte
+de la carga de desarrollo del proyecto.
+
+> **Nota de trazabilidad:** esta es la declaración del equipo sobre su propio reparto. El
+> repositorio, por sí solo, **no puede evidenciar** las contribuciones de revisión y
+> verificación descritas (no dejan commits), de modo que quedan respaldadas por esta
+> declaración y por la firma de los tres integrantes (§5). El `git log` sí evidencia, en
+> cambio, que todo el desarrollo registrado fue ejecutado por Kevin (§4.1).
 
 **Dedicación declarada:** 1 hora diaria después de clases (en la noche), 6 días a la
 semana por integrante = 6 h/semana × 3 integrantes × 12 semanas = **216 h**, frente a
@@ -141,11 +161,13 @@ confundirse con la integrante Paula Margarita Triana Ancinez.
 
 ### 4.4 Qué falta para cerrar esta declaración
 
-1. Que los tres integrantes **confirmen (o corrijan) los roles** de la tabla §4.2.
-2. Que se declare **quién hizo qué** en las piezas concretas: anteproyecto, sistema de
-   memoria, material de sustentación y verificación de referencias.
+1. ✅ **Resuelto:** el reparto declarado y el aporte de cada integrante constan en §4.2
+   (revisión/verificación de Valentina y Paula; desarrollo de Kevin).
+2. Pendiente de precisar: **qué pieza concreta revisó cada una** (anteproyecto, estado
+   del arte, cifras del dashboard), si se quiere detalle adicional al ya declarado.
 3. Si se desea trazabilidad individual hacia adelante: que cada integrante haga commits
    propios (o se registre la autoría en los mensajes de commit) desde este punto.
+4. **Firmas:** completar la tabla de la §5 con las tres firmas y la fecha de entrega.
 
 ---
 

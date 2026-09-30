@@ -10,6 +10,10 @@
 \renewcommand{\docversion}{LITE (versión resumida)}
 \renewcommand{\doccommit}{1528939}
 
+% Encabezado honesto (opción B): esta lista NO se cita en el texto del documento.
+% Se usa \addto\captionsspanish porque babel reaplica los títulos en \begin{document}.
+\addto\captionsspanish{\renewcommand{\refname}{Fuentes de consulta (no citadas en el texto)}}
+
 \begin{document}
 
 \input{secciones/01_portada.tex}
@@ -20,5 +24,8 @@
 \input{secciones/04_relacion.tex}
 \input{secciones/05_conclusiones.tex}
 \bibliographystyle{plainnat}
+% Las entradas del .bib se listan como material de consulta, sin citarse en el
+% texto: \nocite{*} las incluye todas y el encabezado lo declara.
+\nocite{*}
 \bibliography{refs}
 \end{document}
