@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-01T17:27:35",
+  "fecha": "2026-10-01T17:36:03",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
@@ -409,9 +409,9 @@
     },
     {
       "id": "R17",
-      "descripcion": "Las cifras del sistema (índice, grafo, reglas, decisiones) coinciden con los documentos que las citan",
+      "descripcion": "Las cifras del sistema (índice, grafo, reglas, decisiones), el recuento de estados y los estados de regla del banco coinciden con la ejecución real",
       "estado": "PASA",
-      "detalle": "5 documento(s) revisado(s); 41 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad.",
+      "detalle": "5 documento(s) revisado(s); 49 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad.",
       "evidencia": {
         "esperado": {
           "fragmentos": 150,
@@ -422,11 +422,22 @@
           "reglas": 17,
           "decisiones": 9
         },
+        "tally_esperado": {
+          "PASA": 15,
+          "FALLA": 1,
+          "ADVERTENCIA": 1
+        },
+        "tally_si_r17_falla": {
+          "PASA": 14,
+          "FALLA": 2,
+          "ADVERTENCIA": 1
+        },
         "fuentes": {
           "fragmentos/palabras/terminos": "data/memoria/rag_indice.json",
           "nodos/aristas": "data/memoria/grafo_resumen.json",
           "reglas": "conteo en vivo de esta ejecución",
-          "decisiones": "data/memoria/decisiones.yaml"
+          "decisiones": "data/memoria/decisiones.yaml",
+          "tally": "estados de esta ejecución (R1..R16) + R17 en PASA"
         },
         "documentos": [
           "latex/anteproyecto/secciones/06b_memoria_agente.tex",
@@ -435,7 +446,15 @@
           "data/memoria/texto_seccion_6_2.md",
           "scripts/banco_preguntas.py"
         ],
-        "citas_correctas": 41,
+        "citas_correctas": 49,
+        "estados_de_regla_citados": [
+          {
+            "regla": "R15",
+            "citado": "FALLA",
+            "texto": "\"esperado\": \"FALLA\"",
+            "linea": 99
+          }
+        ],
         "problemas": []
       }
     }

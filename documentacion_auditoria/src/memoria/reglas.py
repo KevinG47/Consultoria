@@ -14,9 +14,10 @@ riesgos reales detectados en la auditoría (commit auditado, capas sin asignar,
 cobertura de fichas, integridad referencial y consistencia del propio RAG);
 R13–R14 vigilan la frescura del índice y las contradicciones numéricas entre
 documentos; R15–R16, la trazabilidad de decisiones y de fuentes externas; y
-R17, que las cifras del sistema citadas en los documentos coincidan con las
-fuentes de verdad (raíz: el fix D008 dejó cifras obsoletas sin que nadie lo
-notara).
+R17, que las cifras del sistema citadas en los documentos (incluidos el recuento
+de estados 15 PASA · 1 FALLA · 1 ADVERTENCIA y los estados de regla del banco)
+coincidan con las fuentes de verdad (raíz: el fix D008 dejó cifras obsoletas sin
+que nadie lo notara).
 """
 
 from __future__ import annotations
@@ -586,6 +587,22 @@ _DOCS_CIFRAS = [
 
 # Número citado: admite separadores de miles (116 277 / 105.167 / 116\,277 / 45 799).
 _NUM_CITADO = r"([\d][\d\s.,\u00a0\\~]*)"
+# Recuento de estados citado en los documentos: "15 PASA · 1 FALLA · 1 ADVERTENCIA",
+# "\textbf{15 PASA, 1 FALLA, 1 ADVERTENCIA}" o la salida de consola
+# "[memoria] reglas: 15 PASA, 1 FALLA, 1 ADVERTENCIA". Si R15 cambia de estado
+# (p. ej. al implementar D007), los documentos que citan el recuento quedan
+# obsoletos y R17 FALLA hasta que se actualicen: es el mismo tipo de error que
+# vigilan las demás cifras.
+_TALLY_CITADO = (r"(\d{1,2})\s*PASA[^\d\n]{0,24}?(\d{1,2})\s*FALLA"
+                 r"[^\d\n]{0,24}?(\d{1,2})\s*ADVERTENCIA")
+# Estados de regla citados en el banco de preguntas, p. ej.
+#   {"id": 16, ..., "pregunta": "¿Cuál es el resultado de la regla R15?",
+#    "esperado": "FALLA", ...}
+# El estado se atribuye a la regla R<n> nombrada en la propia pregunta. Si R15
+# cambia de estado (por ejemplo al implementar D007) la pregunta queda obsoleta
+# y R17 FALLA nombrando el archivo, la línea, la regla y su estado real.
+_ESPERADO_ESTADO = re.compile(r'"esperado":\s*"([^"]+)"')
+_REGLA_EN_PREGUNTA = re.compile(r"\bR(\d{1,2})\b")
 # Números escritos con palabras (el anteproyecto dice "Dieciséis reglas").
 _PALABRAS_NUM = {"dieciseis": 16, "diecisiete": 17, "dieciocho": 18,
                  "quince": 15, "catorce": 14, "trece": 13}
@@ -627,7 +644,41 @@ def _citas_de_cifras(texto: str, patron: str, minimo: int) -> list[dict]:
     return citas
 
 
-def r17_cifras_en_documentos(n_reglas: int, docs: list[str] | None = None) -> dict:
+def _tallies_citados(texto: str) -> list[dict]:
+    """Recuentos de estado (PASA / FALLA / ADVERTENCIA) citados en `texto`."""
+    return [
+        {"pasa": int(m.group(1)), "falla": int(m.group(2)), "advertencia": int(m.group(3)),
+         "texto": " ".join(m.group(0).split()), "linea": texto.count("\n", 0, m.start()) + 1}
+        for m in re.finditer(_TALLY_CITADO, texto, flags=re.IGNORECASE)
+    ]
+
+
+def _estados_de_regla_citados(texto: str) -> list[dict]:
+    """
+    Preguntas del banco cuyo campo `esperado` es un ESTADO de regla.
+
+    Se atribuyen a la regla R<n> nombrada en la pregunta. Las citas sin regla
+    atribuible se devuelven igual (regla=None) para poder reportarlas: un estado
+    afirmado sin fuente identificable es el mismo defecto que R17 persigue.
+    """
+    citas: list[dict] = []
+    for m in _ESPERADO_ESTADO.finditer(texto):
+        valor = re.sub(r"[^A-Z]", "", m.group(1).upper())      # "FALLA (R15)" -> "FALLA"
+        if valor not in (PASA, FALLA, ADVERTENCIA):
+            continue
+        previo = texto[max(0, m.start() - 400):m.start()]
+        encontradas = _REGLA_EN_PREGUNTA.findall(previo)
+        citas.append({
+            "regla": f"R{encontradas[-1]}" if encontradas else None,
+            "citado": valor,
+            "texto": " ".join(m.group(0).split()),
+            "linea": texto.count("\n", 0, m.start()) + 1,
+        })
+    return citas
+
+
+def r17_cifras_en_documentos(n_reglas: int, estados: list[dict] | None = None,
+                             docs: list[str] | None = None) -> dict:
     """
     ¿Las cifras del sistema citadas en los documentos coinciden con las fuentes?
 
@@ -635,6 +686,12 @@ def r17_cifras_en_documentos(n_reglas: int, docs: list[str] | None = None) -> di
     ya tiene 150, o "Dieciséis reglas" cuando ya son diecisiete), la regla FALLA
     y nombra archivo y línea. Así la documentación no puede quedarse atrás en
     silencio, que es justo lo que pasó tras el fix D008.
+
+    Vigila también el RECUENTO DE ESTADOS ("15 PASA · 1 FALLA · 1 ADVERTENCIA") y
+    los ESTADOS DE REGLA que cita el banco de preguntas (Q16 afirma que R15 da
+    FALLA): si una regla cambia de estado —por ejemplo R15 al implementar
+    D007—, los documentos y las preguntas que citan el estado anterior quedan
+    obsoletos y R17 FALLA hasta que se actualicen.
     """
     esperado: dict[str, int] = {}
     fuentes: dict[str, str] = {}
@@ -656,8 +713,24 @@ def r17_cifras_en_documentos(n_reglas: int, docs: list[str] | None = None) -> di
         esperado["decisiones"] = len(registro.get("decisiones", []))
         fuentes["decisiones"] = "data/memoria/decisiones.yaml"
 
+    # Recuento de estados de ESTA ejecución. R17 se cuenta a sí misma en PASA: es
+    # el punto fijo coherente, porque el recuento que los documentos deben citar
+    # es el del sistema funcionando. Si R17 FALLA, el recuento real de la corrida
+    # baja a `tally_si_r17_falla`, que se escribe en el detalle.
+    conteo = Counter(r["estado"] for r in (estados or []))
+    esperado_tally = {PASA: conteo.get(PASA, 0) + 1, FALLA: conteo.get(FALLA, 0),
+                      ADVERTENCIA: conteo.get(ADVERTENCIA, 0)}
+    tally_si_falla = dict(esperado_tally)
+    tally_si_falla[PASA] -= 1
+    tally_si_falla[FALLA] += 1
+    fuentes["tally"] = "estados de esta ejecución (R1..R16) + R17 en PASA"
+    estados_por_id = {e["id"]: e["estado"] for e in (estados or [])}
+    # Mismo punto fijo que el recuento: al comparar, R17 cuenta como PASA.
+    estados_por_id["R17"] = PASA
+
     revisados = 0
     citas_ok = 0
+    citas_estado: list[dict] = []
     problemas: list[str] = []
     for rel in (docs or _DOCS_CIFRAS):
         ruta = config.DOC / rel
@@ -675,18 +748,50 @@ def r17_cifras_en_documentos(n_reglas: int, docs: list[str] | None = None) -> di
                     problemas.append(
                         f"{rel}:{cita['linea']} cita \"{cita['texto']}\" pero {clave} = {esperado[clave]}"
                     )
+        for cita in _tallies_citados(texto):
+            if (cita["pasa"], cita["falla"], cita["advertencia"]) == (
+                    esperado_tally[PASA], esperado_tally[FALLA], esperado_tally[ADVERTENCIA]):
+                citas_ok += 1
+            else:
+                problemas.append(
+                    f"{rel}:{cita['linea']} cita \"{cita['texto']}\" pero el recuento real es "
+                    f"{esperado_tally[PASA]} PASA / {esperado_tally[FALLA]} FALLA / "
+                    f"{esperado_tally[ADVERTENCIA]} ADVERTENCIA"
+                )
+        # Estados de regla citados en el banco de preguntas (Q16: R15 = FALLA).
+        if estados and rel.endswith("banco_preguntas.py"):
+            for cita in _estados_de_regla_citados(texto):
+                citas_estado.append(cita)
+                real = estados_por_id.get(cita["regla"])
+                if real is None:
+                    problemas.append(
+                        f"{rel}:{cita['linea']} cita el estado \"{cita['citado']}\" de "
+                        f"{cita['regla'] or 'una regla sin identificar en la pregunta'}, "
+                        f"que no se puede atribuir a ninguna regla de esta ejecución"
+                    )
+                elif cita["citado"] != real:
+                    problemas.append(
+                        f"{rel}:{cita['linea']} cita el estado \"{cita['citado']}\" de "
+                        f"{cita['regla']} pero su estado real es {real}"
+                    )
+                else:
+                    citas_ok += 1
 
     return _regla(
         "R17",
-        "Las cifras del sistema (índice, grafo, reglas, decisiones) coinciden con los documentos que las citan",
+        "Las cifras del sistema (índice, grafo, reglas, decisiones), el recuento de estados y los estados de regla del banco coinciden con la ejecución real",
         FALLA if problemas else PASA,
-        (f"{len(problemas)} cifra(s) desactualizada(s) en {revisados} documento(s) revisado(s): "
+        (f"{len(problemas)} cifra(s) desactualizada(s) en {revisados} documento(s) revisado(s) "
+         f"(recuento real de esta corrida si R17 falla: {tally_si_falla[PASA]} PASA / "
+         f"{tally_si_falla[FALLA]} FALLA / {tally_si_falla[ADVERTENCIA]} ADVERTENCIA): "
          + " | ".join(problemas[:8]) + (" …" if len(problemas) > 8 else ""))
         if problemas else
         f"{revisados} documento(s) revisado(s); {citas_ok} cita(s) de cifras del sistema, "
         f"todas coincidentes con las fuentes de verdad.",
-        {"esperado": esperado, "fuentes": fuentes, "documentos": docs or _DOCS_CIFRAS,
-         "citas_correctas": citas_ok, "problemas": problemas},
+        {"esperado": esperado, "tally_esperado": esperado_tally,
+         "tally_si_r17_falla": tally_si_falla, "fuentes": fuentes,
+         "documentos": docs or _DOCS_CIFRAS, "citas_correctas": citas_ok,
+         "estados_de_regla_citados": citas_estado, "problemas": problemas},
     )
 
 
@@ -728,7 +833,8 @@ def ejecutar(refrescar_git: bool = False, verbose: bool = True) -> dict:
         r16_integridad_registros(),
     ]
     # R17 se cuenta a sí misma: al llamarla, `resultados` aún no la incluye.
-    resultados.append(r17_cifras_en_documentos(n_reglas=len(resultados) + 1))
+    resultados.append(r17_cifras_en_documentos(n_reglas=len(resultados) + 1,
+                                               estados=list(resultados)))
     conteo = Counter(r["estado"] for r in resultados)
     informe = {
         "fecha": datetime.now().isoformat(timespec="seconds"),

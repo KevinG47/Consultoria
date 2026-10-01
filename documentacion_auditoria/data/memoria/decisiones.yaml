@@ -212,4 +212,12 @@ decisiones:
       archivo y línea (tres de ellas que la revisión manual no había
       encontrado). Tras actualizar las cifras: PASA. En el mismo ciclo se
       propagó el conteo de reglas 16 a 17 en los documentos y en el banco.
+      Además vigila el recuento de estados (15 PASA · 1 FALLA · 1 ADVERTENCIA):
+      si R15 pasa a PASA (por ejemplo al implementar D007), los cinco documentos
+      quedan obsoletos y R17 FALLA nombrando cada cita obsoleta. Verificado por
+      simulación: con R15 en PASA y los documentos sin actualizar, R17 reporta
+      las seis citas del recuento; con los estados reales, PASA. Vigila además
+      los estados de regla citados en el banco de preguntas (Q16 afirma
+      "esperado: FALLA" para R15): si esa regla cambia de estado, R17 FALLA
+      nombrando la pregunta y el estado real de la regla.
     fuente: F003

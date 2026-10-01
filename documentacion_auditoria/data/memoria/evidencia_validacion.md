@@ -1,6 +1,6 @@
 # Evidencia de ejecución — sistema de memoria del agente
 
-**Fecha de ejecución:** 2026-10-01T17:27:35  
+**Fecha de ejecución:** 2026-10-01T17:36:03  
 **Commit auditado (HEAD real del clon):** `1528939`  
 **Grafo:** 255 nodos / 498 aristas  
 **RAG:** 150 fragmentos de 25 documentos (45805 términos)  
@@ -39,7 +39,7 @@
 | R14 | Sin contradicciones numéricas entre documentos | **PASA** | 7/7 comprobaciones numéricas OK (cifras de commits/archivos/scripts/criterios, preguntas enumeradas y cobertura). |
 | R15 | Las decisiones vigentes coinciden con el código y los documentos | **FALLA** | 9 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos. |
 | R16 | Registros de trazabilidad íntegros y sin marcadores PENDIENTE | **PASA** | 4 fuentes externas y 9 decisiones registradas; 0 problema(s) de integridad. |
-| R17 | Las cifras del sistema (índice, grafo, reglas, decisiones) coinciden con los documentos que las citan | **PASA** | 5 documento(s) revisado(s); 41 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad. |
+| R17 | Las cifras del sistema (índice, grafo, reglas, decisiones), el recuento de estados y los estados de regla del banco coinciden con la ejecución real | **PASA** | 5 documento(s) revisado(s); 49 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad. |
 
 ## Detalle de reglas no aprobadas
 

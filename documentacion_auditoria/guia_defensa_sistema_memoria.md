@@ -104,7 +104,7 @@ inconsistencia concreta y con ubicación."*
 | **R14** | No hay contradicciones **numéricas** entre documentos (reutiliza `verificar_consistencia.py`) |
 | **R15** | Las decisiones **superadas** no siguen en el código ni se presentan como vigentes: el código debe reflejar la decisión actual |
 | **R16** | Los registros de trazabilidad están íntegros y **sin URLs "PENDIENTE"** |
-| **R17** | Las cifras del sistema (fragmentos, palabras, términos, nodos, aristas, reglas, decisiones) coinciden con los documentos que las citan: si un documento se quedó atrás, **FALLA** y nombra archivo y línea |
+| **R17** | Las cifras del sistema (fragmentos, palabras, términos, nodos, aristas, reglas, decisiones), el recuento de estados (**15 PASA · 1 FALLA · 1 ADVERTENCIA**) y los estados de regla que cita el banco de preguntas (Q16 → R15) coinciden con la ejecución real: si algo se quedó atrás, **FALLA** y nombra archivo y línea |
 
 **Cómo se ejecutan:** como **puerta previa a la compilación** (`compilar.py`): si alguna
 falla, la compilación del PDF final se **aborta** (exit 2). `--forzar` continúa,
