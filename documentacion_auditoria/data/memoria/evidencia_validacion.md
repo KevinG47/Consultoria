@@ -1,10 +1,10 @@
 # Evidencia de ejecución — sistema de memoria del agente
 
-**Fecha de ejecución:** 2026-09-30T17:49:29  
+**Fecha de ejecución:** 2026-10-01T17:27:35  
 **Commit auditado (HEAD real del clon):** `1528939`  
 **Grafo:** 255 nodos / 498 aristas  
-**RAG:** 145 fragmentos de 25 documentos (40573 términos)  
-**Reglas:** 14 PASA · 1 FALLA · 1 ADVERTENCIA
+**RAG:** 150 fragmentos de 25 documentos (45805 términos)  
+**Reglas:** 15 PASA · 1 FALLA · 1 ADVERTENCIA
 
 ## Nodos del grafo
 
@@ -35,10 +35,11 @@
 | R10 | Integridad referencial del grafo (PDF, documentos y aristas) | **PASA** | 255 nodos y 498 aristas revisados; 0 problema(s). |
 | R11 | El índice RAG cubre todo el corpus declarado y responde consultas | **PASA** | documentos en el índice=25; esperados=25; faltan=0; consulta de prueba devolvió 3 fragmento(s). |
 | R12 | LITE ≤ 40 % de la sección principal del completo (y sin copias literales) | **ADVERTENCIA** | Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones copiadas literalmente entre documentos: 1. |
-| R13 | El índice RAG está actualizado respecto a las fuentes | **PASA** | Índice al día: posterior al documento fuente más reciente por 25.4 min. |
+| R13 | El índice RAG está actualizado respecto a las fuentes | **PASA** | Índice al día: posterior al documento fuente más reciente por 0.3 min. |
 | R14 | Sin contradicciones numéricas entre documentos | **PASA** | 7/7 comprobaciones numéricas OK (cifras de commits/archivos/scripts/criterios, preguntas enumeradas y cobertura). |
-| R15 | Las decisiones vigentes coinciden con el código y los documentos | **FALLA** | 7 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos. |
-| R16 | Registros de trazabilidad íntegros y sin marcadores PENDIENTE | **PASA** | 4 fuentes externas y 7 decisiones registradas; 0 problema(s) de integridad. |
+| R15 | Las decisiones vigentes coinciden con el código y los documentos | **FALLA** | 9 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos. |
+| R16 | Registros de trazabilidad íntegros y sin marcadores PENDIENTE | **PASA** | 4 fuentes externas y 9 decisiones registradas; 0 problema(s) de integridad. |
+| R17 | Las cifras del sistema (índice, grafo, reglas, decisiones) coinciden con los documentos que las citan | **PASA** | 5 documento(s) revisado(s); 41 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad. |
 
 ## Detalle de reglas no aprobadas
 
@@ -121,11 +122,11 @@ Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones
 
 ### R15 — FALLA: Las decisiones vigentes coinciden con el código y los documentos
 
-7 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos.
+9 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos.
 
 ```json
 {
-  "decisiones": 7,
+  "decisiones": 9,
   "problemas": [
     "D002 está SUPERADA (D007) pero su implementación sigue en el código: 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py"
   ],
@@ -149,6 +150,12 @@ Pares completo/LITE que incumplen el 40 % en su sección principal: 0; secciones
     ],
     "tecnica_recuperacion": [
       "D007"
+    ],
+    "indexacion_corpus": [
+      "D008"
+    ],
+    "trazabilidad_cifras": [
+      "D009"
     ]
   }
 }

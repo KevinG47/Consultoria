@@ -11,7 +11,12 @@ codificados a mano: todo se calcula contra los datos reales del proyecto.
 
 Las seis reglas mínimas exigidas son R1–R6; R7–R12 se añadieron porque cubren
 riesgos reales detectados en la auditoría (commit auditado, capas sin asignar,
-cobertura de fichas, integridad referencial y consistencia del propio RAG).
+cobertura de fichas, integridad referencial y consistencia del propio RAG);
+R13–R14 vigilan la frescura del índice y las contradicciones numéricas entre
+documentos; R15–R16, la trazabilidad de decisiones y de fuentes externas; y
+R17, que las cifras del sistema citadas en los documentos coincidan con las
+fuentes de verdad (raíz: el fix D008 dejó cifras obsoletas sin que nadie lo
+notara).
 """
 
 from __future__ import annotations
@@ -556,6 +561,136 @@ def r16_integridad_registros() -> dict:
 
 
 # --------------------------------------------------------------------------
+# R17 — las cifras del sistema citadas en los documentos no se quedan atrás
+# --------------------------------------------------------------------------
+# Motivo (defecto detectado al cerrar el ciclo del fix D008): al corregir el
+# indexador de markdown el corpus pasó de 145 a 150 fragmentos y de 105.167 a
+# 116.277 palabras, y la cifra vieja sobrevivió en 6 sitios de la documentación
+# sin que NINGUNA de las 16 reglas lo notara. R17 cierra ese hueco: compara toda
+# cifra del sistema que ya es fuente de verdad contra cada documento que la cita.
+#
+# Fuentes de verdad:
+#   rag_indice.json    -> fragmentos, palabras, términos del vocabulario
+#   grafo_resumen.json -> nodos, aristas
+#   decisiones.yaml    -> número de decisiones registradas
+#   número de reglas   -> se cuenta EN VIVO en esta ejecución (leer
+#                         validacion_reglas.json compararía contra la ejecución
+#                         anterior, porque este mismo proceso lo escribe al final)
+_DOCS_CIFRAS = [
+    "latex/anteproyecto/secciones/06b_memoria_agente.tex",
+    "README.md",
+    "guia_defensa_sistema_memoria.md",
+    "data/memoria/texto_seccion_6_2.md",   # texto justificativo de §6.2 (se quedó atrás dos veces)
+    "scripts/banco_preguntas.py",
+]
+
+# Número citado: admite separadores de miles (116 277 / 105.167 / 116\,277 / 45 799).
+_NUM_CITADO = r"([\d][\d\s.,\u00a0\\~]*)"
+# Números escritos con palabras (el anteproyecto dice "Dieciséis reglas").
+_PALABRAS_NUM = {"dieciseis": 16, "diecisiete": 17, "dieciocho": 18,
+                 "quince": 15, "catorce": 14, "trece": 13}
+
+# (clave, patrón, mínimo). El mínimo evita confundir la cifra global con cifras
+# locales de un ejemplo de consola (p. ej. "[criterio_lite, 69 palabras]" o
+# "dibujados 19 nodos de 255 nodos").
+_CIFRAS_VIGILADAS = [
+    ("fragmentos", _NUM_CITADO + r"\s*fragmentos", 100),
+    ("palabras", _NUM_CITADO + r"\s*palabras", 100),
+    ("terminos", _NUM_CITADO + r"\s*t[eé]rminos", 100),
+    ("nodos", _NUM_CITADO + r"\s*nodos", 100),
+    ("aristas", _NUM_CITADO + r"\s*aristas", 100),
+    ("reglas", r"(\d{1,2}|diecis[eé]is|diecisiete|trece)\s*reglas", 1),
+    ("decisiones", r"(\d{1,2})\s+(?:decisiones|registradas)", 1),
+]
+
+
+def _sin_acentos(texto: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFKD", texto)
+                   if not unicodedata.combining(c))
+
+
+def _citas_de_cifras(texto: str, patron: str, minimo: int) -> list[dict]:
+    """Cifras citadas en `texto` que parecen referirse al total del sistema."""
+    citas: list[dict] = []
+    for m in re.finditer(patron, texto, flags=re.IGNORECASE):
+        crudo = m.group(1)
+        digitos = re.sub(r"\D", "", crudo)
+        valor = int(digitos) if digitos else _PALABRAS_NUM.get(_sin_acentos(crudo.lower()))
+        if valor is None or valor < minimo:
+            continue
+        citas.append({
+            "valor": valor,
+            "texto": " ".join(m.group(0).split()),
+            "linea": texto.count("\n", 0, m.start()) + 1,
+        })
+    return citas
+
+
+def r17_cifras_en_documentos(n_reglas: int, docs: list[str] | None = None) -> dict:
+    """
+    ¿Las cifras del sistema citadas en los documentos coinciden con las fuentes?
+
+    Si un documento cita la cifra vieja (p. ej. "145 fragmentos" cuando el índice
+    ya tiene 150, o "Dieciséis reglas" cuando ya son diecisiete), la regla FALLA
+    y nombra archivo y línea. Así la documentación no puede quedarse atrás en
+    silencio, que es justo lo que pasó tras el fix D008.
+    """
+    esperado: dict[str, int] = {}
+    fuentes: dict[str, str] = {}
+    if config.RAG_INDICE_META.exists():
+        meta = json.loads(config.RAG_INDICE_META.read_text(encoding="utf-8"))
+        esperado["fragmentos"] = meta.get("n_fragmentos")
+        esperado["palabras"] = meta.get("palabras_totales")
+        esperado["terminos"] = meta.get("n_terminos_vocabulario")
+        fuentes["fragmentos/palabras/terminos"] = "data/memoria/rag_indice.json"
+    if config.GRAFO_RESUMEN.exists():
+        resumen_grafo = json.loads(config.GRAFO_RESUMEN.read_text(encoding="utf-8"))
+        esperado["nodos"] = resumen_grafo.get("total_nodos")
+        esperado["aristas"] = resumen_grafo.get("total_aristas")
+        fuentes["nodos/aristas"] = "data/memoria/grafo_resumen.json"
+    esperado["reglas"] = n_reglas
+    fuentes["reglas"] = "conteo en vivo de esta ejecución"
+    if config.DECISIONES_YAML.exists():
+        registro = yaml.safe_load(config.DECISIONES_YAML.read_text(encoding="utf-8")) or {}
+        esperado["decisiones"] = len(registro.get("decisiones", []))
+        fuentes["decisiones"] = "data/memoria/decisiones.yaml"
+
+    revisados = 0
+    citas_ok = 0
+    problemas: list[str] = []
+    for rel in (docs or _DOCS_CIFRAS):
+        ruta = config.DOC / rel
+        if not ruta.exists():
+            continue
+        revisados += 1
+        texto = ruta.read_text(encoding="utf-8", errors="replace")
+        for clave, patron, minimo in _CIFRAS_VIGILADAS:
+            if esperado.get(clave) is None:
+                continue
+            for cita in _citas_de_cifras(texto, patron, minimo):
+                if cita["valor"] == esperado[clave]:
+                    citas_ok += 1
+                else:
+                    problemas.append(
+                        f"{rel}:{cita['linea']} cita \"{cita['texto']}\" pero {clave} = {esperado[clave]}"
+                    )
+
+    return _regla(
+        "R17",
+        "Las cifras del sistema (índice, grafo, reglas, decisiones) coinciden con los documentos que las citan",
+        FALLA if problemas else PASA,
+        (f"{len(problemas)} cifra(s) desactualizada(s) en {revisados} documento(s) revisado(s): "
+         + " | ".join(problemas[:8]) + (" …" if len(problemas) > 8 else ""))
+        if problemas else
+        f"{revisados} documento(s) revisado(s); {citas_ok} cita(s) de cifras del sistema, "
+        f"todas coincidentes con las fuentes de verdad.",
+        {"esperado": esperado, "fuentes": fuentes, "documentos": docs or _DOCS_CIFRAS,
+         "citas_correctas": citas_ok, "problemas": problemas},
+    )
+
+
+# --------------------------------------------------------------------------
 # Runner
 # --------------------------------------------------------------------------
 def ejecutar(refrescar_git: bool = False, verbose: bool = True) -> dict:
@@ -592,6 +727,8 @@ def ejecutar(refrescar_git: bool = False, verbose: bool = True) -> dict:
         r15_decisiones_vs_codigo(mem),
         r16_integridad_registros(),
     ]
+    # R17 se cuenta a sí misma: al llamarla, `resultados` aún no la incluye.
+    resultados.append(r17_cifras_en_documentos(n_reglas=len(resultados) + 1))
     conteo = Counter(r["estado"] for r in resultados)
     informe = {
         "fecha": datetime.now().isoformat(timespec="seconds"),

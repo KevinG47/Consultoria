@@ -1,16 +1,16 @@
 {
-  "fecha_construccion": "2026-09-30T17:49:19",
-  "n_fragmentos": 145,
+  "fecha_construccion": "2026-10-01T17:25:47",
+  "n_fragmentos": 150,
   "n_documentos": 25,
-  "n_terminos_vocabulario": 40573,
+  "n_terminos_vocabulario": 45805,
   "por_coleccion": {
     "criterio_completo": 24,
     "criterio_lite": 24,
     "maestro": 8,
     "anteproyecto": 8,
-    "validacion": 81
+    "validacion": 86
   },
-  "palabras_totales": 105167,
+  "palabras_totales": 116290,
   "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
   "corpus": [
     "anteproyecto",

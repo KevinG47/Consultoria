@@ -80,11 +80,11 @@ python -m memoria consultar "tema" -k 5      # consulta el corpus ya escrito
 python -m memoria antes-de-redactar "tema"   # RAG antes de escribir (queda en bitácora)
 python -m memoria grafo                      # memoria estructural (networkx) + git real
 python -m memoria dibujar --tipos Criterio,Documento   # figura para diapositiva (+ --html)
-python -m memoria validar                    # 16 reglas (exit 1 si alguna FALLA)
+python -m memoria validar                    # 17 reglas (exit 1 si alguna FALLA)
 python -m memoria evidencia                  # informe legible de la última ejecución
 ```
 
-- **Memoria semántica:** 145 fragmentos de 25 documentos (6 criterios + LITE +
+- **Memoria semántica:** 150 fragmentos de 25 documentos (6 criterios + LITE +
   maestro + 11 informes de validación + **el anteproyecto**). Bitácora en
   `data/memoria/consultas_rag.jsonl`.
 - **Memoria estructural:** grafo de 255 nodos / 498 aristas construido desde los
@@ -98,7 +98,7 @@ python -m memoria evidencia                  # informe legible de la última eje
   en "PENDIENTE".
 - **Reglas:** puerta previa a la compilación dentro de `compilar.py` (aborta si
   algo FALLA; `--forzar` continúa, `--sin-validar` la desactiva).
-  Última ejecución real: **14 PASA · 1 FALLA · 1 ADVERTENCIA** (16 reglas).
+  Última ejecución real: **15 PASA · 1 FALLA · 1 ADVERTENCIA** (17 reglas).
   La FALLA es el desfase declarado D002→D007 (el código sigue en TF-IDF).
 - **Evidencia:** `data/memoria/evidencia_validacion.md` y `validacion_reglas.json`.
   Texto justificativo de §6.2: `data/memoria/texto_seccion_6_2.md`, ya integrado

@@ -79,12 +79,33 @@ def limpiar_latex(texto: str) -> str:
     return _RE_ESPACIOS.sub(" ", t).strip()
 
 
+# Fila separadora de tabla markdown (`|---|---|`): la línea solo contiene
+# pipes, guiones, dos puntos y espacios, y tiene al menos un pipe y un guion.
+_RE_FILA_SEPARADORA = re.compile(r"(?m)^[ \t]*(?=[^\n]*\|)(?=[^\n]*-)[|:\- \t]+$")
+
+
 def limpiar_markdown(texto: str) -> str:
-    """Quita sintaxis markdown básica (encabezados, énfasis, tablas, código)."""
+    """
+    Quita sintaxis markdown básica (encabezados, énfasis, tablas, código).
+
+    CAMBIO (decisión D008): las tablas se indexan. Antes se hacía
+    `re.sub(r"^\\s*\\|.*$", " ", t, flags=re.M)`, que borraba la fila COMPLETA
+    antes de indexar: en las 11 fuentes de validación eso descartaba 329 filas
+    y el 37 % del texto. Como la evidencia auditada vive en tablas (fichas
+    verificadas, contadores, veredictos por ítem), datos como
+    `n_atipicos_edad=19` nunca llegaban al índice y 5 de las 20 preguntas del
+    banco de evaluación quedaban sin respuesta posible. Ahora solo se eliminan
+    los delimitadores `|`, nunca el contenido de la celda.
+
+    Tampoco se elimina `_`: los identificadores (`n_atipicos_edad`,
+    `streamlit_app.py`) deben sobrevivir igual que en `limpiar_latex`, que ya
+    lo conserva a propósito (ver _RE_LLAVES).
+    """
     t = re.sub(r"```.*?```", " ", texto, flags=re.S)
-    t = re.sub(r"^\s*\|.*$", " ", t, flags=re.M)      # filas de tabla
+    t = _RE_FILA_SEPARADORA.sub(" ", t)               # |---|---| (no aporta texto)
+    t = t.replace("|", " ")                           # delimitadores: inicio, fin e internos
     t = re.sub(r"^\s*[-*]\s+", " ", t, flags=re.M)    # viñetas
-    t = re.sub(r"[*_`>#]", " ", t)
+    t = re.sub(r"[*`>#]", " ", t)                     # OJO: NO se elimina "_" (ver D008)
     return _RE_ESPACIOS.sub(" ", t).strip()
 
 

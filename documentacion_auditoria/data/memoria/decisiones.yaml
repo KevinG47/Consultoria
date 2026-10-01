@@ -157,3 +157,59 @@ decisiones:
       #   autorizado_por: "Decisión del docente (D007)"
       #   hasta: "2026-10-31"
     fuente: F004
+
+  - id: D008
+    fecha: "2026-10-01"
+    secuencia: 8
+    tema: "indexacion_corpus"
+    decision: "Corregir el indexador de markdown (rag.py): no borrar filas de tabla, preservar `_` en identificadores"
+    justificacion: >
+      El borrado descartaba el 37 % del texto (329 filas) y degradaba
+      identificadores, causando 5 preguntas irrespondibles en el banco de 20.
+      Medido y verificado.
+    alternativas_descartadas: ["dejar el bug documentado sin corregir", "solo arreglar tablas sin tocar `_`"]
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/rag.py"]
+      marcador_codigo: "_RE_FILA_SEPARADORA"
+      marcador_doc: "D008"
+    evidencia: >
+      Antes: 145 fragmentos / 105.167 palabras / cobertura del texto de validación
+      63,0 % (158.184 de 251.117 car.); banco 3/20 en top-1, 11/20 en top-3,
+      15/20 presentes en el corpus. Después de reindexar: 150 fragmentos /
+      116.277 palabras / cobertura 94,0 % (235.949 car.); banco 7/20 en top-1,
+      9/20 en top-3, 16/20 presentes. Riesgo de respuesta inventada (dato ausente
+      del corpus con score >= 0,05): 5 -> 4. Verificado con
+      documentacion_auditoria/scripts/banco_preguntas.py y `python -m memoria
+      validar` (R13 sigue PASA). Efecto colateral medido: al alargarse los
+      fragmentos y crecer el vocabulario (40.573 a 45.799 términos), la
+      normalización TF-IDF se diluye y el rank promedio del dato existente sube
+      de 3,4 a 8,9; es el argumento empírico para D007 (embeddings).
+    fuente: F001
+
+  - id: D009
+    fecha: "2026-10-01"
+    secuencia: 9
+    tema: "trazabilidad_cifras"
+    decision: "Cerrar ciclo del fix D008: actualizar cifras y agregar R17"
+    justificacion: >
+      El fix D008 cambió el corpus de 145/105 167 a 150/116 277, y ninguna regla
+      detectaba la obsolescencia. R17 cierra ese hueco de trazabilidad.
+    alternativas_descartadas:
+      - "dejar las cifras obsoletas y confiar en la revisión manual"
+      - "una regla que solo vigilara fragmentos y palabras (dejaría fuera reglas, nodos, aristas y decisiones)"
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/src/memoria/reglas.py"]
+      marcador_codigo: "r17_cifras_en_documentos"
+      marcador_doc: "R17"
+    evidencia: >
+      R17 vigila siete cifras del sistema (fragmentos, palabras, términos del
+      vocabulario, nodos, aristas, reglas y decisiones) contra cinco documentos
+      que las citan (06b_memoria_agente.tex, README, guía de defensa, el texto
+      de §6.2 y el banco de preguntas). Primera ejecución, con la documentación
+      todavía sin actualizar: FALLA con 26 citas obsoletas localizadas con
+      archivo y línea (tres de ellas que la revisión manual no había
+      encontrado). Tras actualizar las cifras: PASA. En el mismo ciclo se
+      propagó el conteo de reglas 16 a 17 en los documentos y en el banco.
+    fuente: F003

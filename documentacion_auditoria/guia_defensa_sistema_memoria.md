@@ -32,9 +32,9 @@ Se usa coseno y no distancia normal porque los textos tienen largos distintos y 
 favorecemos a los fragmentos largos.
 
 ### Los 4 pasos reales del sistema
-1. **Indexar** (`python -m memoria indexar`): parte el corpus en **145 fragmentos**
+1. **Indexar** (`python -m memoria indexar`): parte el corpus en **150 fragmentos**
    (25 documentos: 6 criterios + sus LITE + maestro + 11 informes de validación + el
-   anteproyecto), limpia el LaTeX, construye el vocabulario (**≈40 500 términos**) y
+   anteproyecto), limpia el LaTeX, construye el vocabulario (**45 805 términos**) y
    calcula la matriz de pesos TF-IDF.
 2. **Consultar**: la pregunta se limpia y se pesa **igual** que el corpus.
 3. **Comparar**: se calcula el coseno contra **todos** los fragmentos y se ordenan.
@@ -42,7 +42,7 @@ favorecemos a los fragmentos largos.
    consulta queda en la bitácora `data/memoria/consultas_rag.jsonl` (auditable).
 
 ### Por qué TF-IDF y no embeddings (responde la pregunta obvia)
-Con 145 fragmentos y vocabulario técnico estable, TF-IDF resuelve sin proveedor externo,
+Con 150 fragmentos y vocabulario técnico estable, TF-IDF resuelve sin proveedor externo,
 sin red, sin costo, y es **determinista y explicable** (puedo mostrar qué términos
 pesaron). **Pero el docente decidió migrar a embeddings** (decisión D007) por
 transferibilidad; esa migración está **pendiente de implementación** y el sistema lo
@@ -84,7 +84,7 @@ inconsistencia concreta y con ubicación."*
 
 ---
 
-## 3. Las 16 reglas, una frase cada una
+## 3. Las 17 reglas, una frase cada una
 
 | # | Qué verifica |
 |---|---|
@@ -104,6 +104,7 @@ inconsistencia concreta y con ubicación."*
 | **R14** | No hay contradicciones **numéricas** entre documentos (reutiliza `verificar_consistencia.py`) |
 | **R15** | Las decisiones **superadas** no siguen en el código ni se presentan como vigentes: el código debe reflejar la decisión actual |
 | **R16** | Los registros de trazabilidad están íntegros y **sin URLs "PENDIENTE"** |
+| **R17** | Las cifras del sistema (fragmentos, palabras, términos, nodos, aristas, reglas, decisiones) coinciden con los documentos que las citan: si un documento se quedó atrás, **FALLA** y nombra archivo y línea |
 
 **Cómo se ejecutan:** como **puerta previa a la compilación** (`compilar.py`): si alguna
 falla, la compilación del PDF final se **aborta** (exit 2). `--forzar` continúa,
@@ -113,7 +114,7 @@ falla, la compilación del PDF final se **aborta** (exit 2). `--forzar` continú
 
 ## 4. Por qué R15 falla hoy (y cómo explicarlo en vivo)
 
-**Resultado real:** 16 reglas → **14 PASA · 1 FALLA · 1 ADVERTENCIA**.
+**Resultado real:** 17 reglas → **15 PASA · 1 FALLA · 1 ADVERTENCIA**.
 
 **La falla, textual:**
 ```
@@ -149,7 +150,7 @@ python -m memoria consultar "el consolidado versionado solo tiene 3 de 6 convoca
 ```
 **Debe verse** (salida real):
 ```
-[RAG] consulta: 'el consolidado versionado solo tiene 3 de 6 convocatorias'  (índice: 145 fragmentos)
+[RAG] consulta: 'el consolidado versionado solo tiene 3 de 6 convocatorias'  (índice: 150 fragmentos)
 [RAG] términos que pesan: [('tiene convocatorias', 0.4687), ('versionado solo', 0.4274), ...]
   1. cos=0.3057  objetivo_2_lite::03_datos  [criterio_lite, 69 palabras]
      ...Veredicto: Datos correctos y suficientes en origen ... pero el consolidado
@@ -169,8 +170,8 @@ ArchivoCodigo 51…), `commits: reales=133 documentados=133`,
 ```powershell
 python -m memoria validar
 ```
-**Debe verse:** las 16 reglas con su estado y, al final,
-`[memoria] reglas: 14 PASA, 1 FALLA, 1 ADVERTENCIA` (exit code 1 por la falla de R15).
+**Debe verse:** las 17 reglas con su estado y, al final,
+`[memoria] reglas: 15 PASA, 1 FALLA, 1 ADVERTENCIA` (exit code 1 por la falla de R15).
 
 ```powershell
 python -m memoria dibujar --tipos Criterio,Documento

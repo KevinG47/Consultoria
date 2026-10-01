@@ -12,8 +12,8 @@ con tres piezas, todas ejecutables y ejecutadas sobre los datos reales.
 
 \textbf{(i) Memoria semántica (RAG).} Indexamos el corpus documental
 ---secciones de los seis criterios, sus versiones LITE, el documento maestro,
-los once informes de validación y este anteproyecto--- en \textbf{145 fragmentos
-de 25 documentos} ($\approx$105\,000 palabras). En su primera versión la
+los once informes de validación y este anteproyecto--- en \textbf{150 fragmentos
+de 25 documentos} ($\approx$116\,290 palabras). En su primera versión la
 recuperación se resolvió con \textbf{TF-IDF (1--2 gramas, \texttt{sublinear\_tf})
 y similitud coseno} (decisión D002), suficiente a esa escala y sin dependencias
 externas. \textbf{El docente decidió después migrar a \emph{embeddings} vía API
@@ -40,19 +40,21 @@ commit \texttt{1528939}. No se usó un motor de grafos externo
 (Neo4j/Memgraph): con decenas de nodos y consultas simples no aporta ventaja y
 sí costo de operación.
 
-\textbf{(iii) Validación antes de compilar.} Dieciséis reglas se ejecutan como
+\textbf{(iii) Validación antes de compilar.} Diecisiete reglas se ejecutan como
 \textbf{puerta previa a la compilación del PDF final}, integradas en
 \texttt{compilar.py} (si alguna falla, la compilación se aborta; puede omitirse
 con \texttt{--forzar}). Las seis mínimas exigidas ---cada criterio con completo y
 LITE; conclusiones registradas; veredicto resumido en el LITE; términos del
 glosario realmente usados; línea de tiempo coincidente con el \texttt{git log}
 real; y todo archivo de código referenciado en el documento del criterio de
-código--- más diez adicionales: commit auditado, capas asignadas por regla
+código--- más once adicionales: commit auditado, capas asignadas por regla
 explícita, cobertura de fichas, integridad del grafo, cobertura y frescura del
 índice, LITE\,$\le$\,40\,\%, \textbf{contradicciones numéricas entre documentos}
 (R14), \textbf{coherencia entre las decisiones y el código}
-(R15) e \textbf{integridad de los registros de trazabilidad} (R16). Resultado de
-la ejecución final: \textbf{14 PASA, 1 FALLA, 1 ADVERTENCIA}, con coincidencia
+(R15), \textbf{integridad de los registros de trazabilidad} (R16) y
+\textbf{coherencia entre las cifras del sistema y los documentos que las citan}
+(R17). Resultado de
+la ejecución final: \textbf{15 PASA, 1 FALLA, 1 ADVERTENCIA}, con coincidencia
 exacta de \textbf{133/133 commits} y \textbf{51/51 archivos} entre lo documentado
 y el repositorio real. La única falla es, precisamente, el desfase declarado de
 D007 (el código sigue en TF-IDF), que la regla reporta con archivo y marcador.
@@ -62,7 +64,7 @@ D007 (el código sigue en TF-IDF), que la regla reporta con archivo y marcador.
 registra cada fuente consultada (documentación, comparativas, especificaciones)
 con su URL verificada, fecha, para qué se usó y qué archivo del proyecto depende
 de ella; la regla R16 falla si alguna URL queda como ``PENDIENTE''. \texttt{decisiones.yaml}
-es la bitácora de decisiones de diseño (7 registradas) con justificación,
+es la bitácora de decisiones de diseño (9 registradas) con justificación,
 alternativas descartadas, estado (\emph{vigente}, \emph{superada},
 \emph{propuesta}, \emph{pendiente\_implementacion}) y la relación de supersesión
 explícita (p.\,ej.\ D007 supera a D002). La regla R15 verifica que ninguna

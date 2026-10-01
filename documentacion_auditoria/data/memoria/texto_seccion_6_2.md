@@ -20,8 +20,8 @@ tres piezas, todas ejecutables y ejecutadas sobre los datos reales:
 
 **(i) Memoria semántica (RAG).** Indexamos el corpus documental —las secciones
 LaTeX de los seis criterios, sus versiones LITE, el documento maestro, los once
-informes de validación y este anteproyecto— en **145 fragmentos de 25 documentos**
-(≈105 000 palabras). En su primera versión la recuperación se resolvió con
+informes de validación y este anteproyecto— en **150 fragmentos de 25 documentos**
+(≈116 290 palabras). En su primera versión la recuperación se resolvió con
 **TF-IDF (1–2 gramas, `sublinear_tf`) y similitud coseno** (decisión **D002**),
 suficiente a esa escala y sin dependencias externas. **El docente decidió después
 migrar a *embeddings* vía API key** (decisión **D007**) para que el proyecto sea
@@ -44,18 +44,19 @@ commit `1528939`. No se usó un motor de grafos externo (Neo4j/Memgraph) porque
 con decenas de nodos y consultas simples no aporta ventaja alguna y sí costo de
 operación.
 
-**(iii) Validación antes de compilar.** Trece reglas se ejecutan como **puerta
+**(iii) Validación antes de compilar.** Diecisiete reglas se ejecutan como **puerta
 previa a la compilación del PDF final**, integradas en `compilar.py` (si alguna
 falla, la compilación se aborta; puede omitirse con `--forzar`). Las seis
 mínimas exigidas —cada criterio con completo y LITE; conclusiones registradas;
 veredicto resumido en el LITE; términos del glosario realmente usados; línea de
 tiempo coincidente con el `git log` real; y todo archivo de código referenciado
-en el documento del criterio de código— más diez adicionales: commit auditado,
+en el documento del criterio de código— más once adicionales: commit auditado,
 capas asignadas por regla explícita, cobertura de fichas, integridad referencial
 del grafo, cobertura y frescura del índice, la regla LITE ≤ 40 %,
 **contradicciones numéricas entre documentos** (R14), **coherencia entre las
-decisiones y el código** (R15) e **integridad de los registros de trazabilidad**
-(R16). Resultado de la ejecución final: **14 PASA, 1 FALLA, 1 ADVERTENCIA**, con
+decisiones y el código** (R15), **integridad de los registros de trazabilidad**
+(R16) y **coherencia entre las cifras del sistema y los documentos que las citan**
+(R17). Resultado de la ejecución final: **15 PASA, 1 FALLA, 1 ADVERTENCIA**, con
 la coincidencia exacta de **133/133 commits** y **51/51 archivos** entre lo
 documentado y el repositorio real. La única falla es, precisamente, el desfase
 declarado de D007 (el código sigue en TF-IDF), que la regla reporta con archivo y
@@ -66,7 +67,7 @@ marcador.
 cada fuente consultada (documentación, comparativas, especificaciones) con su URL
 verificada, fecha, para qué se usó y qué archivo del proyecto depende de ella; la
 regla R16 falla si alguna URL queda como "PENDIENTE". `decisiones.yaml` es la
-bitácora de decisiones de diseño (**7 registradas**) con justificación,
+bitácora de decisiones de diseño (**9 registradas**) con justificación,
 alternativas descartadas, estado (*vigente*, *superada*, *propuesta*,
 *pendiente_implementacion*) y la relación de supersesión explícita (p. ej. D007
 supera a D002). La regla R15 verifica que ninguna decisión superada siga
@@ -95,11 +96,11 @@ con tres piezas, todas ejecutables y ejecutadas sobre los datos reales.
 
 \textbf{(i) Memoria semántica (RAG ligero).} Indexamos el corpus ya redactado
 ---secciones de los seis criterios, sus versiones LITE, el documento maestro y
-los once informes de validación--- en \textbf{137 fragmentos de 24 documentos}
-($\approx$100\,700 palabras). La recuperación usa \textbf{TF-IDF (1--2 gramas,
+los once informes de validación--- en \textbf{150 fragmentos de 25 documentos}
+($\approx$116\,290 palabras). La recuperación usa \textbf{TF-IDF (1--2 gramas,
 \texttt{sublinear\_tf}) con similitud coseno} (scikit-learn). Se eligió TF-IDF y
 no \emph{embeddings} por cuatro razones a esta escala: el corpus es pequeño
-(137 fragmentos), el vocabulario es técnico y estable, no se depende de un
+(150 fragmentos), el vocabulario es técnico y estable, no se depende de un
 proveedor externo ni de red, y el resultado es determinista y explicable.
 Antes de redactar, el generador consulta esta memoria y registra los
 antecedentes (\texttt{data/memoria/consultas\_rag.jsonl}); si la similitud supera
@@ -119,7 +120,7 @@ commit \texttt{1528939}. No se usó un motor de grafos externo
 (Neo4j/Memgraph): con decenas de nodos y consultas simples no aporta ventaja y
 sí costo de operación.
 
-\textbf{(iii) Validación antes de compilar.} Trece reglas se ejecutan como
+\textbf{(iii) Validación antes de compilar.} Diecisiete reglas se ejecutan como
 \textbf{puerta previa a la compilación del PDF final}, integradas en
 \texttt{compilar.py} (si alguna falla, la compilación se aborta; puede omitirse
 con \texttt{--forzar}). Las seis mínimas exigidas ---cada criterio con completo y
@@ -128,8 +129,11 @@ glosario realmente usados; línea de tiempo coincidente con el \texttt{git log}
 real; y todo archivo de código referenciado en el documento del criterio de
 código--- más siete adicionales (commit auditado, capas asignadas por regla
 explícita, cobertura de fichas, integridad del grafo, cobertura y frescura del
-índice, y LITE\,$\le$\,40\,\%). Resultado de la ejecución final:
-\textbf{12 PASA, 0 FALLA, 1 ADVERTENCIA}, con coincidencia exacta de
+índice, LITE\,$\le$\,40\,\%, contradicciones numéricas (R14), coherencia entre
+las decisiones y el código (R15), integridad de los registros de trazabilidad
+(R16) y coherencia entre las cifras del sistema y los documentos que las citan
+(R17)). Resultado de la ejecución final:
+\textbf{15 PASA, 1 FALLA, 1 ADVERTENCIA}, con coincidencia exacta de
 \textbf{133/133 commits} y \textbf{51/51 archivos} entre lo documentado y el
 repositorio real.
 

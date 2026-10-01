@@ -1,0 +1,1024 @@
+{
+  "resumen": {
+    "fecha": "2026-10-01T17:25:51",
+    "indice": {
+      "n_fragmentos": 150,
+      "n_documentos": 25,
+      "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
+      "fecha_construccion": "2026-10-01T17:25:47",
+      "colecciones": {
+        "criterio_completo": 24,
+        "criterio_lite": 24,
+        "maestro": 8,
+        "anteproyecto": 8,
+        "validacion": 86
+      }
+    },
+    "total_preguntas": 20,
+    "bandas_score": {
+      "alto": 1,
+      "medio": 16,
+      "bajo": 3,
+      "sin_resultado": 0
+    },
+    "respuesta_en_top1": 9,
+    "respuesta_en_top3": 11,
+    "respuesta_en_corpus": 19,
+    "rank_promedio_cuando_existe": 8.42,
+    "por_grupo": {
+      "A": {
+        "n": 12,
+        "en_top1": 5,
+        "en_top3": 7,
+        "en_corpus": 12,
+        "score_promedio": 0.0765
+      },
+      "B": {
+        "n": 4,
+        "en_top1": 1,
+        "en_top3": 1,
+        "en_corpus": 3,
+        "score_promedio": 0.0542
+      },
+      "C": {
+        "n": 4,
+        "en_top1": 3,
+        "en_top3": 3,
+        "en_corpus": 4,
+        "score_promedio": 0.1094
+      }
+    }
+  },
+  "preguntas": [
+    {
+      "id": 1,
+      "grupo": "A",
+      "pregunta": "¿Cuántos registros declara el dataset bqtm-4y2h?",
+      "respuesta_esperada": "77 237",
+      "claves_comprobadas": [
+        "77237"
+      ],
+      "score_top1": 0.0505,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_final_S.md",
+        "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+        "coleccion": "validacion",
+        "puntaje": 0.0505,
+        "n_palabras": 596,
+        "extracto": "2. S1 — Dominio del problema y defensa (28 %, individual) Fortalezas: el material está diseñado para que cada integrante defienda el conjunto: rotación explícita (P16: \"Kevin explica objetivos; Paula explica datos; Valentina explica riesgos\"), frases clave por bloque que cualquier integrante puede u"
+      },
+      "top3": [
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0505
+        },
+        {
+          "documento": "objetivo_2",
+          "seccion": "03_datos",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.0482
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "5. Riesgos de sustentación (qué podría explotar un jurado)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.048
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 65
+    },
+    {
+      "id": 2,
+      "grupo": "A",
+      "pregunta": "¿Cuántas convocatorias reconoce MinCiencias?",
+      "respuesta_esperada": "6 (2013-2021)",
+      "claves_comprobadas": [
+        "6 convocatorias",
+        "seis convocatorias"
+      ],
+      "score_top1": 0.0462,
+      "banda": "bajo",
+      "top1": {
+        "documento": "anteproyecto",
+        "seccion": "01_problema",
+        "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\01_problema.tex",
+        "coleccion": "anteproyecto",
+        "puntaje": 0.0462,
+        "n_palabras": 724,
+        "extracto": "Planteamiento del problema y contexto El problema y a quién afecta Desde 2013, el Ministerio de Ciencia, Tecnología e Innovación de Colombia (MinCiencias) reconoce periódicamente a los investigadores activos del país a través de convocatorias nacionales (640/2013, 693/2014, 737/2015, 781/2017, 833/2"
+      },
+      "top3": [
+        {
+          "documento": "anteproyecto",
+          "seccion": "01_problema",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\01_problema.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.0462
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0421
+        },
+        {
+          "documento": "objetivo_4_lite",
+          "seccion": "02_contexto",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_4_lite\\secciones\\02_contexto.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.0416
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 75
+    },
+    {
+      "id": 3,
+      "grupo": "A",
+      "pregunta": "¿Cuántos registros tiene el consolidado versionado?",
+      "respuesta_esperada": "50 891",
+      "claves_comprobadas": [
+        "50891"
+      ],
+      "score_top1": 0.1074,
+      "banda": "medio",
+      "top1": {
+        "documento": "objetivo_2_lite",
+        "seccion": "03_datos",
+        "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
+        "coleccion": "criterio_lite",
+        "puntaje": 0.1074,
+        "n_palabras": 69,
+        "extracto": "Datos utilizados: suficiencia y corrección [hallazgo] Veredicto: Datos correctos y suficientes en origen (30.086 investigadores, 6 convocatorias, 3.166.629 productos), pero el consolidado versionado solo tiene 3 de 6 convocatorias (50.891 de 77.237 filas). Hallazgos de mayor impacto Un clon del repo"
+      },
+      "top3": [
+        {
+          "documento": "objetivo_2_lite",
+          "seccion": "03_datos",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.1074
+        },
+        {
+          "documento": "objetivo_2_lite",
+          "seccion": "05_conclusiones",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.093
+        },
+        {
+          "documento": "objetivo_1",
+          "seccion": "05_conclusiones",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_1\\secciones\\05_conclusiones.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.0757
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 60
+    },
+    {
+      "id": 4,
+      "grupo": "A",
+      "pregunta": "¿Cuántos investigadores únicos tiene el consolidado?",
+      "respuesta_esperada": "26 662",
+      "claves_comprobadas": [
+        "26662"
+      ],
+      "score_top1": 0.0822,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_final_S.md",
+        "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+        "coleccion": "validacion",
+        "puntaje": 0.0822,
+        "n_palabras": 596,
+        "extracto": "2. S1 — Dominio del problema y defensa (28 %, individual) Fortalezas: el material está diseñado para que cada integrante defienda el conjunto: rotación explícita (P16: \"Kevin explica objetivos; Paula explica datos; Valentina explica riesgos\"), frases clave por bloque que cualquier integrante puede u"
+      },
+      "top3": [
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0822
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "5. Riesgos de sustentación (qué podría explotar un jurado)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0636
+        },
+        {
+          "documento": "objetivo_2_lite",
+          "seccion": "03_datos",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.0619
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 5,
+      "n_resultados": 80
+    },
+    {
+      "id": 5,
+      "grupo": "A",
+      "pregunta": "¿Cuántas páginas tiene el estado del arte?",
+      "respuesta_esperada": "20",
+      "claves_comprobadas": [
+        "20 pags",
+        "20 paginas",
+        "20 pp"
+      ],
+      "score_top1": 0.1054,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_cierre_D.md",
+        "seccion": "6. Cálculo de la nota del bloque Documento (escala 0–5)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+        "coleccion": "validacion",
+        "puntaje": 0.1054,
+        "n_palabras": 108,
+        "extracto": "6. Cálculo de la nota del bloque Documento (escala 0–5) Criterio Peso Nivel Puntos Puntos × peso D1 Problema, contexto y estado actual 12 % Ejemplar 5,0 60 D2 Estado del arte y rigor bibliográfico 9 % Competente 4,0 36 D3 Objetivos (bloqueante) 8 % Competente 4,0 32 D4 Datos y aproximación metodológ"
+      },
+      "top3": [
+        {
+          "documento": "validacion_cierre_D.md",
+          "seccion": "6. Cálculo de la nota del bloque Documento (escala 0–5)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.1054
+        },
+        {
+          "documento": "validacion_final_D.md",
+          "seccion": "6. Veredicto",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0901
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "1. Material de apoyo",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0803
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 9,
+      "n_resultados": 146
+    },
+    {
+      "id": 6,
+      "grupo": "A",
+      "pregunta": "¿Cuántas referencias tiene el estado del arte?",
+      "respuesta_esperada": "39",
+      "claves_comprobadas": [
+        "39 referencias",
+        "39 entradas"
+      ],
+      "score_top1": 0.1105,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_final_D.md",
+        "seccion": "6. Veredicto",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+        "coleccion": "validacion",
+        "puntaje": 0.1105,
+        "n_palabras": 95,
+        "extracto": "6. Veredicto ✅ APROBADO CON OBSERVACIONES — Nota del bloque Documento: 4,78 / 5,00 Pasa la puerta de aprobación : D1 (problema) y D3 (objetivos), los dos criterios bloqueantes , quedan en Ejemplar — no hay devolución a corrección. Ningún criterio en Insuficiente; no hay referencias fabricadas; exten"
+      },
+      "top3": [
+        {
+          "documento": "validacion_final_D.md",
+          "seccion": "6. Veredicto",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.1105
+        },
+        {
+          "documento": "validacion_cierre_D.md",
+          "seccion": "6. Cálculo de la nota del bloque Documento (escala 0–5)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.1102
+        },
+        {
+          "documento": "validacion_final_D.md",
+          "seccion": "1. Requisitos de forma (pre-check)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.1039
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 8,
+      "n_resultados": 147
+    },
+    {
+      "id": 7,
+      "grupo": "A",
+      "pregunta": "¿Cuántas filas tiene el dataset de producción?",
+      "respuesta_esperada": "3 166 629",
+      "claves_comprobadas": [
+        "3166629"
+      ],
+      "score_top1": 0.1091,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_final_S.md",
+        "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+        "coleccion": "validacion",
+        "puntaje": 0.1091,
+        "n_palabras": 596,
+        "extracto": "2. S1 — Dominio del problema y defensa (28 %, individual) Fortalezas: el material está diseñado para que cada integrante defienda el conjunto: rotación explícita (P16: \"Kevin explica objetivos; Paula explica datos; Valentina explica riesgos\"), frases clave por bloque que cualquier integrante puede u"
+      },
+      "top3": [
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.1091
+        },
+        {
+          "documento": "objetivo_2_lite",
+          "seccion": "03_datos",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.0966
+        },
+        {
+          "documento": "objetivo_2_lite",
+          "seccion": "05_conclusiones",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.0837
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 2,
+      "n_resultados": 86
+    },
+    {
+      "id": 8,
+      "grupo": "A",
+      "pregunta": "¿Cuántos fragmentos indexa el RAG?",
+      "respuesta_esperada": "150",
+      "claves_comprobadas": [
+        "150 fragmentos"
+      ],
+      "score_top1": 0.0409,
+      "banda": "bajo",
+      "top1": {
+        "documento": "validacion_factica.md",
+        "seccion": "6. Veredicto final",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+        "coleccion": "validacion",
+        "puntaje": 0.0409,
+        "n_palabras": 236,
+        "extracto": "6. Veredicto final APROBADO CON OBSERVACIONES Justificación: 1. Los PDFs describen fielmente el código : el 83 % de las fichas muestreadas (15/18) se verificó sin errores, incluyendo descripciones funcionales, análisis de lógica, referencias de línea y fragmentos de evidencia incrustados en ambos .t"
+      },
+      "top3": [
+        {
+          "documento": "validacion_factica.md",
+          "seccion": "6. Veredicto final",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0409
+        },
+        {
+          "documento": "anteproyecto",
+          "seccion": "06b_memoria_agente",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.0383
+        },
+        {
+          "documento": "validacion_reglas.md",
+          "seccion": "Veredicto final",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0316
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 2,
+      "n_resultados": 12
+    },
+    {
+      "id": 9,
+      "grupo": "A",
+      "pregunta": "¿Cuántos nodos tiene el grafo?",
+      "respuesta_esperada": "255",
+      "claves_comprobadas": [
+        "255 nodos"
+      ],
+      "score_top1": 0.0526,
+      "banda": "medio",
+      "top1": {
+        "documento": "anteproyecto",
+        "seccion": "06b_memoria_agente",
+        "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+        "coleccion": "anteproyecto",
+        "puntaje": 0.0526,
+        "n_palabras": 701,
+        "extracto": "Gestión de la información del agente de IA Usamos IA generativa como asistente , no como autora. Para que ese uso fuera verificable y no produjera contradicciones entre los documentos del proyecto, implementamos una estrategia de gestión de información del agente con tres piezas, todas ejecutables y"
+      },
+      "top3": [
+        {
+          "documento": "anteproyecto",
+          "seccion": "06b_memoria_agente",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.0526
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0516
+        },
+        {
+          "documento": "validacion_factica.md",
+          "seccion": "3. Muestreo de fichas (18 verificadas contra el código real)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0348
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 35
+    },
+    {
+      "id": 10,
+      "grupo": "A",
+      "pregunta": "¿Cuántas reglas de validación hay?",
+      "respuesta_esperada": "17",
+      "claves_comprobadas": [
+        "17 reglas",
+        "diecisiete reglas"
+      ],
+      "score_top1": 0.05,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_anteproyecto_D.md",
+        "seccion": "5. D5 — Alcance, viabilidad y plan de trabajo (5 %)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
+        "coleccion": "validacion",
+        "puntaje": 0.05,
+        "n_palabras": 386,
+        "extracto": "5. D5 — Alcance, viabilidad y plan de trabajo (5 %) Nivel asignado: EN DESARROLLO (60 %) Qué pide el «Ejemplar» y qué hay Requisito Ejemplar Estado Evidencia concreta Declara explícitamente qué hará y qué no , con la razón de cada exclusión ✅ Cumplido (para el proyecto previo; reutilizable con adapt"
+      },
+      "top3": [
+        {
+          "documento": "validacion_anteproyecto_D.md",
+          "seccion": "5. D5 — Alcance, viabilidad y plan de trabajo (5 %)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.05
+        },
+        {
+          "documento": "objetivo_4_lite",
+          "seccion": "02_contexto",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_4_lite\\secciones\\02_contexto.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.0448
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "**LISTO CON AJUSTES MENORES**",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.039
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 19,
+      "n_resultados": 90
+    },
+    {
+      "id": 13,
+      "grupo": "A",
+      "pregunta": "¿Cuál es el resultado real de los 16 scripts del pipeline?",
+      "respuesta_esperada": "10 OK / 6 ERROR",
+      "claves_comprobadas": [
+        "10 OK / 6 ERROR",
+        "16 scripts 10/6"
+      ],
+      "score_top1": 0.0984,
+      "banda": "medio",
+      "top1": {
+        "documento": "maestro_auditoria",
+        "seccion": "07_logica_repositorio",
+        "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\07_logica_repositorio.tex",
+        "coleccion": "maestro",
+        "puntaje": 0.0984,
+        "n_palabras": 823,
+        "extracto": "Lógica de construcción del repositorio y cumplimiento del objetivo Cómo se construyó el repositorio El repositorio evolucionó en dos grandes etapas (ver línea de tiempo en la Sección sec:timeline ): Etapa académica inicial (ago--oct 2025) : carpetas notebooks/tarea_* con análisis por convocatoria (E"
+      },
+      "top3": [
+        {
+          "documento": "maestro_auditoria",
+          "seccion": "07_logica_repositorio",
+          "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\07_logica_repositorio.tex",
+          "coleccion": "maestro",
+          "puntaje": 0.0984
+        },
+        {
+          "documento": "anteproyecto",
+          "seccion": "06_ia_reparto",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06_ia_reparto.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.0632
+        },
+        {
+          "documento": "objetivo_5",
+          "seccion": "03_logica",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_5\\secciones\\03_logica.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.0607
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 16,
+      "n_resultados": 147
+    },
+    {
+      "id": 18,
+      "grupo": "A",
+      "pregunta": "¿Cuántos autores participaron en el repositorio auditado?",
+      "respuesta_esperada": "11",
+      "claves_comprobadas": [
+        "11 autores",
+        "once autores"
+      ],
+      "score_top1": 0.0651,
+      "banda": "medio",
+      "top1": {
+        "documento": "objetivo_6_lite",
+        "seccion": "02_contexto",
+        "ruta": "documentacion_auditoria\\latex\\objetivo_6_lite\\secciones\\02_contexto.tex",
+        "coleccion": "criterio_lite",
+        "puntaje": 0.0651,
+        "n_palabras": 304,
+        "extracto": "Contexto y guía de lectura Qué es este documento Este documento desarrolla el criterio 6 de la rúbrica : Línea de tiempo de commits y construcción del repositorio . El repositorio auditado es el Observatorio de investigadores reconocidos del Ministerio de Ciencia, Tecnología e Innovación de Colombia"
+      },
+      "top3": [
+        {
+          "documento": "objetivo_6_lite",
+          "seccion": "02_contexto",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_6_lite\\secciones\\02_contexto.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.0651
+        },
+        {
+          "documento": "validacion_factica.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0599
+        },
+        {
+          "documento": "objetivo_1",
+          "seccion": "02_contexto",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_1\\secciones\\02_contexto.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.0589
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 95
+    },
+    {
+      "id": 11,
+      "grupo": "B",
+      "pregunta": "¿Cuántos commits tiene el repo auditado?",
+      "respuesta_esperada": "133",
+      "claves_comprobadas": [
+        "133 commits"
+      ],
+      "score_top1": 0.0456,
+      "banda": "bajo",
+      "top1": {
+        "documento": "validacion_final_S.md",
+        "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+        "coleccion": "validacion",
+        "puntaje": 0.0456,
+        "n_palabras": 596,
+        "extracto": "2. S1 — Dominio del problema y defensa (28 %, individual) Fortalezas: el material está diseñado para que cada integrante defienda el conjunto: rotación explícita (P16: \"Kevin explica objetivos; Paula explica datos; Valentina explica riesgos\"), frases clave por bloque que cualquier integrante puede u"
+      },
+      "top3": [
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0456
+        },
+        {
+          "documento": "validacion_anteproyecto_S.md",
+          "seccion": "6. Citación APA 7",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0392
+        },
+        {
+          "documento": "validacion_anteproyecto_S.md",
+          "seccion": "2. S2 · 18 % — Claridad y estructura de la exposición (equipo)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0368
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 4,
+      "n_resultados": 85
+    },
+    {
+      "id": 12,
+      "grupo": "B",
+      "pregunta": "¿Cuántos archivos de código tiene el repo auditado?",
+      "respuesta_esperada": "51",
+      "claves_comprobadas": [
+        "51 archivos"
+      ],
+      "score_top1": 0.0529,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_factica.md",
+        "seccion": "1. Resumen ejecutivo",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+        "coleccion": "validacion",
+        "puntaje": 0.0529,
+        "n_palabras": 213,
+        "extracto": "1. Resumen ejecutivo Los PDFs y las fichas describen fielmente el código auditado en la gran mayoría de los puntos verificados. De 18 fichas muestreadas a fondo (35 % del total, cubriendo las 7 capas: ingesta, transformación, modelo, análisis, orquestación, visualización y legacy): 15 se verificaron"
+      },
+      "top3": [
+        {
+          "documento": "validacion_factica.md",
+          "seccion": "1. Resumen ejecutivo",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0529
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "2. S1 — Dominio del problema y defensa (28 %, individual)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0447
+        },
+        {
+          "documento": "validacion_reglas.md",
+          "seccion": "Tabla resumen",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0431
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 96
+    },
+    {
+      "id": 14,
+      "grupo": "B",
+      "pregunta": "¿Se usa folium en el código del repo auditado?",
+      "respuesta_esperada": "No",
+      "claves_comprobadas": [
+        "folium"
+      ],
+      "score_top1": 0.0529,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_sota_referencias.md",
+        "seccion": "encabezado",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
+        "coleccion": "validacion",
+        "puntaje": 0.0529,
+        "n_palabras": 121,
+        "extracto": "Validación independiente: referencias y mapeo al repositorio del \"Estado del Arte\" Validador: agente independiente y crítico (lectura + verificación empírica + búsqueda web; sin modificación de fuentes) Alcance: documentacion_auditoria/latex/estado_del_arte (secciones 02–12, refs.bib ) vs. repositor"
+      },
+      "top3": [
+        {
+          "documento": "validacion_sota_referencias.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0529
+        },
+        {
+          "documento": "validacion_anteproyecto_S.md",
+          "seccion": "2. S2 · 18 % — Claridad y estructura de la exposición (equipo)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0463
+        },
+        {
+          "documento": "validacion_anteproyecto_S.md",
+          "seccion": "6. Citación APA 7",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0462
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": false,
+      "rank_respuesta_en_corpus": null,
+      "n_resultados": 146
+    },
+    {
+      "id": 15,
+      "grupo": "B",
+      "pregunta": "¿Cuántos registros con edad mayor a 100 detectó el repo auditado?",
+      "respuesta_esperada": "19",
+      "claves_comprobadas": [
+        "natipicos_edad=19",
+        "19 sobre 50891",
+        "19 atipicos"
+      ],
+      "score_top1": 0.0652,
+      "banda": "medio",
+      "top1": {
+        "documento": "validacion_cierre_D.md",
+        "seccion": "1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+        "coleccion": "validacion",
+        "puntaje": 0.0652,
+        "n_palabras": 243,
+        "extracto": "1. D1 · Problema, contexto y estado actual (12 %) — Ejemplar (5,0 / 100 %) Justificación (evidencia en el texto): Actor, alcance, frecuencia y consecuencia explícitos: §1.1 delimita el padrón de investigadores reconocidos de MinCiencias (convocatorias 640/2013…894/2021), a quién afecta (\"A quién le "
+      },
+      "top3": [
+        {
+          "documento": "validacion_cierre_D.md",
+          "seccion": "1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0652
+        },
+        {
+          "documento": "validacion_cierre_S.md",
+          "seccion": "3. Coherencia de cifras entre soportes (documento · láminas · guion · guía · tarjetas)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0608
+        },
+        {
+          "documento": "anteproyecto",
+          "seccion": "01_problema",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\01_problema.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.059
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 82,
+      "n_resultados": 142
+    },
+    {
+      "id": 16,
+      "grupo": "C",
+      "pregunta": "¿Cuál es el resultado de la regla R15?",
+      "respuesta_esperada": "FALLA",
+      "claves_comprobadas": [
+        "falla"
+      ],
+      "score_top1": 0.1051,
+      "banda": "medio",
+      "top1": {
+        "documento": "anteproyecto",
+        "seccion": "06b_memoria_agente",
+        "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+        "coleccion": "anteproyecto",
+        "puntaje": 0.1051,
+        "n_palabras": 701,
+        "extracto": "Gestión de la información del agente de IA Usamos IA generativa como asistente , no como autora. Para que ese uso fuera verificable y no produjera contradicciones entre los documentos del proyecto, implementamos una estrategia de gestión de información del agente con tres piezas, todas ejecutables y"
+      },
+      "top3": [
+        {
+          "documento": "anteproyecto",
+          "seccion": "06b_memoria_agente",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.1051
+        },
+        {
+          "documento": "validacion_reglas.md",
+          "seccion": "Veredicto final",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0299
+        },
+        {
+          "documento": "validacion_reglas.md",
+          "seccion": "Evidencia detallada por regla",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0292
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 31
+    },
+    {
+      "id": 17,
+      "grupo": "C",
+      "pregunta": "¿Cuántos informes de validación cubre el corpus de la memoria?",
+      "respuesta_esperada": "11",
+      "claves_comprobadas": [
+        "once informes"
+      ],
+      "score_top1": 0.0732,
+      "banda": "medio",
+      "top1": {
+        "documento": "anteproyecto",
+        "seccion": "06b_memoria_agente",
+        "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+        "coleccion": "anteproyecto",
+        "puntaje": 0.0732,
+        "n_palabras": 701,
+        "extracto": "Gestión de la información del agente de IA Usamos IA generativa como asistente , no como autora. Para que ese uso fuera verificable y no produjera contradicciones entre los documentos del proyecto, implementamos una estrategia de gestión de información del agente con tres piezas, todas ejecutables y"
+      },
+      "top3": [
+        {
+          "documento": "anteproyecto",
+          "seccion": "06b_memoria_agente",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.0732
+        },
+        {
+          "documento": "validacion_final_S.md",
+          "seccion": "4. S3 — Trabajo en equipo, ética y uso declarado de IA (14 %, equipo)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0509
+        },
+        {
+          "documento": "validacion_cierre_S.md",
+          "seccion": "5. Checklist de cierre (para mañana, 5 minutos antes)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.047
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 78
+    },
+    {
+      "id": 19,
+      "grupo": "C",
+      "pregunta": "¿Cuál es el commit auditado del repo?",
+      "respuesta_esperada": "1528939",
+      "claves_comprobadas": [
+        "1528939"
+      ],
+      "score_top1": 0.0546,
+      "banda": "medio",
+      "top1": {
+        "documento": "anteproyecto",
+        "seccion": "06b_memoria_agente",
+        "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+        "coleccion": "anteproyecto",
+        "puntaje": 0.0546,
+        "n_palabras": 701,
+        "extracto": "Gestión de la información del agente de IA Usamos IA generativa como asistente , no como autora. Para que ese uso fuera verificable y no produjera contradicciones entre los documentos del proyecto, implementamos una estrategia de gestión de información del agente con tres piezas, todas ejecutables y"
+      },
+      "top3": [
+        {
+          "documento": "anteproyecto",
+          "seccion": "06b_memoria_agente",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.0546
+        },
+        {
+          "documento": "validacion_sota_referencias.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
+          "coleccion": "validacion",
+          "puntaje": 0.0438
+        },
+        {
+          "documento": "objetivo_6",
+          "seccion": "05_conclusiones",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_6\\secciones\\05_conclusiones.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.0362
+        }
+      ],
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 1,
+      "n_resultados": 147
+    },
+    {
+      "id": 20,
+      "grupo": "C",
+      "pregunta": "¿Cuál es el DOI real de Cañibano & Bozeman (2009)?",
+      "respuesta_esperada": "10.3152/095820209x441754",
+      "claves_comprobadas": [
+        "103152/095820209x441754",
+        "095820209x441754"
+      ],
+      "score_top1": 0.2047,
+      "banda": "alto",
+      "top1": {
+        "documento": "validacion_final_D.md",
+        "seccion": "4. Verificación de los hechos que la rúbrica penaliza (resumen)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+        "coleccion": "validacion",
+        "puntaje": 0.2047,
+        "n_palabras": 143,
+        "extracto": "4. Verificación de los hechos que la rúbrica penaliza (resumen) 1. Extensión del cuerpo : ✅ 8 págs. (u 8–9 contando el índice) dentro de 6–10, sin contar portada ni referencias. 2. APA 7 en referencias : ⚠️ Errores menores que no impiden rastrear ninguna fuente (título incompleto de Cañibano & Bozem"
+      },
+      "top3": [
+        {
+          "documento": "validacion_final_D.md",
+          "seccion": "4. Verificación de los hechos que la rúbrica penaliza (resumen)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.2047
+        },
+        {
+          "documento": "validacion_cierre_D.md",
+          "seccion": "0. Verificaciones formales previas",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.1275
+        },
+        {
+          "documento": "validacion_final_D.md",
+          "seccion": "7. Correcciones accionables, priorizadas",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.1109
+        }
+      ],
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
+      "respuesta_en_corpus": true,
+      "rank_respuesta_en_corpus": 4,
+      "n_resultados": 67
+    }
+  ]
+}
