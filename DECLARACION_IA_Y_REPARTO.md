@@ -29,7 +29,7 @@ investigadores de MinCiencias (2013–2021) con datos abiertos — Observatorio 
 | Material de sustentación | `pdf/diapositivas_anteproyecto.pdf`, `pdf/guia_estudio.pdf`, `pdf/tarjetas_sustentacion.pdf` | **Generado por IA**; reparto por integrante definido con el equipo |
 | Informes de validación | `data/validacion/*.md` (19 archivos) | **Generados por agentes de IA independientes** (ver §3) |
 | Verificación de referencias y fuentes | `data/memoria/fuentes_externas.yaml`, correcciones bibliográficas de este documento | **IA con búsqueda web**; decisión de qué corregir, del equipo |
-| Registros de trazabilidad | `data/memoria/decisiones.yaml` (D001–D007), `fuentes_externas.yaml` | **Estructura y contenido redactados por IA**; D007 es decisión del docente |
+| Registros de trazabilidad | `data/memoria/decisiones.yaml` (D001–D009), `fuentes_externas.yaml` | **Estructura y contenido redactados por IA**; D007 es decisión del docente |
 | Empaquetado y publicación | `ENTREGA_1/`, `README.md`, `.gitignore`, 19 ZIP Overleaf, commits | **Ejecutado por IA** en el entorno del equipo |
 
 ### 1.2 NO asistido por IA
@@ -83,7 +83,7 @@ cd "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consult
 git log --oneline                                   # 22 commits del repositorio de trabajo
 git log --pretty=format:"%an|%ae|%s"                # autoría real de cada commit
 cd documentacion_auditoria\src
-python -m memoria validar                           # 16 reglas de validación (exit 1 si hay FALLA)
+python -m memoria validar                           # 17 reglas de validación (exit 1 si hay FALLA)
 python -m memoria evidencia                         # informe de la última ejecución
 python -m memoria consultar "declaración de uso de IA" -k 5   # qué se dijo antes sobre el tema
 ```
@@ -104,7 +104,7 @@ $ git log --pretty=format:"%an" | sort | uniq -c
       9 KevinG47
 ```
 
-**Los 22 commits del repositorio de trabajo están atribuidos a Kevin** (dos variantes del
+**Hay más de 20 commits atribuidos a Kevin"** (dos variantes del
 mismo nombre de configuración de git; el correo es el mismo en todos:
 `kevin47gremory@gmail.com`). El repositorio **no contiene evidencia de commits,
 ramas o autorías de Valentina ni de Paula**.
