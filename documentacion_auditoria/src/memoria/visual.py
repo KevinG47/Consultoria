@@ -198,6 +198,19 @@ FORMAS_INTERACTIVO = {
     "TerminoGlosario": "ellipse", "Capa": "box", "ArchivoCodigo": "box",
     "Commit": "dot", "Autor": "ellipse",
 }
+# Niveles del layout jerárquico. vis.js exige que TODOS los nodos tengan nivel si
+# alguno lo tiene, así que se define para los 9 tipos (no solo los de la vista
+# filtrada). El maestro de auditoría va al último nivel para que la lectura sea de
+# arriba abajo (criterios -> documentos -> maestro que los consolida), en vez de
+# quedar al final de la fila de documentos.
+# Nota medida: el NÚMERO de cruces de aristas resultó inestable entre mediciones
+# (31 / 57 / 58 / 6 para layouts casi idénticos), así que no se usa como criterio.
+# Los cruces que quedan son estructurales: el maestro recibe 6 aristas desde la
+# fila de criterios y cualquier layout tiene que atravesar la fila de documentos.
+NIVELES_HIERARQUICOS = {
+    "Criterio": 0, "Documento": 1, "DocumentoValidacion": 1, "DocumentoMaestro": 2,
+    "TerminoGlosario": 2, "ArchivoCodigo": 2, "Commit": 2, "Capa": 3, "Autor": 3,
+}
 TAMANOS_INTERACTIVO = {"Criterio": 46, "DocumentoValidacion": 14, "TerminoGlosario": 16,
                        "Capa": 18, "ArchivoCodigo": 12, "Commit": 10, "Autor": 16}
 # Los nodos con forma "box" se dimensionan por su etiqueta: la jerarquía visual
@@ -238,7 +251,7 @@ TIPOS_POR_DEFECTO_HTML = ["Criterio", "Documento"]
 
 _OPCIONES_INTERACTIVO = {
     "layout": {"hierarchical": {"enabled": True, "direction": "UD", "sortMethod": "directed",
-                                "levelSeparation": 280, "nodeSpacing": 250,
+                                "levelSeparation": 260, "nodeSpacing": 260,
                                 "treeSpacing": 300, "blockShifting": True,
                                 "edgeMinimization": True, "parentCentralization": True}},
     "physics": {"enabled": False},
@@ -265,6 +278,11 @@ def _clave_visual(n, d) -> str:
     if nombre == "maestro_auditoria" or str(d.get("ruta", "")).endswith("maestro_auditoria"):
         return "DocumentoMaestro"
     return "DocumentoLite" if d.get("variante") == "lite" else "Documento"
+
+
+def _nivel(n, d) -> int:
+    """Nivel jerárquico del nodo (el maestro de auditoría va al último)."""
+    return NIVELES_HIERARQUICOS.get(_clave_visual(n, d), 1)
 
 
 def _envolver(texto: str, ancho: int) -> str:
@@ -383,6 +401,11 @@ def dibujar_html(tipos: list[str] | None = None,
     """
     Genera la vista interactiva del grafo con PyVis (HTML autocontenido).
 
+    El layout es jerárquico con niveles explícitos por tipo: criterios arriba,
+    documentos en el medio y el maestro de auditoría (y el resto de tipos) abajo,
+    de modo que la lectura sea de arriba abajo. Antes, sin niveles, vis.js dejaba
+    el maestro al final de la fila de documentos.
+
     Devuelve un dict con la ruta, los conteos y el detalle de tipos. Si PyVis no
     está instalado, devuelve {'error', 'sugerencia'} en vez de fallar: el comando
     lo imprime y sugiere `pip install pyvis`.
@@ -416,6 +439,7 @@ def dibujar_html(tipos: list[str] | None = None,
                      size=TAMANOS_INTERACTIVO.get(clave, 18),
                      font={"size": FUENTE_INTERACTIVO.get(clave, 14)},
                      margin=MARGEN_INTERACTIVO.get(clave, 10),
+                     level=_nivel(n, d),
                      borderWidth=4 if clave == "DocumentoMaestro" else 2)
 
     relaciones_presentes: list[str] = []
