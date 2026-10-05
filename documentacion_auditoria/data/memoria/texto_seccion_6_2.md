@@ -67,7 +67,7 @@ marcador.
 cada fuente consultada (documentación, comparativas, especificaciones) con su URL
 verificada, fecha, para qué se usó y qué archivo del proyecto depende de ella; la
 regla R16 falla si alguna URL queda como "PENDIENTE". `decisiones.yaml` es la
-bitácora de decisiones de diseño (**9 registradas**) con justificación,
+bitácora de decisiones de diseño (**10 registradas**) con justificación,
 alternativas descartadas, estado (*vigente*, *superada*, *propuesta*,
 *pendiente_implementacion*) y la relación de supersesión explícita (p. ej. D007
 supera a D002). La regla R15 verifica que ninguna decisión superada siga

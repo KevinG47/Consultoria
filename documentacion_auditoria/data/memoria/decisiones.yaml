@@ -221,3 +221,39 @@ decisiones:
       "esperado: FALLA" para R15): si esa regla cambia de estado, R17 FALLA
       nombrando la pregunta y el estado real de la regla.
     fuente: F003
+
+  - id: D010
+    fecha: "2026-10-04"
+    secuencia: 10
+    tema: "cifras_age_100"
+    decision: "Dejar la cifra '22 registros con edad > 100' en el anteproyecto y aclararla oralmente en la sustentación"
+    justificacion: >
+      Las dos cifras son correctas: 22 sobre el universo declarado de 77 237 filas,
+      19 sobre el consolidado de 50 891. El error es de redacción (ambigüedad), no de
+      dato. La corrección del .tex dispara reindexado del RAG y cascada de R17, con
+      riesgo alto a horas de la entrega. Se documenta como deuda declarada.
+    alternativas_descartadas: ["corregir el .tex antes de la entrega", "corregir también las Entregas 3/4/5"]
+    estado: vigente
+    implementacion:
+      archivos: ["documentacion_auditoria/data/memoria/decisiones.yaml"]
+      marcador_codigo: "D010"
+      marcador_doc: "22 registros con edad"
+    evidencia: >
+      Medido antes de decidir. El artefacto del repositorio auditado
+      evidencias/calidad_resumen.json registra n_atipicos_edad=19 sobre n_total=50891
+      (0,037 %) y evidencias/calidad_atipicos_edad.csv lista exactamente 19 filas
+      (edad mínima 119,0; máxima 956,25). El 22 viene del informe narrativo del mismo
+      repositorio (docs/informe/informe_final.tex:268 y README, hallazgo 7), calculado
+      sobre 77 237 filas declaradas; y una tercera ficha
+      (docs/inventario_notebooks.md:107) dice 10. El anteproyecto
+      (latex/anteproyecto/secciones/01_problema.tex:55) dice 22 sin aclarar el
+      universo: la cifra no es falsa, es ambigua. Aclaración oral prevista para la
+      sustentación: 19 en el consolidado, 22 en el universo declarado, 10 en una
+      ficha del repositorio auditado (su contradicción interna es el hallazgo).
+      Consecuencia medida al registrar esta decisión: R17 pasa a FALLA con UNA sola
+      cita desactualizada -- latex/anteproyecto/secciones/06b_memoria_agente.tex:67
+      cita "9 registradas" cuando la bitácora ya tiene 10 -- porque el §6.2 del
+      anteproyecto no se edita por decisión expresa. El desfase queda declarado aquí
+      y visible en cada ejecución de `python -m memoria validar`; R15 y R16 no
+      reportan problema alguno por D010 (tema propio, sin duplicidad).
+    fuente: F001
