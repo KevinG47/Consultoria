@@ -80,6 +80,8 @@ python -m memoria consultar "tema" -k 5      # consulta el corpus ya escrito
 python -m memoria antes-de-redactar "tema"   # RAG antes de escribir (queda en bitácora)
 python -m memoria grafo                      # memoria estructural (networkx) + git real
 python -m memoria dibujar --tipos Criterio,Documento   # figura para diapositiva (+ --html)
+python -m memoria dibujar --tipos Criterio,Documento --interactivo   # PNG + HTML interactivo
+python -m memoria dibujar-html --tipos Criterio,Documento   # solo el HTML interactivo (PyVis)
 python -m memoria validar                    # 17 reglas (exit 1 si alguna FALLA)
 python -m memoria evidencia                  # informe legible de la última ejecución
 ```
@@ -90,6 +92,16 @@ python -m memoria evidencia                  # informe legible de la última eje
 - **Memoria estructural:** grafo de 255 nodos / 498 aristas construido desde los
   YAML/CSV **más datos vivos** del clon auditado (`git log`, `git ls-files`,
   commit `1528939`).
+- **Vista interactiva del grafo (para sustentación):** `python -m memoria dibujar-html`
+  genera `data/memoria/grafo_interactivo.html` con **PyVis**. En la vista
+  `Criterio,Documento` son 19 nodos y 18 relaciones: los criterios (azul oscuro, arriba)
+  generan sus documentos (azul claro, abajo), su versión LITE va en gris y el maestro de
+  auditoría en dorado; cada flecha lleva su etiqueta (`GENERA`, `RESUME EN`,
+  `CONSOLIDA EN`) y al pasar el cursor se ve el tipo, el id y la ruta real del archivo.
+  El layout es jerárquico (criterios arriba, documentos abajo) y el archivo es
+  **autocontenido: funciona sin internet** y se abre con doble clic. El PNG de matplotlib
+  (`dibujar`) se mantiene como respaldo. Si PyVis no está instalado, el comando sugiere
+  `pip install pyvis` y no rompe nada.
 - **Trazabilidad (requisito del docente):** `data/memoria/fuentes_externas.yaml`
   (fuentes consultadas, con URL verificada y archivo dependiente) y
   `data/memoria/decisiones.yaml` (bitácora de decisiones con supersesión

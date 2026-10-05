@@ -179,6 +179,16 @@ python -m memoria dibujar --tipos Criterio,Documento
 **Debe verse:** `[dibujar] dibujados 19 nodos / 18 aristas de 255 nodos / 498 aristas
 totales` y se genera `data/memoria/grafo_visual.png` (≈179 KB), legible para proyectar.
 
+```powershell
+python -m memoria dibujar-html --tipos Criterio,Documento
+```
+**Debe verse:** `[dibujar] HTML interactivo (PyVis): ...grafo_interactivo.html (697 KB)` y
+`autocontenido (funciona sin internet): sí`. Es la vista recomendada para proyectar: los
+criterios (azul oscuro, arriba) generan sus documentos (azul claro, abajo), la versión LITE
+va en gris y el maestro de auditoría en dorado; cada flecha dice qué relación representa
+(`GENERA`, `RESUME EN`, `CONSOLIDA EN`). Se abre con doble clic, se arrastra y hace zoom sin
+necesidad de internet.
+
 **Prueba de que la puerta es real (opcional, 30 s):** abre
 `data/memoria/decisiones.yaml`, borra el `lite_veredicto` del criterio 1 en
 `data/objetivos.yaml`, corre `python ../../src/compilar.py` (desde `documentacion_auditoria`):

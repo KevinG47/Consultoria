@@ -19,9 +19,9 @@ from pathlib import Path
 
 if __package__ in (None, ""):                      # ejecución directa
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from memoria import config, grafo, rag, reglas   # type: ignore
+    from memoria import config, grafo, rag, reglas, visual   # type: ignore
 else:
-    from . import config, grafo, rag, reglas
+    from . import config, grafo, rag, reglas, visual
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
@@ -142,9 +142,32 @@ def _cmd_evidencia(args) -> int:
     return 0
 
 
-def _cmd_dibujar(args) -> int:
-    from . import visual
+def _informar_html(res: dict) -> int:
+    """Imprime el resultado de la vista interactiva (o sugiere instalar PyVis)."""
+    if "error" in res:
+        print(f"[dibujar] {res['error']}")
+        print(f"[dibujar] instálalo con:  {res['sugerencia']}")
+        return 1
+    print(f"[dibujar] HTML interactivo (PyVis): {res['salida']}  ({res['peso_kb']} KB)")
+    print(f"[dibujar] vista: {res['nodos_dibujados']} nodos / {res['aristas_dibujadas']} relaciones "
+          f"de {res['nodos_totales_grafo']} nodos / {res['aristas_totales_grafo']} del grafo completo")
+    print(f"[dibujar] tipos: {', '.join(res['tipos'])} | colores/formas: {', '.join(res['claves_visuales'])}")
+    print(f"[dibujar] flechas etiquetadas: {', '.join(res['relaciones_dibujadas'])}")
+    print(f"[dibujar] autocontenido (funciona sin internet): {'sí' if res['autocontenido'] else 'NO'}")
+    print(f"[dibujar] ábrelo con doble clic o:  Invoke-Item '{res['salida']}'")
+    return 0
 
+
+def _cmd_dibujar_html(args) -> int:
+    tipos = [t.strip() for t in args.tipos.split(",") if t.strip()] or None
+    res = visual.dibujar_html(tipos=tipos,
+                              salida=Path(args.salida) if args.salida else None,
+                              titulo=args.titulo or None,
+                              refrescar_git=args.refrescar_git)
+    return _informar_html(res)
+
+
+def _cmd_dibujar(args) -> int:
     tipos = [t.strip() for t in args.tipos.split(",") if t.strip()] or None
     salida = Path(args.salida) if args.salida else None
     res = visual.dibujar(tipos=tipos, salida=salida,
@@ -158,6 +181,9 @@ def _cmd_dibujar(args) -> int:
         print(f"[dibujar] HTML interactivo: {res['salida_html']}")
     if "aviso_html" in res:
         print(f"[dibujar] {res['aviso_html']}")
+    if getattr(args, "interactivo", False):
+        _informar_html(visual.dibujar_html(tipos=tipos, titulo=args.titulo or None,
+                                           refrescar_git=args.refrescar_git))
     print("[dibujar] pista: para una diapositiva usa --tipos Criterio,Documento")
     return 0
 
@@ -198,8 +224,22 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--salida", default="", help="ruta del PNG de salida")
     d.add_argument("--titulo", default="", help="título de la figura")
     d.add_argument("--html", action="store_true", help="además, HTML interactivo (plotly)")
+    d.add_argument("--interactivo", action="store_true",
+                   help="además del PNG, HTML interactivo con PyVis (etiquetas de relación, "
+                        "colores/forma por tipo, tooltips; funciona sin internet)")
     d.add_argument("--refrescar-git", action="store_true")
     d.set_defaults(func=_cmd_dibujar)
+
+    dh = sub.add_parser("dibujar-html",
+                        help="genera el HTML interactivo del grafo con PyVis (sin PNG, sin internet)")
+    dh.add_argument("--tipos", default="",
+                    help="tipos de nodo separados por coma (por defecto: Criterio,Documento)")
+    dh.add_argument("--salida", default="",
+                    help="ruta del HTML (por defecto: data/memoria/grafo_interactivo.html)")
+    dh.add_argument("--titulo", default="", help="título de la vista")
+    dh.add_argument("--refrescar-git", action="store_true",
+                    help="relee el clon auditado con git antes de dibujar")
+    dh.set_defaults(func=_cmd_dibujar_html)
 
     args = p.parse_args(argv)
     return args.func(args)
