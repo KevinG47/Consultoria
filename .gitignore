@@ -43,3 +43,10 @@ documentacion_auditoria/data/memoria/rag_matriz.npz
 documentacion_auditoria/data/memoria/rag_vectorizer.pkl
 documentacion_auditoria/data/memoria/git_log_real.csv
 documentacion_auditoria/data/memoria/git_ls_files_real.txt
+
+# ── Material interno de sustentación (NO se versiona: el docente no debe verlo).
+#    El archivo se conserva en disco; solo se excluye de git.
+#    El patrón sin barra ya ignora el nombre en cualquier carpeta; la segunda
+#    línea lo deja explícito por si el archivo se mueve a docs/ algún día. ──
+guion_sustentacion_nada_sin_fuente.md
+docs/guion_sustentacion_nada_sin_fuente.md
