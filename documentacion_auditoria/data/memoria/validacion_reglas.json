@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-04T20:06:58",
+  "fecha": "2026-10-06T17:28:03",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
@@ -360,9 +360,9 @@
       "id": "R15",
       "descripcion": "Las decisiones vigentes coinciden con el código y los documentos",
       "estado": "FALLA",
-      "detalle": "9 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos.",
+      "detalle": "10 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos.",
       "evidencia": {
-        "decisiones": 9,
+        "decisiones": 10,
         "problemas": [
           "D002 está SUPERADA (D007) pero su implementación sigue en el código: 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py"
         ],
@@ -392,6 +392,9 @@
           ],
           "trazabilidad_cifras": [
             "D009"
+          ],
+          "cifras_age_100": [
+            "D010"
           ]
         }
       }
@@ -400,18 +403,18 @@
       "id": "R16",
       "descripcion": "Registros de trazabilidad íntegros y sin marcadores PENDIENTE",
       "estado": "PASA",
-      "detalle": "4 fuentes externas y 9 decisiones registradas; 0 problema(s) de integridad.",
+      "detalle": "4 fuentes externas y 10 decisiones registradas; 0 problema(s) de integridad.",
       "evidencia": {
         "problemas": [],
         "fuentes": 4,
-        "decisiones": 9
+        "decisiones": 10
       }
     },
     {
       "id": "R17",
       "descripcion": "Las cifras del sistema (índice, grafo, reglas, decisiones), el recuento de estados y los estados de regla del banco coinciden con la ejecución real",
-      "estado": "PASA",
-      "detalle": "5 documento(s) revisado(s); 49 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad.",
+      "estado": "FALLA",
+      "detalle": "1 cifra(s) desactualizada(s) en 5 documento(s) revisado(s) (recuento real de esta corrida si R17 falla: 14 PASA / 2 FALLA / 1 ADVERTENCIA): latex/anteproyecto/secciones/06b_memoria_agente.tex:67 cita \"9 registradas\" pero decisiones = 10",
       "evidencia": {
         "esperado": {
           "fragmentos": 150,
@@ -420,7 +423,7 @@
           "nodos": 255,
           "aristas": 498,
           "reglas": 17,
-          "decisiones": 9
+          "decisiones": 10
         },
         "tally_esperado": {
           "PASA": 15,
@@ -446,7 +449,7 @@
           "data/memoria/texto_seccion_6_2.md",
           "scripts/banco_preguntas.py"
         ],
-        "citas_correctas": 49,
+        "citas_correctas": 48,
         "estados_de_regla_citados": [
           {
             "regla": "R15",
@@ -455,14 +458,16 @@
             "linea": 99
           }
         ],
-        "problemas": []
+        "problemas": [
+          "latex/anteproyecto/secciones/06b_memoria_agente.tex:67 cita \"9 registradas\" pero decisiones = 10"
+        ]
       }
     }
   ],
   "resumen": {
     "total": 17,
-    "PASA": 15,
-    "FALLA": 1,
+    "PASA": 14,
+    "FALLA": 2,
     "ADVERTENCIA": 1
   }
 }
