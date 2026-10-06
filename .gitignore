@@ -30,6 +30,8 @@ Thumbs.db
 desktop.ini
 
 # ── Datos grandes de producción (no versionar) ──
+# Base fuente descargada de datos.gov.co (31,3 MB): se re-descarga, no se versiona
+Datos/
 *.1.2GB*
 datos/raw/
 

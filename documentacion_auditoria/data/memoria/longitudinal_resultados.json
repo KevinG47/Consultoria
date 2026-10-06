@@ -1,0 +1,3648 @@
+{
+  "fuente": "Fuente: datos.gov.co, dataset bqtm-4y2h — Investigadores reconocidos por convocatoria (77 237 registros, 30 086 personas).",
+  "universo": {
+    "registros": 77237,
+    "personas": 30086,
+    "convocatorias": 6,
+    "personas_por_convocatoria": {
+      "2013": 8016,
+      "2014": 8280,
+      "2015": 10050,
+      "2017": 13001,
+      "2019": 16796,
+      "2021": 21094
+    },
+    "registros_por_convocatoria": {
+      "2013": 8016,
+      "2014": 8280,
+      "2015": 10050,
+      "2017": 13001,
+      "2019": 16796,
+      "2021": 21094
+    }
+  },
+  "tamano_muestra": {
+    "N": 30086,
+    "z": 1.96,
+    "p": 0.5,
+    "e": 0.02,
+    "n0": 2400.9999999999995,
+    "n_ajustado_exacto": 2223.618974327402,
+    "n_final": 2224,
+    "fraccion_muestreo": 0.07392142524762348,
+    "error_efectivo_sin_fpc": 0.020780628777159287,
+    "error_efectivo_con_fpc": 0.01999814994019829
+  },
+  "semilla": 2026,
+  "muestra": {
+    "personas": 2224,
+    "registros": 5806,
+    "registros_por_convocatoria": {
+      "2013": 618,
+      "2014": 640,
+      "2015": 753,
+      "2017": 983,
+      "2019": 1258,
+      "2021": 1554
+    },
+    "personas_por_convocatoria": {
+      "2013": 618,
+      "2014": 640,
+      "2015": 753,
+      "2017": 983,
+      "2019": 1258,
+      "2021": 1554
+    },
+    "media_registros_por_persona": 2.610611510791367
+  },
+  "perfil_poblacion": {
+    "NME_GENERO_PR": {
+      "Masculino": 18228,
+      "Femenino": 11849,
+      "Intersexual": 5,
+      "No disponible": 4
+    },
+    "NME_CLASIFICACION_PR": {
+      "Investigador Junior": 20677,
+      "Investigador Asociado": 5788,
+      "Investigador Sénior": 3287,
+      "Investigador Emérito": 334
+    },
+    "NME_GRAN_AREA_PR": {
+      "Ciencias Sociales": 9239,
+      "Ciencias Naturales": 6296,
+      "Ingeniería y Tecnología": 5638,
+      "Ciencias Médicas y de la Salud": 4573,
+      "Humanidades": 2412,
+      "Ciencias Agrícolas": 1364,
+      "No registra": 564
+    },
+    "NME_NIV_FORM_PR": {
+      "Doctorado": 14865,
+      "Maestría/Magister": 10831,
+      "Postdoctorado": 2272,
+      "Especialidad Médica": 767,
+      "Pregrado/Universitario": 665,
+      "Especialización": 663,
+      "No disponible": 19,
+      "Cursos de corta duración": 2,
+      "Técnico - nivel superior": 1,
+      "Secundario": 1
+    }
+  },
+  "perfil_muestra": {
+    "NME_GENERO_PR": {
+      "Masculino": 1384,
+      "Femenino": 840
+    },
+    "NME_CLASIFICACION_PR": {
+      "Investigador Junior": 1496,
+      "Investigador Asociado": 470,
+      "Investigador Sénior": 244,
+      "Investigador Emérito": 14
+    },
+    "NME_GRAN_AREA_PR": {
+      "Ciencias Sociales": 674,
+      "Ciencias Naturales": 453,
+      "Ingeniería y Tecnología": 438,
+      "Ciencias Médicas y de la Salud": 323,
+      "Humanidades": 177,
+      "Ciencias Agrícolas": 118,
+      "No registra": 41
+    },
+    "NME_NIV_FORM_PR": {
+      "Doctorado": 1084,
+      "Maestría/Magister": 801,
+      "Postdoctorado": 190,
+      "Especialización": 52,
+      "Pregrado/Universitario": 49,
+      "Especialidad Médica": 46,
+      "Cursos de corta duración": 1,
+      "No disponible": 1
+    }
+  },
+  "representatividad": {
+    "genero": {
+      "categorias": {
+        "Femenino": {
+          "poblacion_pct": 39.383766535930334,
+          "muestra_pct": 37.76978417266187,
+          "diferencia_pp": -1.6139823632684624
+        },
+        "Intersexual": {
+          "poblacion_pct": 0.016619025460347003,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.016619025460347003
+        },
+        "Masculino": {
+          "poblacion_pct": 60.586319218241044,
+          "muestra_pct": 62.23021582733813,
+          "diferencia_pp": 1.6438966090970841
+        },
+        "No disponible": {
+          "poblacion_pct": 0.013295220368277603,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.013295220368277603
+        }
+      },
+      "chi2": 3.1282954459640413,
+      "p_valor": 0.3722643960492599,
+      "gl": 3,
+      "min_esperado": 0.2956857009904939,
+      "supuesto_frecuencias_ok": false,
+      "max_diferencia_pp": 1.6438966090970841
+    },
+    "categoria": {
+      "categorias": {
+        "Investigador Asociado": {
+          "poblacion_pct": 19.238183872897693,
+          "muestra_pct": 21.133093525179856,
+          "diferencia_pp": 1.8949096522821618
+        },
+        "Investigador Emérito": {
+          "poblacion_pct": 1.1101509007511798,
+          "muestra_pct": 0.6294964028776978,
+          "diferencia_pp": -0.4806544978734821
+        },
+        "Investigador Junior": {
+          "poblacion_pct": 68.726317888719,
+          "muestra_pct": 67.26618705035972,
+          "diferencia_pp": -1.460130838359286
+        },
+        "Investigador Sénior": {
+          "poblacion_pct": 10.925347337632122,
+          "muestra_pct": 10.971223021582734,
+          "diferencia_pp": 0.0458756839506122
+        }
+      },
+      "chi2": 9.473421862978931,
+      "p_valor": 0.023615794633032938,
+      "gl": 3,
+      "min_esperado": 24.689756032706242,
+      "supuesto_frecuencias_ok": true,
+      "max_diferencia_pp": 1.8949096522821618
+    },
+    "gran_area": {
+      "categorias": {
+        "Ciencias Agrícolas": {
+          "poblacion_pct": 4.533670145582663,
+          "muestra_pct": 5.305755395683454,
+          "diferencia_pp": 0.7720852501007902
+        },
+        "Ciencias Médicas y de la Salud": {
+          "poblacion_pct": 15.19976068603337,
+          "muestra_pct": 14.52338129496403,
+          "diferencia_pp": -0.67637939106934
+        },
+        "Ciencias Naturales": {
+          "poblacion_pct": 20.926676859668948,
+          "muestra_pct": 20.368705035971225,
+          "diferencia_pp": -0.5579718236977255
+        },
+        "Ciencias Sociales": {
+          "poblacion_pct": 30.708635245629196,
+          "muestra_pct": 30.305755395683455,
+          "diferencia_pp": -0.402879849945742
+        },
+        "Humanidades": {
+          "poblacion_pct": 8.017017882071395,
+          "muestra_pct": 7.95863309352518,
+          "diferencia_pp": -0.05838478854621465
+        },
+        "Ingeniería y Tecnología": {
+          "poblacion_pct": 18.739613109087284,
+          "muestra_pct": 19.694244604316545,
+          "diferencia_pp": 0.9546314952292634
+        },
+        "No registra": {
+          "poblacion_pct": 1.8746260719271421,
+          "muestra_pct": 1.8435251798561152,
+          "diferencia_pp": -0.031100892071026995
+        }
+      },
+      "chi2": 5.144546558840764,
+      "p_valor": 0.5254122718108996,
+      "gl": 6,
+      "min_esperado": 41.69168383965964,
+      "supuesto_frecuencias_ok": true,
+      "max_diferencia_pp": 0.9546314952292634
+    },
+    "departamento": {
+      "categorias": {
+        "Amazonas": {
+          "poblacion_pct": 0.12298078840656784,
+          "muestra_pct": 0.13489208633093525,
+          "diferencia_pp": 0.01191129792436742
+        },
+        "Antioquia": {
+          "poblacion_pct": 16.55587316359769,
+          "muestra_pct": 16.771582733812952,
+          "diferencia_pp": 0.21570957021526393
+        },
+        "Arauca": {
+          "poblacion_pct": 0.02991424582862461,
+          "muestra_pct": 0.04496402877697842,
+          "diferencia_pp": 0.01504978294835381
+        },
+        "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+          "poblacion_pct": 0.03988566110483281,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.03988566110483281
+        },
+        "Atlántico": {
+          "poblacion_pct": 6.242105962906335,
+          "muestra_pct": 5.215827338129497,
+          "diferencia_pp": -1.0262786247768385
+        },
+        "Bogotá, D. C.": {
+          "poblacion_pct": 32.61649936847703,
+          "muestra_pct": 31.384892086330936,
+          "diferencia_pp": -1.2316072821460966
+        },
+        "Bolívar": {
+          "poblacion_pct": 2.5327394801568834,
+          "muestra_pct": 2.6079136690647484,
+          "diferencia_pp": 0.07517418890786477
+        },
+        "Boyacá": {
+          "poblacion_pct": 2.612510802366549,
+          "muestra_pct": 2.6079136690647484,
+          "diferencia_pp": -0.004597133301800782
+        },
+        "Caldas": {
+          "poblacion_pct": 2.858472379179685,
+          "muestra_pct": 3.147482014388489,
+          "diferencia_pp": 0.28900963520880407
+        },
+        "Caquetá": {
+          "poblacion_pct": 0.3290567041148707,
+          "muestra_pct": 0.49460431654676257,
+          "diferencia_pp": 0.16554761243189184
+        },
+        "Casanare": {
+          "poblacion_pct": 0.10303795785415143,
+          "muestra_pct": 0.2697841726618705,
+          "diferencia_pp": 0.1667462148077191
+        },
+        "Cauca": {
+          "poblacion_pct": 1.492388486339161,
+          "muestra_pct": 1.618705035971223,
+          "diferencia_pp": 0.12631654963206201
+        },
+        "Cesar": {
+          "poblacion_pct": 0.6115801369407697,
+          "muestra_pct": 0.7194244604316548,
+          "diferencia_pp": 0.10784432349088494
+        },
+        "Chocó": {
+          "poblacion_pct": 0.24596157681313568,
+          "muestra_pct": 0.1798561151079137,
+          "diferencia_pp": -0.066105461705222
+        },
+        "Cundinamarca": {
+          "poblacion_pct": 1.9477497839526692,
+          "muestra_pct": 2.158273381294964,
+          "diferencia_pp": 0.21052359734229503
+        },
+        "Córdoba": {
+          "poblacion_pct": 1.415940969221565,
+          "muestra_pct": 1.3489208633093526,
+          "diferencia_pp": -0.06702010591221244
+        },
+        "Exterior": {
+          "poblacion_pct": 3.6761284318287575,
+          "muestra_pct": 3.776978417266187,
+          "diferencia_pp": 0.10084998543742965
+        },
+        "Guainía": {
+          "poblacion_pct": 0.009971415276208203,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.009971415276208203
+        },
+        "Guaviare": {
+          "poblacion_pct": 0.006647610184138801,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.006647610184138801
+        },
+        "Huila": {
+          "poblacion_pct": 0.9838463072525427,
+          "muestra_pct": 1.7985611510791366,
+          "diferencia_pp": 0.8147148438265939
+        },
+        "La Guajira": {
+          "poblacion_pct": 0.654789603137672,
+          "muestra_pct": 0.85431654676259,
+          "diferencia_pp": 0.19952694362491802
+        },
+        "Magdalena": {
+          "poblacion_pct": 1.2397792993418866,
+          "muestra_pct": 1.3039568345323742,
+          "diferencia_pp": 0.06417753519048758
+        },
+        "Meta": {
+          "poblacion_pct": 0.7810941966363092,
+          "muestra_pct": 0.5845323741007195,
+          "diferencia_pp": -0.19656182253558976
+        },
+        "Nariño": {
+          "poblacion_pct": 1.4325599946819119,
+          "muestra_pct": 1.5287769784172662,
+          "diferencia_pp": 0.0962169837353543
+        },
+        "No disponible": {
+          "poblacion_pct": 0.7445323406235459,
+          "muestra_pct": 0.539568345323741,
+          "diferencia_pp": -0.20496399529980483
+        },
+        "Norte de Santander": {
+          "poblacion_pct": 2.203682776042013,
+          "muestra_pct": 2.2482014388489207,
+          "diferencia_pp": 0.04451866280690796
+        },
+        "Putumayo": {
+          "poblacion_pct": 0.013295220368277603,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.013295220368277603
+        },
+        "Quindío": {
+          "poblacion_pct": 0.9007511799508077,
+          "muestra_pct": 0.6294964028776978,
+          "diferencia_pp": -0.27125477707310985
+        },
+        "Risaralda": {
+          "poblacion_pct": 1.891245097387489,
+          "muestra_pct": 1.3489208633093526,
+          "diferencia_pp": -0.5423242340781367
+        },
+        "Santander": {
+          "poblacion_pct": 5.201754969088613,
+          "muestra_pct": 5.710431654676259,
+          "diferencia_pp": 0.5086766855876459
+        },
+        "Sucre": {
+          "poblacion_pct": 0.754503755899754,
+          "muestra_pct": 0.8992805755395683,
+          "diferencia_pp": 0.14477681963981429
+        },
+        "Tolima": {
+          "poblacion_pct": 1.4192647743136344,
+          "muestra_pct": 1.5737410071942446,
+          "diferencia_pp": 0.1544762328806102
+        },
+        "Valle del Cauca": {
+          "poblacion_pct": 8.319484145449712,
+          "muestra_pct": 8.498201438848922,
+          "diferencia_pp": 0.17871729339920955
+        },
+        "Vaupés": {
+          "poblacion_pct": 0.006647610184138801,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.006647610184138801
+        },
+        "Vichada": {
+          "poblacion_pct": 0.0033238050920694007,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.0033238050920694007
+        }
+      },
+      "chi2": 43.47285604760153,
+      "p_valor": 0.1280068899689459,
+      "gl": 34,
+      "min_esperado": 0.07392142524762348,
+      "supuesto_frecuencias_ok": false,
+      "max_diferencia_pp": 1.2316072821460966
+    },
+    "nivel_formacion": {
+      "categorias": {
+        "Cursos de corta duración": {
+          "poblacion_pct": 0.006647610184138801,
+          "muestra_pct": 0.04496402877697842,
+          "diferencia_pp": 0.038316418592839616
+        },
+        "Doctorado": {
+          "poblacion_pct": 49.40836269361164,
+          "muestra_pct": 48.74100719424461,
+          "diferencia_pp": -0.6673554993670394
+        },
+        "Especialidad Médica": {
+          "poblacion_pct": 2.5493585056172305,
+          "muestra_pct": 2.068345323741007,
+          "diferencia_pp": -0.4810131818762234
+        },
+        "Especialización": {
+          "poblacion_pct": 2.203682776042013,
+          "muestra_pct": 2.338129496402878,
+          "diferencia_pp": 0.1344467203608649
+        },
+        "Maestría/Magister": {
+          "poblacion_pct": 36.000132952203685,
+          "muestra_pct": 36.01618705035971,
+          "diferencia_pp": 0.01605409815602643
+        },
+        "No disponible": {
+          "poblacion_pct": 0.06315229674931862,
+          "muestra_pct": 0.04496402877697842,
+          "diferencia_pp": -0.0181882679723402
+        },
+        "Postdoctorado": {
+          "poblacion_pct": 7.551685169181679,
+          "muestra_pct": 8.543165467625899,
+          "diferencia_pp": 0.9914802984442195
+        },
+        "Pregrado/Universitario": {
+          "poblacion_pct": 2.210330386226152,
+          "muestra_pct": 2.2032374100719423,
+          "diferencia_pp": -0.00709297615420941
+        },
+        "Secundario": {
+          "poblacion_pct": 0.0033238050920694007,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.0033238050920694007
+        },
+        "Técnico - nivel superior": {
+          "poblacion_pct": 0.0033238050920694007,
+          "muestra_pct": 0.0,
+          "diferencia_pp": -0.0033238050920694007
+        }
+      },
+      "chi2": 10.473205423337728,
+      "p_valor": 0.31355075168837643,
+      "gl": 9,
+      "min_esperado": 0.07392142524762348,
+      "supuesto_frecuencias_ok": false,
+      "max_diferencia_pp": 0.9914802984442195
+    }
+  },
+  "convocatorias_fecha": {
+    "16": "2013-10-31",
+    "17": "2014-10-15",
+    "18": "2015-10-15",
+    "19": "2017-05-12",
+    "20": "2019-12-06",
+    "21": "2021-02-25"
+  },
+  "intervalos_anios_reales": {
+    "2013->2014": 0.9555,
+    "2014->2015": 0.9993,
+    "2015->2017": 1.5743,
+    "2017->2019": 2.5681,
+    "2019->2021": 1.2238
+  },
+  "pares_muestra": [
+    {
+      "par": "2013→2014",
+      "conv_a": 16,
+      "conv_b": 17,
+      "anios": 1,
+      "anios_reales": 0.9555,
+      "n_a": 618,
+      "n_b": 640,
+      "retenidos": 378,
+      "salidas": 240,
+      "entradas": 262,
+      "entradas_nuevas_reales": 262,
+      "reingresos": 0,
+      "pct_reingresos_sobre_entradas": 0.0,
+      "salidas_temporales": 115,
+      "salidas_definitivas": 125,
+      "ventana_posterior_convocatorias": [
+        2015,
+        2017,
+        2019,
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 618,
+        "x": 378,
+        "p": 0.6116504854368932,
+        "ic_wald": [
+          0.5732245118851422,
+          0.6500764589886441
+        ],
+        "ic_wilson": [
+          0.5726474280435668,
+          0.6492740387737063
+        ],
+        "ic_wald_fpc": [
+          0.5736205837955509,
+          0.6496803870782354
+        ]
+      },
+      "salida": {
+        "n": 618,
+        "x": 240,
+        "p": 0.3883495145631068,
+        "ic_wald": [
+          0.34992354101135587,
+          0.4267754881148577
+        ],
+        "ic_wilson": [
+          0.3507259612262938,
+          0.4273525719564331
+        ],
+        "ic_wald_fpc": [
+          0.3503196129217646,
+          0.42637941620444897
+        ]
+      },
+      "entrada": {
+        "n": 640,
+        "x": 262,
+        "p": 0.409375,
+        "ic_wald": [
+          0.3712787124640282,
+          0.44747128753597176
+        ],
+        "ic_wilson": [
+          0.3719294187895805,
+          0.44790204286185675
+        ],
+        "ic_wald_fpc": [
+          0.3716854630379998,
+          0.44706453696200016
+        ]
+      },
+      "crecimiento_neto": 22,
+      "retencion_anualizada": 0.6116504854368932,
+      "retencion_anualizada_real": 0.628382361244471,
+      "salida_anualizada": 0.38834951456310685,
+      "salida_anualizada_real": 0.40219082390374294
+    },
+    {
+      "par": "2014→2015",
+      "conv_a": 17,
+      "conv_b": 18,
+      "anios": 1,
+      "anios_reales": 0.9993,
+      "n_a": 640,
+      "n_b": 753,
+      "retenidos": 529,
+      "salidas": 111,
+      "entradas": 224,
+      "entradas_nuevas_reales": 183,
+      "reingresos": 41,
+      "pct_reingresos_sobre_entradas": 18.303571428571427,
+      "salidas_temporales": 71,
+      "salidas_definitivas": 40,
+      "ventana_posterior_convocatorias": [
+        2017,
+        2019,
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 640,
+        "x": 529,
+        "p": 0.8265625,
+        "ic_wald": [
+          0.7972282198162886,
+          0.8558967801837114
+        ],
+        "ic_wilson": [
+          0.7953025340476229,
+          0.8539254748290946
+        ],
+        "ic_wald_fpc": [
+          0.7975414192399989,
+          0.8555835807600011
+        ]
+      },
+      "salida": {
+        "n": 640,
+        "x": 111,
+        "p": 0.1734375,
+        "ic_wald": [
+          0.14410321981628857,
+          0.20277178018371142
+        ],
+        "ic_wilson": [
+          0.14607452517090538,
+          0.20469746595237717
+        ],
+        "ic_wald_fpc": [
+          0.14441641923999887,
+          0.20245858076000112
+        ]
+      },
+      "entrada": {
+        "n": 753,
+        "x": 224,
+        "p": 0.29747675962815406,
+        "ic_wald": [
+          0.26482433375212316,
+          0.33012918550418496
+        ],
+        "ic_wilson": [
+          0.2659190633219096,
+          0.33109040338816564
+        ],
+        "ic_wald_fpc": [
+          0.2652350037428252,
+          0.3297185155134829
+        ]
+      },
+      "crecimiento_neto": 113,
+      "retencion_anualizada": 0.8265625,
+      "retencion_anualizada_real": 0.8267704928156523,
+      "salida_anualizada": 0.17343750000000002,
+      "salida_anualizada_real": 0.17354533092039937
+    },
+    {
+      "par": "2015→2017",
+      "conv_a": 18,
+      "conv_b": 19,
+      "anios": 2,
+      "anios_reales": 1.5743,
+      "n_a": 753,
+      "n_b": 983,
+      "retenidos": 608,
+      "salidas": 145,
+      "entradas": 375,
+      "entradas_nuevas_reales": 292,
+      "reingresos": 83,
+      "pct_reingresos_sobre_entradas": 22.133333333333333,
+      "salidas_temporales": 58,
+      "salidas_definitivas": 87,
+      "ventana_posterior_convocatorias": [
+        2019,
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 753,
+        "x": 608,
+        "p": 0.8074369189907038,
+        "ic_wald": [
+          0.7792725907074828,
+          0.8356012472739248
+        ],
+        "ic_wilson": [
+          0.7777403545849062,
+          0.83401248775357
+        ],
+        "ic_wald_fpc": [
+          0.7796268138355932,
+          0.8352470241458144
+        ]
+      },
+      "salida": {
+        "n": 753,
+        "x": 145,
+        "p": 0.19256308100929614,
+        "ic_wald": [
+          0.16439875272607507,
+          0.22072740929251722
+        ],
+        "ic_wilson": [
+          0.1659875122464301,
+          0.22225964541509385
+        ],
+        "ic_wald_fpc": [
+          0.1647529758541855,
+          0.2203731861644068
+        ]
+      },
+      "entrada": {
+        "n": 983,
+        "x": 375,
+        "p": 0.3814852492370295,
+        "ic_wald": [
+          0.35111885555410294,
+          0.411851642919956
+        ],
+        "ic_wilson": [
+          0.35163586433799277,
+          0.4122573481086653
+        ],
+        "ic_wald_fpc": [
+          0.3516185595387696,
+          0.4113519389352894
+        ]
+      },
+      "crecimiento_neto": 230,
+      "retencion_anualizada": 0.5611798990368648,
+      "retencion_anualizada_real": 0.6488049840317235,
+      "salida_anualizada": 0.1014250621174082,
+      "salida_anualizada_real": 0.127041156058884
+    },
+    {
+      "par": "2017→2019",
+      "conv_a": 19,
+      "conv_b": 20,
+      "anios": 2,
+      "anios_reales": 2.5681,
+      "n_a": 983,
+      "n_b": 1258,
+      "retenidos": 752,
+      "salidas": 231,
+      "entradas": 506,
+      "entradas_nuevas_reales": 419,
+      "reingresos": 87,
+      "pct_reingresos_sobre_entradas": 17.193675889328063,
+      "salidas_temporales": 62,
+      "salidas_definitivas": 169,
+      "ventana_posterior_convocatorias": [
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 983,
+        "x": 752,
+        "p": 0.7650050864699899,
+        "ic_wald": [
+          0.7384992993976337,
+          0.7915108735423461
+        ],
+        "ic_wilson": [
+          0.737499215812965,
+          0.7904477211625336
+        ],
+        "ic_wald_fpc": [
+          0.738935473925142,
+          0.7910746990148377
+        ]
+      },
+      "salida": {
+        "n": 983,
+        "x": 231,
+        "p": 0.23499491353001017,
+        "ic_wald": [
+          0.20848912645765397,
+          0.2615007006023664
+        ],
+        "ic_wilson": [
+          0.20955227883746644,
+          0.26250078418703515
+        ],
+        "ic_wald_fpc": [
+          0.2089253009851623,
+          0.2610645260748581
+        ]
+      },
+      "entrada": {
+        "n": 1258,
+        "x": 506,
+        "p": 0.40222575516693165,
+        "ic_wald": [
+          0.37512887514400384,
+          0.42932263518985947
+        ],
+        "ic_wilson": [
+          0.37546618429672757,
+          0.42958066151973634
+        ],
+        "ic_wald_fpc": [
+          0.37570099063766077,
+          0.42875051969620254
+        ]
+      },
+      "crecimiento_neto": 275,
+      "retencion_anualizada": 0.5152372605799718,
+      "retencion_anualizada_real": 0.4310226308824907,
+      "salida_anualizada": 0.1253543080366829,
+      "salida_anualizada_real": 0.09905188646432062
+    },
+    {
+      "par": "2019→2021",
+      "conv_a": 20,
+      "conv_b": 21,
+      "anios": 2,
+      "anios_reales": 1.2238,
+      "n_a": 1258,
+      "n_b": 1554,
+      "retenidos": 1009,
+      "salidas": 249,
+      "entradas": 545,
+      "entradas_nuevas_reales": 450,
+      "reingresos": 95,
+      "pct_reingresos_sobre_entradas": 17.431192660550458,
+      "salidas_temporales": 0,
+      "salidas_definitivas": 249,
+      "ventana_posterior_convocatorias": [],
+      "salidas_censuradas_derecha": true,
+      "cierre": true,
+      "retencion": {
+        "n": 1258,
+        "x": 1009,
+        "p": 0.8020667726550079,
+        "ic_wald": [
+          0.7800486459609812,
+          0.8240848993490346
+        ],
+        "ic_wilson": [
+          0.7791433383066647,
+          0.8231509591709268
+        ],
+        "ic_wald_fpc": [
+          0.7805135301621252,
+          0.8236200151478906
+        ]
+      },
+      "salida": {
+        "n": 1258,
+        "x": 249,
+        "p": 0.19793322734499205,
+        "ic_wald": [
+          0.17591510065096536,
+          0.21995135403901875
+        ],
+        "ic_wilson": [
+          0.17684904082907318,
+          0.22085666169333537
+        ],
+        "ic_wald_fpc": [
+          0.17637998485210934,
+          0.21948646983787476
+        ]
+      },
+      "entrada": {
+        "n": 1554,
+        "x": 545,
+        "p": 0.3507078507078507,
+        "ic_wald": [
+          0.32698191310471225,
+          0.37443378831098917
+        ],
+        "ic_wilson": [
+          0.32737647619642973,
+          0.37477552693405547
+        ],
+        "ic_wald_fpc": [
+          0.327602397917245,
+          0.37381330349845643
+        ]
+      },
+      "crecimiento_neto": 296,
+      "retencion_anualizada": 0.5551031272924116,
+      "retencion_anualizada_real": 0.7338199392620732,
+      "salida_anualizada": 0.10441819320901347,
+      "salida_anualizada_real": 0.1649181012172093
+    }
+  ],
+  "pares_universo": [
+    {
+      "par": "2013→2014",
+      "conv_a": 16,
+      "conv_b": 17,
+      "anios": 1,
+      "anios_reales": 0.9555,
+      "n_a": 8016,
+      "n_b": 8280,
+      "retenidos": 4817,
+      "salidas": 3199,
+      "entradas": 3463,
+      "entradas_nuevas_reales": 3463,
+      "reingresos": 0,
+      "pct_reingresos_sobre_entradas": 0.0,
+      "salidas_temporales": 1508,
+      "salidas_definitivas": 1691,
+      "ventana_posterior_convocatorias": [
+        2015,
+        2017,
+        2019,
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 8016,
+        "x": 4817,
+        "p": 0.6009231536926147,
+        "ic_wald": [
+          0.5902026558990922,
+          0.6116436514861373
+        ],
+        "ic_wilson": [
+          0.5901567714065524,
+          0.6115928491844577
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "salida": {
+        "n": 8016,
+        "x": 3199,
+        "p": 0.3990768463073852,
+        "ic_wald": [
+          0.3883563485138627,
+          0.40979734410090773
+        ],
+        "ic_wilson": [
+          0.3884071508155422,
+          0.4098432285934476
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "entrada": {
+        "n": 8280,
+        "x": 3463,
+        "p": 0.4182367149758454,
+        "ic_wald": [
+          0.40761180803066005,
+          0.4288616219210308
+        ],
+        "ic_wilson": [
+          0.40765212168456516,
+          0.42889714309133314
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "crecimiento_neto": 264,
+      "retencion_anualizada": 0.6009231536926147,
+      "retencion_anualizada_real": 0.6176324014050073,
+      "salida_anualizada": 0.39907684630738527,
+      "salida_anualizada_real": 0.41315907546161645
+    },
+    {
+      "par": "2014→2015",
+      "conv_a": 17,
+      "conv_b": 18,
+      "anios": 1,
+      "anios_reales": 0.9993,
+      "n_a": 8280,
+      "n_b": 10050,
+      "retenidos": 6857,
+      "salidas": 1423,
+      "entradas": 3193,
+      "entradas_nuevas_reales": 2574,
+      "reingresos": 619,
+      "pct_reingresos_sobre_entradas": 19.38615721891638,
+      "salidas_temporales": 838,
+      "salidas_definitivas": 585,
+      "ventana_posterior_convocatorias": [
+        2017,
+        2019,
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 8280,
+        "x": 6857,
+        "p": 0.8281400966183575,
+        "ic_wald": [
+          0.8200140353783384,
+          0.8362661578583767
+        ],
+        "ic_wilson": [
+          0.8198623210356655,
+          0.8361135247603237
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "salida": {
+        "n": 8280,
+        "x": 1423,
+        "p": 0.1718599033816425,
+        "ic_wald": [
+          0.1637338421416234,
+          0.1799859646216616
+        ],
+        "ic_wilson": [
+          0.16388647523967637,
+          0.18013767896433452
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "entrada": {
+        "n": 10050,
+        "x": 3193,
+        "p": 0.31771144278606966,
+        "ic_wald": [
+          0.30860867397684805,
+          0.3268142115952913
+        ],
+        "ic_wilson": [
+          0.30867979965507336,
+          0.3268823918160953
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "crecimiento_neto": 1770,
+      "retencion_anualizada": 0.8281400966183575,
+      "retencion_anualizada_real": 0.8283472718434524,
+      "salida_anualizada": 0.17185990338164248,
+      "salida_anualizada_real": 0.17196685867491346
+    },
+    {
+      "par": "2015→2017",
+      "conv_a": 18,
+      "conv_b": 19,
+      "anios": 2,
+      "anios_reales": 1.5743,
+      "n_a": 10050,
+      "n_b": 13001,
+      "retenidos": 8164,
+      "salidas": 1886,
+      "entradas": 4837,
+      "entradas_nuevas_reales": 3893,
+      "reingresos": 944,
+      "pct_reingresos_sobre_entradas": 19.516229067603888,
+      "salidas_temporales": 738,
+      "salidas_definitivas": 1148,
+      "ventana_posterior_convocatorias": [
+        2019,
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 10050,
+        "x": 8164,
+        "p": 0.8123383084577115,
+        "ic_wald": [
+          0.8047047098334724,
+          0.8199719070819506
+        ],
+        "ic_wilson": [
+          0.804585890015515,
+          0.8198520362792461
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "salida": {
+        "n": 10050,
+        "x": 1886,
+        "p": 0.18766169154228857,
+        "ic_wald": [
+          0.18002809291804947,
+          0.19529529016652766
+        ],
+        "ic_wilson": [
+          0.18014796372075412,
+          0.19541410998448513
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "entrada": {
+        "n": 13001,
+        "x": 4837,
+        "p": 0.3720483039766172,
+        "ic_wald": [
+          0.36373965376922346,
+          0.38035695418401094
+        ],
+        "ic_wilson": [
+          0.3637785916896108,
+          0.38039360953120216
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "crecimiento_neto": 2951,
+      "retencion_anualizada": 0.5668006330310621,
+      "retencion_anualizada_real": 0.654509936677172,
+      "salida_anualizada": 0.09870187592688773,
+      "salida_anualizada_real": 0.1236787746241298
+    },
+    {
+      "par": "2017→2019",
+      "conv_a": 19,
+      "conv_b": 20,
+      "anios": 2,
+      "anios_reales": 2.5681,
+      "n_a": 13001,
+      "n_b": 16796,
+      "retenidos": 9994,
+      "salidas": 3007,
+      "entradas": 6802,
+      "entradas_nuevas_reales": 5850,
+      "reingresos": 952,
+      "pct_reingresos_sobre_entradas": 13.995883563657747,
+      "salidas_temporales": 880,
+      "salidas_definitivas": 2127,
+      "ventana_posterior_convocatorias": [
+        2021
+      ],
+      "salidas_censuradas_derecha": false,
+      "cierre": true,
+      "retencion": {
+        "n": 13001,
+        "x": 9994,
+        "p": 0.7687100992231367,
+        "ic_wald": [
+          0.7614619467519746,
+          0.7759582516942988
+        ],
+        "ic_wilson": [
+          0.7613832063493258,
+          0.7758782394186874
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "salida": {
+        "n": 13001,
+        "x": 3007,
+        "p": 0.23128990077686332,
+        "ic_wald": [
+          0.22404174830570125,
+          0.23853805324802538
+        ],
+        "ic_wilson": [
+          0.22412176058131258,
+          0.2386167936506743
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "entrada": {
+        "n": 16796,
+        "x": 6802,
+        "p": 0.40497737556561086,
+        "ic_wald": [
+          0.39755342179642106,
+          0.41240132933480067
+        ],
+        "ic_wilson": [
+          0.39757596756821295,
+          0.4124222409863248
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "crecimiento_neto": 3795,
+      "retencion_anualizada": 0.51907391339535,
+      "retencion_anualizada_real": 0.4345327098794941,
+      "salida_anualizada": 0.12323885851211636,
+      "salida_anualizada_real": 0.09735531724051272
+    },
+    {
+      "par": "2019→2021",
+      "conv_a": 20,
+      "conv_b": 21,
+      "anios": 2,
+      "anios_reales": 1.2238,
+      "n_a": 16796,
+      "n_b": 21094,
+      "retenidos": 13355,
+      "salidas": 3441,
+      "entradas": 7739,
+      "entradas_nuevas_reales": 6290,
+      "reingresos": 1449,
+      "pct_reingresos_sobre_entradas": 18.723349269931514,
+      "salidas_temporales": 0,
+      "salidas_definitivas": 3441,
+      "ventana_posterior_convocatorias": [],
+      "salidas_censuradas_derecha": true,
+      "cierre": true,
+      "retencion": {
+        "n": 16796,
+        "x": 13355,
+        "p": 0.7951297928078114,
+        "ic_wald": [
+          0.7890258345516608,
+          0.801233751063962
+        ],
+        "ic_wilson": [
+          0.7889586723935241,
+          0.8011659392575762
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "salida": {
+        "n": 16796,
+        "x": 3441,
+        "p": 0.20487020719218862,
+        "ic_wald": [
+          0.19876624893603803,
+          0.21097416544833922
+        ],
+        "ic_wilson": [
+          0.19883406074242385,
+          0.21104132760647584
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "entrada": {
+        "n": 21094,
+        "x": 7739,
+        "p": 0.3668815776998198,
+        "ic_wald": [
+          0.36037755529915017,
+          0.3733856001004895
+        ],
+        "ic_wilson": [
+          0.3604023411632897,
+          0.37340929196604417
+        ],
+        "ic_wald_fpc": [
+          null,
+          null
+        ]
+      },
+      "crecimiento_neto": 4298,
+      "retencion_anualizada": 0.5473740979658934,
+      "retencion_anualizada_real": 0.7262213176804978,
+      "salida_anualizada": 0.10829949377169723,
+      "salida_anualizada_real": 0.17082441062087939
+    }
+  ],
+  "transiciones_muestra": {
+    "2013→2014": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 161,
+          "Investigador Asociado": 30,
+          "Investigador Sénior": 1,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 47,
+          "Investigador Asociado": 73,
+          "Investigador Sénior": 1,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 11,
+          "Investigador Asociado": 11,
+          "Investigador Sénior": 43,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0,
+          "Investigador Asociado": 0,
+          "Investigador Sénior": 0,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 73.52,
+          "Investigador Asociado": 26.32,
+          "Investigador Sénior": 2.22,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 21.46,
+          "Investigador Asociado": 64.04,
+          "Investigador Sénior": 2.22,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 5.02,
+          "Investigador Asociado": 9.65,
+          "Investigador Sénior": 95.56,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.0,
+          "Investigador Asociado": 0.0,
+          "Investigador Sénior": 0.0,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 219,
+        "Investigador Asociado": 114,
+        "Investigador Sénior": 45,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 378,
+      "misma_categoria": 277,
+      "ascienden": 69,
+      "descienden": 32,
+      "tasa_permanencia": 0.7328042328042328
+    },
+    "2014→2015": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 266,
+          "Investigador Asociado": 10,
+          "Investigador Sénior": 2,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 51,
+          "Investigador Asociado": 119,
+          "Investigador Sénior": 4,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 1,
+          "Investigador Asociado": 20,
+          "Investigador Sénior": 56,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0,
+          "Investigador Asociado": 0,
+          "Investigador Sénior": 0,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 83.65,
+          "Investigador Asociado": 6.71,
+          "Investigador Sénior": 3.23,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 16.04,
+          "Investigador Asociado": 79.87,
+          "Investigador Sénior": 6.45,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 0.31,
+          "Investigador Asociado": 13.42,
+          "Investigador Sénior": 90.32,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.0,
+          "Investigador Asociado": 0.0,
+          "Investigador Sénior": 0.0,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 318,
+        "Investigador Asociado": 149,
+        "Investigador Sénior": 62,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 529,
+      "misma_categoria": 441,
+      "ascienden": 72,
+      "descienden": 16,
+      "tasa_permanencia": 0.833648393194707
+    },
+    "2015→2017": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 263,
+          "Investigador Asociado": 25,
+          "Investigador Sénior": 2,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 53,
+          "Investigador Asociado": 143,
+          "Investigador Sénior": 4,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 13,
+          "Investigador Asociado": 31,
+          "Investigador Sénior": 71,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0,
+          "Investigador Asociado": 2,
+          "Investigador Sénior": 1,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 79.94,
+          "Investigador Asociado": 12.44,
+          "Investigador Sénior": 2.56,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 16.11,
+          "Investigador Asociado": 71.14,
+          "Investigador Sénior": 5.13,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 3.95,
+          "Investigador Asociado": 15.42,
+          "Investigador Sénior": 91.03,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.0,
+          "Investigador Asociado": 1.0,
+          "Investigador Sénior": 1.28,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 329,
+        "Investigador Asociado": 201,
+        "Investigador Sénior": 78,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 608,
+      "misma_categoria": 477,
+      "ascienden": 100,
+      "descienden": 31,
+      "tasa_permanencia": 0.7845394736842105
+    },
+    "2017→2019": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 305,
+          "Investigador Asociado": 41,
+          "Investigador Sénior": 4,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 87,
+          "Investigador Asociado": 142,
+          "Investigador Sénior": 6,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 14,
+          "Investigador Asociado": 45,
+          "Investigador Sénior": 107,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0,
+          "Investigador Asociado": 0,
+          "Investigador Sénior": 1,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 75.12,
+          "Investigador Asociado": 17.98,
+          "Investigador Sénior": 3.39,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 21.43,
+          "Investigador Asociado": 62.28,
+          "Investigador Sénior": 5.08,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 3.45,
+          "Investigador Asociado": 19.74,
+          "Investigador Sénior": 90.68,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.0,
+          "Investigador Asociado": 0.0,
+          "Investigador Sénior": 0.85,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 406,
+        "Investigador Asociado": 228,
+        "Investigador Sénior": 118,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 752,
+      "misma_categoria": 554,
+      "ascienden": 147,
+      "descienden": 51,
+      "tasa_permanencia": 0.7367021276595744
+    },
+    "2019→2021": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 415,
+          "Investigador Asociado": 63,
+          "Investigador Sénior": 8,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 116,
+          "Investigador Asociado": 173,
+          "Investigador Sénior": 19,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 30,
+          "Investigador Asociado": 41,
+          "Investigador Sénior": 142,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0,
+          "Investigador Asociado": 2,
+          "Investigador Sénior": 0,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 73.98,
+          "Investigador Asociado": 22.58,
+          "Investigador Sénior": 4.73,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 20.68,
+          "Investigador Asociado": 62.01,
+          "Investigador Sénior": 11.24,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 5.35,
+          "Investigador Asociado": 14.7,
+          "Investigador Sénior": 84.02,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.0,
+          "Investigador Asociado": 0.72,
+          "Investigador Sénior": 0.0,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 561,
+        "Investigador Asociado": 279,
+        "Investigador Sénior": 169,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 1009,
+      "misma_categoria": 730,
+      "ascienden": 189,
+      "descienden": 90,
+      "tasa_permanencia": 0.7234886025768087
+    }
+  },
+  "transiciones_universo": {
+    "2013→2014": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 1967,
+          "Investigador Asociado": 349,
+          "Investigador Sénior": 10,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 557,
+          "Investigador Asociado": 927,
+          "Investigador Sénior": 20,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 152,
+          "Investigador Asociado": 244,
+          "Investigador Sénior": 591,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0,
+          "Investigador Asociado": 0,
+          "Investigador Sénior": 0,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 73.51,
+          "Investigador Asociado": 22.96,
+          "Investigador Sénior": 1.61,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 20.81,
+          "Investigador Asociado": 60.99,
+          "Investigador Sénior": 3.22,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 5.68,
+          "Investigador Asociado": 16.05,
+          "Investigador Sénior": 95.17,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.0,
+          "Investigador Asociado": 0.0,
+          "Investigador Sénior": 0.0,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 2676,
+        "Investigador Asociado": 1520,
+        "Investigador Sénior": 621,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 4817,
+      "misma_categoria": 3485,
+      "ascienden": 953,
+      "descienden": 379,
+      "tasa_permanencia": 0.7234793439900353
+    },
+    "2014→2015": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 3420,
+          "Investigador Asociado": 191,
+          "Investigador Sénior": 20,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 598,
+          "Investigador Asociado": 1392,
+          "Investigador Sénior": 81,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 87,
+          "Investigador Asociado": 199,
+          "Investigador Sénior": 808,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 7,
+          "Investigador Asociado": 6,
+          "Investigador Sénior": 48,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 83.17,
+          "Investigador Asociado": 10.68,
+          "Investigador Sénior": 2.09,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 14.54,
+          "Investigador Asociado": 77.85,
+          "Investigador Sénior": 8.46,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 2.12,
+          "Investigador Asociado": 11.13,
+          "Investigador Sénior": 84.43,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.17,
+          "Investigador Asociado": 0.34,
+          "Investigador Sénior": 5.02,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 4112,
+        "Investigador Asociado": 1788,
+        "Investigador Sénior": 957,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 6857,
+      "misma_categoria": 5620,
+      "ascienden": 945,
+      "descienden": 292,
+      "tasa_permanencia": 0.8196004083418404
+    },
+    "2015→2017": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 3600,
+          "Investigador Asociado": 301,
+          "Investigador Sénior": 12,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 885,
+          "Investigador Asociado": 1737,
+          "Investigador Sénior": 38,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 129,
+          "Investigador Asociado": 367,
+          "Investigador Sénior": 1029,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 12,
+          "Investigador Asociado": 22,
+          "Investigador Sénior": 32,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 77.82,
+          "Investigador Asociado": 12.4,
+          "Investigador Sénior": 1.08,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 19.13,
+          "Investigador Asociado": 71.57,
+          "Investigador Sénior": 3.42,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 2.79,
+          "Investigador Asociado": 15.12,
+          "Investigador Sénior": 92.62,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.26,
+          "Investigador Asociado": 0.91,
+          "Investigador Sénior": 2.88,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 4626,
+        "Investigador Asociado": 2427,
+        "Investigador Sénior": 1111,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 8164,
+      "misma_categoria": 6366,
+      "ascienden": 1447,
+      "descienden": 351,
+      "tasa_permanencia": 0.779764821166095
+    },
+    "2017→2019": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 3797,
+          "Investigador Asociado": 558,
+          "Investigador Sénior": 81,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 1283,
+          "Investigador Asociado": 1793,
+          "Investigador Sénior": 91,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 192,
+          "Investigador Asociado": 726,
+          "Investigador Sénior": 1428,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 3,
+          "Investigador Asociado": 13,
+          "Investigador Sénior": 29,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 71.98,
+          "Investigador Asociado": 18.06,
+          "Investigador Sénior": 4.97,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 24.32,
+          "Investigador Asociado": 58.03,
+          "Investigador Sénior": 5.59,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 3.64,
+          "Investigador Asociado": 23.5,
+          "Investigador Sénior": 87.66,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.06,
+          "Investigador Asociado": 0.42,
+          "Investigador Sénior": 1.78,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 5275,
+        "Investigador Asociado": 3090,
+        "Investigador Sénior": 1629,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 9994,
+      "misma_categoria": 7018,
+      "ascienden": 2246,
+      "descienden": 730,
+      "tasa_permanencia": 0.7022213327996798
+    },
+    "2019→2021": {
+      "conteos": {
+        "Investigador Junior": {
+          "Investigador Junior": 5558,
+          "Investigador Asociado": 960,
+          "Investigador Sénior": 88,
+          "Investigador Emérito": 0
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 1276,
+          "Investigador Asociado": 2171,
+          "Investigador Sénior": 314,
+          "Investigador Emérito": 0
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 291,
+          "Investigador Asociado": 701,
+          "Investigador Sénior": 1928,
+          "Investigador Emérito": 0
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 7,
+          "Investigador Asociado": 16,
+          "Investigador Sénior": 45,
+          "Investigador Emérito": 0
+        }
+      },
+      "porcentajes_fila": {
+        "Investigador Junior": {
+          "Investigador Junior": 77.93,
+          "Investigador Asociado": 24.95,
+          "Investigador Sénior": 3.71,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Asociado": {
+          "Investigador Junior": 17.89,
+          "Investigador Asociado": 56.42,
+          "Investigador Sénior": 13.22,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Sénior": {
+          "Investigador Junior": 4.08,
+          "Investigador Asociado": 18.22,
+          "Investigador Sénior": 81.18,
+          "Investigador Emérito": NaN
+        },
+        "Investigador Emérito": {
+          "Investigador Junior": 0.1,
+          "Investigador Asociado": 0.42,
+          "Investigador Sénior": 1.89,
+          "Investigador Emérito": NaN
+        }
+      },
+      "totales_fila": {
+        "Investigador Junior": 7132,
+        "Investigador Asociado": 3848,
+        "Investigador Sénior": 2375,
+        "Investigador Emérito": 0
+      },
+      "n_transiciones": 13355,
+      "misma_categoria": 9657,
+      "ascienden": 2336,
+      "descienden": 1362,
+      "tasa_permanencia": 0.7230999625608386
+    }
+  },
+  "retencion_global_2013_2021": {
+    "muestra": {
+      "n": 618,
+      "x": 350,
+      "p": 0.5663430420711975,
+      "ic_wald": [
+        0.5272702201593203,
+        0.6054158639830746
+      ],
+      "ic_wilson": [
+        0.526979089937694,
+        0.6048872888957582
+      ],
+      "ic_wald_fpc": [
+        0.5276729593950317,
+        0.6050131247473632
+      ]
+    },
+    "universo": 0.561751497005988
+  },
+  "desagregacion_2019_2021": {
+    "genero": {
+      "variable": "NME_GENERO_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Masculino": {
+          "n": 803,
+          "retenidos": 654,
+          "tasa": 0.8144458281444583,
+          "ic_wald": [
+            0.7875574404279168,
+            0.8413342158609999
+          ]
+        },
+        "Femenino": {
+          "n": 455,
+          "retenidos": 355,
+          "tasa": 0.7802197802197802,
+          "ic_wald": [
+            0.7421699123587462,
+            0.8182696480808143
+          ]
+        }
+      },
+      "chi2": 2.1430414839019454,
+      "p_valor": 0.1432177011002716,
+      "gl": 1,
+      "min_esperado": 90.05961844197138,
+      "supuesto_frecuencias_ok": true
+    },
+    "departamento": {
+      "variable": "NME_DEPARTAMENTO_RES_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Bogotá, D. C.": {
+          "n": 392,
+          "retenidos": 297,
+          "tasa": 0.7576530612244898,
+          "ic_wald": [
+            0.7152334193069988,
+            0.8000727031419809
+          ]
+        },
+        "Antioquia": {
+          "n": 211,
+          "retenidos": 170,
+          "tasa": 0.8056872037914692,
+          "ic_wald": [
+            0.7522985736878481,
+            0.8590758338950902
+          ]
+        },
+        "Valle del Cauca": {
+          "n": 96,
+          "retenidos": 78,
+          "tasa": 0.8125,
+          "ic_wald": [
+            0.7344212636981104,
+            0.8905787363018896
+          ]
+        },
+        "Atlántico": {
+          "n": 87,
+          "retenidos": 78,
+          "tasa": 0.896551724137931,
+          "ic_wald": [
+            0.8325567675938594,
+            0.9605466806820027
+          ]
+        },
+        "Santander": {
+          "n": 80,
+          "retenidos": 72,
+          "tasa": 0.9,
+          "ic_wald": [
+            0.8342596014615062,
+            0.9657403985384938
+          ]
+        }
+      },
+      "chi2": 14.704611192988398,
+      "p_valor": 0.005354767590962461,
+      "gl": 4,
+      "min_esperado": 15.796766743648961,
+      "supuesto_frecuencias_ok": true
+    },
+    "gran_area": {
+      "variable": "NME_GRAN_AREA_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Ciencias Sociales": {
+          "n": 400,
+          "retenidos": 305,
+          "tasa": 0.7625,
+          "ic_wald": [
+            0.7207959909001544,
+            0.8042040090998455
+          ]
+        },
+        "Ciencias Naturales": {
+          "n": 269,
+          "retenidos": 216,
+          "tasa": 0.8029739776951673,
+          "ic_wald": [
+            0.7554412801573708,
+            0.8505066752329639
+          ]
+        },
+        "Ingeniería y Tecnología": {
+          "n": 254,
+          "retenidos": 219,
+          "tasa": 0.8622047244094488,
+          "ic_wald": [
+            0.8198149040585169,
+            0.9045945447603808
+          ]
+        },
+        "Ciencias Médicas y de la Salud": {
+          "n": 174,
+          "retenidos": 145,
+          "tasa": 0.8333333333333334,
+          "ic_wald": [
+            0.7779581472043006,
+            0.8887085194623662
+          ]
+        },
+        "Humanidades": {
+          "n": 90,
+          "retenidos": 69,
+          "tasa": 0.7666666666666667,
+          "ic_wald": [
+            0.6792837573565151,
+            0.8540495759768183
+          ]
+        },
+        "Ciencias Agrícolas": {
+          "n": 65,
+          "retenidos": 52,
+          "tasa": 0.8,
+          "ic_wald": [
+            0.7027567680820607,
+            0.8972432319179394
+          ]
+        },
+        "No registra": {
+          "n": 6,
+          "retenidos": 3,
+          "tasa": 0.5,
+          "ic_wald": [
+            0.09991667534541426,
+            0.9000833246545857
+          ]
+        }
+      },
+      "chi2": 14.964338780501787,
+      "p_valor": 0.020535899846158653,
+      "gl": 6,
+      "min_esperado": 1.1875993640699523,
+      "supuesto_frecuencias_ok": false
+    },
+    "nivel_formacion": {
+      "variable": "NME_NIV_FORM_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Doctorado": {
+          "n": 620,
+          "retenidos": 490,
+          "tasa": 0.7903225806451613,
+          "ic_wald": [
+            0.7582792055741937,
+            0.8223659557161288
+          ]
+        },
+        "Maestría/Magister": {
+          "n": 478,
+          "retenidos": 391,
+          "tasa": 0.8179916317991632,
+          "ic_wald": [
+            0.7834007023582785,
+            0.8525825612400479
+          ]
+        },
+        "Postdoctorado": {
+          "n": 95,
+          "retenidos": 74,
+          "tasa": 0.7789473684210526,
+          "ic_wald": [
+            0.6955031654761938,
+            0.8623915713659114
+          ]
+        },
+        "Pregrado/Universitario": {
+          "n": 24,
+          "retenidos": 19,
+          "tasa": 0.7916666666666666,
+          "ic_wald": [
+            0.6291862547418464,
+            0.9541470785914868
+          ]
+        },
+        "Especialización": {
+          "n": 21,
+          "retenidos": 17,
+          "tasa": 0.8095238095238095,
+          "ic_wald": [
+            0.6415731994998879,
+            0.9774744195477312
+          ]
+        },
+        "Especialidad Médica": {
+          "n": 20,
+          "retenidos": 18,
+          "tasa": 0.9,
+          "ic_wald": [
+            0.7685192029230123,
+            1.0
+          ]
+        }
+      },
+      "chi2": 2.854043871971549,
+      "p_valor": 0.7224757570077919,
+      "gl": 5,
+      "min_esperado": 3.958664546899841,
+      "supuesto_frecuencias_ok": false
+    }
+  },
+  "desagregacion_todos_los_pares": {
+    "genero": {
+      "2013→2014": {
+        "variable": "NME_GENERO_PR",
+        "convocatorias": "2013→2014",
+        "grupos": {
+          "Masculino": {
+            "n": 414,
+            "retenidos": 262,
+            "tasa": 0.6328502415458938,
+            "ic_wald": [
+              0.5864171073334679,
+              0.6792833757583197
+            ]
+          },
+          "Femenino": {
+            "n": 204,
+            "retenidos": 116,
+            "tasa": 0.5686274509803921,
+            "ic_wald": [
+              0.5006631036136646,
+              0.6365917983471197
+            ]
+          }
+        },
+        "chi2": 2.3729811409265813,
+        "p_valor": 0.12345110182825042,
+        "gl": 1,
+        "min_esperado": 79.22330097087378,
+        "supuesto_frecuencias_ok": true
+      },
+      "2014→2015": {
+        "variable": "NME_GENERO_PR",
+        "convocatorias": "2014→2015",
+        "grupos": {
+          "Masculino": {
+            "n": 421,
+            "retenidos": 352,
+            "tasa": 0.836104513064133,
+            "ic_wald": [
+              0.8007431656799894,
+              0.8714658604482767
+            ]
+          },
+          "Femenino": {
+            "n": 219,
+            "retenidos": 177,
+            "tasa": 0.8082191780821918,
+            "ic_wald": [
+              0.7560755581671199,
+              0.8603627979972637
+            ]
+          }
+        },
+        "chi2": 0.7814105416080892,
+        "p_valor": 0.37671009292045277,
+        "gl": 1,
+        "min_esperado": 37.9828125,
+        "supuesto_frecuencias_ok": true
+      },
+      "2015→2017": {
+        "variable": "NME_GENERO_PR",
+        "convocatorias": "2015→2017",
+        "grupos": {
+          "Masculino": {
+            "n": 499,
+            "retenidos": 406,
+            "tasa": 0.8136272545090181,
+            "ic_wald": [
+              0.7794600266480414,
+              0.8477944823699948
+            ]
+          },
+          "Femenino": {
+            "n": 254,
+            "retenidos": 202,
+            "tasa": 0.7952755905511811,
+            "ic_wald": [
+              0.7456526092213411,
+              0.8448985718810211
+            ]
+          }
+        },
+        "chi2": 0.36459319062550266,
+        "p_valor": 0.5459662952117189,
+        "gl": 1,
+        "min_esperado": 48.91102257636122,
+        "supuesto_frecuencias_ok": true
+      },
+      "2017→2019": {
+        "variable": "NME_GENERO_PR",
+        "convocatorias": "2017→2019",
+        "grupos": {
+          "Masculino": {
+            "n": 629,
+            "retenidos": 496,
+            "tasa": 0.7885532591414944,
+            "ic_wald": [
+              0.7566417927042653,
+              0.8204647255787235
+            ]
+          },
+          "Femenino": {
+            "n": 354,
+            "retenidos": 256,
+            "tasa": 0.7231638418079096,
+            "ic_wald": [
+              0.6765532948962766,
+              0.7697743887195426
+            ]
+          }
+        },
+        "chi2": 5.387565210224887,
+        "p_valor": 0.020280749999249503,
+        "gl": 1,
+        "min_esperado": 83.1881993896236,
+        "supuesto_frecuencias_ok": true
+      },
+      "2019→2021": {
+        "variable": "NME_GENERO_PR",
+        "convocatorias": "2019→2021",
+        "grupos": {
+          "Masculino": {
+            "n": 803,
+            "retenidos": 654,
+            "tasa": 0.8144458281444583,
+            "ic_wald": [
+              0.7875574404279168,
+              0.8413342158609999
+            ]
+          },
+          "Femenino": {
+            "n": 455,
+            "retenidos": 355,
+            "tasa": 0.7802197802197802,
+            "ic_wald": [
+              0.7421699123587462,
+              0.8182696480808143
+            ]
+          }
+        },
+        "chi2": 2.1430414839019454,
+        "p_valor": 0.1432177011002716,
+        "gl": 1,
+        "min_esperado": 90.05961844197138,
+        "supuesto_frecuencias_ok": true
+      }
+    },
+    "departamento": {
+      "2013→2014": {
+        "variable": "NME_DEPARTAMENTO_RES_PR",
+        "convocatorias": "2013→2014",
+        "grupos": {
+          "Bogotá, D. C.": {
+            "n": 217,
+            "retenidos": 136,
+            "tasa": 0.6267281105990783,
+            "ic_wald": [
+              0.5623736826470511,
+              0.6910825385511055
+            ]
+          },
+          "Antioquia": {
+            "n": 131,
+            "retenidos": 86,
+            "tasa": 0.6564885496183206,
+            "ic_wald": [
+              0.5751671938664406,
+              0.7378099053702006
+            ]
+          },
+          "Valle del Cauca": {
+            "n": 50,
+            "retenidos": 25,
+            "tasa": 0.5,
+            "ic_wald": [
+              0.3614070708874367,
+              0.6385929291125634
+            ]
+          },
+          "Santander": {
+            "n": 27,
+            "retenidos": 19,
+            "tasa": 0.7037037037037037,
+            "ic_wald": [
+              0.5314644166750504,
+              0.875942990732357
+            ]
+          },
+          "Atlántico": {
+            "n": 25,
+            "retenidos": 14,
+            "tasa": 0.56,
+            "ic_wald": [
+              0.36541631723086343,
+              0.7545836827691367
+            ]
+          }
+        },
+        "chi2": 5.02500540969897,
+        "p_valor": 0.284741393996639,
+        "gl": 4,
+        "min_esperado": 9.444444444444445,
+        "supuesto_frecuencias_ok": true
+      },
+      "2014→2015": {
+        "variable": "NME_DEPARTAMENTO_RES_PR",
+        "convocatorias": "2014→2015",
+        "grupos": {
+          "Bogotá, D. C.": {
+            "n": 223,
+            "retenidos": 183,
+            "tasa": 0.820627802690583,
+            "ic_wald": [
+              0.7702714441239674,
+              0.8709841612571986
+            ]
+          },
+          "Antioquia": {
+            "n": 138,
+            "retenidos": 113,
+            "tasa": 0.8188405797101449,
+            "ic_wald": [
+              0.754579699818203,
+              0.8831014596020867
+            ]
+          },
+          "Valle del Cauca": {
+            "n": 55,
+            "retenidos": 47,
+            "tasa": 0.8545454545454545,
+            "ic_wald": [
+              0.7613690475265977,
+              0.9477218615643113
+            ]
+          },
+          "Santander": {
+            "n": 34,
+            "retenidos": 28,
+            "tasa": 0.8235294117647058,
+            "ic_wald": [
+              0.6953871643243089,
+              0.9516716592051028
+            ]
+          },
+          "Atlántico": {
+            "n": 23,
+            "retenidos": 20,
+            "tasa": 0.8695652173913043,
+            "ic_wald": [
+              0.7319267137346951,
+              1.0
+            ]
+          }
+        },
+        "chi2": 0.7117070572894562,
+        "p_valor": 0.9498773935053846,
+        "gl": 4,
+        "min_esperado": 3.9873150105708244,
+        "supuesto_frecuencias_ok": false
+      },
+      "2015→2017": {
+        "variable": "NME_DEPARTAMENTO_RES_PR",
+        "convocatorias": "2015→2017",
+        "grupos": {
+          "Bogotá, D. C.": {
+            "n": 252,
+            "retenidos": 209,
+            "tasa": 0.8293650793650794,
+            "ic_wald": [
+              0.7829175486034275,
+              0.8758126101267313
+            ]
+          },
+          "Antioquia": {
+            "n": 150,
+            "retenidos": 126,
+            "tasa": 0.84,
+            "ic_wald": [
+              0.7813308121753846,
+              0.8986691878246154
+            ]
+          },
+          "Valle del Cauca": {
+            "n": 68,
+            "retenidos": 53,
+            "tasa": 0.7794117647058824,
+            "ic_wald": [
+              0.6808573083526188,
+              0.8779662210591459
+            ]
+          },
+          "Santander": {
+            "n": 39,
+            "retenidos": 36,
+            "tasa": 0.9230769230769231,
+            "ic_wald": [
+              0.8394452011845039,
+              1.0
+            ]
+          },
+          "Atlántico": {
+            "n": 32,
+            "retenidos": 26,
+            "tasa": 0.8125,
+            "ic_wald": [
+              0.6772636617343548,
+              0.9477363382656452
+            ]
+          }
+        },
+        "chi2": 3.82418753395726,
+        "p_valor": 0.4303220328593964,
+        "gl": 4,
+        "min_esperado": 5.382624768946395,
+        "supuesto_frecuencias_ok": true
+      },
+      "2017→2019": {
+        "variable": "NME_DEPARTAMENTO_RES_PR",
+        "convocatorias": "2017→2019",
+        "grupos": {
+          "Bogotá, D. C.": {
+            "n": 307,
+            "retenidos": 233,
+            "tasa": 0.758957654723127,
+            "ic_wald": [
+              0.7111120190982007,
+              0.8068032903480534
+            ]
+          },
+          "Antioquia": {
+            "n": 189,
+            "retenidos": 145,
+            "tasa": 0.7671957671957672,
+            "ic_wald": [
+              0.7069434568390881,
+              0.8274480775524463
+            ]
+          },
+          "Valle del Cauca": {
+            "n": 84,
+            "retenidos": 59,
+            "tasa": 0.7023809523809523,
+            "ic_wald": [
+              0.6046047528987409,
+              0.8001571518631637
+            ]
+          },
+          "Santander": {
+            "n": 57,
+            "retenidos": 44,
+            "tasa": 0.7719298245614035,
+            "ic_wald": [
+              0.6630012545776188,
+              0.8808583945451881
+            ]
+          },
+          "Atlántico": {
+            "n": 54,
+            "retenidos": 49,
+            "tasa": 0.9074074074074074,
+            "ic_wald": [
+              0.8300951287142915,
+              0.9847196861005234
+            ]
+          }
+        },
+        "chi2": 8.038614588353315,
+        "p_valor": 0.09017389022222848,
+        "gl": 4,
+        "min_esperado": 12.58176555716353,
+        "supuesto_frecuencias_ok": true
+      },
+      "2019→2021": {
+        "variable": "NME_DEPARTAMENTO_RES_PR",
+        "convocatorias": "2019→2021",
+        "grupos": {
+          "Bogotá, D. C.": {
+            "n": 392,
+            "retenidos": 297,
+            "tasa": 0.7576530612244898,
+            "ic_wald": [
+              0.7152334193069988,
+              0.8000727031419809
+            ]
+          },
+          "Antioquia": {
+            "n": 211,
+            "retenidos": 170,
+            "tasa": 0.8056872037914692,
+            "ic_wald": [
+              0.7522985736878481,
+              0.8590758338950902
+            ]
+          },
+          "Valle del Cauca": {
+            "n": 96,
+            "retenidos": 78,
+            "tasa": 0.8125,
+            "ic_wald": [
+              0.7344212636981104,
+              0.8905787363018896
+            ]
+          },
+          "Atlántico": {
+            "n": 87,
+            "retenidos": 78,
+            "tasa": 0.896551724137931,
+            "ic_wald": [
+              0.8325567675938594,
+              0.9605466806820027
+            ]
+          },
+          "Santander": {
+            "n": 80,
+            "retenidos": 72,
+            "tasa": 0.9,
+            "ic_wald": [
+              0.8342596014615062,
+              0.9657403985384938
+            ]
+          }
+        },
+        "chi2": 14.704611192988398,
+        "p_valor": 0.005354767590962461,
+        "gl": 4,
+        "min_esperado": 15.796766743648961,
+        "supuesto_frecuencias_ok": true
+      }
+    },
+    "gran_area": {
+      "2013→2014": {
+        "variable": "NME_GRAN_AREA_PR",
+        "convocatorias": "2013→2014",
+        "grupos": {
+          "Ciencias Sociales": {
+            "n": 164,
+            "retenidos": 87,
+            "tasa": 0.5304878048780488,
+            "ic_wald": [
+              0.4541050552291356,
+              0.606870554526962
+            ]
+          },
+          "Ciencias Naturales": {
+            "n": 149,
+            "retenidos": 99,
+            "tasa": 0.6644295302013423,
+            "ic_wald": [
+              0.5886103178912645,
+              0.7402487425114201
+            ]
+          },
+          "Ingeniería y Tecnología": {
+            "n": 103,
+            "retenidos": 75,
+            "tasa": 0.7281553398058253,
+            "ic_wald": [
+              0.6422322508425011,
+              0.8140784287691494
+            ]
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 62,
+            "retenidos": 44,
+            "tasa": 0.7096774193548387,
+            "ic_wald": [
+              0.5966897298249719,
+              0.8226651088847056
+            ]
+          },
+          "Humanidades": {
+            "n": 55,
+            "retenidos": 22,
+            "tasa": 0.4,
+            "ic_wald": [
+              0.27052666122114,
+              0.52947333877886
+            ]
+          },
+          "No registra": {
+            "n": 51,
+            "retenidos": 28,
+            "tasa": 0.5490196078431373,
+            "ic_wald": [
+              0.4124532456780719,
+              0.6855859700082028
+            ]
+          },
+          "Ciencias Agrícolas": {
+            "n": 34,
+            "retenidos": 23,
+            "tasa": 0.6764705882352942,
+            "ic_wald": [
+              0.5192179441984305,
+              0.8337232322721578
+            ]
+          }
+        },
+        "chi2": 26.505275131811267,
+        "p_valor": 0.00017920321976711774,
+        "gl": 6,
+        "min_esperado": 13.20388349514563,
+        "supuesto_frecuencias_ok": true
+      },
+      "2014→2015": {
+        "variable": "NME_GRAN_AREA_PR",
+        "convocatorias": "2014→2015",
+        "grupos": {
+          "Ciencias Naturales": {
+            "n": 180,
+            "retenidos": 148,
+            "tasa": 0.8222222222222222,
+            "ic_wald": [
+              0.7663683662801839,
+              0.8780760781642605
+            ]
+          },
+          "Ciencias Sociales": {
+            "n": 157,
+            "retenidos": 128,
+            "tasa": 0.8152866242038217,
+            "ic_wald": [
+              0.7545835652662033,
+              0.8759896831414401
+            ]
+          },
+          "Ingeniería y Tecnología": {
+            "n": 125,
+            "retenidos": 112,
+            "tasa": 0.896,
+            "ic_wald": [
+              0.8424854670654784,
+              0.9495145329345216
+            ]
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 97,
+            "retenidos": 79,
+            "tasa": 0.8144329896907216,
+            "ic_wald": [
+              0.7370673237524142,
+              0.891798655629029
+            ]
+          },
+          "Ciencias Agrícolas": {
+            "n": 37,
+            "retenidos": 29,
+            "tasa": 0.7837837837837838,
+            "ic_wald": [
+              0.6511367698996352,
+              0.9164307976679323
+            ]
+          },
+          "Humanidades": {
+            "n": 35,
+            "retenidos": 28,
+            "tasa": 0.8,
+            "ic_wald": [
+              0.6674798128585686,
+              0.9325201871414315
+            ]
+          },
+          "No registra": {
+            "n": 9,
+            "retenidos": 5,
+            "tasa": 0.5555555555555556,
+            "ic_wald": [
+              0.23091161215558614,
+              0.8801994989555251
+            ]
+          }
+        },
+        "chi2": 9.72208281185879,
+        "p_valor": 0.13685420784542998,
+        "gl": 6,
+        "min_esperado": 1.5609375,
+        "supuesto_frecuencias_ok": false
+      },
+      "2015→2017": {
+        "variable": "NME_GRAN_AREA_PR",
+        "convocatorias": "2015→2017",
+        "grupos": {
+          "Ciencias Naturales": {
+            "n": 199,
+            "retenidos": 159,
+            "tasa": 0.7989949748743719,
+            "ic_wald": [
+              0.7433142328065465,
+              0.8546757169421972
+            ]
+          },
+          "Ciencias Sociales": {
+            "n": 193,
+            "retenidos": 147,
+            "tasa": 0.7616580310880829,
+            "ic_wald": [
+              0.7015465136851465,
+              0.8217695484910194
+            ]
+          },
+          "Ingeniería y Tecnología": {
+            "n": 159,
+            "retenidos": 136,
+            "tasa": 0.8553459119496856,
+            "ic_wald": [
+              0.8006702868378712,
+              0.9100215370614999
+            ]
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 114,
+            "retenidos": 95,
+            "tasa": 0.8333333333333334,
+            "ic_wald": [
+              0.7649205283123565,
+              0.9017461383543103
+            ]
+          },
+          "Ciencias Agrícolas": {
+            "n": 45,
+            "retenidos": 37,
+            "tasa": 0.8222222222222222,
+            "ic_wald": [
+              0.7105145103381456,
+              0.9339299341062988
+            ]
+          },
+          "Humanidades": {
+            "n": 43,
+            "retenidos": 34,
+            "tasa": 0.7906976744186046,
+            "ic_wald": [
+              0.6691031268247546,
+              0.9122922220124546
+            ]
+          }
+        },
+        "chi2": 5.672268205361304,
+        "p_valor": 0.3394254825379083,
+        "gl": 5,
+        "min_esperado": 8.280212483399735,
+        "supuesto_frecuencias_ok": true
+      },
+      "2017→2019": {
+        "variable": "NME_GRAN_AREA_PR",
+        "convocatorias": "2017→2019",
+        "grupos": {
+          "Ciencias Sociales": {
+            "n": 289,
+            "retenidos": 213,
+            "tasa": 0.7370242214532872,
+            "ic_wald": [
+              0.686266057398746,
+              0.7877823855078283
+            ]
+          },
+          "Ciencias Naturales": {
+            "n": 222,
+            "retenidos": 172,
+            "tasa": 0.7747747747747747,
+            "ic_wald": [
+              0.7198237450193082,
+              0.8297258045302413
+            ]
+          },
+          "Ingeniería y Tecnología": {
+            "n": 200,
+            "retenidos": 165,
+            "tasa": 0.825,
+            "ic_wald": [
+              0.7723392461124985,
+              0.8776607538875014
+            ]
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 144,
+            "retenidos": 107,
+            "tasa": 0.7430555555555556,
+            "ic_wald": [
+              0.671687299572201,
+              0.8144238115389102
+            ]
+          },
+          "Humanidades": {
+            "n": 66,
+            "retenidos": 48,
+            "tasa": 0.7272727272727273,
+            "ic_wald": [
+              0.6198250481141061,
+              0.8347204064313485
+            ]
+          },
+          "Ciencias Agrícolas": {
+            "n": 62,
+            "retenidos": 47,
+            "tasa": 0.7580645161290323,
+            "ic_wald": [
+              0.6514630701615072,
+              0.8646659620965573
+            ]
+          }
+        },
+        "chi2": 6.3061049496498605,
+        "p_valor": 0.27756257309810667,
+        "gl": 5,
+        "min_esperado": 14.56968463886063,
+        "supuesto_frecuencias_ok": true
+      },
+      "2019→2021": {
+        "variable": "NME_GRAN_AREA_PR",
+        "convocatorias": "2019→2021",
+        "grupos": {
+          "Ciencias Sociales": {
+            "n": 400,
+            "retenidos": 305,
+            "tasa": 0.7625,
+            "ic_wald": [
+              0.7207959909001544,
+              0.8042040090998455
+            ]
+          },
+          "Ciencias Naturales": {
+            "n": 269,
+            "retenidos": 216,
+            "tasa": 0.8029739776951673,
+            "ic_wald": [
+              0.7554412801573708,
+              0.8505066752329639
+            ]
+          },
+          "Ingeniería y Tecnología": {
+            "n": 254,
+            "retenidos": 219,
+            "tasa": 0.8622047244094488,
+            "ic_wald": [
+              0.8198149040585169,
+              0.9045945447603808
+            ]
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 174,
+            "retenidos": 145,
+            "tasa": 0.8333333333333334,
+            "ic_wald": [
+              0.7779581472043006,
+              0.8887085194623662
+            ]
+          },
+          "Humanidades": {
+            "n": 90,
+            "retenidos": 69,
+            "tasa": 0.7666666666666667,
+            "ic_wald": [
+              0.6792837573565151,
+              0.8540495759768183
+            ]
+          },
+          "Ciencias Agrícolas": {
+            "n": 65,
+            "retenidos": 52,
+            "tasa": 0.8,
+            "ic_wald": [
+              0.7027567680820607,
+              0.8972432319179394
+            ]
+          },
+          "No registra": {
+            "n": 6,
+            "retenidos": 3,
+            "tasa": 0.5,
+            "ic_wald": [
+              0.09991667534541426,
+              0.9000833246545857
+            ]
+          }
+        },
+        "chi2": 14.964338780501787,
+        "p_valor": 0.020535899846158653,
+        "gl": 6,
+        "min_esperado": 1.1875993640699523,
+        "supuesto_frecuencias_ok": false
+      }
+    },
+    "nivel_formacion": {
+      "2013→2014": {
+        "variable": "NME_NIV_FORM_PR",
+        "convocatorias": "2013→2014",
+        "grupos": {
+          "Doctorado": {
+            "n": 409,
+            "retenidos": 237,
+            "tasa": 0.5794621026894865,
+            "ic_wald": [
+              0.5316200829620223,
+              0.6273041224169507
+            ]
+          },
+          "Maestría/Magister": {
+            "n": 147,
+            "retenidos": 103,
+            "tasa": 0.7006802721088435,
+            "ic_wald": [
+              0.6266473281233278,
+              0.7747132160943593
+            ]
+          },
+          "Postdoctorado": {
+            "n": 53,
+            "retenidos": 34,
+            "tasa": 0.6415094339622641,
+            "ic_wald": [
+              0.5123998368363435,
+              0.7706190310881847
+            ]
+          },
+          "Especialidad Médica": {
+            "n": 5,
+            "retenidos": 3,
+            "tasa": 0.6,
+            "ic_wald": [
+              0.17058551491594975,
+              1.0
+            ]
+          },
+          "Especialización": {
+            "n": 3,
+            "retenidos": 1,
+            "tasa": 0.3333333333333333,
+            "ic_wald": [
+              0.0,
+              0.8667777662061142
+            ]
+          },
+          "Pregrado/Universitario": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0,
+            "ic_wald": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "chi2": 9.444354746972563,
+        "p_valor": 0.09259990999769212,
+        "gl": 5,
+        "min_esperado": 0.3883495145631068,
+        "supuesto_frecuencias_ok": false
+      },
+      "2014→2015": {
+        "variable": "NME_NIV_FORM_PR",
+        "convocatorias": "2014→2015",
+        "grupos": {
+          "Doctorado": {
+            "n": 334,
+            "retenidos": 273,
+            "tasa": 0.8173652694610778,
+            "ic_wald": [
+              0.7759288126580355,
+              0.8588017262641201
+            ]
+          },
+          "Maestría/Magister": {
+            "n": 234,
+            "retenidos": 192,
+            "tasa": 0.8205128205128205,
+            "ic_wald": [
+              0.771341989880941,
+              0.8696836511446999
+            ]
+          },
+          "Postdoctorado": {
+            "n": 46,
+            "retenidos": 42,
+            "tasa": 0.9130434782608695,
+            "ic_wald": [
+              0.8316154413749747,
+              0.9944715151467644
+            ]
+          },
+          "Especialidad Médica": {
+            "n": 17,
+            "retenidos": 15,
+            "tasa": 0.8823529411764706,
+            "ic_wald": [
+              0.7291936609713011,
+              1.0
+            ]
+          },
+          "Especialización": {
+            "n": 5,
+            "retenidos": 5,
+            "tasa": 1.0,
+            "ic_wald": [
+              1.0,
+              1.0
+            ]
+          },
+          "Pregrado/Universitario": {
+            "n": 4,
+            "retenidos": 2,
+            "tasa": 0.5,
+            "ic_wald": [
+              0.010000000000000009,
+              0.99
+            ]
+          }
+        },
+        "chi2": 7.050498225664029,
+        "p_valor": 0.21691170235007004,
+        "gl": 5,
+        "min_esperado": 0.69375,
+        "supuesto_frecuencias_ok": false
+      },
+      "2015→2017": {
+        "variable": "NME_NIV_FORM_PR",
+        "convocatorias": "2015→2017",
+        "grupos": {
+          "Doctorado": {
+            "n": 399,
+            "retenidos": 322,
+            "tasa": 0.8070175438596491,
+            "ic_wald": [
+              0.7682944520146651,
+              0.8457406357046331
+            ]
+          },
+          "Maestría/Magister": {
+            "n": 258,
+            "retenidos": 207,
+            "tasa": 0.8023255813953488,
+            "ic_wald": [
+              0.7537300010275543,
+              0.8509211617631434
+            ]
+          },
+          "Postdoctorado": {
+            "n": 65,
+            "retenidos": 53,
+            "tasa": 0.8153846153846154,
+            "ic_wald": [
+              0.7210622693508633,
+              0.9097069614183675
+            ]
+          },
+          "Especialidad Médica": {
+            "n": 17,
+            "retenidos": 14,
+            "tasa": 0.8235294117647058,
+            "ic_wald": [
+              0.6423089075215274,
+              1.0
+            ]
+          },
+          "Especialización": {
+            "n": 10,
+            "retenidos": 8,
+            "tasa": 0.8,
+            "ic_wald": [
+              0.5520774314427992,
+              1.0
+            ]
+          },
+          "Pregrado/Universitario": {
+            "n": 3,
+            "retenidos": 3,
+            "tasa": 1.0,
+            "ic_wald": [
+              1.0,
+              1.0
+            ]
+          },
+          "Perfeccionamiento": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0,
+            "ic_wald": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "chi2": 1.056029213943449,
+        "p_valor": 0.983398851337408,
+        "gl": 6,
+        "min_esperado": 0.19256308100929614,
+        "supuesto_frecuencias_ok": false
+      },
+      "2017→2019": {
+        "variable": "NME_NIV_FORM_PR",
+        "convocatorias": "2017→2019",
+        "grupos": {
+          "Doctorado": {
+            "n": 490,
+            "retenidos": 380,
+            "tasa": 0.7755102040816326,
+            "ic_wald": [
+              0.7385656786525021,
+              0.8124547295107631
+            ]
+          },
+          "Maestría/Magister": {
+            "n": 370,
+            "retenidos": 281,
+            "tasa": 0.7594594594594595,
+            "ic_wald": [
+              0.7159081067753832,
+              0.8030108121435358
+            ]
+          },
+          "Postdoctorado": {
+            "n": 77,
+            "retenidos": 64,
+            "tasa": 0.8311688311688312,
+            "ic_wald": [
+              0.7474965428009297,
+              0.9148411195367327
+            ]
+          },
+          "Pregrado/Universitario": {
+            "n": 24,
+            "retenidos": 15,
+            "tasa": 0.625,
+            "ic_wald": [
+              0.43131049331468674,
+              0.8186895066853133
+            ]
+          },
+          "Especialidad Médica": {
+            "n": 18,
+            "retenidos": 11,
+            "tasa": 0.6111111111111112,
+            "ic_wald": [
+              0.38589851531349934,
+              0.836323706908723
+            ]
+          },
+          "No disponible": {
+            "n": 2,
+            "retenidos": 1,
+            "tasa": 0.5,
+            "ic_wald": [
+              0.0,
+              1.0
+            ]
+          },
+          "Especialización": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0,
+            "ic_wald": [
+              0.0,
+              0.0
+            ]
+          },
+          "Perfeccionamiento": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0,
+            "ic_wald": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "chi2": 14.519411447370594,
+        "p_valor": 0.04267770329848692,
+        "gl": 7,
+        "min_esperado": 0.23499491353001017,
+        "supuesto_frecuencias_ok": false
+      },
+      "2019→2021": {
+        "variable": "NME_NIV_FORM_PR",
+        "convocatorias": "2019→2021",
+        "grupos": {
+          "Doctorado": {
+            "n": 620,
+            "retenidos": 490,
+            "tasa": 0.7903225806451613,
+            "ic_wald": [
+              0.7582792055741937,
+              0.8223659557161288
+            ]
+          },
+          "Maestría/Magister": {
+            "n": 478,
+            "retenidos": 391,
+            "tasa": 0.8179916317991632,
+            "ic_wald": [
+              0.7834007023582785,
+              0.8525825612400479
+            ]
+          },
+          "Postdoctorado": {
+            "n": 95,
+            "retenidos": 74,
+            "tasa": 0.7789473684210526,
+            "ic_wald": [
+              0.6955031654761938,
+              0.8623915713659114
+            ]
+          },
+          "Pregrado/Universitario": {
+            "n": 24,
+            "retenidos": 19,
+            "tasa": 0.7916666666666666,
+            "ic_wald": [
+              0.6291862547418464,
+              0.9541470785914868
+            ]
+          },
+          "Especialización": {
+            "n": 21,
+            "retenidos": 17,
+            "tasa": 0.8095238095238095,
+            "ic_wald": [
+              0.6415731994998879,
+              0.9774744195477312
+            ]
+          },
+          "Especialidad Médica": {
+            "n": 20,
+            "retenidos": 18,
+            "tasa": 0.9,
+            "ic_wald": [
+              0.7685192029230123,
+              1.0
+            ]
+          }
+        },
+        "chi2": 2.854043871971549,
+        "p_valor": 0.7224757570077919,
+        "gl": 5,
+        "min_esperado": 3.958664546899841,
+        "supuesto_frecuencias_ok": false
+      }
+    }
+  },
+  "transiciones_por_grupo_2019_2021": {
+    "genero": {
+      "variable": "NME_GENERO_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Femenino": {
+          "permanece": 271,
+          "asciende": 55,
+          "desciende": 29,
+          "n": 355,
+          "pct_permanece": 76.33802816901408,
+          "pct_asciende": 15.492957746478874,
+          "pct_desciende": 8.169014084507042
+        },
+        "Masculino": {
+          "permanece": 459,
+          "asciende": 134,
+          "desciende": 61,
+          "n": 654,
+          "pct_permanece": 70.18348623853211,
+          "pct_asciende": 20.489296636085626,
+          "pct_desciende": 9.327217125382264
+        }
+      },
+      "chi2": 4.617269720130349,
+      "p_valor": 0.0993968495922167,
+      "gl": 2,
+      "min_esperado": 31.665014866204164,
+      "supuesto_frecuencias_ok": true
+    },
+    "departamento": {
+      "variable": "NME_DEPARTAMENTO_RES_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Antioquia": {
+          "permanece": 122,
+          "asciende": 38,
+          "desciende": 10,
+          "n": 170,
+          "pct_permanece": 71.76470588235294,
+          "pct_asciende": 22.352941176470587,
+          "pct_desciende": 5.882352941176471
+        },
+        "Atlántico": {
+          "permanece": 51,
+          "asciende": 13,
+          "desciende": 14,
+          "n": 78,
+          "pct_permanece": 65.38461538461539,
+          "pct_asciende": 16.666666666666668,
+          "pct_desciende": 17.94871794871795
+        },
+        "Bogotá, D. C.": {
+          "permanece": 214,
+          "asciende": 51,
+          "desciende": 32,
+          "n": 297,
+          "pct_permanece": 72.05387205387206,
+          "pct_asciende": 17.171717171717173,
+          "pct_desciende": 10.774410774410775
+        },
+        "Santander": {
+          "permanece": 58,
+          "asciende": 10,
+          "desciende": 4,
+          "n": 72,
+          "pct_permanece": 80.55555555555556,
+          "pct_asciende": 13.88888888888889,
+          "pct_desciende": 5.555555555555555
+        },
+        "Valle del Cauca": {
+          "permanece": 53,
+          "asciende": 18,
+          "desciende": 7,
+          "n": 78,
+          "pct_permanece": 67.94871794871794,
+          "pct_asciende": 23.076923076923077,
+          "pct_desciende": 8.974358974358974
+        }
+      },
+      "chi2": 14.58015250123315,
+      "p_valor": 0.06784197329519648,
+      "gl": 8,
+      "min_esperado": 6.941007194244604,
+      "supuesto_frecuencias_ok": true
+    },
+    "gran_area": {
+      "variable": "NME_GRAN_AREA_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Ciencias Agrícolas": {
+          "permanece": 41,
+          "asciende": 9,
+          "desciende": 2,
+          "n": 52,
+          "pct_permanece": 78.84615384615384,
+          "pct_asciende": 17.307692307692307,
+          "pct_desciende": 3.8461538461538463
+        },
+        "Ciencias Médicas y de la Salud": {
+          "permanece": 103,
+          "asciende": 31,
+          "desciende": 11,
+          "n": 145,
+          "pct_permanece": 71.03448275862068,
+          "pct_asciende": 21.379310344827587,
+          "pct_desciende": 7.586206896551724
+        },
+        "Ciencias Naturales": {
+          "permanece": 163,
+          "asciende": 43,
+          "desciende": 10,
+          "n": 216,
+          "pct_permanece": 75.46296296296296,
+          "pct_asciende": 19.90740740740741,
+          "pct_desciende": 4.62962962962963
+        },
+        "Ciencias Sociales": {
+          "permanece": 216,
+          "asciende": 47,
+          "desciende": 42,
+          "n": 305,
+          "pct_permanece": 70.81967213114754,
+          "pct_asciende": 15.40983606557377,
+          "pct_desciende": 13.770491803278688
+        },
+        "Humanidades": {
+          "permanece": 43,
+          "asciende": 15,
+          "desciende": 11,
+          "n": 69,
+          "pct_permanece": 62.31884057971015,
+          "pct_asciende": 21.73913043478261,
+          "pct_desciende": 15.942028985507246
+        },
+        "Ingeniería y Tecnología": {
+          "permanece": 162,
+          "asciende": 44,
+          "desciende": 13,
+          "n": 219,
+          "pct_permanece": 73.97260273972603,
+          "pct_asciende": 20.091324200913242,
+          "pct_desciende": 5.936073059360731
+        },
+        "No registra": {
+          "permanece": 2,
+          "asciende": 0,
+          "desciende": 1,
+          "n": 3,
+          "pct_permanece": 66.66666666666667,
+          "pct_asciende": 0.0,
+          "pct_desciende": 33.333333333333336
+        }
+      },
+      "chi2": 27.742598638339174,
+      "p_valor": 0.006032055974302174,
+      "gl": 12,
+      "min_esperado": 0.267591674925669,
+      "supuesto_frecuencias_ok": false
+    },
+    "nivel_formacion": {
+      "variable": "NME_NIV_FORM_PR",
+      "convocatorias": "2019→2021",
+      "grupos": {
+        "Doctorado": {
+          "permanece": 343,
+          "asciende": 107,
+          "desciende": 40,
+          "n": 490,
+          "pct_permanece": 70.0,
+          "pct_asciende": 21.836734693877553,
+          "pct_desciende": 8.16326530612245
+        },
+        "Especialidad Médica": {
+          "permanece": 16,
+          "asciende": 2,
+          "desciende": 0,
+          "n": 18,
+          "pct_permanece": 88.88888888888889,
+          "pct_asciende": 11.11111111111111,
+          "pct_desciende": 0.0
+        },
+        "Especialización": {
+          "permanece": 15,
+          "asciende": 1,
+          "desciende": 1,
+          "n": 17,
+          "pct_permanece": 88.23529411764706,
+          "pct_asciende": 5.882352941176471,
+          "pct_desciende": 5.882352941176471
+        },
+        "Maestría/Magister": {
+          "permanece": 292,
+          "asciende": 58,
+          "desciende": 41,
+          "n": 391,
+          "pct_permanece": 74.68030690537084,
+          "pct_asciende": 14.83375959079284,
+          "pct_desciende": 10.485933503836318
+        },
+        "Postdoctorado": {
+          "permanece": 49,
+          "asciende": 18,
+          "desciende": 7,
+          "n": 74,
+          "pct_permanece": 66.21621621621621,
+          "pct_asciende": 24.324324324324323,
+          "pct_desciende": 9.45945945945946
+        },
+        "Pregrado/Universitario": {
+          "permanece": 15,
+          "asciende": 3,
+          "desciende": 1,
+          "n": 19,
+          "pct_permanece": 78.94736842105263,
+          "pct_asciende": 15.789473684210526,
+          "pct_desciende": 5.2631578947368425
+        }
+      },
+      "chi2": 14.993707507555067,
+      "p_valor": 0.13229143769769966,
+      "gl": 10,
+      "min_esperado": 1.516352824578791,
+      "supuesto_frecuencias_ok": false
+    }
+  },
+  "top5_departamento": [
+    "Bogotá, D. C.",
+    "Antioquia",
+    "Valle del Cauca",
+    "Atlántico",
+    "Santander"
+  ],
+  "coherencia_atributos_por_persona": {
+    "NME_GENERO_PR": 42,
+    "NME_DEPARTAMENTO_RES_PR": 1203,
+    "NME_GRAN_AREA_PR": 1389,
+    "NME_NIV_FORM_PR": 3844,
+    "NME_CLASIFICACION_PR": 8755
+  },
+  "hallazgos_calidad": {
+    "emerito_absorbente": {
+      "detalle": [
+        {
+          "par": "2013→2014",
+          "emeritos_t1": 0,
+          "vuelven_t2": 0,
+          "retorno": null
+        },
+        {
+          "par": "2014→2015",
+          "emeritos_t1": 0,
+          "vuelven_t2": 0,
+          "retorno": null
+        },
+        {
+          "par": "2015→2017",
+          "emeritos_t1": 74,
+          "vuelven_t2": 0,
+          "retorno": 0.0
+        },
+        {
+          "par": "2017→2019",
+          "emeritos_t1": 124,
+          "vuelven_t2": 0,
+          "retorno": 0.0
+        },
+        {
+          "par": "2019→2021",
+          "emeritos_t1": 53,
+          "vuelven_t2": 0,
+          "retorno": 0.0
+        }
+      ],
+      "oportunidades": 251,
+      "retornos": 0,
+      "tasa_retorno": 0.0,
+      "absorbente": true
+    },
+    "emerito_por_convocatoria": {
+      "2013": 0,
+      "2014": 0,
+      "2015": 74,
+      "2017": 124,
+      "2019": 53,
+      "2021": 83
+    },
+    "personas_por_numero_de_convocatorias": {
+      "1": {
+        "personas": 10871,
+        "pct": 36.13308515588646
+      },
+      "2": {
+        "personas": 7139,
+        "pct": 23.728644552283455
+      },
+      "3": {
+        "personas": 4157,
+        "pct": 13.8170577677325
+      },
+      "4": {
+        "personas": 2720,
+        "pct": 9.04074985042877
+      },
+      "5": {
+        "personas": 2457,
+        "pct": 8.166589111214519
+      },
+      "6": {
+        "personas": 2742,
+        "pct": 9.113873562454298
+      }
+    },
+    "genero_inconsistente": {
+      "personas": 42,
+      "pct_personas": 0.13959981386691483,
+      "patrones": {
+        "Masculino -> Femenino": 30,
+        "Femenino -> Masculino": 7,
+        "Femenino -> Intersexual": 2,
+        "Masculino -> Intersexual": 2,
+        "Masculino -> No disponible": 1
+      }
+    },
+    "duplicados_persona_convocatoria": 0
+  }
+}
