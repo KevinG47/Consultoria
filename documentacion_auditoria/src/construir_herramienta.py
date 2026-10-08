@@ -294,8 +294,8 @@ button.mini:hover{background:#D6E0F2}
 .tabla th{color:var(--azul-osc);font-size:.76rem;text-transform:uppercase;
   letter-spacing:.4px}
 .tabla td.num,.tabla th.num{text-align:right;font-variant-numeric:tabular-nums}
-.ids{max-height:290px;overflow:auto;border:1px solid var(--borde);border-radius:8px;
-  padding:6px;background:#FBFCFE}
+.ids{max-height:62vh;overflow:auto;border:1px solid var(--borde);border-radius:8px;
+  padding:8px;background:#FBFCFE}
 .id-chip{display:inline-block;font-family:Consolas,"Courier New",monospace;
   font-size:.8rem;background:#E8EEF9;color:var(--azul-osc);border:1px solid #C9D8F0;
   border-radius:6px;padding:3px 7px;margin:3px;cursor:pointer}
@@ -338,6 +338,10 @@ button.mini:hover{background:#D6E0F2}
 .resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 .big{font-size:1.5rem;font-weight:800;color:var(--azul);line-height:1.1}
 .nota{font-size:.78rem;color:var(--gris);margin-top:8px}
+.barra-ficha{display:flex;align-items:center;gap:10px;margin-bottom:12px;
+  padding:8px 10px;background:#EEF3FB;border:1px solid var(--borde);
+  border-radius:9px;position:sticky;top:0;z-index:5}
+.barra-ficha .nota{margin:0}
 .pie{margin-top:26px;padding-top:14px;border-top:1px solid var(--borde);
   font-size:.76rem;color:var(--gris)}
 .pie code{background:#EEF2F8;padding:1px 5px;border-radius:4px}
@@ -413,19 +417,25 @@ kbd{background:#EEF2F8;border:1px solid var(--borde);border-bottom-width:2px;
         <div class="nota">Deja un campo en «(cualquiera)» para no restringirlo.</div>
       </div>
 
+    </div>
+
+    <!-- ============ PANEL DERECHO: LISTA DE RESULTADOS O FICHA ============ -->
+    <div id="panelDerecho">
       <div class="card" id="cardResultados" style="display:none">
         <h2>Resultados <span id="resumenRes" class="nota"></span></h2>
         <div class="ids" id="listaIds"></div>
-        <div class="nota">Haz clic en cualquier ID para abrir su ficha.</div>
+        <div class="nota">Haz clic en cualquier ID para abrir su ficha en este mismo panel.
+          El botón «Volver a la lista» de la ficha devuelve a estos resultados.</div>
       </div>
-    </div>
 
-    <!-- ============ FICHA ============ -->
-    <div id="panelFicha">
-      <div class="card">
-        <div class="info">
-          Escribe un ID y pulsa <strong>Buscar</strong>, o lista por institución, área,
-          categoría y año, y haz clic en un identificador de la lista.
+      <div id="panelFicha">
+        <div class="card">
+          <div class="info">
+            Escribe un ID y pulsa <strong>Buscar</strong>, o lista por institución, área,
+            categoría y año: los resultados y la ficha aparecen <strong>aquí, a la
+            derecha</strong>. Al hacer clic en un identificador de la lista, la lista se
+            reemplaza por la ficha de esa persona.
+          </div>
         </div>
       </div>
     </div>
@@ -748,6 +758,10 @@ function htmlFicha(id){
 /* ---------- capa de interfaz (solo navegador) ---------- */
 function montar(){
   const $ = function(id){ return document.getElementById(id); };
+  /* Estado de la ultima lista (para volver desde la ficha) y contenido inicial
+     del panel derecho. Se declara aqui, antes de su primer uso. */
+  let ultimaLista = null, idFichaActual = null, ayudaInicial = "";
+  ayudaInicial = $("panelFicha").innerHTML;
   $("nFilas").textContent = DATA.filas.toLocaleString("es-CO");
   $("nPersonas").textContent = DATA.personas_n.toLocaleString("es-CO");
   $("nFilas2").textContent = DATA.filas.toLocaleString("es-CO");
@@ -771,15 +785,35 @@ function montar(){
   const opSin = document.createElement("option");
   opSin.value = "(sin institución registrada)"; dl.appendChild(opSin);
 
-  function mostrarFicha(id){
+  function volverALista(){
+    if(!ultimaLista) return;
+    mostrarLista(ultimaLista.ids, ultimaLista.etiqueta, ultimaLista.mensajeVacio);
+  }
+  function mostrarFicha(id, desplazar){
     const res = buscarPorId(id);
-    $("panelFicha").innerHTML = res.encontrado
+    idFichaActual = res.encontrado ? res.id : null;
+    const barra = ultimaLista
+      ? '<div class="barra-ficha"><button class="mini" id="btnVolver">← Volver a la lista ('
+        + ultimaLista.ids.length.toLocaleString("es-CO") + ' personas)</button>'
+        + '<span class="nota">' + esc(ultimaLista.etiqueta) + '</span></div>'
+      : "";
+    const cuerpo = res.encontrado
       ? htmlFicha(res.id)
       : '<div class="card"><div class="error">Ese ID no está en el padrón: no existe ningún investigador con el código <span class="mono">'+esc(res.idIngresado)+'</span>.</div></div>';
-    $("panelFicha").scrollIntoView({behavior:"smooth", block:"start"});
+    $("panelFicha").innerHTML = barra + cuerpo;
+    $("panelFicha").style.display = "";
+    $("cardResultados").style.display = "none";
+    const bv = document.getElementById("btnVolver");
+    if(bv) bv.onclick = volverALista;
+    if(desplazar !== false){
+      $("panelDerecho").scrollIntoView({behavior:"smooth", block:"start"});
+    }
   }
-  function mostrarLista(ids, etiqueta){
+  function mostrarLista(ids, etiqueta, mensajeVacio){
+    ultimaLista = {ids: ids, etiqueta: etiqueta, mensajeVacio: mensajeVacio || null};
+    idFichaActual = null;
     $("cardResultados").style.display = "";
+    $("panelFicha").style.display = "none";
     $("resumenRes").textContent = "· " + ids.length.toLocaleString("es-CO") + " personas " + etiqueta;
     const cont = $("listaIds");
     cont.innerHTML = "";
@@ -797,7 +831,22 @@ function montar(){
       cont.appendChild(p);
     }
     if(ids.length===0){
-      cont.innerHTML = '<div class="nota">Ninguna persona cumple ese filtro.</div>';
+      cont.innerHTML = '<div class="nota">' + esc(mensajeVacio || "Ninguna persona cumple ese filtro.") + '</div>';
+    }
+    $("panelDerecho").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+  /* Limpiar un filtro descarta su lista: si se esta viendo una ficha, se redibuja
+     sin el boton de volver (ya no habria a donde volver). */
+  function limpiarResultados(){
+    ultimaLista = null;
+    if(idFichaActual){
+      mostrarFicha(idFichaActual, false);
+    } else {
+      /* Vuelve al estado neutro: si no, quedaria en pantalla el contenido anterior
+         (por ejemplo el aviso de ID no encontrado) con un boton ya inservible. */
+      $("cardResultados").style.display = "none";
+      $("panelFicha").innerHTML = ayudaInicial;
+      $("panelFicha").style.display = "";
     }
   }
 
@@ -824,15 +873,13 @@ function montar(){
           + (insts.length>3 ? " y "+(insts.length-3)+" más" : "");
     }
     if(insts.length===0){
-      $("cardResultados").style.display = "";
-      $("resumenRes").textContent = etq;
-      $("listaIds").innerHTML = '<div class="nota">Ninguna institución del padrón contiene ese texto.</div>';
+      mostrarLista([], etq, "Ninguna institución del padrón contiene ese texto.");
       return;
     }
     mostrarLista(filtrarPorInstitucion(t), etq);
   };
   $("btnLimpiarInst").onclick = function(){
-    $("inst").value = ""; $("cardResultados").style.display = "none";
+    $("inst").value = ""; limpiarResultados();
   };
   $("btnFiltro").onclick = function(){
     const a = selArea.value, c = selCat.value, y = selAnio.value;
@@ -845,7 +892,7 @@ function montar(){
   };
   $("btnLimpiarFiltro").onclick = function(){
     selArea.value=""; selCat.value=""; selAnio.value="";
-    $("cardResultados").style.display = "none";
+    limpiarResultados();
   };
 }
 

@@ -23,12 +23,26 @@ modo **bloquea** las peticiones `fetch()`/`XMLHttpRequest` a archivos locales
 garantiza que el archivo funcione aislado, y el peso total es prácticamente el
 mismo que si se separara.
 
+## Cómo está organizada la pantalla
+
+| | |
+|---|---|
+| **Columna izquierda** | los formularios: ID, institución y área/categoría/año |
+| **Columna derecha** | los resultados: la **lista de IDs** o la **ficha** de una persona, nunca las dos a la vez |
+
+Al filtrar, la lista aparece a la derecha. Al hacer clic en un identificador de
+esa lista, **la lista se reemplaza por la ficha** de esa persona en el mismo
+panel derecho. Arriba de la ficha aparece el botón **«← Volver a la lista»**, que
+devuelve a los resultados del último filtro: se conservan hasta que se filtre de
+nuevo o se pulse **Limpiar**.
+
 ## Cómo buscar por ID
 
 1. Escribe el código en el campo **Código ID_PERSONA_PR** (por ejemplo
    `0000003781`) y pulsa **Buscar** o la tecla <kbd>Enter</kbd>.
-2. Si el ID existe, aparece la ficha completa: encabezado, línea de tiempo,
-   resumen de la trayectoria y comparación con los promedios del padrón.
+2. Si el ID existe, la ficha completa aparece **en el panel derecho**:
+   encabezado, línea de tiempo, resumen de la trayectoria y comparación con los
+   promedios del padrón. Si venías de una lista, el botón de volver sigue ahí.
 3. Si no existe, la herramienta responde **«Ese ID no está en el padrón»**.
 
 Detalles útiles:
@@ -45,7 +59,8 @@ Detalles útiles:
    campo sugiere nombres mientras escribes.
 2. Pulsa **Listar IDs**. Aparece el número de personas encontradas y la lista de
    códigos; la cabecera indica **cuántas instituciones** coincidieron y cuáles.
-3. Haz clic en cualquier ID de la lista para abrir su ficha.
+3. Haz clic en cualquier ID de la lista: la lista se reemplaza por la ficha de
+   esa persona en el panel derecho, con el botón para volver.
 
 La coincidencia es por texto parcial y **no distingue mayúsculas ni tildes**.
 Existe además la opción especial **«(sin institución registrada)»**.
@@ -63,7 +78,8 @@ Existe además la opción especial **«(sin institución registrada)»**.
 Elige **gran área de conocimiento**, **categoría** y/o **convocatoria** (deja
 «(cualquiera)» en los campos que no quieras restringir) y pulsa **Listar IDs**.
 La herramienta devuelve las personas que cumplen **las tres condiciones a la vez**
-en alguna convocatoria, con el mismo clic-para-ver-ficha.
+en alguna convocatoria, en la lista del panel derecho, con el mismo
+clic-para-ver-ficha.
 
 Las listas se recortan a los primeros 300 identificadores e indican cuántos hay
 en total; si la lista es muy larga, afina el filtro.
