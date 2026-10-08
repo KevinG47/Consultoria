@@ -11,26 +11,8 @@ const TMP = path.join(__dirname, "_app_dom.js");
 const m = fs.readFileSync(HTML, "utf8").match(/<script id="app">([\s\S]*?)<\/script>/);
 
 /* ---- stub minimo de DOM ---- */
-function crear(tag) {
-  const nodo = {
-    tag: tag, children: [], style: {}, textContent: "", innerHTML: "",
-    className: "", value: "",
-    appendChild: function (c) { this.children.push(c); return c; },
-    addEventListener: function () {},
-    scrollIntoView: function () {},
-  };
-  return nodo;
-}
-const registro = {};
-global.document = {
-  getElementById: function (id) {
-    if (!registro[id]) { registro[id] = crear("div"); registro[id].id = id; }
-    return registro[id];
-  },
-  createElement: crear,
-};
-global.Option = function (text, value) { this.text = text; this.value = value; };
-global.alert = function (msg) { throw new Error("alert inesperado: " + msg); };
+const { instalar } = require("./stub_dom.js");
+const registro = instalar();
 
 let fallos = 0;
 function ok(cond, etiqueta, extra) {
