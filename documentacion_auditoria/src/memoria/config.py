@@ -53,6 +53,14 @@ RAG_CHUNKS = MEMORIA / "rag_corpus.jsonl"
 RAG_MATRIZ = MEMORIA / "rag_matriz.npz"
 RAG_VECTORIZER = MEMORIA / "rag_vectorizer.pkl"
 RAG_INDICE_META = MEMORIA / "rag_indice.json"
+
+# --- Índice alternativo con EMBEDDINGS (decisión D007) --------------------
+# Deliberadamente separado del de TF-IDF: reindexar con embeddings no debe
+# pisar rag_indice.json / rag_matriz.npz / rag_vectorizer.pkl, que son la
+# fuente de verdad de la regla R13 (frescura del índice) y del respaldo.
+MODELO_EMBEDDINGS = "paraphrase-multilingual-MiniLM-L12-v2"
+RAG_EMBEDDINGS_MATRIZ = MEMORIA / "rag_embeddings.npy"
+RAG_INDICE_EMBEDDINGS = MEMORIA / "rag_indice_embeddings.json"
 GRAFO_JSON = MEMORIA / "grafo.json"
 GRAFO_RESUMEN = MEMORIA / "grafo_resumen.json"
 CONSULTAS_LOG = MEMORIA / "consultas_rag.jsonl"     # bitácora de consultas (antes de redactar)

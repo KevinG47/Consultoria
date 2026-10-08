@@ -14,6 +14,7 @@ import argparse
 import io
 import json
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -27,21 +28,43 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 
 def _cmd_indexar(args) -> int:
-    mem = rag.MemoriaSemantica()
-    meta = mem.indexar()
-    print(f"[RAG] índice construido: {meta['n_fragmentos']} fragmentos de "
-          f"{meta['n_documentos']} documentos ({meta['palabras_totales']} palabras, "
-          f"{meta['n_terminos_vocabulario']} términos en el vocabulario).")
+    metodo = getattr(args, "metodo", rag.METODO_POR_DEFECTO)
+    mem = rag.MemoriaSemantica(metodo)
+    t0 = time.time()
+    meta = mem.indexar(metodo=metodo)
+    total = time.time() - t0
+    if meta.get("metodo") == "embeddings":
+        kb_meta = config.RAG_INDICE_EMBEDDINGS.stat().st_size / 1024
+        kb_mat = config.RAG_EMBEDDINGS_MATRIZ.stat().st_size / 1024
+        print(f"[RAG] índice de EMBEDDINGS construido: {meta['n_fragmentos']} fragmentos de "
+              f"{meta['n_documentos']} documentos ({meta['palabras_totales']} palabras).")
+        print(f"[RAG] modelo local: {meta['modelo']} | dimensión: {meta['dimension']} | "
+              f"dispositivo: {meta['dispositivo']} | vectores normalizados: {meta['normalizado']}")
+        print(f"[RAG] tiempo: {meta['tiempo_generacion_segundos']} s vectorizando "
+              f"({total:.1f} s el comando completo, incluida la carga del modelo).")
+        print(f"[RAG] índice: {config.RAG_INDICE_EMBEDDINGS.name} ({kb_meta:.1f} KB) + "
+              f"{config.RAG_EMBEDDINGS_MATRIZ.name} ({kb_mat:.1f} KB)")
+        print(f"[RAG] el índice de TF-IDF NO se tocó: sigue en {config.RAG_INDICE_META.name}")
+    else:
+        print(f"[RAG] índice construido: {meta['n_fragmentos']} fragmentos de "
+              f"{meta['n_documentos']} documentos ({meta['palabras_totales']} palabras, "
+              f"{meta['n_terminos_vocabulario']} términos en el vocabulario).")
     print(f"[RAG] por colección: {meta['por_coleccion']}")
     print(f"[RAG] artefactos en {config.MEMORIA}")
     return 0
 
 
 def _cmd_consultar(args) -> int:
-    mem = rag.MemoriaSemantica().cargar()
+    metodo = getattr(args, "metodo", rag.METODO_POR_DEFECTO)
+    mem = rag.MemoriaSemantica(metodo).cargar()
     res = mem.consultar(args.texto, k=args.k)
-    print(f"[RAG] consulta: {args.texto!r}  (índice: {len(mem.fragmentos)} fragmentos)")
-    print(f"[RAG] términos que pesan: {mem.terminos_relevantes(args.texto, k=6)}")
+    print(f"[RAG] consulta: {args.texto!r}  (método: {mem.metodo}, "
+          f"índice: {len(mem.fragmentos)} fragmentos)")
+    if mem.metodo == "embeddings":
+        print(f"[RAG] técnica: {mem.meta.get('tecnica', 'embeddings locales')} "
+              f"— sin explicabilidad término a término (ver terminos_relevantes)")
+    else:
+        print(f"[RAG] términos que pesan: {mem.terminos_relevantes(args.texto, k=6)}")
     if not res:
         print("[RAG] sin antecedentes.")
         return 0
@@ -54,7 +77,8 @@ def _cmd_consultar(args) -> int:
 
 
 def _cmd_antes_de_redactar(args) -> int:
-    info = rag.antes_de_redactar(args.tema, k=args.k)
+    metodo = getattr(args, "metodo", rag.METODO_POR_DEFECTO)
+    info = rag.antes_de_redactar(args.tema, k=args.k, metodo=metodo)
     print(f"[RAG] ANTES DE REDACTAR — tema: {info['tema']!r}")
     print(f"[RAG] {info['veredicto']}")
     for i, r in enumerate(info["recuperados"], 1):
@@ -192,17 +216,24 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="memoria", description="Memoria del agente (RAG + grafo + reglas)")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    sub.add_parser("indexar", help="construye el índice semántico (RAG)").set_defaults(func=_cmd_indexar)
+    i = sub.add_parser("indexar", help="construye el índice semántico (RAG)")
+    i.add_argument("--metodo", choices=list(rag.METODOS), default=rag.METODO_POR_DEFECTO,
+                   help="tfidf (por defecto) o embeddings (modelo local, sin red)")
+    i.set_defaults(func=_cmd_indexar)
 
     c = sub.add_parser("consultar", help="consulta el corpus ya escrito (RAG)")
     c.add_argument("texto")
     c.add_argument("-k", type=int, default=5)
+    c.add_argument("--metodo", choices=list(rag.METODOS), default=rag.METODO_POR_DEFECTO,
+                   help="tfidf (por defecto) o embeddings")
     c.set_defaults(func=_cmd_consultar)
 
     a = sub.add_parser("antes-de-redactar", help="recupera antecedentes antes de escribir algo nuevo")
     a.add_argument("tema")
     a.add_argument("-k", type=int, default=5)
     a.add_argument("--json", action="store_true")
+    a.add_argument("--metodo", choices=list(rag.METODOS), default=rag.METODO_POR_DEFECTO,
+                   help="tfidf (por defecto) o embeddings")
     a.set_defaults(func=_cmd_antes_de_redactar)
 
     gr = sub.add_parser("grafo", help="construye y resume la memoria estructural")

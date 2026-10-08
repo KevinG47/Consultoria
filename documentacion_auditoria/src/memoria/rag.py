@@ -18,13 +18,31 @@ Corpus indexado
 - Secciones LaTeX del documento maestro (maestro_auditoria/secciones/*.tex)
 - Informes de validación (data/validacion/*.md), troceados por encabezados
 
-Técnica
--------
-TF-IDF (scikit-learn) + similitud coseno. Se eligió TF-IDF y no embeddings
-porque: (i) el corpus es pequeño (~150 fragmentos), (ii) no hay dependencia de
-un proveedor externo ni red, (iii) el vocabulario es técnico y estable, y
-(iv) el resultado es determinista y auditable (se puede mostrar el término que
-pesa en la recuperación).
+Técnica: DOS métodos intercambiables
+-----------------------------------
+El índice se puede construir con dos métodos y se consulta con el que esté
+activo (`metodo="tfidf"` o `metodo="embeddings"`). Los dos escriben artefactos
+distintos, de modo que convivir no se pisan:
+
+- ``tfidf`` (DEFAULT, decisión D002): TF-IDF de scikit-learn + similitud coseno.
+  Se eligió porque (i) el corpus es pequeño (~150 fragmentos), (ii) no añade
+  dependencias pesadas, (iii) el vocabulario es técnico y estable y (iv) el
+  resultado es determinista y explicable: se puede mostrar qué término pesa en
+  la recuperación (`terminos_relevantes`).
+- ``embeddings`` (decisión D007): vectorización semántica con un modelo LOCAL
+  (`paraphrase-multilingual-MiniLM-L12-v2`, 384 dimensiones) ejecutado en CPU.
+  Se eligió un modelo local, y no una API, porque la rúbrica prohíbe subir datos
+  de la contraparte a la nube. A diferencia de TF-IDF, recupera paráfrasis y
+  sinónimos aunque no compartan ni una palabra con la consulta, a cambio de más
+  peso (torch) y de perder explicabilidad término a término.
+
+Cuándo usar cada uno
+--------------------
+- Por defecto TF-IDF: es rápido, sin dependencias y suficiente cuando la
+  pregunta y el documento comparten vocabulario (cifras, rutas, nombres propios).
+- Embeddings cuando la consulta está parafraseada o usa sinónimos. Como respaldo,
+  TF-IDF nunca se retira: si el modelo local no está disponible, el sistema sigue
+  funcionando con el método por defecto.
 
 Trazabilidad
 ------------
@@ -34,9 +52,12 @@ fragmentos recuperados y sus puntajes: la consulta queda auditada.
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import pickle
 import re
+import time
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from pathlib import Path
@@ -46,6 +67,60 @@ from scipy import sparse
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from . import config
+
+
+# --------------------------------------------------------------------------
+# Métodos de recuperación y modelo local de embeddings
+# --------------------------------------------------------------------------
+METODOS = ("tfidf", "embeddings")
+METODO_POR_DEFECTO = "tfidf"
+TECNICA_TFIDF = "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno"
+TECNICA_EMBEDDINGS = (f"embeddings locales ({config.MODELO_EMBEDDINGS}) + similitud coseno")
+
+# Caché de proceso: cargar el modelo cuesta ~20 s y no se repite en la misma corrida.
+_MODELOS: dict[str, object] = {}
+
+
+def _cargar_modelo(nombre: str | None = None):
+    """
+    Carga el modelo de embeddings DESDE LA CACHÉ LOCAL. Nunca descarga.
+
+    Se fuerzan HF_HUB_OFFLINE/TRANSFORMERS_OFFLINE antes de importar la librería
+    para que, si el modelo no estuviera ya descargado, falle con un error claro
+    en lugar de intentar bajar ~120 MB por red (la rúbrica prohíbe enviar datos
+    de la contraparte a la nube; aquí directamente no se usa red).
+    """
+    nombre = nombre or config.MODELO_EMBEDDINGS
+    if nombre in _MODELOS:
+        return _MODELOS[nombre]
+    os.environ.setdefault("HF_HUB_OFFLINE", "1")
+    os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ImportError as exc:      # pragma: no cover - depende del entorno
+        raise RuntimeError(
+            "El método 'embeddings' requiere sentence-transformers. "
+            "Instálalo con:  pip install sentence-transformers"
+        ) from exc
+    try:
+        modelo = SentenceTransformer(nombre, device="cpu")
+    except Exception as exc:        # pragma: no cover - depende del entorno
+        raise RuntimeError(
+            f"No se pudo cargar el modelo local '{nombre}'. Debe estar ya "
+            f"descargado en la caché de Hugging Face (el sistema no descarga "
+            f"modelos). Error original: {exc}"
+        ) from exc
+    _MODELOS[nombre] = modelo
+    return modelo
+
+
+def hash_corpus(fragmentos: list["Fragmento"]) -> str:
+    """Huella del corpus (ids en orden): detecta matriz y fragmentos desalineados."""
+    h = hashlib.sha256()
+    for f in fragmentos:
+        h.update(f.id.encode("utf-8"))
+        h.update(b"\x00")
+    return h.hexdigest()[:16]
 
 
 # --------------------------------------------------------------------------
@@ -186,20 +261,56 @@ def construir_fragmentos() -> list[Fragmento]:
 # Índice
 # --------------------------------------------------------------------------
 class MemoriaSemantica:
-    """Índice TF-IDF consultable sobre el corpus documental del proyecto."""
+    """
+    Índice consultable sobre el corpus documental del proyecto.
 
-    def __init__(self) -> None:
-        self.vectorizer: TfidfVectorizer | None = None
-        self.matriz: sparse.csr_matrix | None = None
+    Soporta dos métodos intercambiables (`metodo`): "tfidf" (por defecto) y
+    "embeddings" (modelo local). Ver el docstring del módulo para el criterio
+    de elección.
+    """
+
+    def __init__(self, metodo: str = METODO_POR_DEFECTO) -> None:
+        if metodo not in METODOS:
+            raise ValueError(f"método no reconocido: {metodo!r}. Usa uno de {METODOS}")
+        self.metodo: str = metodo
+        self.vectorizer: TfidfVectorizer | None = None      # solo tfidf
+        self.matriz = None                                  # sparse (tfidf) | ndarray (embeddings)
+        self.modelo = None                                  # solo embeddings (perezoso)
         self.fragmentos: list[Fragmento] = []
         self.meta: dict = {}
 
     # --- construcción ---
-    def indexar(self, guardar: bool = True) -> dict:
+    def indexar(self, guardar: bool = True, metodo: str | None = None) -> dict:
+        """Construye el índice con el método activo (o el que se indique)."""
+        if metodo:
+            if metodo not in METODOS:
+                raise ValueError(f"método no reconocido: {metodo!r}. Usa uno de {METODOS}")
+            self.metodo = metodo
         config.asegurar_memoria()
         self.fragmentos = construir_fragmentos()
         if not self.fragmentos:
             raise RuntimeError("Corpus vacío: no hay fragmentos que indexar.")
+        if self.metodo == "embeddings":
+            return self._indexar_embeddings(guardar=guardar)
+        return self._indexar_tfidf(guardar=guardar)
+
+    def _base_meta(self, tecnica: str) -> dict:
+        meta = {
+            "fecha_construccion": datetime.now().isoformat(timespec="seconds"),
+            "n_fragmentos": len(self.fragmentos),
+            "n_documentos": len({f.documento for f in self.fragmentos}),
+            "por_coleccion": {},
+            "palabras_totales": sum(f.n_palabras for f in self.fragmentos),
+            "tecnica": tecnica,
+            "metodo": self.metodo,
+            "corpus": sorted({f.documento for f in self.fragmentos}),
+            "hash_corpus": hash_corpus(self.fragmentos),
+        }
+        for f in self.fragmentos:
+            meta["por_coleccion"][f.coleccion] = meta["por_coleccion"].get(f.coleccion, 0) + 1
+        return meta
+
+    def _indexar_tfidf(self, guardar: bool = True) -> dict:
         self.vectorizer = TfidfVectorizer(
             lowercase=True,
             strip_accents="unicode",
@@ -210,26 +321,53 @@ class MemoriaSemantica:
         )
         textos = [f.texto for f in self.fragmentos]
         self.matriz = self.vectorizer.fit_transform(textos)
-        self.meta = {
-            "fecha_construccion": datetime.now().isoformat(timespec="seconds"),
-            "n_fragmentos": len(self.fragmentos),
-            "n_documentos": len({f.documento for f in self.fragmentos}),
-            "n_terminos_vocabulario": len(self.vectorizer.vocabulary_),
-            "por_coleccion": {},
-            "palabras_totales": sum(f.n_palabras for f in self.fragmentos),
-            "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
-            "corpus": sorted({f.documento for f in self.fragmentos}),
-        }
-        for f in self.fragmentos:
-            self.meta["por_coleccion"][f.coleccion] = self.meta["por_coleccion"].get(f.coleccion, 0) + 1
+        self.meta = self._base_meta(TECNICA_TFIDF)
+        self.meta["n_terminos_vocabulario"] = len(self.vectorizer.vocabulary_)
         if guardar:
             self._guardar()
         return self.meta
 
-    def _guardar(self) -> None:
+    def _indexar_embeddings(self, guardar: bool = True) -> dict:
+        modelo = _cargar_modelo()
+        textos = [f.texto for f in self.fragmentos]
+        t0 = time.time()
+        vectores = modelo.encode(
+            textos,
+            batch_size=32,
+            show_progress_bar=False,
+            convert_to_numpy=True,
+            normalize_embeddings=True,     # unitarios -> producto punto == coseno
+        )
+        segundos = time.time() - t0
+        self.matriz = vectores.astype("float32")
+        self.meta = self._base_meta(TECNICA_EMBEDDINGS)
+        self.meta.update({
+            "modelo": config.MODELO_EMBEDDINGS,
+            "dimension": int(self.matriz.shape[1]),
+            "normalizado": True,
+            "n_terminos_vocabulario": None,   # no aplica: no hay vocabulario discreto
+            "tiempo_generacion_segundos": round(segundos, 2),
+            "dispositivo": "cpu",
+        })
+        if guardar:
+            self._guardar_embeddings()
+        return self.meta
+
+    def _guardar_embeddings(self) -> None:
+        """Escribe el corpus compartido, la matriz .npy y los metadatos del índice."""
+        self._guardar_fragmentos()
+        np.save(str(config.RAG_EMBEDDINGS_MATRIZ), self.matriz)
+        config.RAG_INDICE_EMBEDDINGS.write_text(
+            json.dumps(self.meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    def _guardar_fragmentos(self) -> None:
+        """El corpus de fragmentos es COMPARTIDO por los dos métodos."""
         with config.RAG_CHUNKS.open("w", encoding="utf-8") as fh:
             for f in self.fragmentos:
                 fh.write(json.dumps(asdict(f), ensure_ascii=False) + "\n")
+
+    def _guardar(self) -> None:
+        self._guardar_fragmentos()
         sparse.save_npz(str(config.RAG_MATRIZ), self.matriz)
         with config.RAG_VECTORIZER.open("wb") as fh:
             pickle.dump(self.vectorizer, fh)
@@ -237,7 +375,11 @@ class MemoriaSemantica:
             json.dumps(self.meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     # --- carga ---
-    def cargar(self) -> "MemoriaSemantica":
+    def cargar(self, metodo: str | None = None) -> "MemoriaSemantica":
+        if metodo:
+            if metodo not in METODOS:
+                raise ValueError(f"método no reconocido: {metodo!r}. Usa uno de {METODOS}")
+            self.metodo = metodo
         if not config.RAG_CHUNKS.exists():
             raise FileNotFoundError(
                 "No hay índice RAG. Ejecuta primero:  python -m memoria indexar")
@@ -245,6 +387,9 @@ class MemoriaSemantica:
             Fragmento(**json.loads(l))
             for l in config.RAG_CHUNKS.read_text(encoding="utf-8").splitlines() if l.strip()
         ]
+        if self.metodo == "embeddings":
+            return self._cargar_embeddings()
+
         self.matriz = sparse.load_npz(str(config.RAG_MATRIZ)).tocsr()
         with config.RAG_VECTORIZER.open("rb") as fh:
             self.vectorizer = pickle.load(fh)
@@ -252,14 +397,46 @@ class MemoriaSemantica:
             self.meta = json.loads(config.RAG_INDICE_META.read_text(encoding="utf-8"))
         return self
 
+    def _cargar_embeddings(self) -> "MemoriaSemantica":
+        if not config.RAG_INDICE_EMBEDDINGS.exists():
+            raise FileNotFoundError(
+                "No hay índice de embeddings. Ejecuta primero:  "
+                "python -m memoria indexar --metodo embeddings")
+        self.meta = json.loads(config.RAG_INDICE_EMBEDDINGS.read_text(encoding="utf-8"))
+        self.matriz = np.load(str(config.RAG_EMBEDDINGS_MATRIZ))
+        # Integridad: si el corpus se reconstruyó con otro contenido, la matriz
+        # quedaría desalineada respecto a los fragmentos (y los puntajes serían
+        # silenciosamente falsos). Se aborta con instrucciones.
+        assert self.matriz.shape[0] == len(self.fragmentos), (
+            f"matriz {self.matriz.shape} vs {len(self.fragmentos)} fragmentos: "
+            "vuelve a indexar con  python -m memoria indexar --metodo embeddings")
+        esperado = self.meta.get("hash_corpus")
+        actual = hash_corpus(self.fragmentos)
+        if esperado and esperado != actual:
+            raise RuntimeError(
+                f"El corpus cambió desde que se indexó con embeddings "
+                f"(hash {actual} != {esperado}). Reindexa:  "
+                f"python -m memoria indexar --metodo embeddings")
+        return self
+
     # --- consulta ---
     def consultar(self, consulta: str, k: int = 5, coleccion: str | None = None) -> list[dict]:
         """Devuelve los k fragmentos más similares con su puntaje coseno."""
-        if self.vectorizer is None or self.matriz is None:
+        if self.matriz is None:
             self.cargar()
-        assert self.vectorizer is not None and self.matriz is not None
-        q = self.vectorizer.transform([consulta])
-        sims = (self.matriz @ q.T).toarray().ravel()
+        assert self.matriz is not None
+        if self.metodo == "embeddings":
+            if self.modelo is None:
+                self.modelo = _cargar_modelo(self.meta.get("modelo"))
+            q = self.modelo.encode([consulta], normalize_embeddings=True,
+                                   convert_to_numpy=True)[0].astype("float32")
+            sims = self.matriz @ q            # ambos unitarios -> coseno
+        else:
+            if self.vectorizer is None:
+                self.cargar()
+            assert self.vectorizer is not None
+            q = self.vectorizer.transform([consulta])
+            sims = (self.matriz @ q.T).toarray().ravel()
         orden = np.argsort(-sims)
         salida: list[dict] = []
         for idx in orden:
@@ -282,7 +459,14 @@ class MemoriaSemantica:
         return salida
 
     def terminos_relevantes(self, consulta: str, k: int = 8) -> list[tuple[str, float]]:
-        """Términos del vocabulario que más pesan en la consulta (explicabilidad)."""
+        """
+        Términos del vocabulario que más pesan en la consulta (explicabilidad).
+
+        Solo tiene sentido con TF-IDF: los embeddings no tienen un vocabulario
+        discreto que mostrar, así que con ese método devuelve una lista vacía.
+        """
+        if self.metodo == "embeddings":
+            return []
         if self.vectorizer is None:
             self.cargar()
         assert self.vectorizer is not None
@@ -296,19 +480,21 @@ class MemoriaSemantica:
 # --------------------------------------------------------------------------
 # Herramienta para el flujo de redacción (RAG antes de redactar)
 # --------------------------------------------------------------------------
-def antes_de_redactar(tema: str, k: int = 5, registrar: bool = True) -> dict:
+def antes_de_redactar(tema: str, k: int = 5, registrar: bool = True,
+                      metodo: str = METODO_POR_DEFECTO) -> dict:
     """
     Se invoca ANTES de redactar o afirmar algo nuevo.
 
     Devuelve lo que ya se dijo sobre el tema (para no contradecirse ni repetir)
     y deja constancia auditable de la consulta.
     """
-    mem = MemoriaSemantica().cargar()
+    mem = MemoriaSemantica(metodo).cargar()
     resultados = mem.consultar(tema, k=k)
     info = {
         "momento": datetime.now().isoformat(timespec="seconds"),
         "tema": tema,
-        "tecnica": mem.meta.get("tecnica", "TF-IDF + coseno"),
+        "metodo": mem.metodo,
+        "tecnica": mem.meta.get("tecnica", TECNICA_TFIDF),
         "n_fragmentos_indice": len(mem.fragmentos),
         "recuperados": resultados,
         "terminos_consulta": mem.terminos_relevantes(tema),

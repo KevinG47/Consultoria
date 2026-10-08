@@ -136,26 +136,49 @@ decisiones:
     fecha: "2026-09-15"
     secuencia: 7
     tema: "tecnica_recuperacion"
-    decision: "Migrar el RAG de TF-IDF a embeddings vía API key"
-    justificacion: >
+    decision: >
+      Migrar el método de recuperación del RAG a embeddings LOCALES
+      (paraphrase-multilingual-MiniLM-L12-v2, 384 dimensiones, en CPU),
+      conservando TF-IDF como respaldo y como método por defecto
+    motivo_docente: >
       Decisión del docente: un "diccionario" (TF-IDF) es incómodo de mantener y
       transferir; el proyecto debe dejar reproducibilidad para futuros trabajos y
       otros equipos.
-    alternativas_descartadas: ["mantener TF-IDF"]
-    estado: pendiente_implementacion
+    redaccion_original: "Migrar el RAG de TF-IDF a embeddings vía API key"
+    nota_correccion: >
+      La redacción original pedía embeddings "vía API key". Es inviable en este
+      proyecto porque la rúbrica prohíbe subir datos de la contraparte a la nube;
+      se implementó con un modelo LOCAL, que conserva el motivo del docente —no
+      depender de un diccionario construido a medida— sin usar la red.
+    justificacion: >
+      Ya implementada y evaluada. Sobre el banco de 20 preguntas, con el mismo
+      corpus y los mismos fragmentos: la respuesta esperada aparece en el top-1 en
+      10/20 casos con embeddings frente a 9/20 con TF-IDF, pero en el top-3 en
+      10/20 frente a 11/20, y la posición promedio del dato correcto empeora de
+      8,4 a 26,6 (de 150 fragmentos). La causa está medida: el modelo trunca a 128
+      tokens y los fragmentos promedian 1 635 tokens, de modo que solo se vectoriza
+      el 7,8 % del contenido, mientras que TF-IDF ve el fragmento completo. Por eso
+      TF-IDF se conserva como respaldo y sigue siendo el método por defecto, y los
+      embeddings quedan disponibles como método complementario (mejor con consultas
+      parafraseadas). Un argumento aparte a favor de los embeddings es de
+      reproducibilidad: el índice TF-IDF está serializado con scikit-learn 1.9.0 y
+      avisa al cargarse con 1.9.1.
+    alternativas_descartadas: ["mantener únicamente TF-IDF", "embeddings vía API externa (prohibido por la rúbrica)"]
+    estado: vigente
     supersede: D002
     implementacion:
-      archivos: ["documentacion_auditoria/src/memoria/rag.py"]
+      archivos:
+        - "documentacion_auditoria/src/memoria/rag.py"
+        - "documentacion_auditoria/scripts/banco_preguntas.py"
       marcador_codigo: "embedding"
       marcador_doc: "embeddings"
-      # Mientras la migración no esté implementada, R15 reportará el desfase
-      # (el código sigue usando TF-IDF, decisión D002 superada). Si el docente
-      # prefiere no bloquear la compilación durante la transición, se puede
-      # declarar una excepción temporal auditables descomentando el bloque:
-      # excepto_si:
-      #   motivo: "Migración planificada; requiere API key de embeddings"
-      #   autorizado_por: "Decisión del docente (D007)"
-      #   hasta: "2026-10-31"
+      # OJO (efecto colateral conocido en R15): D002 sigue en estado `superada` y su
+      # marcador `TfidfVectorizer` permanece en rag.py, porque TF-IDF se conserva a
+      # propósito como respaldo. R15 comprueba en ambos sentidos —que la decisión
+      # vigente esté implementada y que la superada NO lo esté—, así que seguirá
+      # reportando ese desfase mientras el respaldo exista. Resolverlo exige
+      # enmendar la regla (permitir una excepción declarada en decisiones superadas)
+      # o cambiar el estado de D002; ninguna de las dos cosas se hizo sin consultar.
     fuente: F004
 
   - id: D008

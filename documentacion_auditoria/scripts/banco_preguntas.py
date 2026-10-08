@@ -25,13 +25,28 @@ API usada
 -> lista de dicts con: puntaje, documento, coleccion, seccion, ruta, extracto,
    n_palabras.
 
+Métodos evaluables
+------------------
+El mismo banco se puede correr contra los dos métodos de recuperación del RAG:
+`--metodo tfidf` (por defecto) y `--metodo embeddings` (modelo local, sin red).
+Con `--salida` se elige el archivo de resultados, de modo que la corrida
+comparativa no pisa el resultado histórico.
+
+OJO al leer las bandas de score: los umbrales (alto >0,15 · medio 0,05-0,15 ·
+bajo <0,05) se calibraron sobre TF-IDF. Los embeddings producen cosenos con una
+base mucho más alta (casi todo el corpus supera 0,15), así que la banda NO es
+comparable entre métodos; sí lo son "respuesta en top-1/top-3" y el ranking.
+
 Uso
 ---
     python documentacion_auditoria/scripts/banco_preguntas.py
+    python documentacion_auditoria/scripts/banco_preguntas.py --metodo embeddings \
+        --salida data/memoria/resultados_banco_embeddings.json
 """
 
 from __future__ import annotations
 
+import argparse
 import io
 import json
 import sys
@@ -131,15 +146,25 @@ def banda(score: float) -> str:
     return "bajo"
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Evaluación del RAG con el banco de 20 preguntas")
+    ap.add_argument("--metodo", choices=["tfidf", "embeddings"],
+                    default=rag.METODO_POR_DEFECTO,
+                    help="método de recuperación a evaluar (por defecto: tfidf)")
+    ap.add_argument("--salida", default=str(SALIDA),
+                    help=f"archivo JSON de resultados (por defecto: {SALIDA.name})")
+    args = ap.parse_args(argv)
+
     print("=" * 78)
-    print("EVALUACIÓN DEL RAG — banco de 20 preguntas")
+    print(f"EVALUACIÓN DEL RAG — banco de 20 preguntas — método: {args.metodo.upper()}")
     print("=" * 78)
 
-    mem = rag.MemoriaSemantica().cargar()
+    mem = rag.MemoriaSemantica(args.metodo).cargar()
     meta = mem.meta
     print(f"Índice cargado: {len(mem.fragmentos)} fragmentos | "
           f"{meta.get('n_documentos', '?')} documentos | técnica: {meta.get('tecnica', 'TF-IDF')}")
+    if mem.metodo == "embeddings":
+        print(f"Modelo local: {meta.get('modelo')} | dimensión: {meta.get('dimension')}")
     print(f"Colecciones: {meta.get('por_coleccion', {})}")
     print()
 
@@ -220,13 +245,19 @@ def main() -> int:
 
     resumen = {
         "fecha": datetime.now().isoformat(timespec="seconds"),
+        "metodo": mem.metodo,
         "indice": {
             "n_fragmentos": len(mem.fragmentos),
             "n_documentos": meta.get("n_documentos"),
             "tecnica": meta.get("tecnica"),
             "fecha_construccion": meta.get("fecha_construccion"),
             "colecciones": meta.get("por_coleccion"),
+            "modelo": meta.get("modelo"),
+            "dimension": meta.get("dimension"),
+            "hash_corpus": meta.get("hash_corpus"),
         },
+        "aviso_bandas": ("Los umbrales de banda se calibraron sobre TF-IDF; no son "
+                         "comparables entre métodos."),
         "total_preguntas": total,
         "bandas_score": por_banda,
         "respuesta_en_top1": aciertos_top1,
@@ -236,9 +267,10 @@ def main() -> int:
         "por_grupo": por_grupo,
     }
 
-    SALIDA.parent.mkdir(parents=True, exist_ok=True)
-    SALIDA.write_text(json.dumps({"resumen": resumen, "preguntas": registros},
-                                 ensure_ascii=False, indent=2), encoding="utf-8")
+    destino = Path(args.salida)
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    destino.write_text(json.dumps({"resumen": resumen, "preguntas": registros},
+                                  ensure_ascii=False, indent=2), encoding="utf-8")
 
     print("-" * 78)
     print("RESUMEN")
@@ -262,7 +294,7 @@ def main() -> int:
               f"en top-3: {datos['en_top3']} | en corpus: {datos['en_corpus']} | "
               f"score promedio: {datos['score_promedio']}")
     print()
-    print(f"Detalle completo escrito en: {SALIDA}")
+    print(f"Detalle completo escrito en: {destino}")
     return 0
 
 
