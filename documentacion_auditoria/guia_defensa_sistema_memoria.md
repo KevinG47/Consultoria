@@ -34,7 +34,7 @@ favorecemos a los fragmentos largos.
 ### Los 4 pasos reales del sistema
 1. **Indexar** (`python -m memoria indexar`): parte el corpus en **150 fragmentos**
    (25 documentos: 6 criterios + sus LITE + maestro + 11 informes de validación + el
-   anteproyecto), limpia el LaTeX, construye el vocabulario (**45 805 términos**) y
+   anteproyecto), limpia el LaTeX, construye el vocabulario (**45 819 términos**) y
    calcula la matriz de pesos TF-IDF.
 2. **Consultar**: la pregunta se limpia y se pesa **igual** que el corpus.
 3. **Comparar**: se calcula el coseno contra **todos** los fragmentos y se ordenan.
@@ -102,9 +102,9 @@ inconsistencia concreta y con ubicación."*
 | **R12** | El LITE es ≤ 40 % de la sección principal del completo y no hay copias literales entre documentos |
 | **R13** | El índice RAG está **al día** respecto a los documentos fuente (evita resultados obsoletos) |
 | **R14** | No hay contradicciones **numéricas** entre documentos (reutiliza `verificar_consistencia.py`) |
-| **R15** | Las decisiones **superadas** no siguen en el código ni se presentan como vigentes: el código debe reflejar la decisión actual |
+| **R15** | Las decisiones **superadas** no siguen en el código ni se presentan como vigentes, salvo que declaren el respaldo y su motivo (entonces es ADVERTENCIA) |
 | **R16** | Los registros de trazabilidad están íntegros y **sin URLs "PENDIENTE"** |
-| **R17** | Las cifras del sistema (fragmentos, palabras, términos, nodos, aristas, reglas, decisiones), el recuento de estados (**15 PASA · 1 FALLA · 1 ADVERTENCIA**) y los estados de regla que cita el banco de preguntas (Q16 → R15) coinciden con la ejecución real: si algo se quedó atrás, **FALLA** y nombra archivo y línea |
+| **R17** | Las cifras del sistema (fragmentos, palabras, términos, nodos, aristas, reglas, decisiones), el recuento de estados (**15 PASA · 0 FALLA · 2 ADVERTENCIA**) y los estados de regla que cita el banco de preguntas (Q16 → R15) coinciden con la ejecución real: si algo se quedó atrás, **FALLA** y nombra archivo y línea |
 
 **Cómo se ejecutan:** como **puerta previa a la compilación** (`compilar.py`): si alguna
 falla, la compilación del PDF final se **aborta** (exit 2). `--forzar` continúa,
@@ -112,24 +112,29 @@ falla, la compilación del PDF final se **aborta** (exit 2). `--forzar` continú
 
 ---
 
-## 4. Por qué R15 falla hoy (y cómo explicarlo en vivo)
+## 4. R15 y el respaldo declarado (cómo explicarlo en vivo)
 
-**Resultado real:** 17 reglas → **15 PASA · 1 FALLA · 1 ADVERTENCIA**.
+**Resultado real:** 17 reglas → **15 PASA · 0 FALLA · 2 ADVERTENCIA**.
 
-**La falla, textual:**
+R15 ya **no falla**. Ahora registra como **advertencia** que TF-IDF siga en el código
+aunque D002 esté superada, porque así está declarado en la bitácora:
+
 ```
 D002 está SUPERADA (D007) pero su implementación sigue en el código:
 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py
+ — respaldo declarado: TF-IDF no se retira: se conserva como método por DEFECTO...
 ```
 
 **Explicación en términos simples (memorízala):**
 > "Al principio decidimos usar TF-IDF para el buscador interno (decisión D002). Después
-> el docente pidió migrar a *embeddings* por transferibilidad (decisión D007). La bitácora
-> registra el cambio, pero **el código todavía usa TF-IDF**: eso es exactamente lo que R15
-> detecta. No es un error escondido: es una **deuda técnica declarada** que el sistema
-> reporta con archivo y nombre de variable. Se cierra de dos maneras: implementando la
-> migración, o declarando una **excepción temporal auditada** (motivo, quién la autoriza y
-> hasta cuándo), que degrada la falla a advertencia y deja el motivo por escrito."
+> el docente pidió migrar a *embeddings* por transferibilidad (decisión D007). Esa
+> migración ya está implementada, pero **conservamos TF-IDF a propósito** como método por
+> defecto: es más rápido, no arrastra torch, es explicable y en el banco de 20 preguntas
+> rinde igual o mejor que el modelo de embeddings. R15 está hecha para detectar que una
+> decisión superada siga en el código, así que exigimos que ese respaldo se **declare** en
+> la bitácora (motivo, qué se conserva y quién lo autoriza). Declarado, R15 lo registra
+> como advertencia; sin declarar, la compilación se aborta. Es el mecanismo simétrico al
+> que ya existía para el caso contrario —decisión vigente que no está implementada—."
 
 **Por qué esto es una fortaleza, no una debilidad:** demuestra que el sistema no solo
 "valida el pasado", sino que **mantiene la coherencia entre lo decidido y lo que se está
@@ -171,7 +176,7 @@ ArchivoCodigo 51…), `commits: reales=133 documentados=133`,
 python -m memoria validar
 ```
 **Debe verse:** las 17 reglas con su estado y, al final,
-`[memoria] reglas: 15 PASA, 1 FALLA, 1 ADVERTENCIA` (exit code 1 por la falla de R15).
+`[memoria] reglas: 15 PASA, 0 FALLA, 2 ADVERTENCIA` (exit code 0).
 
 ```powershell
 python -m memoria dibujar --tipos Criterio,Documento

@@ -21,14 +21,16 @@ tres piezas, todas ejecutables y ejecutadas sobre los datos reales:
 **(i) Memoria semántica (RAG).** Indexamos el corpus documental —las secciones
 LaTeX de los seis criterios, sus versiones LITE, el documento maestro, los once
 informes de validación y este anteproyecto— en **150 fragmentos de 25 documentos**
-(≈116 290 palabras). En su primera versión la recuperación se resolvió con
+(≈116 312 palabras). En su primera versión la recuperación se resolvió con
 **TF-IDF (1–2 gramas, `sublinear_tf`) y similitud coseno** (decisión **D002**),
 suficiente a esa escala y sin dependencias externas. **El docente decidió después
 migrar a *embeddings* vía API key** (decisión **D007**) para que el proyecto sea
 transferible y reproducible por otros equipos, dado que un "diccionario" de
-términos es incómodo de mantener; esa migración queda **pendiente de
-implementación** y así lo declara la bitácora, de modo que el cambio no se
-pierde: la regla R15 lo detecta y falla mientras el código siga en TF-IDF. Antes
+términos es incómodo de mantener; esa migración ya está **implementada con un
+modelo local** (sin API, porque la rúbrica prohíbe enviar datos de la contraparte a
+la nube) y TF-IDF se conserva como método por defecto y respaldo declarado. La
+regla R15 exige que ese respaldo esté declarado en la bitácora y, si lo está, lo
+registra como advertencia. Antes
 de redactar cualquier sección, el generador consulta esta memoria y registra los
 antecedentes en `data/memoria/consultas_rag.jsonl`; si la similitud supera 0,35
 avisa de posible solapamiento. Así evitamos repetir o contradecir lo ya escrito.
@@ -56,11 +58,11 @@ del grafo, cobertura y frescura del índice, la regla LITE ≤ 40 %,
 **contradicciones numéricas entre documentos** (R14), **coherencia entre las
 decisiones y el código** (R15), **integridad de los registros de trazabilidad**
 (R16) y **coherencia entre las cifras del sistema y los documentos que las citan**
-(R17). Resultado de la ejecución final: **15 PASA, 1 FALLA, 1 ADVERTENCIA**, con
+(R17). Resultado de la ejecución final: **15 PASA, 0 FALLA, 2 ADVERTENCIA**, con
 la coincidencia exacta de **133/133 commits** y **51/51 archivos** entre lo
-documentado y el repositorio real. La única falla es, precisamente, el desfase
-declarado de D007 (el código sigue en TF-IDF), que la regla reporta con archivo y
-marcador.
+documentado y el repositorio real. Las dos advertencias son R12 (solapamiento
+entre el documento completo y su LITE) y R15, que registra el respaldo declarado
+de TF-IDF con archivo y marcador.
 
 **(iv) Trazabilidad de fuentes externas y de decisiones.** Dos registros en
 `data/memoria/` documentan el trabajo del agente. `fuentes_externas.yaml` registra
@@ -72,7 +74,9 @@ alternativas descartadas, estado (*vigente*, *superada*, *propuesta*,
 *pendiente_implementacion*) y la relación de supersesión explícita (p. ej. D007
 supera a D002). La regla R15 verifica que ninguna decisión superada siga
 implementada en el código ni presentada como vigente en los documentos, y que
-exista una sola decisión actual por tema.
+exista una sola decisión actual por tema. Una decisión superada puede conservarse
+a propósito si declara el respaldo y su motivo: en ese caso R15 lo registra como
+advertencia en lugar de falla.
 
 Las reglas detectaron **tres defectos reales** del material, corregidos en la
 fuente de verdad y registrados con su evidencia en
@@ -97,7 +101,7 @@ con tres piezas, todas ejecutables y ejecutadas sobre los datos reales.
 \textbf{(i) Memoria semántica (RAG ligero).} Indexamos el corpus ya redactado
 ---secciones de los seis criterios, sus versiones LITE, el documento maestro y
 los once informes de validación--- en \textbf{150 fragmentos de 25 documentos}
-($\approx$116\,290 palabras). La recuperación usa \textbf{TF-IDF (1--2 gramas,
+($\approx$116\,312 palabras). La recuperación usa \textbf{TF-IDF (1--2 gramas,
 \texttt{sublinear\_tf}) con similitud coseno} (scikit-learn). Se eligió TF-IDF y
 no \emph{embeddings} por cuatro razones a esta escala: el corpus es pequeño
 (150 fragmentos), el vocabulario es técnico y estable, no se depende de un
@@ -133,7 +137,7 @@ explícita, cobertura de fichas, integridad del grafo, cobertura y frescura del
 las decisiones y el código (R15), integridad de los registros de trazabilidad
 (R16) y coherencia entre las cifras del sistema y los documentos que las citan
 (R17)). Resultado de la ejecución final:
-\textbf{15 PASA, 1 FALLA, 1 ADVERTENCIA}, con coincidencia exacta de
+\textbf{15 PASA, 0 FALLA, 2 ADVERTENCIA}, con coincidencia exacta de
 \textbf{133/133 commits} y \textbf{51/51 archivos} entre lo documentado y el
 repositorio real.
 

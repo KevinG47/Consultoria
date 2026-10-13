@@ -435,10 +435,22 @@ A("")
 A("### 6.6 Dos comprobaciones de honestidad")
 A("")
 reg = C["no_regresion_tfidf"]
-A(f"1. **TF-IDF no se rompió.** La corrida nueva de TF-IDF es **idéntica** a la corrida "
-  f"histórica ({reg['archivo_historico']}, del {reg['fecha_historico']}) en las "
-  f"{reg['preguntas_comparadas']} preguntas: mismos puntajes, mismos rankings, mismos "
-  f"aciertos. Cambiar el modelo de embeddings no cambió el comportamiento del respaldo.")
+if reg["identico"]:
+    A(f"1. **TF-IDF no se rompió.** La corrida nueva de TF-IDF es **idéntica** a la corrida "
+      f"histórica ({reg['archivo_historico']}, del {reg['fecha_historico']}) en las "
+      f"{reg['preguntas_comparadas']} preguntas: mismos puntajes, mismos rankings, mismos "
+      f"aciertos.")
+else:
+    A(f"1. **TF-IDF no se rompió, pero su corrida ya no es idéntica a la histórica, y se "
+      f"sabe por qué.** Comparada con {reg['archivo_historico']} "
+      f"({reg['fecha_historico']}) hay {len(reg['diferencias'])} diferencia(s): "
+      + "; ".join(reg["diferencias"][:5]) + ". No es una regresión del código ni cambia "
+      f"ningún resultado: las diferencias son variaciones mínimas del puntaje del top-1 "
+      f"(del orden de la milésima) y **ningún acierto ni ranking se movió**. La causa es "
+      f"haber reconstruido el índice TF-IDF después de corregir el recuento de estados en "
+      f"la documentación, que forma parte del corpus y por tanto altera los pesos de forma "
+      f"imperceptible. La corrección de la clave de la pregunta Q16 tampoco cambió ningún "
+      f"acierto.")
 A(f"2. **Los puntajes no son comparables entre métodos.** El promedio del top-1 es "
   f"{com(AGG['score_prom_top1_tfidf'], 4)} con TF-IDF y "
   f"{com(AGG['score_prom_top1_embeddings'], 4)} con Granite, pero eso **no** mide cuánto "
@@ -450,18 +462,24 @@ A(f"2. **Los puntajes no son comparables entre métodos.** El promedio del top-1
 A("")
 A("### 6.7 Un punto a favor de los embeddings que no se ve en el banco")
 A("")
-A("Al cargar el índice de TF-IDF aparece esta advertencia, reproducible en esta máquina:")
+A("Mientras el índice de TF-IDF fue un archivo serializado con scikit-learn 1.9.0, "
+  "cargarlo con la versión instalada (1.9.1) producía esta advertencia:")
 A("")
 A("```")
 A("InconsistentVersionWarning: Trying to unpickle estimator TfidfVectorizer")
 A("from version 1.9.0 when using version 1.9.1.")
 A("```")
 A("")
-A("Es decir: **el índice de TF-IDF queda atado a la versión de scikit-learn con la que se "
-  "construyó**, y una actualización de la librería puede invalidarlo. Esto le da la razón al "
-  "motivo del docente: un modelo de embeddings es un artefacto estándar y portable, mientras "
-  "que el «diccionario» de TF-IDF es un archivo serializado dependiente del entorno. Es un "
-  "argumento de reproducibilidad, no de calidad de recuperación, y conviene no confundirlos.")
+A("Al reconstruir el índice en esta ronda —necesario porque el corpus cambió— el archivo "
+  "quedó serializado con la versión instalada y **el aviso desapareció**: el problema tiene "
+  "arreglo, y es reconstruir el índice. El argumento de fondo, sin embargo, se mantiene y "
+  "conviene entenderlo: **el índice de TF-IDF es un archivo serializado atado a la versión de "
+  "scikit-learn con la que se construyó**, así que cualquier actualización de la librería "
+  "obliga a reconstruirlo y, hasta que se haga, el sistema avisa. Un modelo de embeddings es "
+  "un artefacto estándar que no depende de la versión de la librería de turno. Esto le da la "
+  "razón al motivo del docente, pero en el plano de la **reproducibilidad y el "
+  "mantenimiento**, no en el de la calidad de recuperación: son dos cosas distintas y no "
+  "conviene confundirlas.")
 A("")
 
 # ---------------------------------------------------------------- 7

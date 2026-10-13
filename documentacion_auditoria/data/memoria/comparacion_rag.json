@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-13T16:10:00",
+  "fecha": "2026-10-13T17:12:05",
   "criterio_comparacion": "orden lexicográfico por (top-1 acertado, top-3 acertado, menor ranking del fragmento correcto)",
   "archivos": {
     "tfidf": "resultados_banco_tfidf.json",
@@ -10,7 +10,7 @@
       "n_fragmentos": 150,
       "n_documentos": 25,
       "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
-      "fecha_construccion": "2026-10-01T17:25:47",
+      "fecha_construccion": "2026-10-13T16:40:36",
       "colecciones": {
         "criterio_completo": 24,
         "criterio_lite": 24,
@@ -20,13 +20,13 @@
       },
       "modelo": null,
       "dimension": null,
-      "hash_corpus": null
+      "hash_corpus": "1a77a04a06e88312"
     },
     "embeddings": {
       "n_fragmentos": 150,
       "n_documentos": 25,
       "tecnica": "embeddings locales (ibm-granite/granite-embedding-97m-multilingual-r2) + similitud coseno",
-      "fecha_construccion": "2026-10-13T16:01:00",
+      "fecha_construccion": "2026-10-13T17:09:39",
       "colecciones": {
         "criterio_completo": 24,
         "criterio_lite": 24,
@@ -47,10 +47,10 @@
     "top3_embeddings": 10,
     "corpus_tfidf": 19,
     "corpus_embeddings": 19,
-    "score_prom_top1_tfidf": 0.0786,
+    "score_prom_top1_tfidf": 0.0788,
     "score_prom_top1_embeddings": 0.866,
     "rank_prom_tfidf": 8.42,
-    "rank_prom_embeddings": 21.11,
+    "rank_prom_embeddings": 21.74,
     "gana_embeddings": 6,
     "gana_tfidf": 8,
     "empates": 6,
@@ -105,8 +105,13 @@
     "archivo_historico": "resultados_banco_preguntas.json",
     "fecha_historico": "2026-10-01T17:25:51",
     "preguntas_comparadas": 20,
-    "diferencias": [],
-    "identico": true
+    "diferencias": [
+      "Q9.score_top1: nuevo=0.0517 histórico=0.0526",
+      "Q16.score_top1: nuevo=0.1119 histórico=0.1051",
+      "Q17.score_top1: nuevo=0.0719 histórico=0.0732",
+      "Q19.score_top1: nuevo=0.0536 histórico=0.0546"
+    ],
+    "identico": false
   },
   "truncamiento": {
     "max_seq_length": 32768,
@@ -116,8 +121,8 @@
     "tokens_min": 80,
     "tokens_mediana": 489,
     "tokens_max": 55502,
-    "tokens_promedio": 1475.4,
-    "palabras_promedio": 775.3,
+    "tokens_promedio": 1475.6,
+    "palabras_promedio": 775.4,
     "ejemplos_excedidos": [
       {
         "id": "objetivo_3::03_codigo",
@@ -271,7 +276,7 @@
       "pregunta": "¿Cuántos fragmentos indexa el RAG?",
       "respuesta_esperada": "150",
       "score_top1_tfidf": 0.0409,
-      "score_top1_embeddings": 0.8391,
+      "score_top1_embeddings": 0.8402,
       "top1_tfidf": "validacion_factica.md::6. Veredicto final",
       "top1_embeddings": "anteproyecto::06b_memoria_agente",
       "en_top1_tfidf": false,
@@ -289,7 +294,7 @@
       "grupo": "A",
       "pregunta": "¿Cuántos nodos tiene el grafo?",
       "respuesta_esperada": "255",
-      "score_top1_tfidf": 0.0526,
+      "score_top1_tfidf": 0.0517,
       "score_top1_embeddings": 0.8314,
       "top1_tfidf": "anteproyecto::06b_memoria_agente",
       "top1_embeddings": "validacion_cierre_S.md::3. Coherencia de cifras entre soportes (documento · láminas · guion · guía · tarjetas)",
@@ -300,7 +305,7 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 1,
-      "rank_embeddings": 58,
+      "rank_embeddings": 57,
       "gana": "tfidf"
     },
     {
@@ -421,8 +426,8 @@
       "id": 16,
       "grupo": "C",
       "pregunta": "¿Cuál es el resultado de la regla R15?",
-      "respuesta_esperada": "FALLA",
-      "score_top1_tfidf": 0.1051,
+      "respuesta_esperada": "ADVERTENCIA",
+      "score_top1_tfidf": 0.1119,
       "score_top1_embeddings": 0.8269,
       "top1_tfidf": "anteproyecto::06b_memoria_agente",
       "top1_embeddings": "validacion_reglas.md::Observaciones adicionales (fuera de las 7+2 reglas)",
@@ -433,7 +438,7 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 1,
-      "rank_embeddings": 6,
+      "rank_embeddings": 19,
       "gana": "tfidf"
     },
     {
@@ -441,7 +446,7 @@
       "grupo": "C",
       "pregunta": "¿Cuántos informes de validación cubre el corpus de la memoria?",
       "respuesta_esperada": "11",
-      "score_top1_tfidf": 0.0732,
+      "score_top1_tfidf": 0.0719,
       "score_top1_embeddings": 0.8753,
       "top1_tfidf": "anteproyecto::06b_memoria_agente",
       "top1_embeddings": "validacion_final_S.md::encabezado",
@@ -479,7 +484,7 @@
       "grupo": "C",
       "pregunta": "¿Cuál es el commit auditado del repo?",
       "respuesta_esperada": "1528939",
-      "score_top1_tfidf": 0.0546,
+      "score_top1_tfidf": 0.0536,
       "score_top1_embeddings": 0.8794,
       "top1_tfidf": "anteproyecto::06b_memoria_agente",
       "top1_embeddings": "objetivo_6_lite::03_timeline",

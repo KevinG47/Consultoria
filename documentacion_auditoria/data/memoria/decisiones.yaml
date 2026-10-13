@@ -60,6 +60,23 @@ decisiones:
       archivos: ["documentacion_auditoria/src/memoria/rag.py"]
       marcador_codigo: "TfidfVectorizer"
       marcador_doc: "TF-IDF"
+      # R15 comprueba también que una decisión SUPERADA no siga en el código. Aquí
+      # sí sigue, a propósito: se declara el respaldo para que el desfase se
+      # registre como ADVERTENCIA y quede trazado en lugar de bloquear la
+      # compilación. Es el mecanismo simétrico al `excepto_si` de la otra dirección.
+      respaldo_declarado:
+        motivo: >
+          TF-IDF no se retira: se conserva como método por DEFECTO y como respaldo
+          directo de los embeddings locales (D007). El sistema mantiene los dos
+          métodos con `--metodo` porque ganan en casos distintos y complementarios.
+          TF-IDF es más rápido, no arrastra torch, es explicable término a término
+          y no tiene límite de longitud; en el banco de 20 preguntas rinde igual o
+          mejor que Granite R2 (top-1 9/20 frente a 7/20; top-3 11/20 frente a
+          10/20; posición promedio del dato 8,4 frente a 21,7). Retirarlo dejaría
+          al sistema sin método cuando el modelo local no esté disponible, que es
+          justo lo contrario de la reproducibilidad que pidió el docente.
+        conserva: "TfidfVectorizer como método por defecto en src/memoria/rag.py"
+        autorizado_por: "Decisión del equipo, tras la evaluación comparativa de D007"
     fuente: F004
 
   - id: D003

@@ -1,12 +1,12 @@
 {
   "resumen": {
-    "fecha": "2026-10-13T16:03:24",
+    "fecha": "2026-10-13T17:10:52",
     "metodo": "embeddings",
     "indice": {
       "n_fragmentos": 150,
       "n_documentos": 25,
       "tecnica": "embeddings locales (ibm-granite/granite-embedding-97m-multilingual-r2) + similitud coseno",
-      "fecha_construccion": "2026-10-13T16:01:00",
+      "fecha_construccion": "2026-10-13T17:09:39",
       "colecciones": {
         "criterio_completo": 24,
         "criterio_lite": 24,
@@ -29,14 +29,14 @@
     "respuesta_en_top1": 7,
     "respuesta_en_top3": 10,
     "respuesta_en_corpus": 19,
-    "rank_promedio_cuando_existe": 21.11,
+    "rank_promedio_cuando_existe": 21.74,
     "por_grupo": {
       "A": {
         "n": 12,
         "en_top1": 4,
         "en_top3": 6,
         "en_corpus": 12,
-        "score_promedio": 0.8693
+        "score_promedio": 0.8694
       },
       "B": {
         "n": 4,
@@ -403,15 +403,15 @@
       "claves_comprobadas": [
         "150 fragmentos"
       ],
-      "score_top1": 0.8391,
+      "score_top1": 0.8402,
       "banda": "alto",
       "top1": {
         "documento": "anteproyecto",
         "seccion": "06b_memoria_agente",
         "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
         "coleccion": "anteproyecto",
-        "puntaje": 0.8391,
-        "n_palabras": 701,
+        "puntaje": 0.8402,
+        "n_palabras": 723,
         "extracto": "Gestión de la información del agente de IA Usamos IA generativa como asistente , no como autora. Para que ese uso fuera verificable y no produjera contradicciones entre los documentos del proyecto, implementamos una estrategia de gestión de información del agente con tres piezas, todas ejecutables y"
       },
       "top3": [
@@ -420,7 +420,7 @@
           "seccion": "06b_memoria_agente",
           "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
           "coleccion": "anteproyecto",
-          "puntaje": 0.8391
+          "puntaje": 0.8402
         },
         {
           "documento": "validacion_final_S.md",
@@ -488,7 +488,7 @@
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 58,
+      "rank_respuesta_en_corpus": 57,
       "n_resultados": 150
     },
     {
@@ -836,9 +836,9 @@
       "id": 16,
       "grupo": "C",
       "pregunta": "¿Cuál es el resultado de la regla R15?",
-      "respuesta_esperada": "FALLA",
+      "respuesta_esperada": "ADVERTENCIA",
       "claves_comprobadas": [
-        "falla"
+        "advertencia"
       ],
       "score_top1": 0.8269,
       "banda": "alto",
@@ -877,7 +877,7 @@
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 6,
+      "rank_respuesta_en_corpus": 19,
       "n_resultados": 150
     },
     {

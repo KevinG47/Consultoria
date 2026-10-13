@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-08T15:22:45",
+  "fecha": "2026-10-13T17:13:19",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
@@ -25,10 +25,9 @@
     }
   },
   "rag": {
-    "fecha_construccion": "2026-10-01T17:25:47",
+    "fecha_construccion": "2026-10-13T16:40:36",
     "n_fragmentos": 150,
     "n_documentos": 25,
-    "n_terminos_vocabulario": 45805,
     "por_coleccion": {
       "criterio_completo": 24,
       "criterio_lite": 24,
@@ -36,8 +35,9 @@
       "anteproyecto": 8,
       "validacion": 86
     },
-    "palabras_totales": 116290,
+    "palabras_totales": 116312,
     "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
+    "metodo": "tfidf",
     "corpus": [
       "anteproyecto",
       "maestro_auditoria",
@@ -64,7 +64,9 @@
       "validacion_rubrica.md",
       "validacion_sota_cobertura.md",
       "validacion_sota_referencias.md"
-    ]
+    ],
+    "hash_corpus": "1a77a04a06e88312",
+    "n_terminos_vocabulario": 45819
   },
   "reglas": [
     {
@@ -338,11 +340,11 @@
       "id": "R13",
       "descripcion": "El índice RAG está actualizado respecto a las fuentes",
       "estado": "PASA",
-      "detalle": "Índice al día: posterior al documento fuente más reciente por 0.3 min.",
+      "detalle": "Índice al día: posterior al documento fuente más reciente por 0.1 min.",
       "evidencia": {
-        "documento_fuente_mas_reciente": "2026-10-01T17:25:30",
-        "indice": "2026-10-01T17:25:47",
-        "desfase_min": 0.3,
+        "documento_fuente_mas_reciente": "2026-10-13T16:40:32",
+        "indice": "2026-10-13T16:40:36",
+        "desfase_min": 0.1,
         "desactualizado": false
       }
     },
@@ -359,14 +361,14 @@
     {
       "id": "R15",
       "descripcion": "Las decisiones vigentes coinciden con el código y los documentos",
-      "estado": "FALLA",
-      "detalle": "10 decisiones registradas; 1 desfase(s) código/documentos, 0 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos.",
+      "estado": "ADVERTENCIA",
+      "detalle": "10 decisiones registradas; 0 desfase(s) código/documentos, 1 excepción(es) declarada(s), 0 mención(es) de decisiones superadas en documentos.",
       "evidencia": {
         "decisiones": 10,
-        "problemas": [
-          "D002 está SUPERADA (D007) pero su implementación sigue en el código: 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py"
+        "problemas": [],
+        "avisos": [
+          "D002 está SUPERADA (D007) pero su implementación sigue en el código: 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py — respaldo declarado: TF-IDF no se retira: se conserva como método por DEFECTO y como respaldo directo de los embeddings locales (D007). El sistema mantiene los dos métodos con `--metodo` porque ganan en casos distintos y complementarios. TF-IDF es más rápido, no arrastra torch, es explicable término a término y no tiene límite de longitud; en el banco de 20 preguntas rinde igual o mejor que Granite R2 (top-1 9/20 frente a 7/20; top-3 11/20 frente a 10/20; posición promedio del dato 8,4 frente a 21,1). Retirarlo dejaría al sistema sin método cuando el modelo local no esté disponible, que es justo lo contrario de la reproducibilidad que pidió el docente.\n"
         ],
-        "avisos": [],
         "documentos_con_decision_superada": [],
         "decisiones_actuales_por_tema": {
           "memoria_semantica": [
@@ -413,13 +415,13 @@
     {
       "id": "R17",
       "descripcion": "Las cifras del sistema (índice, grafo, reglas, decisiones), el recuento de estados y los estados de regla del banco coinciden con la ejecución real",
-      "estado": "FALLA",
-      "detalle": "1 cifra(s) desactualizada(s) en 5 documento(s) revisado(s) (recuento real de esta corrida si R17 falla: 14 PASA / 2 FALLA / 1 ADVERTENCIA): latex/anteproyecto/secciones/06b_memoria_agente.tex:67 cita \"9 registradas\" pero decisiones = 10",
+      "estado": "PASA",
+      "detalle": "5 documento(s) revisado(s); 49 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad.",
       "evidencia": {
         "esperado": {
           "fragmentos": 150,
-          "palabras": 116290,
-          "terminos": 45805,
+          "palabras": 116312,
+          "terminos": 45819,
           "nodos": 255,
           "aristas": 498,
           "reglas": 17,
@@ -427,13 +429,13 @@
         },
         "tally_esperado": {
           "PASA": 15,
-          "FALLA": 1,
-          "ADVERTENCIA": 1
+          "FALLA": 0,
+          "ADVERTENCIA": 2
         },
         "tally_si_r17_falla": {
           "PASA": 14,
-          "FALLA": 2,
-          "ADVERTENCIA": 1
+          "FALLA": 1,
+          "ADVERTENCIA": 2
         },
         "fuentes": {
           "fragmentos/palabras/terminos": "data/memoria/rag_indice.json",
@@ -449,25 +451,23 @@
           "data/memoria/texto_seccion_6_2.md",
           "scripts/banco_preguntas.py"
         ],
-        "citas_correctas": 48,
+        "citas_correctas": 49,
         "estados_de_regla_citados": [
           {
             "regla": "R15",
-            "citado": "FALLA",
-            "texto": "\"esperado\": \"FALLA\"",
-            "linea": 99
+            "citado": "ADVERTENCIA",
+            "texto": "\"esperado\": \"ADVERTENCIA\"",
+            "linea": 114
           }
         ],
-        "problemas": [
-          "latex/anteproyecto/secciones/06b_memoria_agente.tex:67 cita \"9 registradas\" pero decisiones = 10"
-        ]
+        "problemas": []
       }
     }
   ],
   "resumen": {
     "total": 17,
-    "PASA": 14,
-    "FALLA": 2,
-    "ADVERTENCIA": 1
+    "PASA": 15,
+    "FALLA": 0,
+    "ADVERTENCIA": 2
   }
 }

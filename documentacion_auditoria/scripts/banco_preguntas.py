@@ -111,7 +111,7 @@ BANCO: list[dict] = [
 
     # --------- GRUPO C: del propio sistema, verificables en corpus ---------
     {"id": 16, "grupo": "C", "pregunta": "¿Cuál es el resultado de la regla R15?",
-     "esperado": "FALLA", "claves": ["falla"]},
+     "esperado": "ADVERTENCIA", "claves": ["advertencia"]},
     # Q17 y Q18 anteriores se eliminaron: nadie enunciaba esas cifras en el
     # corpus (el "0 citas" era un valor derivado por el equipo). Reemplazadas
     # por datos SÍ enunciados: los once informes de validación (06b, §6.2).

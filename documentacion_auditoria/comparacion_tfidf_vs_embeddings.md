@@ -11,7 +11,7 @@ El RAG del proyecto sabe recuperar con **dos métodos intercambiables**: TF-IDF 
 |---|---:|---:|---|
 | Respuesta esperada en el **top-1** | 9/20 | 7/20 | TF-IDF |
 | Respuesta esperada en el **top-3** | 11/20 | 10/20 | TF-IDF |
-| Ranking promedio del dato correcto (de 150) | 8,42 | 21,11 | TF-IDF |
+| Ranking promedio del dato correcto (de 150) | 8,42 | 21,74 | TF-IDF |
 | Preguntas ganadas | 8 | 6 | 6 empates |
 | Cobertura del corpus al vectorizar | 100 % | 79,6 % | — |
 
@@ -126,18 +126,18 @@ El mismo banco de 20 preguntas, el mismo corpus (150 fragmentos de 25 documentos
 | 5 | A | 0,1054 | 0,8455 | no | no | no | no | 9 | 17 | tfidf |
 | 6 | A | 0,1105 | 0,8690 | no | no | no | no | 8 | 8 | empate |
 | 7 | A | 0,1091 | 0,8909 | no | sí | sí | sí | 2 | 1 | embeddings |
-| 8 | A | 0,0409 | 0,8391 | no | sí | sí | sí | 2 | 1 | embeddings |
-| 9 | A | 0,0526 | 0,8314 | sí | no | sí | no | 1 | 58 | tfidf |
+| 8 | A | 0,0409 | 0,8402 | no | sí | sí | sí | 2 | 1 | embeddings |
+| 9 | A | 0,0517 | 0,8314 | sí | no | sí | no | 1 | 57 | tfidf |
 | 10 | A | 0,0500 | 0,8670 | no | no | no | no | 19 | 129 | tfidf |
 | 11 | B | 0,0456 | 0,8843 | no | sí | no | sí | 4 | 1 | embeddings |
 | 12 | B | 0,0529 | 0,8749 | sí | sí | sí | sí | 1 | 1 | empate |
 | 13 | A | 0,0984 | 0,8657 | no | no | no | no | 16 | 4 | embeddings |
 | 14 | B | 0,0529 | 0,8555 | no | no | no | no | — | — | empate |
 | 15 | B | 0,0652 | 0,8533 | no | no | no | no | 82 | 22 | embeddings |
-| 16 | C | 0,1051 | 0,8269 | sí | no | sí | no | 1 | 6 | tfidf |
-| 17 | C | 0,0732 | 0,8753 | sí | no | sí | no | 1 | 137 | tfidf |
+| 16 | C | 0,1119 | 0,8269 | sí | no | sí | no | 1 | 19 | tfidf |
+| 17 | C | 0,0719 | 0,8753 | sí | no | sí | no | 1 | 137 | tfidf |
 | 18 | A | 0,0651 | 0,8887 | sí | no | sí | sí | 1 | 3 | tfidf |
-| 19 | C | 0,0546 | 0,8794 | sí | no | sí | sí | 1 | 3 | tfidf |
+| 19 | C | 0,0536 | 0,8794 | sí | no | sí | sí | 1 | 3 | tfidf |
 | 20 | C | 0,2047 | 0,8390 | no | sí | no | sí | 4 | 1 | embeddings |
 
 ### 6.3 Agregados
@@ -147,8 +147,8 @@ El mismo banco de 20 preguntas, el mismo corpus (150 fragmentos de 25 documentos
 | Respuesta en el top-1 | **9/20** | **7/20** |
 | Respuesta en el top-3 | **11/20** | **10/20** |
 | Respuesta presente en el corpus | 19/20 | 19/20 |
-| Score promedio del top-1 | 0,0786 | 0,8660 |
-| Ranking promedio del dato correcto | **8,42** | **21,11** |
+| Score promedio del top-1 | 0,0788 | 0,8660 |
+| Ranking promedio del dato correcto | **8,42** | **21,74** |
 | Preguntas ganadas | 8 | 6 (+6 empates) |
 
 Por grupos del banco (A = datos que deberían estar en el corpus, B = datos que no, C = datos del propio sistema):
@@ -176,25 +176,25 @@ Conviene leer estos números junto al ranking promedio. Las preguntas en que TF-
 | Contenido realmente vectorizado | 7,8 % | **79,6 %** |
 | Top-1 con respuesta | 10/20 | 7/20 |
 | Top-3 con respuesta | 10/20 | 10/20 |
-| Ranking promedio del dato correcto | 26,63 | **21,11** |
+| Ranking promedio del dato correcto | 26,63 | **21,74** |
 
 El cambio de modelo mejoró las tres métricas de los embeddings y multiplicó por 10,2 la cobertura del corpus. Dicho de otro modo: la conclusión del intento anterior —«los embeddings no superan a TF-IDF»— era **correcta para ese modelo y esa configuración**, pero no era una conclusión sobre los embeddings en general. El cuello de botella era el contexto.
 
 ### 6.6 Dos comprobaciones de honestidad
 
-1. **TF-IDF no se rompió.** La corrida nueva de TF-IDF es **idéntica** a la corrida histórica (resultados_banco_preguntas.json, del 2026-10-01T17:25:51) en las 20 preguntas: mismos puntajes, mismos rankings, mismos aciertos. Cambiar el modelo de embeddings no cambió el comportamiento del respaldo.
-2. **Los puntajes no son comparables entre métodos.** El promedio del top-1 es 0,0786 con TF-IDF y 0,8660 con Granite, pero eso **no** mide cuánto mejor es uno: los cosenos de un modelo de frases parten de una base más alta. Los umbrales de banda del banco (alto >0,15) se calibraron sobre TF-IDF: con TF-IDF solo 1 de 20 preguntas caen en «alta», con embeddings prácticamente todas. Lo comparable es **en qué posición** aparece el dato correcto.
+1. **TF-IDF no se rompió, pero su corrida ya no es idéntica a la histórica, y se sabe por qué.** Comparada con resultados_banco_preguntas.json (2026-10-01T17:25:51) hay 4 diferencia(s): Q9.score_top1: nuevo=0.0517 histórico=0.0526; Q16.score_top1: nuevo=0.1119 histórico=0.1051; Q17.score_top1: nuevo=0.0719 histórico=0.0732; Q19.score_top1: nuevo=0.0536 histórico=0.0546. No es una regresión del código ni cambia ningún resultado: las diferencias son variaciones mínimas del puntaje del top-1 (del orden de la milésima) y **ningún acierto ni ranking se movió**. La causa es haber reconstruido el índice TF-IDF después de corregir el recuento de estados en la documentación, que forma parte del corpus y por tanto altera los pesos de forma imperceptible. La corrección de la clave de la pregunta Q16 tampoco cambió ningún acierto.
+2. **Los puntajes no son comparables entre métodos.** El promedio del top-1 es 0,0788 con TF-IDF y 0,8660 con Granite, pero eso **no** mide cuánto mejor es uno: los cosenos de un modelo de frases parten de una base más alta. Los umbrales de banda del banco (alto >0,15) se calibraron sobre TF-IDF: con TF-IDF solo 1 de 20 preguntas caen en «alta», con embeddings prácticamente todas. Lo comparable es **en qué posición** aparece el dato correcto.
 
 ### 6.7 Un punto a favor de los embeddings que no se ve en el banco
 
-Al cargar el índice de TF-IDF aparece esta advertencia, reproducible en esta máquina:
+Mientras el índice de TF-IDF fue un archivo serializado con scikit-learn 1.9.0, cargarlo con la versión instalada (1.9.1) producía esta advertencia:
 
 ```
 InconsistentVersionWarning: Trying to unpickle estimator TfidfVectorizer
 from version 1.9.0 when using version 1.9.1.
 ```
 
-Es decir: **el índice de TF-IDF queda atado a la versión de scikit-learn con la que se construyó**, y una actualización de la librería puede invalidarlo. Esto le da la razón al motivo del docente: un modelo de embeddings es un artefacto estándar y portable, mientras que el «diccionario» de TF-IDF es un archivo serializado dependiente del entorno. Es un argumento de reproducibilidad, no de calidad de recuperación, y conviene no confundirlos.
+Al reconstruir el índice en esta ronda —necesario porque el corpus cambió— el archivo quedó serializado con la versión instalada y **el aviso desapareció**: el problema tiene arreglo, y es reconstruir el índice. El argumento de fondo, sin embargo, se mantiene y conviene entenderlo: **el índice de TF-IDF es un archivo serializado atado a la versión de scikit-learn con la que se construyó**, así que cualquier actualización de la librería obliga a reconstruirlo y, hasta que se haga, el sistema avisa. Un modelo de embeddings es un artefacto estándar que no depende de la versión de la librería de turno. Esto le da la razón al motivo del docente, pero en el plano de la **reproducibilidad y el mantenimiento**, no en el de la calidad de recuperación: son dos cosas distintas y no conviene confundirlas.
 
 ## 7. Decisión final y siguiente paso
 
@@ -204,7 +204,7 @@ Para que la decisión no dependa de una impresión, se fijó por escrito una **r
 |---|---:|---:|:--:|
 | Top-1 con respuesta | 9 | 7 | **no** |
 | Top-3 con respuesta | 11 | 10 | **no** |
-| Ranking promedio no peor que un 120 % | 8,42 | 21,11 | **no** |
+| Ranking promedio no peor que un 120 % | 8,42 | 21,74 | **no** |
 
 **Veredicto: no se cumple la regla en su totalidad, así que TF-IDF sigue siendo el método por defecto.**
 
@@ -223,7 +223,7 @@ python -m memoria indexar --metodo embeddings  # Granite
 ### 7.1 Lo que queda pendiente
 
 1. **Trocear los dos fragmentos de código que aún se truncan.** Hoy la cobertura es del 79,6 %; los 2 fragmentos que exceden los 32 768 tokens son listados de código (`03_codigo` y `05_codigo`). Partirlos en trozos de unas 8 000 unidades con solape los haría vectorizables por completo. No se hizo aquí porque alteraría el corpus de 150 fragmentos, cifra citada en la documentación y vigilada por la regla R17, y porque R11 exige que el índice cubra exactamente el corpus declarado.
-2. **El coste de indexar con embeddings es alto.** Vectorizar el corpus con Granite tardó 1 704,2 segundos en CPU usando 10 lotes, porque las dos secuencias de 32 768 tokens dominan el tiempo (la atención global es cuadrática). Se paga una vez por índice y no en cada consulta, pero conviene saberlo antes de reindexar en una demostración en vivo.
+2. **El coste de indexar con embeddings es alto.** Vectorizar el corpus con Granite tardó 1 682,0 segundos en CPU usando 10 lotes, porque las dos secuencias de 32 768 tokens dominan el tiempo (la atención global es cuadrática). Se paga una vez por índice y no en cada consulta, pero conviene saberlo antes de reindexar en una demostración en vivo.
 
 ### 7.2 Estado de la decisión D007
 

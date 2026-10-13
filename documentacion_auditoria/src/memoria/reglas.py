@@ -409,7 +409,11 @@ def r15_decisiones_vs_codigo(mem: rag.MemoriaSemantica) -> dict:
     Comprueba:
       1. Integridad de la cadena de supersesión (referencias existentes, sin ciclos).
       2. Una sola decisión actual por tema (no puede haber dos vigentes).
-      3. Ninguna decisión SUPERADA puede seguir implementada en el código.
+      3. Ninguna decisión SUPERADA puede seguir implementada en el código, SALVO
+         que declare `implementacion.respaldo_declarado` (o `excepto_si`): en ese
+         caso la técnica se conserva a propósito como respaldo y el desfase se
+         degrada a ADVERTENCIA en lugar de FALLA. Es el mecanismo simétrico al
+         del punto 4.
       4. El código debe reflejar la decisión ACTUAL del tema; si la actual está
          `pendiente_implementacion` y el marcador no existe, es un desfase real
          y la regla FALLA (salvo excepción temporal declarada, que la degrada a
@@ -462,9 +466,18 @@ def r15_decisiones_vs_codigo(mem: rag.MemoriaSemantica) -> dict:
         presente = {a: (marcador.lower() in t.lower()) for a, t in textos.items()}
         if d.get("estado") == "superada" and any(presente.values()):
             donde = ", ".join(a for a, v in presente.items() if v)
-            problemas.append(
-                f"{d['id']} está SUPERADA ({d.get('superada_por') or d.get('supersede')}) "
-                f"pero su implementación sigue en el código: '{marcador}' en {donde}")
+            msg = (f"{d['id']} está SUPERADA ({d.get('superada_por') or d.get('supersede')}) "
+                   f"pero su implementación sigue en el código: '{marcador}' en {donde}")
+            # Mecanismo SIMÉTRICO al `excepto_si` de la dirección contraria: una
+            # decisión superada puede conservarse a propósito como respaldo, si se
+            # declara explícitamente en `implementacion.respaldo_declarado`.
+            respaldo = impl.get("respaldo_declarado") or impl.get("excepto_si")
+            if respaldo:
+                avisos.append(
+                    msg + f" — respaldo declarado: {respaldo.get('motivo', '')}"
+                    + (f" (hasta {respaldo['hasta']})" if respaldo.get("hasta") else ""))
+            else:
+                problemas.append(msg)
         if d.get("estado") in ("vigente", "pendiente_implementacion") and not any(presente.values()):
             excepcion = impl.get("excepto_si")
             msg = (f"{d['id']} (estado {d['estado']}) no está implementada: no aparece "

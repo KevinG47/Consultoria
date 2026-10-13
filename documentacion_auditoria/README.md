@@ -106,12 +106,14 @@ python -m memoria evidencia                  # informe legible de la última eje
   (fuentes consultadas, con URL verificada y archivo dependiente) y
   `data/memoria/decisiones.yaml` (bitácora de decisiones con supersesión
   explícita, p. ej. D007 supera a D002). R15 falla si una decisión **superada**
-  sigue en el código o se presenta como vigente; R16 falla si queda alguna URL
-  en "PENDIENTE".
+  sigue en el código sin declararlo, o si se presenta como vigente; si declara el
+  respaldo y su motivo, lo registra como advertencia. R16 falla si queda alguna
+  URL en "PENDIENTE".
 - **Reglas:** puerta previa a la compilación dentro de `compilar.py` (aborta si
   algo FALLA; `--forzar` continúa, `--sin-validar` la desactiva).
-  Última ejecución real: **15 PASA · 1 FALLA · 1 ADVERTENCIA** (17 reglas).
-  La FALLA es el desfase declarado D002→D007 (el código sigue en TF-IDF).
+  Última ejecución real: **15 PASA · 0 FALLA · 2 ADVERTENCIA** (17 reglas).
+  Las advertencias son R12 (solapamiento completo/LITE) y R15 (TF-IDF se conserva
+  como respaldo declarado de D007, ya implementada).
 - **Evidencia:** `data/memoria/evidencia_validacion.md` y `validacion_reglas.json`.
   Texto justificativo de §6.2: `data/memoria/texto_seccion_6_2.md`, ya integrado
   como `latex/anteproyecto/secciones/06b_memoria_agente.tex`.
