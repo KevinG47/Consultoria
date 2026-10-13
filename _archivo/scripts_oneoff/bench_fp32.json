@@ -1,0 +1,41 @@
+{
+  "modelo": "ibm-granite/granite-embedding-97m-multilingual-r2",
+  "cpu_count": 4,
+  "max_medido": 9000,
+  "num_threads": 4,
+  "cpu_capability": "AVX2",
+  "carga_s": 8.6,
+  "dtype_al_cargar": "torch.bfloat16",
+  "conversion_fp32_s": 0.1,
+  "dtype_final": "torch.float32",
+  "tokens_totales": 221316,
+  "tokens_max": 55502,
+  "tokens_efectivos_32768": 176174,
+  "tokens_efectivos_8192": 126731,
+  "pruebas": [
+    {
+      "clase": "corto",
+      "id": "objetivo_5::05_conclusiones",
+      "tokens": 80,
+      "segundos": 0.19,
+      "ms_por_token": 2.386
+    },
+    {
+      "clase": "mediano",
+      "id": "objetivo_5::03_logica",
+      "tokens": 489,
+      "segundos": 1.02,
+      "ms_por_token": 2.081
+    },
+    {
+      "clase": "grande",
+      "id": "objetivo_3_lite::03_codigo",
+      "tokens": 8483,
+      "segundos": 50.56,
+      "ms_por_token": 5.96
+    }
+  ],
+  "ms_por_token": 5.994,
+  "est_indice_32768_min": 17.6,
+  "est_indice_8192_min": 12.7
+}

@@ -207,6 +207,10 @@ def main() -> int:
                                        sorted(exceden, key=lambda z: -z[2])[:5]],
                 "cobertura_media_pct": round(
                     100 * sum(min(x, mx) for x in largos) / sum(largos), 1),
+                # alias con el mismo nombre que usa el metadato del índice, para
+                # que los dos artefactos se lean igual
+                "cobertura_pct": round(
+                    100 * sum(min(x, mx) for x in largos) / sum(largos), 1),
             }
         except Exception as exc:      # pragma: no cover
             trunc = {"error": str(exc)}

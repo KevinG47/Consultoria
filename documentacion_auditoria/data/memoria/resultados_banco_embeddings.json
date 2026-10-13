@@ -1,12 +1,12 @@
 {
   "resumen": {
-    "fecha": "2026-10-08T15:55:13",
+    "fecha": "2026-10-13T16:03:24",
     "metodo": "embeddings",
     "indice": {
       "n_fragmentos": 150,
       "n_documentos": 25,
-      "tecnica": "embeddings locales (paraphrase-multilingual-MiniLM-L12-v2) + similitud coseno",
-      "fecha_construccion": "2026-10-08T15:53:07",
+      "tecnica": "embeddings locales (ibm-granite/granite-embedding-97m-multilingual-r2) + similitud coseno",
+      "fecha_construccion": "2026-10-13T16:01:00",
       "colecciones": {
         "criterio_completo": 24,
         "criterio_lite": 24,
@@ -14,7 +14,7 @@
         "anteproyecto": 8,
         "validacion": 86
       },
-      "modelo": "paraphrase-multilingual-MiniLM-L12-v2",
+      "modelo": "ibm-granite/granite-embedding-97m-multilingual-r2",
       "dimension": 384,
       "hash_corpus": "1a77a04a06e88312"
     },
@@ -26,31 +26,31 @@
       "bajo": 0,
       "sin_resultado": 0
     },
-    "respuesta_en_top1": 10,
+    "respuesta_en_top1": 7,
     "respuesta_en_top3": 10,
     "respuesta_en_corpus": 19,
-    "rank_promedio_cuando_existe": 26.63,
+    "rank_promedio_cuando_existe": 21.11,
     "por_grupo": {
       "A": {
         "n": 12,
-        "en_top1": 6,
+        "en_top1": 4,
         "en_top3": 6,
         "en_corpus": 12,
-        "score_promedio": 0.5835
+        "score_promedio": 0.8693
       },
       "B": {
         "n": 4,
         "en_top1": 2,
         "en_top3": 2,
         "en_corpus": 3,
-        "score_promedio": 0.5942
+        "score_promedio": 0.867
       },
       "C": {
         "n": 4,
-        "en_top1": 2,
+        "en_top1": 1,
         "en_top3": 2,
         "en_corpus": 4,
-        "score_promedio": 0.5517
+        "score_promedio": 0.8551
       }
     }
   },
@@ -63,38 +63,38 @@
       "claves_comprobadas": [
         "77237"
       ],
-      "score_top1": 0.6556,
+      "score_top1": 0.8654,
       "banda": "alto",
       "top1": {
-        "documento": "maestro_auditoria",
-        "seccion": "04_datos",
-        "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\04_datos.tex",
-        "coleccion": "maestro",
-        "puntaje": 0.6556,
-        "n_palabras": 812,
-        "extracto": "Datos utilizados: suficiencia y corrección Inventario de fuentes de datos tabcolsep 3pt > p 3.0cm > p 4.9cm > p 4.1cm > p 2.6cm Inventario de fuentes de datos del repositorio tab:fuentes Fuente Descripción Volumen Estado en el clon Fuente Descripción Volumen Estado en el clon Padrón de investigadore"
+        "documento": "validacion_cierre_D.md",
+        "seccion": "4. D4 · Datos y aproximación metodológica preliminar (6 %) — **Ejemplar (5,0 / 100 %)**",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+        "coleccion": "validacion",
+        "puntaje": 0.8654,
+        "n_palabras": 196,
+        "extracto": "4. D4 · Datos y aproximación metodológica preliminar (6 %) — Ejemplar (5,0 / 100 %) Justificación: Fuentes con procedencia, periodo, unidad de observación, volumen y acceso/licencia: §4.1, Tabla 1: entidad (MinCiencias), identificadores (bqtm-4y2h; 33dq-ab5a), enlaces en referencias, periodo 2013–20"
       },
       "top3": [
+        {
+          "documento": "validacion_cierre_D.md",
+          "seccion": "4. D4 · Datos y aproximación metodológica preliminar (6 %) — **Ejemplar (5,0 / 100 %)**",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.8654
+        },
+        {
+          "documento": "validacion_anteproyecto_D.md",
+          "seccion": "4. D4 — Datos y aproximación metodológica preliminar (6 %)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.8616
+        },
         {
           "documento": "maestro_auditoria",
           "seccion": "04_datos",
           "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\04_datos.tex",
           "coleccion": "maestro",
-          "puntaje": 0.6556
-        },
-        {
-          "documento": "objetivo_2_lite",
-          "seccion": "03_datos",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
-          "coleccion": "criterio_lite",
-          "puntaje": 0.6021
-        },
-        {
-          "documento": "objetivo_2_lite",
-          "seccion": "05_conclusiones",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
-          "coleccion": "criterio_lite",
-          "puntaje": 0.5606
+          "puntaje": 0.8545
         }
       ],
       "respuesta_en_top1": true,
@@ -112,44 +112,44 @@
         "6 convocatorias",
         "seis convocatorias"
       ],
-      "score_top1": 0.6231,
+      "score_top1": 0.8657,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_cierre_S.md",
-        "seccion": "1. Verificación de correcciones ya aplicadas (todas verificadas en texto)",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+        "documento": "validacion_cierre_D.md",
+        "seccion": "1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
         "coleccion": "validacion",
-        "puntaje": 0.6231,
-        "n_palabras": 437,
-        "extracto": "1. Verificación de correcciones ya aplicadas (todas verificadas en texto) Corrección pedida Dónde se verifica Estado 1 Cifra de personas únicas añadida (26 662 únicos en 50 891 filas) Anteproyecto §1.2 (\"50 891 filas y 3 convocatorias… con 26 662 investigadores únicos \"); lámina 3 (\"50 891 filas y 3"
+        "puntaje": 0.8657,
+        "n_palabras": 243,
+        "extracto": "1. D1 · Problema, contexto y estado actual (12 %) — Ejemplar (5,0 / 100 %) Justificación (evidencia en el texto): Actor, alcance, frecuencia y consecuencia explícitos: §1.1 delimita el padrón de investigadores reconocidos de MinCiencias (convocatorias 640/2013…894/2021), a quién afecta (\"A quién le "
       },
       "top3": [
         {
-          "documento": "validacion_cierre_S.md",
-          "seccion": "1. Verificación de correcciones ya aplicadas (todas verificadas en texto)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "documento": "validacion_cierre_D.md",
+          "seccion": "1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
           "coleccion": "validacion",
-          "puntaje": 0.6231
-        },
-        {
-          "documento": "validacion_cierre_S.md",
-          "seccion": "5. Checklist de cierre (para mañana, 5 minutos antes)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5819
+          "puntaje": 0.8657
         },
         {
           "documento": "objetivo_1_lite",
-          "seccion": "05_conclusiones",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_1_lite\\secciones\\05_conclusiones.tex",
+          "seccion": "03_entendimiento",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_1_lite\\secciones\\03_entendimiento.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.5702
+          "puntaje": 0.8623
+        },
+        {
+          "documento": "anteproyecto",
+          "seccion": "01_problema",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\01_problema.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.8482
         }
       ],
-      "respuesta_en_top1": true,
+      "respuesta_en_top1": false,
       "respuesta_en_top3": true,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 1,
+      "rank_respuesta_en_corpus": 2,
       "n_resultados": 150
     },
     {
@@ -160,38 +160,38 @@
       "claves_comprobadas": [
         "50891"
       ],
-      "score_top1": 0.7177,
+      "score_top1": 0.9169,
       "banda": "alto",
       "top1": {
-        "documento": "objetivo_2_lite",
+        "documento": "objetivo_2",
         "seccion": "03_datos",
-        "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
-        "coleccion": "criterio_lite",
-        "puntaje": 0.7177,
-        "n_palabras": 69,
-        "extracto": "Datos utilizados: suficiencia y corrección [hallazgo] Veredicto: Datos correctos y suficientes en origen (30.086 investigadores, 6 convocatorias, 3.166.629 productos), pero el consolidado versionado solo tiene 3 de 6 convocatorias (50.891 de 77.237 filas). Hallazgos de mayor impacto Un clon del repo"
+        "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
+        "coleccion": "criterio_completo",
+        "puntaje": 0.9169,
+        "n_palabras": 254,
+        "extracto": "Datos utilizados: suficiencia y corrección VERIFICADO EMPÍRICAMENTE: el consolidado versionado (XLSX y CSV en datos/tarea_join/) contiene solo 50.891 filas y 3 convocatorias (2017: 13.001, 2019: 16.796, 2021: 21.094), frente a las 77.237 filas y 6 convocatorias (2013-2021) declaradas en el README y "
       },
       "top3": [
+        {
+          "documento": "objetivo_2",
+          "seccion": "03_datos",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.9169
+        },
         {
           "documento": "objetivo_2_lite",
           "seccion": "03_datos",
           "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.7177
+          "puntaje": 0.8849
         },
         {
           "documento": "objetivo_2_lite",
           "seccion": "05_conclusiones",
           "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.6796
-        },
-        {
-          "documento": "objetivo_2",
-          "seccion": "03_datos",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
-          "coleccion": "criterio_completo",
-          "puntaje": 0.6185
+          "puntaje": 0.8818
         }
       ],
       "respuesta_en_top1": true,
@@ -208,44 +208,44 @@
       "claves_comprobadas": [
         "26662"
       ],
-      "score_top1": 0.6363,
+      "score_top1": 0.8858,
       "banda": "alto",
       "top1": {
-        "documento": "objetivo_2_lite",
-        "seccion": "05_conclusiones",
-        "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
-        "coleccion": "criterio_lite",
-        "puntaje": 0.6363,
-        "n_palabras": 93,
-        "extracto": "Conclusiones y veredicto del criterio (versión LITE) [hallazgo] Veredicto: Datos correctos y suficientes en origen (30.086 investigadores, 6 convocatorias, 3.166.629 productos), pero el consolidado versionado solo tiene 3 de 6 convocatorias (50.891 de 77.237 filas). Hallazgos de mayor impacto Un clo"
+        "documento": "objetivo_2",
+        "seccion": "03_datos",
+        "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
+        "coleccion": "criterio_completo",
+        "puntaje": 0.8858,
+        "n_palabras": 254,
+        "extracto": "Datos utilizados: suficiencia y corrección VERIFICADO EMPÍRICAMENTE: el consolidado versionado (XLSX y CSV en datos/tarea_join/) contiene solo 50.891 filas y 3 convocatorias (2017: 13.001, 2019: 16.796, 2021: 21.094), frente a las 77.237 filas y 6 convocatorias (2013-2021) declaradas en el README y "
       },
       "top3": [
         {
-          "documento": "objetivo_2_lite",
-          "seccion": "05_conclusiones",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
-          "coleccion": "criterio_lite",
-          "puntaje": 0.6363
+          "documento": "objetivo_2",
+          "seccion": "03_datos",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.8858
         },
         {
           "documento": "objetivo_2_lite",
           "seccion": "03_datos",
           "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.618
+          "puntaje": 0.8794
         },
         {
-          "documento": "validacion_anteproyecto_D.md",
-          "seccion": "encabezado",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
-          "coleccion": "validacion",
-          "puntaje": 0.6071
+          "documento": "objetivo_2_lite",
+          "seccion": "05_conclusiones",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.8674
         }
       ],
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 4,
+      "rank_respuesta_en_corpus": 5,
       "n_resultados": 150
     },
     {
@@ -258,44 +258,44 @@
         "20 paginas",
         "20 pp"
       ],
-      "score_top1": 0.501,
+      "score_top1": 0.8455,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_anteproyecto_D.md",
-        "seccion": "2. D2 — Estado del arte y rigor bibliográfico (9 %)",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
+        "documento": "validacion_sota_referencias.md",
+        "seccion": "encabezado",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
         "coleccion": "validacion",
-        "puntaje": 0.501,
-        "n_palabras": 779,
-        "extracto": "2. D2 — Estado del arte y rigor bibliográfico (9 %) Nivel asignado: EN DESARROLLO (60 %) Qué pide el «Ejemplar» y qué hay en los materiales Requisito Ejemplar Estado Evidencia concreta Sintetiza ≥ 8 fuentes recientes y verificables ◐ Limítrofe. Solo la bibliografía formal tiene 7 entradas ≥ 2018 (Fo"
+        "puntaje": 0.8455,
+        "n_palabras": 121,
+        "extracto": "Validación independiente: referencias y mapeo al repositorio del \"Estado del Arte\" Validador: agente independiente y crítico (lectura + verificación empírica + búsqueda web; sin modificación de fuentes) Alcance: documentacion_auditoria/latex/estado_del_arte (secciones 02–12, refs.bib ) vs. repositor"
       },
       "top3": [
         {
-          "documento": "validacion_anteproyecto_D.md",
-          "seccion": "2. D2 — Estado del arte y rigor bibliográfico (9 %)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
+          "documento": "validacion_sota_referencias.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
           "coleccion": "validacion",
-          "puntaje": 0.501
+          "puntaje": 0.8455
         },
         {
           "documento": "validacion_cierre_D.md",
           "seccion": "2. D2 · Estado del arte y rigor bibliográfico (9 %) — **Competente (4,0 / 80 %)**",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
           "coleccion": "validacion",
-          "puntaje": 0.4936
+          "puntaje": 0.8395
         },
         {
-          "documento": "validacion_sota_cobertura.md",
-          "seccion": "Evaluación independiente y crítica de COBERTURA, utilidad y calidad",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_cobertura.md",
+          "documento": "validacion_anteproyecto_S.md",
+          "seccion": "8. Veredicto final",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_S.md",
           "coleccion": "validacion",
-          "puntaje": 0.4829
+          "puntaje": 0.8383
         }
       ],
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 5,
+      "rank_respuesta_en_corpus": 17,
       "n_resultados": 150
     },
     {
@@ -307,44 +307,44 @@
         "39 referencias",
         "39 entradas"
       ],
-      "score_top1": 0.633,
+      "score_top1": 0.869,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_anteproyecto_D.md",
-        "seccion": "2. D2 — Estado del arte y rigor bibliográfico (9 %)",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
+        "documento": "validacion_sota_referencias.md",
+        "seccion": "encabezado",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
         "coleccion": "validacion",
-        "puntaje": 0.633,
-        "n_palabras": 779,
-        "extracto": "2. D2 — Estado del arte y rigor bibliográfico (9 %) Nivel asignado: EN DESARROLLO (60 %) Qué pide el «Ejemplar» y qué hay en los materiales Requisito Ejemplar Estado Evidencia concreta Sintetiza ≥ 8 fuentes recientes y verificables ◐ Limítrofe. Solo la bibliografía formal tiene 7 entradas ≥ 2018 (Fo"
+        "puntaje": 0.869,
+        "n_palabras": 121,
+        "extracto": "Validación independiente: referencias y mapeo al repositorio del \"Estado del Arte\" Validador: agente independiente y crítico (lectura + verificación empírica + búsqueda web; sin modificación de fuentes) Alcance: documentacion_auditoria/latex/estado_del_arte (secciones 02–12, refs.bib ) vs. repositor"
       },
       "top3": [
         {
-          "documento": "validacion_anteproyecto_D.md",
-          "seccion": "2. D2 — Estado del arte y rigor bibliográfico (9 %)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
+          "documento": "validacion_sota_referencias.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
           "coleccion": "validacion",
-          "puntaje": 0.633
+          "puntaje": 0.869
+        },
+        {
+          "documento": "validacion_cierre_D.md",
+          "seccion": "2. D2 · Estado del arte y rigor bibliográfico (9 %) — **Competente (4,0 / 80 %)**",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "coleccion": "validacion",
+          "puntaje": 0.8479
         },
         {
           "documento": "validacion_sota_referencias.md",
-          "seccion": "5. Veredicto final",
+          "seccion": "2. Recursos en línea (sección 12.2) — evaluación",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
           "coleccion": "validacion",
-          "puntaje": 0.564
-        },
-        {
-          "documento": "validacion_anteproyecto_S.md",
-          "seccion": "6. Citación APA 7",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_S.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5631
+          "puntaje": 0.8464
         }
       ],
-      "respuesta_en_top1": true,
-      "respuesta_en_top3": true,
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 1,
+      "rank_respuesta_en_corpus": 8,
       "n_resultados": 150
     },
     {
@@ -355,38 +355,38 @@
       "claves_comprobadas": [
         "3166629"
       ],
-      "score_top1": 0.5256,
+      "score_top1": 0.8909,
       "banda": "alto",
       "top1": {
-        "documento": "objetivo_2_lite",
+        "documento": "objetivo_2",
         "seccion": "03_datos",
-        "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
-        "coleccion": "criterio_lite",
-        "puntaje": 0.5256,
-        "n_palabras": 69,
-        "extracto": "Datos utilizados: suficiencia y corrección [hallazgo] Veredicto: Datos correctos y suficientes en origen (30.086 investigadores, 6 convocatorias, 3.166.629 productos), pero el consolidado versionado solo tiene 3 de 6 convocatorias (50.891 de 77.237 filas). Hallazgos de mayor impacto Un clon del repo"
+        "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
+        "coleccion": "criterio_completo",
+        "puntaje": 0.8909,
+        "n_palabras": 254,
+        "extracto": "Datos utilizados: suficiencia y corrección VERIFICADO EMPÍRICAMENTE: el consolidado versionado (XLSX y CSV en datos/tarea_join/) contiene solo 50.891 filas y 3 convocatorias (2017: 13.001, 2019: 16.796, 2021: 21.094), frente a las 77.237 filas y 6 convocatorias (2013-2021) declaradas en el README y "
       },
       "top3": [
+        {
+          "documento": "objetivo_2",
+          "seccion": "03_datos",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_2\\secciones\\03_datos.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.8909
+        },
         {
           "documento": "objetivo_2_lite",
           "seccion": "03_datos",
           "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.5256
+          "puntaje": 0.8708
         },
         {
-          "documento": "validacion_cierre_D.md",
-          "seccion": "5. D5 · Alcance, viabilidad y plan de trabajo (5 %) — **Ejemplar (5,0 / 100 %)**",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
-          "coleccion": "validacion",
-          "puntaje": 0.4947
-        },
-        {
-          "documento": "objetivo_6",
-          "seccion": "03_timeline",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_6\\secciones\\03_timeline.tex",
-          "coleccion": "criterio_completo",
-          "puntaje": 0.4936
+          "documento": "anteproyecto",
+          "seccion": "04_datos_metodo",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\04_datos_metodo.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.8687
         }
       ],
       "respuesta_en_top1": true,
@@ -403,44 +403,44 @@
       "claves_comprobadas": [
         "150 fragmentos"
       ],
-      "score_top1": 0.496,
+      "score_top1": 0.8391,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_final_S.md",
-        "seccion": "5. Riesgos de sustentación (qué podría explotar un jurado)",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
-        "coleccion": "validacion",
-        "puntaje": 0.496,
-        "n_palabras": 549,
-        "extracto": "5. Riesgos de sustentación (qué podría explotar un jurado) Riesgo Gravedad Qué hacer esta noche R1 Genealogía de los números no ensayada : qué declara el catálogo (77 237 / 6 convos / 30 086 únicos) vs. qué contiene el artefacto (50 891 filas / 3 convos) y cuántos únicos tiene el artefacto (número a"
+        "documento": "anteproyecto",
+        "seccion": "06b_memoria_agente",
+        "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+        "coleccion": "anteproyecto",
+        "puntaje": 0.8391,
+        "n_palabras": 701,
+        "extracto": "Gestión de la información del agente de IA Usamos IA generativa como asistente , no como autora. Para que ese uso fuera verificable y no produjera contradicciones entre los documentos del proyecto, implementamos una estrategia de gestión de información del agente con tres piezas, todas ejecutables y"
       },
       "top3": [
+        {
+          "documento": "anteproyecto",
+          "seccion": "06b_memoria_agente",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\06b_memoria_agente.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.8391
+        },
         {
           "documento": "validacion_final_S.md",
           "seccion": "5. Riesgos de sustentación (qué podría explotar un jurado)",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
           "coleccion": "validacion",
-          "puntaje": 0.496
+          "puntaje": 0.8353
         },
         {
           "documento": "validacion_final_D.md",
-          "seccion": "4. Verificación de los hechos que la rúbrica penaliza (resumen)",
+          "seccion": "1. Requisitos de forma (pre-check)",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
           "coleccion": "validacion",
-          "puntaje": 0.4496
-        },
-        {
-          "documento": "objetivo_2_lite",
-          "seccion": "03_datos",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
-          "coleccion": "criterio_lite",
-          "puntaje": 0.4482
+          "puntaje": 0.8325
         }
       ],
-      "respuesta_en_top1": false,
-      "respuesta_en_top3": false,
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 118,
+      "rank_respuesta_en_corpus": 1,
       "n_resultados": 150
     },
     {
@@ -451,44 +451,44 @@
       "claves_comprobadas": [
         "255 nodos"
       ],
-      "score_top1": 0.3902,
+      "score_top1": 0.8314,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_final_D.md",
-        "seccion": "2. Tabla resumen del bloque Documento",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
+        "documento": "validacion_cierre_S.md",
+        "seccion": "3. Coherencia de cifras entre soportes (documento · láminas · guion · guía · tarjetas)",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
         "coleccion": "validacion",
-        "puntaje": 0.3902,
-        "n_palabras": 285,
-        "extracto": "2. Tabla resumen del bloque Documento Pesos oficiales del curso: D1 = 12 %, D2 = 9 %, D3 = 8 %, D4 = 6 %, D5 = 5 % (Σ = 40 %). Para expresar la nota del bloque en 0–5 se normalizan al bloque (D1 30 %, D2 22,5 %, D3 20 %, D4 15 %, D5 12,5 %). Criterio Peso Nivel Puntos (sobre 5,0) Justificación D1 Pr"
+        "puntaje": 0.8314,
+        "n_palabras": 174,
+        "extracto": "3. Coherencia de cifras entre soportes (documento · láminas · guion · guía · tarjetas) Verificadas número a número y coincidentes en los 5 soportes : 77 237 declarados (catálogo) vs. 50 891 filas verificadas (XLSX, 30 columnas) con 26 662 personas únicas ; solo 3 de 6 convocatorias en el artefacto ("
       },
       "top3": [
         {
+          "documento": "validacion_cierre_S.md",
+          "seccion": "3. Coherencia de cifras entre soportes (documento · láminas · guion · guía · tarjetas)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "coleccion": "validacion",
+          "puntaje": 0.8314
+        },
+        {
           "documento": "validacion_final_D.md",
-          "seccion": "2. Tabla resumen del bloque Documento",
+          "seccion": "1. Requisitos de forma (pre-check)",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
           "coleccion": "validacion",
-          "puntaje": 0.3902
+          "puntaje": 0.823
         },
         {
-          "documento": "validacion_cierre_D.md",
-          "seccion": "6. Cálculo de la nota del bloque Documento (escala 0–5)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "documento": "validacion_final_S.md",
+          "seccion": "5. Riesgos de sustentación (qué podría explotar un jurado)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
           "coleccion": "validacion",
-          "puntaje": 0.375
-        },
-        {
-          "documento": "validacion_reglas.md",
-          "seccion": "Tabla resumen",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
-          "coleccion": "validacion",
-          "puntaje": 0.3697
+          "puntaje": 0.8211
         }
       ],
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 128,
+      "rank_respuesta_en_corpus": 58,
       "n_resultados": 150
     },
     {
@@ -500,14 +500,14 @@
         "17 reglas",
         "diecisiete reglas"
       ],
-      "score_top1": 0.6955,
+      "score_top1": 0.867,
       "banda": "alto",
       "top1": {
         "documento": "validacion_cierre_S.md",
         "seccion": "✅ **LISTO PARA SUSTENTAR MAÑANA**",
         "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
         "coleccion": "validacion",
-        "puntaje": 0.6955,
+        "puntaje": 0.867,
         "n_palabras": 215,
         "extracto": "✅ LISTO PARA SUSTENTAR MAÑANA Justificación estricta: 1. Todas las correcciones pedidas en la validación previa están textualmente aplicadas y verificadas en los cinco soportes (26 662 únicos; nomenclatura 781/2017, 833/2018, 894/2021 con explicación del 2019; lámina 7 \"declara 6 / verificadas 3\"; r"
       },
@@ -517,27 +517,27 @@
           "seccion": "✅ **LISTO PARA SUSTENTAR MAÑANA**",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
           "coleccion": "validacion",
-          "puntaje": 0.6955
+          "puntaje": 0.867
         },
         {
           "documento": "validacion_reglas.md",
-          "seccion": "encabezado",
+          "seccion": "Observaciones adicionales (fuera de las 7+2 reglas)",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
           "coleccion": "validacion",
-          "puntaje": 0.6317
+          "puntaje": 0.8647
         },
         {
-          "documento": "validacion_cierre_S.md",
-          "seccion": "1. Verificación de correcciones ya aplicadas (todas verificadas en texto)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "documento": "validacion_final_S.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
           "coleccion": "validacion",
-          "puntaje": 0.6166
+          "puntaje": 0.86
         }
       ],
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 107,
+      "rank_respuesta_en_corpus": 129,
       "n_resultados": 150
     },
     {
@@ -549,14 +549,14 @@
         "10 OK / 6 ERROR",
         "16 scripts 10/6"
       ],
-      "score_top1": 0.5339,
+      "score_top1": 0.8657,
       "banda": "alto",
       "top1": {
         "documento": "objetivo_3",
         "seccion": "05_conclusiones",
         "ruta": "documentacion_auditoria\\latex\\objetivo_3\\secciones\\05_conclusiones.tex",
         "coleccion": "criterio_completo",
-        "puntaje": 0.5339,
+        "puntaje": 0.8657,
         "n_palabras": 100,
         "extracto": "Conclusiones y recomendaciones del criterio El código está bien construido en general (modular, documentado, trazable): 10/16 scripts corren en un clon fresco y los artefactos versionados demuestran que el equipo los ejecutó con los datos completos. Los hallazgos críticos de calidad: bug del HHI en "
       },
@@ -566,27 +566,27 @@
           "seccion": "05_conclusiones",
           "ruta": "documentacion_auditoria\\latex\\objetivo_3\\secciones\\05_conclusiones.tex",
           "coleccion": "criterio_completo",
-          "puntaje": 0.5339
+          "puntaje": 0.8657
         },
         {
           "documento": "objetivo_3_lite",
           "seccion": "05_conclusiones",
           "ruta": "documentacion_auditoria\\latex\\objetivo_3_lite\\secciones\\05_conclusiones.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.4982
+          "puntaje": 0.8564
         },
         {
-          "documento": "objetivo_2_lite",
+          "documento": "objetivo_5_lite",
           "seccion": "05_conclusiones",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_5_lite\\secciones\\05_conclusiones.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.4817
+          "puntaje": 0.8517
         }
       ],
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 23,
+      "rank_respuesta_en_corpus": 4,
       "n_resultados": 150
     },
     {
@@ -598,44 +598,44 @@
         "11 autores",
         "once autores"
       ],
-      "score_top1": 0.5941,
+      "score_top1": 0.8887,
       "banda": "alto",
       "top1": {
-        "documento": "objetivo_6",
-        "seccion": "03_timeline",
-        "ruta": "documentacion_auditoria\\latex\\objetivo_6\\secciones\\03_timeline.tex",
+        "documento": "objetivo_1",
+        "seccion": "03_entendimiento",
+        "ruta": "documentacion_auditoria\\latex\\objetivo_1\\secciones\\03_entendimiento.tex",
         "coleccion": "criterio_completo",
-        "puntaje": 0.5941,
-        "n_palabras": 1947,
-        "extracto": "Línea de tiempo de commits El repositorio fue construido con 133 commits entre 2025-08-24 y 2026-05-14 por 11 autores (12 identidades nombre+correo): camiloacr1322 46, Victor-Diaz-Usta 39, Maria Amaya 13, Paula 11, JulianMendez27 11, PaulaGuevara 4, y otros. Las tres fases de construcción La activid"
+        "puntaje": 0.8887,
+        "n_palabras": 185,
+        "extracto": "Entendimiento del objetivo del repositorio El objetivo del repositorio es claro y bien documentado: consolidar, validar y analizar el padrón de investigadores reconocidos por MinCiencias y producir un observatorio crítico con evidencia sobre la fiabilidad, comparabilidad y equidad del sistema de rec"
       },
       "top3": [
         {
-          "documento": "objetivo_6",
-          "seccion": "03_timeline",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_6\\secciones\\03_timeline.tex",
-          "coleccion": "criterio_completo",
-          "puntaje": 0.5941
-        },
-        {
           "documento": "objetivo_1",
-          "seccion": "02_contexto",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_1\\secciones\\02_contexto.tex",
+          "seccion": "03_entendimiento",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_1\\secciones\\03_entendimiento.tex",
           "coleccion": "criterio_completo",
-          "puntaje": 0.5791
+          "puntaje": 0.8887
         },
         {
-          "documento": "objetivo_1_lite",
-          "seccion": "02_contexto",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_1_lite\\secciones\\02_contexto.tex",
-          "coleccion": "criterio_lite",
-          "puntaje": 0.5791
+          "documento": "maestro_auditoria",
+          "seccion": "02_resumen_ejecutivo",
+          "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\02_resumen_ejecutivo.tex",
+          "coleccion": "maestro",
+          "puntaje": 0.8777
+        },
+        {
+          "documento": "maestro_auditoria",
+          "seccion": "08_timeline",
+          "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\08_timeline.tex",
+          "coleccion": "maestro",
+          "puntaje": 0.8734
         }
       ],
-      "respuesta_en_top1": true,
+      "respuesta_en_top1": false,
       "respuesta_en_top3": true,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 1,
+      "rank_respuesta_en_corpus": 3,
       "n_resultados": 150
     },
     {
@@ -646,38 +646,38 @@
       "claves_comprobadas": [
         "133 commits"
       ],
-      "score_top1": 0.5613,
+      "score_top1": 0.8843,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_factica.md",
-        "seccion": "1. Resumen ejecutivo",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
-        "coleccion": "validacion",
-        "puntaje": 0.5613,
-        "n_palabras": 213,
-        "extracto": "1. Resumen ejecutivo Los PDFs y las fichas describen fielmente el código auditado en la gran mayoría de los puntos verificados. De 18 fichas muestreadas a fondo (35 % del total, cubriendo las 7 capas: ingesta, transformación, modelo, análisis, orquestación, visualización y legacy): 15 se verificaron"
+        "documento": "objetivo_6_lite",
+        "seccion": "03_timeline",
+        "ruta": "documentacion_auditoria\\latex\\objetivo_6_lite\\secciones\\03_timeline.tex",
+        "coleccion": "criterio_lite",
+        "puntaje": 0.8843,
+        "n_palabras": 86,
+        "extracto": "Línea de tiempo de commits [hallazgo] Veredicto: El repositorio se construyó con 133 commits (ago 2025 - may 2026) por 11 autores: fase académica (ago-nov 2025), hiato de 100 días y fase de ingeniería y cierre (feb-may 2026); la autoría refleja el rol de cada miembro del equipo. Hallazgos de mayor i"
       },
       "top3": [
         {
-          "documento": "validacion_factica.md",
-          "seccion": "1. Resumen ejecutivo",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5613
-        },
-        {
-          "documento": "validacion_reglas.md",
-          "seccion": "encabezado",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5444
-        },
-        {
-          "documento": "objetivo_2_lite",
-          "seccion": "03_datos",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
+          "documento": "objetivo_6_lite",
+          "seccion": "03_timeline",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_6_lite\\secciones\\03_timeline.tex",
           "coleccion": "criterio_lite",
-          "puntaje": 0.4942
+          "puntaje": 0.8843
+        },
+        {
+          "documento": "maestro_auditoria",
+          "seccion": "08_timeline",
+          "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\08_timeline.tex",
+          "coleccion": "maestro",
+          "puntaje": 0.8796
+        },
+        {
+          "documento": "objetivo_6",
+          "seccion": "03_timeline",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_6\\secciones\\03_timeline.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.8793
         }
       ],
       "respuesta_en_top1": true,
@@ -694,38 +694,38 @@
       "claves_comprobadas": [
         "51 archivos"
       ],
-      "score_top1": 0.6523,
+      "score_top1": 0.8749,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_factica.md",
-        "seccion": "1. Resumen ejecutivo",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
-        "coleccion": "validacion",
-        "puntaje": 0.6523,
-        "n_palabras": 213,
-        "extracto": "1. Resumen ejecutivo Los PDFs y las fichas describen fielmente el código auditado en la gran mayoría de los puntos verificados. De 18 fichas muestreadas a fondo (35 % del total, cubriendo las 7 capas: ingesta, transformación, modelo, análisis, orquestación, visualización y legacy): 15 se verificaron"
+        "documento": "maestro_auditoria",
+        "seccion": "09_apendice_inventario",
+        "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\09_apendice_inventario.tex",
+        "coleccion": "maestro",
+        "puntaje": 0.8749,
+        "n_palabras": 366,
+        "extracto": "Apéndice A: Inventario de archivos de código > p 6.2cm l rr > p 3.0cm Inventario de los 51 archivos de código del repositorio tab:inventario Ruta Lenguaje Líneas KB Rol Ruta Lenguaje Líneas KB Rol app streamlit_app.py Python 17 0,4 visualizacion docs manual.ipynb Notebook 805 27 documentacion notebo"
       },
       "top3": [
         {
-          "documento": "validacion_factica.md",
-          "seccion": "1. Resumen ejecutivo",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+          "documento": "maestro_auditoria",
+          "seccion": "09_apendice_inventario",
+          "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\09_apendice_inventario.tex",
+          "coleccion": "maestro",
+          "puntaje": 0.8749
+        },
+        {
+          "documento": "validacion_rubrica.md",
+          "seccion": "**APROBADO CON OBSERVACIONES**",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_rubrica.md",
           "coleccion": "validacion",
-          "puntaje": 0.6523
+          "puntaje": 0.8682
         },
         {
-          "documento": "objetivo_2_lite",
-          "seccion": "03_datos",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\03_datos.tex",
-          "coleccion": "criterio_lite",
-          "puntaje": 0.6099
-        },
-        {
-          "documento": "objetivo_2_lite",
+          "documento": "objetivo_3",
           "seccion": "05_conclusiones",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_2_lite\\secciones\\05_conclusiones.tex",
-          "coleccion": "criterio_lite",
-          "puntaje": 0.5746
+          "ruta": "documentacion_auditoria\\latex\\objetivo_3\\secciones\\05_conclusiones.tex",
+          "coleccion": "criterio_completo",
+          "puntaje": 0.8655
         }
       ],
       "respuesta_en_top1": true,
@@ -742,38 +742,38 @@
       "claves_comprobadas": [
         "folium"
       ],
-      "score_top1": 0.5664,
+      "score_top1": 0.8555,
       "banda": "alto",
       "top1": {
         "documento": "validacion_factica.md",
-        "seccion": "1. Resumen ejecutivo",
+        "seccion": "encabezado",
         "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
         "coleccion": "validacion",
-        "puntaje": 0.5664,
-        "n_palabras": 213,
-        "extracto": "1. Resumen ejecutivo Los PDFs y las fichas describen fielmente el código auditado en la gran mayoría de los puntos verificados. De 18 fichas muestreadas a fondo (35 % del total, cubriendo las 7 capas: ingesta, transformación, modelo, análisis, orquestación, visualización y legacy): 15 se verificaron"
+        "puntaje": 0.8555,
+        "n_palabras": 115,
+        "extracto": "Validación fáctica de la documentación de auditoría contra el código real Validador: agente independiente (lectura + verificación empírica; sin modificación del repositorio ni de los fuentes) Fecha: 2026 (misma ventana que la auditoría documentada) Repositorio auditado: Observatorio_Ministerio_de_Ci"
       },
       "top3": [
         {
           "documento": "validacion_factica.md",
-          "seccion": "1. Resumen ejecutivo",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5664
-        },
-        {
-          "documento": "validacion_rubrica.md",
-          "seccion": "encabezado",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_rubrica.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5356
-        },
-        {
-          "documento": "validacion_factica.md",
           "seccion": "encabezado",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
           "coleccion": "validacion",
-          "puntaje": 0.5334
+          "puntaje": 0.8555
+        },
+        {
+          "documento": "validacion_sota_referencias.md",
+          "seccion": "3. Mapeo al repositorio — afirmaciones verificadas (secciones 03–10 vs. repo y auditoría)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
+          "coleccion": "validacion",
+          "puntaje": 0.8466
+        },
+        {
+          "documento": "validacion_sota_referencias.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
+          "coleccion": "validacion",
+          "puntaje": 0.8377
         }
       ],
       "respuesta_en_top1": false,
@@ -792,44 +792,44 @@
         "19 sobre 50891",
         "19 atipicos"
       ],
-      "score_top1": 0.5968,
+      "score_top1": 0.8533,
       "banda": "alto",
       "top1": {
-        "documento": "objetivo_4",
-        "seccion": "03_estadistica",
-        "ruta": "documentacion_auditoria\\latex\\objetivo_4\\secciones\\03_estadistica.tex",
-        "coleccion": "criterio_completo",
-        "puntaje": 0.5968,
-        "n_palabras": 238,
-        "extracto": "Validación de la calidad de pruebas, tratamientos y lógica estadística Tratamientos: eliminación de 22 atípicos de edad (>100 años) con justificación documentada (0.028 % del padrón, sesgo despreciable) y comparación con imputación por mediana del grupo; imputación por mediana en numéricas (reduce v"
+        "documento": "maestro_auditoria",
+        "seccion": "04_datos",
+        "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\04_datos.tex",
+        "coleccion": "maestro",
+        "puntaje": 0.8533,
+        "n_palabras": 812,
+        "extracto": "Datos utilizados: suficiencia y corrección Inventario de fuentes de datos tabcolsep 3pt > p 3.0cm > p 4.9cm > p 4.1cm > p 2.6cm Inventario de fuentes de datos del repositorio tab:fuentes Fuente Descripción Volumen Estado en el clon Fuente Descripción Volumen Estado en el clon Padrón de investigadore"
       },
       "top3": [
         {
-          "documento": "objetivo_4",
-          "seccion": "03_estadistica",
-          "ruta": "documentacion_auditoria\\latex\\objetivo_4\\secciones\\03_estadistica.tex",
-          "coleccion": "criterio_completo",
-          "puntaje": 0.5968
+          "documento": "maestro_auditoria",
+          "seccion": "04_datos",
+          "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\04_datos.tex",
+          "coleccion": "maestro",
+          "puntaje": 0.8533
         },
         {
-          "documento": "validacion_cierre_S.md",
-          "seccion": "3. Coherencia de cifras entre soportes (documento · láminas · guion · guía · tarjetas)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "documento": "validacion_sota_referencias.md",
+          "seccion": "3. Mapeo al repositorio — afirmaciones verificadas (secciones 03–10 vs. repo y auditoría)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
           "coleccion": "validacion",
-          "puntaje": 0.5644
+          "puntaje": 0.846
         },
         {
-          "documento": "validacion_cierre_S.md",
-          "seccion": "1. Verificación de correcciones ya aplicadas (todas verificadas en texto)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "documento": "validacion_cierre_D.md",
+          "seccion": "1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
           "coleccion": "validacion",
-          "puntaje": 0.5623
+          "puntaje": 0.8459
         }
       ],
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 4,
+      "rank_respuesta_en_corpus": 22,
       "n_resultados": 150
     },
     {
@@ -840,44 +840,44 @@
       "claves_comprobadas": [
         "falla"
       ],
-      "score_top1": 0.4849,
+      "score_top1": 0.8269,
       "banda": "alto",
       "top1": {
         "documento": "validacion_reglas.md",
-        "seccion": "Tabla resumen",
+        "seccion": "Observaciones adicionales (fuera de las 7+2 reglas)",
         "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
         "coleccion": "validacion",
-        "puntaje": 0.4849,
-        "n_palabras": 413,
-        "extracto": "Tabla resumen Regla Estado Evidencia clave 1 LITE ≠ completo y ≤40 % palabras + _verificar_lite CUMPLE 6/6 secciones difieren; ratios 37,6 % / 29,5 % / 13,2 % / 27,3 % / 28,8 % / 4,5 % (todas ≤40 %). _verificar_lite() existe en src/generar_objetivo.py (líneas 534-549) y se invoca antes de escribir ("
+        "puntaje": 0.8269,
+        "n_palabras": 147,
+        "extracto": "Observaciones adicionales (fuera de las 7+2 reglas) 1. Código muerto en verificar_consistencia.py : la comprobación de cobertura nunca dispara (regex incompatible con \\textbf{Cobertura:} ). Se recomienda ajustar la regex a \\\\textbf\\{Cobertura:\\}\\s (\\d+) de (\\d+) archivos o marcar la comprobación. 2."
       },
       "top3": [
         {
           "documento": "validacion_reglas.md",
-          "seccion": "Tabla resumen",
+          "seccion": "Observaciones adicionales (fuera de las 7+2 reglas)",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
           "coleccion": "validacion",
-          "puntaje": 0.4849
+          "puntaje": 0.8269
         },
         {
-          "documento": "validacion_final_D.md",
-          "seccion": "3. Análisis criterio por criterio",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
-          "coleccion": "validacion",
-          "puntaje": 0.4539
+          "documento": "objetivo_4_lite",
+          "seccion": "02_contexto",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_4_lite\\secciones\\02_contexto.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.8194
         },
         {
-          "documento": "validacion_cierre_D.md",
-          "seccion": "1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_D.md",
+          "documento": "validacion_cierre_S.md",
+          "seccion": "4. Riesgos residuales de sustentación (un jurado podría explotarlos)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
           "coleccion": "validacion",
-          "puntaje": 0.4497
+          "puntaje": 0.815
         }
       ],
-      "respuesta_en_top1": true,
-      "respuesta_en_top3": true,
+      "respuesta_en_top1": false,
+      "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 1,
+      "rank_respuesta_en_corpus": 6,
       "n_resultados": 150
     },
     {
@@ -888,44 +888,44 @@
       "claves_comprobadas": [
         "once informes"
       ],
-      "score_top1": 0.622,
+      "score_top1": 0.8753,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_factica.md",
-        "seccion": "2. Números clave verificados",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+        "documento": "validacion_final_S.md",
+        "seccion": "encabezado",
+        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
         "coleccion": "validacion",
-        "puntaje": 0.622,
-        "n_palabras": 342,
-        "extracto": "2. Números clave verificados Número declarado Fuente de la declaración Verificación independiente Resultado 77.237 registros / 30.086 investigadores únicos (dataset completo) README.md:25, docstrings Catálogo y evidencias versionadas en git ( HEAD:evidencias/calidad_resumen.json : n_total=77237 , n_"
+        "puntaje": 0.8753,
+        "n_palabras": 105,
+        "extracto": "Validación final — Preparación para la sustentación (S1–S3) y material de apoyo Evaluador: agente externo e independiente (jurado simulado) · Fecha: víspera de la sustentación Equipo: Kevin Leonardo Chaparro Reyes · Valentina Muñoz Palma · Paula Margarita Triana Ancinez Fuentes leídas: rúbrica ofici"
       },
       "top3": [
         {
-          "documento": "validacion_factica.md",
-          "seccion": "2. Números clave verificados",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
+          "documento": "validacion_final_S.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_S.md",
           "coleccion": "validacion",
-          "puntaje": 0.622
+          "puntaje": 0.8753
         },
         {
-          "documento": "validacion_cierre_S.md",
-          "seccion": "✅ **LISTO PARA SUSTENTAR MAÑANA**",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "documento": "validacion_final_D.md",
+          "seccion": "encabezado",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
           "coleccion": "validacion",
-          "puntaje": 0.6135
+          "puntaje": 0.869
         },
         {
-          "documento": "validacion_cierre_S.md",
-          "seccion": "1. Verificación de correcciones ya aplicadas (todas verificadas en texto)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_cierre_S.md",
+          "documento": "validacion_rubrica.md",
+          "seccion": "4. Documento maestro (D)",
+          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_rubrica.md",
           "coleccion": "validacion",
-          "puntaje": 0.6081
+          "puntaje": 0.8685
         }
       ],
       "respuesta_en_top1": false,
       "respuesta_en_top3": false,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 95,
+      "rank_respuesta_en_corpus": 137,
       "n_resultados": 150
     },
     {
@@ -936,44 +936,44 @@
       "claves_comprobadas": [
         "1528939"
       ],
-      "score_top1": 0.5394,
+      "score_top1": 0.8794,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_reglas.md",
-        "seccion": "encabezado",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
-        "coleccion": "validacion",
-        "puntaje": 0.5394,
-        "n_palabras": 105,
-        "extracto": "Informe de validación independiente — Reglas de calidad de la documentación de auditoría Fecha: 2026 (sesión de validación sobre commit 1528939 , 2026-05-14) Validador: agente validador independiente y crítico (solo lectura de fuentes; no se modificó ningún artefacto de documentacion_auditoria/ ) Al"
+        "documento": "objetivo_6_lite",
+        "seccion": "03_timeline",
+        "ruta": "documentacion_auditoria\\latex\\objetivo_6_lite\\secciones\\03_timeline.tex",
+        "coleccion": "criterio_lite",
+        "puntaje": 0.8794,
+        "n_palabras": 86,
+        "extracto": "Línea de tiempo de commits [hallazgo] Veredicto: El repositorio se construyó con 133 commits (ago 2025 - may 2026) por 11 autores: fase académica (ago-nov 2025), hiato de 100 días y fase de ingeniería y cierre (feb-may 2026); la autoría refleja el rol de cada miembro del equipo. Hallazgos de mayor i"
       },
       "top3": [
         {
-          "documento": "validacion_reglas.md",
-          "seccion": "encabezado",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_reglas.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5394
+          "documento": "objetivo_6_lite",
+          "seccion": "03_timeline",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_6_lite\\secciones\\03_timeline.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.8794
         },
         {
-          "documento": "validacion_factica.md",
-          "seccion": "encabezado",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_factica.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5342
+          "documento": "objetivo_6_lite",
+          "seccion": "05_conclusiones",
+          "ruta": "documentacion_auditoria\\latex\\objetivo_6_lite\\secciones\\05_conclusiones.tex",
+          "coleccion": "criterio_lite",
+          "puntaje": 0.87
         },
         {
-          "documento": "validacion_sota_cobertura.md",
-          "seccion": "7. Veredicto final",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_cobertura.md",
-          "coleccion": "validacion",
-          "puntaje": 0.5315
+          "documento": "maestro_auditoria",
+          "seccion": "08_timeline",
+          "ruta": "documentacion_auditoria\\latex\\maestro_auditoria\\secciones\\08_timeline.tex",
+          "coleccion": "maestro",
+          "puntaje": 0.8609
         }
       ],
-      "respuesta_en_top1": true,
+      "respuesta_en_top1": false,
       "respuesta_en_top3": true,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 1,
+      "rank_respuesta_en_corpus": 3,
       "n_resultados": 150
     },
     {
@@ -985,44 +985,44 @@
         "103152/095820209x441754",
         "095820209x441754"
       ],
-      "score_top1": 0.5606,
+      "score_top1": 0.839,
       "banda": "alto",
       "top1": {
-        "documento": "validacion_final_D.md",
-        "seccion": "7. Correcciones accionables, priorizadas",
-        "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
-        "coleccion": "validacion",
-        "puntaje": 0.5606,
-        "n_palabras": 284,
-        "extracto": "7. Correcciones accionables, priorizadas 1. (Alta · D2) Corregir el título de la entrada Cañibano & Bozeman (2009) al título real: \"Curriculum vitae method in science policy and research evaluation: the state-of-the-art\" (mantener revista/volumen/páginas/DOI, que están correctos). 2. (Alta · D2) Res"
+        "documento": "anteproyecto",
+        "seccion": "07_referencias",
+        "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\07_referencias.tex",
+        "coleccion": "anteproyecto",
+        "puntaje": 0.839,
+        "n_palabras": 616,
+        "extracto": "Cañibano, C., Bozeman, B. (2009). Curriculum vitae method in science policy and research evaluation: The state-of-the-art. Research Evaluation, 18 (2). https://doi.org/10.3152/095820209x441754 Categorización de grupos e investigadores ante el sistema nacional de ciencia, tecnología e innovación en C"
       },
       "top3": [
+        {
+          "documento": "anteproyecto",
+          "seccion": "07_referencias",
+          "ruta": "documentacion_auditoria\\latex\\anteproyecto\\secciones\\07_referencias.tex",
+          "coleccion": "anteproyecto",
+          "puntaje": 0.839
+        },
         {
           "documento": "validacion_final_D.md",
           "seccion": "7. Correcciones accionables, priorizadas",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_final_D.md",
           "coleccion": "validacion",
-          "puntaje": 0.5606
-        },
-        {
-          "documento": "validacion_anteproyecto_D.md",
-          "seccion": "2. D2 — Estado del arte y rigor bibliográfico (9 %)",
-          "ruta": "documentacion_auditoria\\data\\validacion\\validacion_anteproyecto_D.md",
-          "coleccion": "validacion",
-          "puntaje": 0.4851
+          "puntaje": 0.8329
         },
         {
           "documento": "validacion_sota_referencias.md",
           "seccion": "1. Referencias canónicas (`refs.bib`) — tabla de veredictos",
           "ruta": "documentacion_auditoria\\data\\validacion\\validacion_sota_referencias.md",
           "coleccion": "validacion",
-          "puntaje": 0.4671
+          "puntaje": 0.827
         }
       ],
-      "respuesta_en_top1": false,
-      "respuesta_en_top3": false,
+      "respuesta_en_top1": true,
+      "respuesta_en_top3": true,
       "respuesta_en_corpus": true,
-      "rank_respuesta_en_corpus": 12,
+      "rank_respuesta_en_corpus": 1,
       "n_resultados": 150
     }
   ]

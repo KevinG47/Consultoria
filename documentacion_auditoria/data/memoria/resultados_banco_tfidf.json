@@ -1,6 +1,6 @@
 {
   "resumen": {
-    "fecha": "2026-10-08T15:54:31",
+    "fecha": "2026-10-13T16:01:44",
     "metodo": "tfidf",
     "indice": {
       "n_fragmentos": 150,

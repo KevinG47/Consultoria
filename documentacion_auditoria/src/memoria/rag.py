@@ -30,11 +30,15 @@ distintos, de modo que convivir no se pisan:
   resultado es determinista y explicable: se puede mostrar qué término pesa en
   la recuperación (`terminos_relevantes`).
 - ``embeddings`` (decisión D007): vectorización semántica con un modelo LOCAL
-  (`paraphrase-multilingual-MiniLM-L12-v2`, 384 dimensiones) ejecutado en CPU.
-  Se eligió un modelo local, y no una API, porque la rúbrica prohíbe subir datos
-  de la contraparte a la nube. A diferencia de TF-IDF, recupera paráfrasis y
-  sinónimos aunque no compartan ni una palabra con la consulta, a cambio de más
-  peso (torch) y de perder explicabilidad término a término.
+  (`ibm-granite/granite-embedding-97m-multilingual-r2`, 384 dimensiones, contexto
+  de 32 768 tokens, arquitectura ModernBERT) ejecutado en CPU. Se eligió un modelo
+  local, y no una API, porque la rúbrica prohíbe subir datos de la contraparte a
+  la nube. A diferencia de TF-IDF, recupera paráfrasis y sinónimos aunque no
+  compartan ni una palabra con la consulta, a cambio de más peso (torch) y de
+  perder explicabilidad término a término.
+  El contexto largo importa: el intento anterior con MiniLM (128 tokens) truncaba
+  143 de los 150 fragmentos y solo vectorizaba el 7,8 % del contenido; Granite
+  cubre el 79,6 % (solo 2 fragmentos de código superan su límite).
 
 Cuándo usar cada uno
 --------------------
@@ -77,6 +81,21 @@ METODO_POR_DEFECTO = "tfidf"
 TECNICA_TFIDF = "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno"
 TECNICA_EMBEDDINGS = (f"embeddings locales ({config.MODELO_EMBEDDINGS}) + similitud coseno")
 
+# Presupuesto de tokens por lote al vectorizar. Se agrupan los fragmentos por
+# longitud y se corta el lote cuando se supera este presupuesto: asi los lotes
+# cortos van llenos y una secuencia de 32 768 tokens viaja sola (mezclarla con
+# otras multiplicaria el relleno y dispararia la memoria).
+LOTE_TOKENS = 16384
+
+
+def _hilos_torch() -> int | None:
+    """Hilos configurados para torch (0/None si no se pudo consultar)."""
+    try:
+        import torch
+        return int(torch.get_num_threads())
+    except Exception:                   # pragma: no cover
+        return None
+
 # Caché de proceso: cargar el modelo cuesta ~20 s y no se repite en la misma corrida.
 _MODELOS: dict[str, object] = {}
 
@@ -110,6 +129,22 @@ def _cargar_modelo(nombre: str | None = None):
             f"descargado en la caché de Hugging Face (el sistema no descarga "
             f"modelos). Error original: {exc}"
         ) from exc
+
+    # --- Precisión e hilos ---------------------------------------------------
+    # Granite se publica en bfloat16. En equipos sin bf16 nativo (esta CPU
+    # reporta AVX2) PyTorch EMULA ese tipo y el coste se dispara: medido en esta
+    # máquina, una matmul 512x512 tarda 2,07 s en bfloat16 frente a 0,0044 s en
+    # float32 (467x). Pasar el modelo a float32 cuesta 0,1 s y hace el indexado
+    # viable sin cambiar el resultado de la recuperación (los vectores siguen
+    # normalizados y el orden por similitud coseno es el mismo).
+    try:
+        import torch
+        torch.set_num_threads(max(1, min(4, os.cpu_count() or 2)))
+        if any(p.dtype == torch.bfloat16 for p in modelo.parameters()):
+            modelo.float()
+    except Exception:               # pragma: no cover - torch siempre está aquí
+        pass
+
     _MODELOS[nombre] = modelo
     return modelo
 
@@ -327,19 +362,62 @@ class MemoriaSemantica:
             self._guardar()
         return self.meta
 
-    def _indexar_embeddings(self, guardar: bool = True) -> dict:
+    def _indexar_embeddings(self, guardar: bool = True,
+                            verbose: bool = True) -> dict:
+        """
+        Vectoriza el corpus con el modelo local de embeddings.
+
+        No se usan prefijos de consulta/documento porque el modelo declara
+        `prompts` vacios para ambos (`config_sentence_transformers.json`), de modo
+        que `encode` es suficiente; `encode_query`/`encode_document` existen pero
+        no aportan nada distinto en este modelo.
+        """
         modelo = _cargar_modelo()
         textos = [f.texto for f in self.fragmentos]
+        max_len = int(getattr(modelo, "max_seq_length", 0) or 0)
+
+        # Longitud real en tokens de ESTE tokenizer (una sola pasada, ~0,5 s).
         t0 = time.time()
-        vectores = modelo.encode(
-            textos,
-            batch_size=32,
-            show_progress_bar=False,
-            convert_to_numpy=True,
-            normalize_embeddings=True,     # unitarios -> producto punto == coseno
-        )
+        largos = [len(x) for x in modelo.tokenizer(
+            textos, truncation=False, padding=False, add_special_tokens=True)["input_ids"]]
+        seg_tok = time.time() - t0
+        excedidos = [i for i, L in enumerate(largos) if max_len and L > max_len]
+
+        # Lotes homogeneos por longitud, con tope de tokens por lote.
+        orden = sorted(range(len(textos)), key=lambda i: largos[i])
+        lotes: list[list[int]] = []
+        actual: list[int] = []
+        acum = 0
+        for i in orden:
+            if actual and acum + largos[i] > LOTE_TOKENS:
+                lotes.append(actual)
+                actual, acum = [], 0
+            actual.append(i)
+            acum += largos[i]
+        if actual:
+            lotes.append(actual)
+
+        vectores = np.zeros((len(textos), int(modelo.get_embedding_dimension())),
+                            dtype="float32")
+        if verbose:
+            print(f"[RAG] vectorizando {len(textos)} fragmentos en {len(lotes)} lotes "
+                  f"({sum(largos)} tokens; max {max(largos)})...", flush=True)
+        t0 = time.time()
+        for k, lote in enumerate(lotes, 1):
+            salida = modelo.encode(
+                [textos[i] for i in lote],
+                batch_size=len(lote),
+                show_progress_bar=False,
+                convert_to_numpy=True,
+                normalize_embeddings=True,   # unitarios -> producto punto == coseno
+            )
+            vectores[lote] = np.asarray(salida, dtype="float32")
+            if verbose and (k % 20 == 0 or k == len(lotes)):
+                print(f"[RAG]   lote {k}/{len(lotes)} — {time.time()-t0:.0f} s "
+                      f"acumulados", flush=True)
         segundos = time.time() - t0
-        self.matriz = vectores.astype("float32")
+
+        self.matriz = vectores
         self.meta = self._base_meta(TECNICA_EMBEDDINGS)
         self.meta.update({
             "modelo": config.MODELO_EMBEDDINGS,
@@ -348,6 +426,29 @@ class MemoriaSemantica:
             "n_terminos_vocabulario": None,   # no aplica: no hay vocabulario discreto
             "tiempo_generacion_segundos": round(segundos, 2),
             "dispositivo": "cpu",
+            "precision": str(next(modelo.parameters()).dtype),
+            "hilos_torch": _hilos_torch(),
+            "truncamiento": {
+                "max_seq_length": max_len,
+                "n_fragmentos": len(largos),
+                "n_exceden": len(excedidos),
+                "pct_exceden": round(100 * len(excedidos) / len(largos), 2),
+                "tokens_min": min(largos),
+                "tokens_mediana": sorted(largos)[len(largos) // 2],
+                "tokens_promedio": round(sum(largos) / len(largos), 1),
+                "tokens_max": max(largos),
+                "tokens_totales": sum(largos),
+                "tokens_efectivos": sum(min(L, max_len) for L in largos) if max_len
+                                    else sum(largos),
+                "cobertura_pct": round(100 * sum(min(L, max_len) for L in largos)
+                                       / sum(largos), 2) if max_len else 100.0,
+                "fragmentos_excedidos": [
+                    {"id": self.fragmentos[i].id, "tokens": largos[i]}
+                    for i in sorted(excedidos, key=lambda i: -largos[i])],
+                "segundos_tokenizando": round(seg_tok, 2),
+                "lotes": len(lotes),
+                "tope_tokens_por_lote": LOTE_TOKENS,
+            },
         })
         if guardar:
             self._guardar_embeddings()

@@ -1,0 +1,84 @@
+{
+  "modelo": "ibm-granite/granite-embedding-97m-multilingual-r2",
+  "inicio": "2026-10-08T16:42:37",
+  "import_segundos": 18.2,
+  "carga_segundos": 5.3,
+  "metodo_dimension": "get_embedding_dimension",
+  "max_seq_length": 32768,
+  "dimension": 384,
+  "tiene_encode_query": true,
+  "tiene_encode_document": true,
+  "prompts": {
+    "query": "",
+    "document": ""
+  },
+  "default_prompt_name": null,
+  "similarity_fn_name": "cosine",
+  "dtype": "torch.bfloat16",
+  "tokenizacion_segundos": 0.5,
+  "n_fragmentos": 150,
+  "tokens_min": 80,
+  "tokens_max": 55502,
+  "tokens_mediana": 489,
+  "tokens_promedio": 1475.4,
+  "tokens_totales": 221316,
+  "n_exceden": 2,
+  "exceden": [
+    {
+      "id": "objetivo_3::03_codigo",
+      "tokens": 55502
+    },
+    {
+      "id": "maestro_auditoria::05_codigo",
+      "tokens": 55176
+    }
+  ],
+  "tokens_efectivos": 176174,
+  "cobertura_pct": 79.6,
+  "top5_mas_largos": [
+    {
+      "id": "objetivo_3::03_codigo",
+      "tokens": 55502
+    },
+    {
+      "id": "maestro_auditoria::05_codigo",
+      "tokens": 55176
+    },
+    {
+      "id": "objetivo_3_lite::03_codigo",
+      "tokens": 8483
+    },
+    {
+      "id": "maestro_auditoria::08_timeline",
+      "tokens": 4992
+    },
+    {
+      "id": "objetivo_6::03_timeline",
+      "tokens": 4553
+    }
+  ],
+  "pruebas_codificacion": [
+    {
+      "clase": "corto",
+      "id": "objetivo_5::05_conclusiones",
+      "tokens": 80,
+      "segundos": 0.98,
+      "norma": 1.0011,
+      "forma": [
+        1,
+        384
+      ]
+    },
+    {
+      "clase": "mediano",
+      "id": "objetivo_5::03_logica",
+      "tokens": 489,
+      "segundos": 5.18,
+      "norma": 1.003,
+      "forma": [
+        1,
+        384
+      ]
+    }
+  ]
+}

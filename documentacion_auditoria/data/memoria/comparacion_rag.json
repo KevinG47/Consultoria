@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-08T15:56:39",
+  "fecha": "2026-10-13T16:10:00",
   "criterio_comparacion": "orden lexicográfico por (top-1 acertado, top-3 acertado, menor ranking del fragmento correcto)",
   "archivos": {
     "tfidf": "resultados_banco_tfidf.json",
@@ -25,8 +25,8 @@
     "embeddings": {
       "n_fragmentos": 150,
       "n_documentos": 25,
-      "tecnica": "embeddings locales (paraphrase-multilingual-MiniLM-L12-v2) + similitud coseno",
-      "fecha_construccion": "2026-10-08T15:53:07",
+      "tecnica": "embeddings locales (ibm-granite/granite-embedding-97m-multilingual-r2) + similitud coseno",
+      "fecha_construccion": "2026-10-13T16:01:00",
       "colecciones": {
         "criterio_completo": 24,
         "criterio_lite": 24,
@@ -34,7 +34,7 @@
         "anteproyecto": 8,
         "validacion": 86
       },
-      "modelo": "paraphrase-multilingual-MiniLM-L12-v2",
+      "modelo": "ibm-granite/granite-embedding-97m-multilingual-r2",
       "dimension": 384,
       "hash_corpus": "1a77a04a06e88312"
     }
@@ -42,34 +42,39 @@
   "agregados": {
     "n_preguntas": 20,
     "top1_tfidf": 9,
-    "top1_embeddings": 10,
+    "top1_embeddings": 7,
     "top3_tfidf": 11,
     "top3_embeddings": 10,
     "corpus_tfidf": 19,
     "corpus_embeddings": 19,
     "score_prom_top1_tfidf": 0.0786,
-    "score_prom_top1_embeddings": 0.5793,
+    "score_prom_top1_embeddings": 0.866,
     "rank_prom_tfidf": 8.42,
-    "rank_prom_embeddings": 26.63,
+    "rank_prom_embeddings": 21.11,
     "gana_embeddings": 6,
-    "gana_tfidf": 6,
-    "empates": 8,
+    "gana_tfidf": 8,
+    "empates": 6,
     "emb_solo_top1": [
-      6,
       7,
-      11
+      8,
+      11,
+      20
     ],
     "tfidf_solo_top1": [
+      2,
       9,
-      17
+      16,
+      17,
+      18,
+      19
     ],
     "emb_solo_top3": [
-      6,
-      11
+      11,
+      20
     ],
     "tfidf_solo_top3": [
-      8,
       9,
+      16,
       17
     ]
   },
@@ -77,7 +82,7 @@
     "A": {
       "n": 12,
       "top1_tfidf": 5,
-      "top1_embeddings": 6,
+      "top1_embeddings": 4,
       "top3_tfidf": 7,
       "top3_embeddings": 6
     },
@@ -91,7 +96,7 @@
     "C": {
       "n": 4,
       "top1_tfidf": 3,
-      "top1_embeddings": 2,
+      "top1_embeddings": 1,
       "top3_tfidf": 3,
       "top3_embeddings": 2
     }
@@ -104,38 +109,27 @@
     "identico": true
   },
   "truncamiento": {
-    "max_seq_length": 128,
+    "max_seq_length": 32768,
     "n_fragmentos": 150,
-    "n_exceden": 143,
-    "pct_exceden": 95.3,
-    "tokens_min": 87,
-    "tokens_mediana": 497,
-    "tokens_max": 65127,
-    "tokens_promedio": 1634.7,
+    "n_exceden": 2,
+    "pct_exceden": 1.3,
+    "tokens_min": 80,
+    "tokens_mediana": 489,
+    "tokens_max": 55502,
+    "tokens_promedio": 1475.4,
     "palabras_promedio": 775.3,
     "ejemplos_excedidos": [
       {
         "id": "objetivo_3::03_codigo",
-        "tokens": 65127
+        "tokens": 55502
       },
       {
         "id": "maestro_auditoria::05_codigo",
-        "tokens": 64728
-      },
-      {
-        "id": "objetivo_3_lite::03_codigo",
-        "tokens": 10248
-      },
-      {
-        "id": "maestro_auditoria::08_timeline",
-        "tokens": 4538
-      },
-      {
-        "id": "objetivo_6::03_timeline",
-        "tokens": 4161
+        "tokens": 55176
       }
     ],
-    "cobertura_media_pct": 7.8
+    "cobertura_media_pct": 79.6,
+    "cobertura_pct": 79.6
   },
   "preguntas": [
     {
@@ -144,9 +138,9 @@
       "pregunta": "¿Cuántos registros declara el dataset bqtm-4y2h?",
       "respuesta_esperada": "77 237",
       "score_top1_tfidf": 0.0505,
-      "score_top1_embeddings": 0.6556,
+      "score_top1_embeddings": 0.8654,
       "top1_tfidf": "validacion_final_S.md::2. S1 — Dominio del problema y defensa (28 %, individual)",
-      "top1_embeddings": "maestro_auditoria::04_datos",
+      "top1_embeddings": "validacion_cierre_D.md::4. D4 · Datos y aproximación metodológica preliminar (6 %) — **Ejemplar (5,0 / 100 %)**",
       "en_top1_tfidf": true,
       "en_top1_embeddings": true,
       "en_top3_tfidf": true,
@@ -163,18 +157,18 @@
       "pregunta": "¿Cuántas convocatorias reconoce MinCiencias?",
       "respuesta_esperada": "6 (2013-2021)",
       "score_top1_tfidf": 0.0462,
-      "score_top1_embeddings": 0.6231,
+      "score_top1_embeddings": 0.8657,
       "top1_tfidf": "anteproyecto::01_problema",
-      "top1_embeddings": "validacion_cierre_S.md::1. Verificación de correcciones ya aplicadas (todas verificadas en texto)",
+      "top1_embeddings": "validacion_cierre_D.md::1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
       "en_top1_tfidf": true,
-      "en_top1_embeddings": true,
+      "en_top1_embeddings": false,
       "en_top3_tfidf": true,
       "en_top3_embeddings": true,
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 1,
-      "rank_embeddings": 1,
-      "gana": "empate"
+      "rank_embeddings": 2,
+      "gana": "tfidf"
     },
     {
       "id": 3,
@@ -182,9 +176,9 @@
       "pregunta": "¿Cuántos registros tiene el consolidado versionado?",
       "respuesta_esperada": "50 891",
       "score_top1_tfidf": 0.1074,
-      "score_top1_embeddings": 0.7177,
+      "score_top1_embeddings": 0.9169,
       "top1_tfidf": "objetivo_2_lite::03_datos",
-      "top1_embeddings": "objetivo_2_lite::03_datos",
+      "top1_embeddings": "objetivo_2::03_datos",
       "en_top1_tfidf": true,
       "en_top1_embeddings": true,
       "en_top3_tfidf": true,
@@ -201,9 +195,9 @@
       "pregunta": "¿Cuántos investigadores únicos tiene el consolidado?",
       "respuesta_esperada": "26 662",
       "score_top1_tfidf": 0.0822,
-      "score_top1_embeddings": 0.6363,
+      "score_top1_embeddings": 0.8858,
       "top1_tfidf": "validacion_final_S.md::2. S1 — Dominio del problema y defensa (28 %, individual)",
-      "top1_embeddings": "objetivo_2_lite::05_conclusiones",
+      "top1_embeddings": "objetivo_2::03_datos",
       "en_top1_tfidf": false,
       "en_top1_embeddings": false,
       "en_top3_tfidf": false,
@@ -211,8 +205,8 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 5,
-      "rank_embeddings": 4,
-      "gana": "embeddings"
+      "rank_embeddings": 5,
+      "gana": "empate"
     },
     {
       "id": 5,
@@ -220,9 +214,9 @@
       "pregunta": "¿Cuántas páginas tiene el estado del arte?",
       "respuesta_esperada": "20",
       "score_top1_tfidf": 0.1054,
-      "score_top1_embeddings": 0.501,
+      "score_top1_embeddings": 0.8455,
       "top1_tfidf": "validacion_cierre_D.md::6. Cálculo de la nota del bloque Documento (escala 0–5)",
-      "top1_embeddings": "validacion_anteproyecto_D.md::2. D2 — Estado del arte y rigor bibliográfico (9 %)",
+      "top1_embeddings": "validacion_sota_referencias.md::encabezado",
       "en_top1_tfidf": false,
       "en_top1_embeddings": false,
       "en_top3_tfidf": false,
@@ -230,8 +224,8 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 9,
-      "rank_embeddings": 5,
-      "gana": "embeddings"
+      "rank_embeddings": 17,
+      "gana": "tfidf"
     },
     {
       "id": 6,
@@ -239,18 +233,18 @@
       "pregunta": "¿Cuántas referencias tiene el estado del arte?",
       "respuesta_esperada": "39",
       "score_top1_tfidf": 0.1105,
-      "score_top1_embeddings": 0.633,
+      "score_top1_embeddings": 0.869,
       "top1_tfidf": "validacion_final_D.md::6. Veredicto",
-      "top1_embeddings": "validacion_anteproyecto_D.md::2. D2 — Estado del arte y rigor bibliográfico (9 %)",
+      "top1_embeddings": "validacion_sota_referencias.md::encabezado",
       "en_top1_tfidf": false,
-      "en_top1_embeddings": true,
+      "en_top1_embeddings": false,
       "en_top3_tfidf": false,
-      "en_top3_embeddings": true,
+      "en_top3_embeddings": false,
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 8,
-      "rank_embeddings": 1,
-      "gana": "embeddings"
+      "rank_embeddings": 8,
+      "gana": "empate"
     },
     {
       "id": 7,
@@ -258,9 +252,9 @@
       "pregunta": "¿Cuántas filas tiene el dataset de producción?",
       "respuesta_esperada": "3 166 629",
       "score_top1_tfidf": 0.1091,
-      "score_top1_embeddings": 0.5256,
+      "score_top1_embeddings": 0.8909,
       "top1_tfidf": "validacion_final_S.md::2. S1 — Dominio del problema y defensa (28 %, individual)",
-      "top1_embeddings": "objetivo_2_lite::03_datos",
+      "top1_embeddings": "objetivo_2::03_datos",
       "en_top1_tfidf": false,
       "en_top1_embeddings": true,
       "en_top3_tfidf": true,
@@ -277,18 +271,18 @@
       "pregunta": "¿Cuántos fragmentos indexa el RAG?",
       "respuesta_esperada": "150",
       "score_top1_tfidf": 0.0409,
-      "score_top1_embeddings": 0.496,
+      "score_top1_embeddings": 0.8391,
       "top1_tfidf": "validacion_factica.md::6. Veredicto final",
-      "top1_embeddings": "validacion_final_S.md::5. Riesgos de sustentación (qué podría explotar un jurado)",
+      "top1_embeddings": "anteproyecto::06b_memoria_agente",
       "en_top1_tfidf": false,
-      "en_top1_embeddings": false,
+      "en_top1_embeddings": true,
       "en_top3_tfidf": true,
-      "en_top3_embeddings": false,
+      "en_top3_embeddings": true,
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 2,
-      "rank_embeddings": 118,
-      "gana": "tfidf"
+      "rank_embeddings": 1,
+      "gana": "embeddings"
     },
     {
       "id": 9,
@@ -296,9 +290,9 @@
       "pregunta": "¿Cuántos nodos tiene el grafo?",
       "respuesta_esperada": "255",
       "score_top1_tfidf": 0.0526,
-      "score_top1_embeddings": 0.3902,
+      "score_top1_embeddings": 0.8314,
       "top1_tfidf": "anteproyecto::06b_memoria_agente",
-      "top1_embeddings": "validacion_final_D.md::2. Tabla resumen del bloque Documento",
+      "top1_embeddings": "validacion_cierre_S.md::3. Coherencia de cifras entre soportes (documento · láminas · guion · guía · tarjetas)",
       "en_top1_tfidf": true,
       "en_top1_embeddings": false,
       "en_top3_tfidf": true,
@@ -306,7 +300,7 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 1,
-      "rank_embeddings": 128,
+      "rank_embeddings": 58,
       "gana": "tfidf"
     },
     {
@@ -315,7 +309,7 @@
       "pregunta": "¿Cuántas reglas de validación hay?",
       "respuesta_esperada": "17",
       "score_top1_tfidf": 0.05,
-      "score_top1_embeddings": 0.6955,
+      "score_top1_embeddings": 0.867,
       "top1_tfidf": "validacion_anteproyecto_D.md::5. D5 — Alcance, viabilidad y plan de trabajo (5 %)",
       "top1_embeddings": "validacion_cierre_S.md::✅ **LISTO PARA SUSTENTAR MAÑANA**",
       "en_top1_tfidf": false,
@@ -325,7 +319,7 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 19,
-      "rank_embeddings": 107,
+      "rank_embeddings": 129,
       "gana": "tfidf"
     },
     {
@@ -334,9 +328,9 @@
       "pregunta": "¿Cuántos commits tiene el repo auditado?",
       "respuesta_esperada": "133",
       "score_top1_tfidf": 0.0456,
-      "score_top1_embeddings": 0.5613,
+      "score_top1_embeddings": 0.8843,
       "top1_tfidf": "validacion_final_S.md::2. S1 — Dominio del problema y defensa (28 %, individual)",
-      "top1_embeddings": "validacion_factica.md::1. Resumen ejecutivo",
+      "top1_embeddings": "objetivo_6_lite::03_timeline",
       "en_top1_tfidf": false,
       "en_top1_embeddings": true,
       "en_top3_tfidf": false,
@@ -353,9 +347,9 @@
       "pregunta": "¿Cuántos archivos de código tiene el repo auditado?",
       "respuesta_esperada": "51",
       "score_top1_tfidf": 0.0529,
-      "score_top1_embeddings": 0.6523,
+      "score_top1_embeddings": 0.8749,
       "top1_tfidf": "validacion_factica.md::1. Resumen ejecutivo",
-      "top1_embeddings": "validacion_factica.md::1. Resumen ejecutivo",
+      "top1_embeddings": "maestro_auditoria::09_apendice_inventario",
       "en_top1_tfidf": true,
       "en_top1_embeddings": true,
       "en_top3_tfidf": true,
@@ -372,7 +366,7 @@
       "pregunta": "¿Cuál es el resultado real de los 16 scripts del pipeline?",
       "respuesta_esperada": "10 OK / 6 ERROR",
       "score_top1_tfidf": 0.0984,
-      "score_top1_embeddings": 0.5339,
+      "score_top1_embeddings": 0.8657,
       "top1_tfidf": "maestro_auditoria::07_logica_repositorio",
       "top1_embeddings": "objetivo_3::05_conclusiones",
       "en_top1_tfidf": false,
@@ -382,8 +376,8 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 16,
-      "rank_embeddings": 23,
-      "gana": "tfidf"
+      "rank_embeddings": 4,
+      "gana": "embeddings"
     },
     {
       "id": 14,
@@ -391,9 +385,9 @@
       "pregunta": "¿Se usa folium en el código del repo auditado?",
       "respuesta_esperada": "No",
       "score_top1_tfidf": 0.0529,
-      "score_top1_embeddings": 0.5664,
+      "score_top1_embeddings": 0.8555,
       "top1_tfidf": "validacion_sota_referencias.md::encabezado",
-      "top1_embeddings": "validacion_factica.md::1. Resumen ejecutivo",
+      "top1_embeddings": "validacion_factica.md::encabezado",
       "en_top1_tfidf": false,
       "en_top1_embeddings": false,
       "en_top3_tfidf": false,
@@ -410,9 +404,9 @@
       "pregunta": "¿Cuántos registros con edad mayor a 100 detectó el repo auditado?",
       "respuesta_esperada": "19",
       "score_top1_tfidf": 0.0652,
-      "score_top1_embeddings": 0.5968,
+      "score_top1_embeddings": 0.8533,
       "top1_tfidf": "validacion_cierre_D.md::1. D1 · Problema, contexto y estado actual (12 %) — **Ejemplar (5,0 / 100 %)**",
-      "top1_embeddings": "objetivo_4::03_estadistica",
+      "top1_embeddings": "maestro_auditoria::04_datos",
       "en_top1_tfidf": false,
       "en_top1_embeddings": false,
       "en_top3_tfidf": false,
@@ -420,7 +414,7 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 82,
-      "rank_embeddings": 4,
+      "rank_embeddings": 22,
       "gana": "embeddings"
     },
     {
@@ -429,28 +423,9 @@
       "pregunta": "¿Cuál es el resultado de la regla R15?",
       "respuesta_esperada": "FALLA",
       "score_top1_tfidf": 0.1051,
-      "score_top1_embeddings": 0.4849,
+      "score_top1_embeddings": 0.8269,
       "top1_tfidf": "anteproyecto::06b_memoria_agente",
-      "top1_embeddings": "validacion_reglas.md::Tabla resumen",
-      "en_top1_tfidf": true,
-      "en_top1_embeddings": true,
-      "en_top3_tfidf": true,
-      "en_top3_embeddings": true,
-      "en_corpus_tfidf": true,
-      "en_corpus_embeddings": true,
-      "rank_tfidf": 1,
-      "rank_embeddings": 1,
-      "gana": "empate"
-    },
-    {
-      "id": 17,
-      "grupo": "C",
-      "pregunta": "¿Cuántos informes de validación cubre el corpus de la memoria?",
-      "respuesta_esperada": "11",
-      "score_top1_tfidf": 0.0732,
-      "score_top1_embeddings": 0.622,
-      "top1_tfidf": "anteproyecto::06b_memoria_agente",
-      "top1_embeddings": "validacion_factica.md::2. Números clave verificados",
+      "top1_embeddings": "validacion_reglas.md::Observaciones adicionales (fuera de las 7+2 reglas)",
       "en_top1_tfidf": true,
       "en_top1_embeddings": false,
       "en_top3_tfidf": true,
@@ -458,7 +433,26 @@
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 1,
-      "rank_embeddings": 95,
+      "rank_embeddings": 6,
+      "gana": "tfidf"
+    },
+    {
+      "id": 17,
+      "grupo": "C",
+      "pregunta": "¿Cuántos informes de validación cubre el corpus de la memoria?",
+      "respuesta_esperada": "11",
+      "score_top1_tfidf": 0.0732,
+      "score_top1_embeddings": 0.8753,
+      "top1_tfidf": "anteproyecto::06b_memoria_agente",
+      "top1_embeddings": "validacion_final_S.md::encabezado",
+      "en_top1_tfidf": true,
+      "en_top1_embeddings": false,
+      "en_top3_tfidf": true,
+      "en_top3_embeddings": false,
+      "en_corpus_tfidf": true,
+      "en_corpus_embeddings": true,
+      "rank_tfidf": 1,
+      "rank_embeddings": 137,
       "gana": "tfidf"
     },
     {
@@ -467,18 +461,18 @@
       "pregunta": "¿Cuántos autores participaron en el repositorio auditado?",
       "respuesta_esperada": "11",
       "score_top1_tfidf": 0.0651,
-      "score_top1_embeddings": 0.5941,
+      "score_top1_embeddings": 0.8887,
       "top1_tfidf": "objetivo_6_lite::02_contexto",
-      "top1_embeddings": "objetivo_6::03_timeline",
+      "top1_embeddings": "objetivo_1::03_entendimiento",
       "en_top1_tfidf": true,
-      "en_top1_embeddings": true,
+      "en_top1_embeddings": false,
       "en_top3_tfidf": true,
       "en_top3_embeddings": true,
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 1,
-      "rank_embeddings": 1,
-      "gana": "empate"
+      "rank_embeddings": 3,
+      "gana": "tfidf"
     },
     {
       "id": 19,
@@ -486,18 +480,18 @@
       "pregunta": "¿Cuál es el commit auditado del repo?",
       "respuesta_esperada": "1528939",
       "score_top1_tfidf": 0.0546,
-      "score_top1_embeddings": 0.5394,
+      "score_top1_embeddings": 0.8794,
       "top1_tfidf": "anteproyecto::06b_memoria_agente",
-      "top1_embeddings": "validacion_reglas.md::encabezado",
+      "top1_embeddings": "objetivo_6_lite::03_timeline",
       "en_top1_tfidf": true,
-      "en_top1_embeddings": true,
+      "en_top1_embeddings": false,
       "en_top3_tfidf": true,
       "en_top3_embeddings": true,
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 1,
-      "rank_embeddings": 1,
-      "gana": "empate"
+      "rank_embeddings": 3,
+      "gana": "tfidf"
     },
     {
       "id": 20,
@@ -505,18 +499,18 @@
       "pregunta": "¿Cuál es el DOI real de Cañibano & Bozeman (2009)?",
       "respuesta_esperada": "10.3152/095820209x441754",
       "score_top1_tfidf": 0.2047,
-      "score_top1_embeddings": 0.5606,
+      "score_top1_embeddings": 0.839,
       "top1_tfidf": "validacion_final_D.md::4. Verificación de los hechos que la rúbrica penaliza (resumen)",
-      "top1_embeddings": "validacion_final_D.md::7. Correcciones accionables, priorizadas",
+      "top1_embeddings": "anteproyecto::07_referencias",
       "en_top1_tfidf": false,
-      "en_top1_embeddings": false,
+      "en_top1_embeddings": true,
       "en_top3_tfidf": false,
-      "en_top3_embeddings": false,
+      "en_top3_embeddings": true,
       "en_corpus_tfidf": true,
       "en_corpus_embeddings": true,
       "rank_tfidf": 4,
-      "rank_embeddings": 12,
-      "gana": "tfidf"
+      "rank_embeddings": 1,
+      "gana": "embeddings"
     }
   ]
 }

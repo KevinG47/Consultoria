@@ -55,10 +55,15 @@ RAG_VECTORIZER = MEMORIA / "rag_vectorizer.pkl"
 RAG_INDICE_META = MEMORIA / "rag_indice.json"
 
 # --- Índice alternativo con EMBEDDINGS (decisión D007) --------------------
+# Modelo: Granite Embedding 97M Multilingual R2 (IBM, Apache 2.0).
+# Arquitectura ModernBERT con atención alterna local/global, contexto de
+# 32 768 tokens y 384 dimensiones. Sustituye a paraphrase-multilingual-MiniLM-L12-v2,
+# que solo procesaba 128 tokens y truncaba 143 de los 150 fragmentos (7,8 % del
+# contenido vectorizado). Se usa un modelo LOCAL y nunca la red.
 # Deliberadamente separado del de TF-IDF: reindexar con embeddings no debe
 # pisar rag_indice.json / rag_matriz.npz / rag_vectorizer.pkl, que son la
 # fuente de verdad de la regla R13 (frescura del índice) y del respaldo.
-MODELO_EMBEDDINGS = "paraphrase-multilingual-MiniLM-L12-v2"
+MODELO_EMBEDDINGS = "ibm-granite/granite-embedding-97m-multilingual-r2"
 RAG_EMBEDDINGS_MATRIZ = MEMORIA / "rag_embeddings.npy"
 RAG_INDICE_EMBEDDINGS = MEMORIA / "rag_indice_embeddings.json"
 GRAFO_JSON = MEMORIA / "grafo.json"

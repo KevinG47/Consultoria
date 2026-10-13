@@ -1,20 +1,23 @@
 # Comparación: TF-IDF vs embeddings para el RAG del proyecto
 
 **Auditoría estadística del sistema de reconocimiento de MinCiencias — sistema de memoria del agente**  
-Documento generado por `documentacion_auditoria/src/generar_comparacion_tfidf_embeddings.py` a partir de `data/memoria/comparacion_rag.json` y de los dos resultados del banco de preguntas. Fecha: 2026-10-08.
+Documento generado por `documentacion_auditoria/src/generar_comparacion_tfidf_embeddings.py` a partir de `data/memoria/comparacion_rag.json` y de los dos resultados del banco de preguntas. Fecha: 2026-10-13.
 
 ## Resumen en una página
 
-El RAG del proyecto sabe recuperar con **dos métodos intercambiables**: TF-IDF (el de siempre) y embeddings locales (el nuevo). Se evaluaron los dos con el mismo banco de 20 preguntas sobre el mismo corpus de 150 fragmentos.
+El RAG del proyecto sabe recuperar con **dos métodos intercambiables**: TF-IDF (el de siempre) y embeddings locales, hoy con **Granite Embedding 97M Multilingual R2** (contexto de 32 768 tokens). Se evaluaron los dos con el mismo banco de 20 preguntas sobre el mismo corpus de 150 fragmentos.
 
-| Métrica | TF-IDF | Embeddings | Ganador |
+| Métrica | TF-IDF | Granite | Ganador |
 |---|---:|---:|---|
-| Respuesta esperada en el **top-1** | 9/20 | 10/20 | embeddings (+1) |
-| Respuesta esperada en el **top-3** | 11/20 | 10/20 | TF-IDF (+1) |
-| Ranking promedio del dato correcto (de 150) | 8,42 | 26,63 | TF-IDF (3,2× mejor) |
-| Preguntas ganadas | 6 | 6 | empate técnico (8 empates) |
+| Respuesta esperada en el **top-1** | 9/20 | 7/20 | TF-IDF |
+| Respuesta esperada en el **top-3** | 11/20 | 10/20 | TF-IDF |
+| Ranking promedio del dato correcto (de 150) | 8,42 | 21,11 | TF-IDF |
+| Preguntas ganadas | 8 | 6 | 6 empates |
+| Cobertura del corpus al vectorizar | 100 % | 79,6 % | — |
 
-**Conclusión: la migración, tal como está implementada, NO mejora el sistema.** El balance es de un acierto más en el top-1, un acierto menos en el top-3 y un ranking promedio 3,2 veces peor. La causa está medida: el modelo trunca cada fragmento a 128 tokens y los fragmentos promedian 1 634,7 tokens, de modo que solo se vectoriza el **7,8 %** del contenido de cada fragmento. TF-IDF, al ser una bolsa de palabras, ve el fragmento completo. La recomendación es **mantener TF-IDF como método por defecto** y dejar los embeddings disponibles como método complementario, con el troceado de fragmentos como siguiente paso (ver §6).
+**Conclusión: con Granite los embeddings mejoran mucho respecto al intento anterior, pero no superan a TF-IDF en las tres métricas.** Cumplen la regla de adopción en 0 de 3 criterios (ver §7), así que se recomienda **mantener TF-IDF como método por defecto** y los embeddings como método complementario, con el truncamiento ya acotado a 2 fragmentos de 150 (antes eran 143).
+
+El salto respecto al primer intento está medido: con MiniLM (contexto de 128 tokens) se truncaban 143 de 150 fragmentos y solo se vectorizaba el 7,8 % del contenido; con Granite se truncan 2 de 150 y la cobertura sube al 79,6 %.
 
 ## 1. Qué es TF-IDF, en lenguaje llano
 
@@ -31,7 +34,7 @@ TF-IDF significa *Term Frequency – Inverse Document Frequency*, es decir «fre
                             ('cuantos registros', 0.3988), ('cuantos', 0.3426)]
 ```
 
-Además, para un vocabulario técnico y estable —cifras, rutas de archivo, identificadores como `n_atipicos_edad`— coincidir en la palabra exacta es justo lo que se necesita.
+Además, para un vocabulario técnico y estable —cifras, rutas de archivo, identificadores como `n_atipicos_edad`— coincidir en la palabra exacta es justo lo que se necesita. Y **no tiene límite de longitud**: ve el fragmento completo, mida lo que mida.
 
 **Límites.** No entiende sinónimos ni paráfrasis: si el documento dice «investigadores únicos» y la pregunta dice «personas distintas», TF-IDF no ve ninguna relación, porque no comparten ni una palabra. Tampoco entiende el significado: dos frases con las mismas palabras en distinto orden le resultan idénticas.
 
@@ -39,11 +42,11 @@ Además, para un vocabulario técnico y estable —cifras, rutas de archivo, ide
 
 Un *embedding* es una forma de convertir un texto en una lista de números —un vector— de manera que **textos con significado parecido queden cerca** en ese espacio numérico. En lugar de contar palabras, se usa un modelo entrenado con millones de frases para aprender qué textos suelen significar lo mismo.
 
-En este proyecto el vector tiene 384 números por fragmento, producidos por el modelo local `paraphrase-multilingual-MiniLM-L12-v2`. La comparación es la misma que en TF-IDF: similitud coseno sobre vectores normalizados.
+En este proyecto el vector tiene 384 números por fragmento, producidos por el modelo local `ibm-granite/granite-embedding-97m-multilingual-r2`: 97 millones de parámetros, arquitectura ModernBERT y **contexto de 32 768 tokens**. La comparación es la misma que en TF-IDF: similitud coseno sobre vectores normalizados.
 
-**Ventajas.** Entiende sinónimos, paráfrasis y conceptos que no comparten ni una palabra. Si la pregunta dice «¿cuántos investigadores hay registrados?» y el documento dice «total de personas únicas en el padrón», un embedding puede relacionarlos y TF-IDF no. Además es **multilingüe**: la misma frase en español e inglés cae cerca.
+**Ventajas.** Entiende sinónimos, paráfrasis y conceptos que no comparten ni una palabra. Si la pregunta dice «¿cuántos investigadores hay registrados?» y el documento dice «total de personas únicas en el padrón», un embedding puede relacionarlos y TF-IDF no. Además es **multilingüe** (la misma frase en español e inglés cae cerca) y, con contexto largo, puede procesar un documento entero en lugar de solo su encabezado.
 
-**Límites.** Requiere un modelo: aquí son ~120 MB de pesos más la librería `torch`, así que el sistema pesa mucho más y tarda más en arrancar (cargar el modelo cuesta unos 20 segundos). Además el modelo **tiene un límite de longitud**: solo mira los primeros tokens de cada texto, y todo lo que venga después se descarta sin avisar. Y se pierde la explicabilidad: no hay un «término que pesa» que se pueda mostrar, solo un número de similitud.
+**Límites.** Requiere un modelo: aquí son ~210 MB de pesos más la librería `torch`, así que el sistema pesa más y tarda más en arrancar (cargar el modelo cuesta unos 5 segundos, pero vectorizar el corpus entero tarda mucho más que TF-IDF: ver §5.3 y §7.1). El contexto, aunque sea grande, **es finito**: lo que exceda 32 768 tokens se descarta sin avisar. Y se pierde la explicabilidad: no hay un «término que pesa» que se pueda mostrar, solo un número de similitud.
 
 > **Por qué un modelo local y no una API.** La rúbrica prohíbe subir datos de la contraparte a la nube. Por eso el sistema usa un modelo que corre en la propia máquina (CPU) y que **nunca** consulta la red: si el modelo no estuviera ya descargado, el sistema falla con un mensaje claro en lugar de intentar bajarlo.
 
@@ -67,88 +70,122 @@ La decisión se registró originalmente así: «Migrar el RAG de TF-IDF a embedd
 
 > La redacción original pedía embeddings "vía API key". Es inviable en este proyecto porque la rúbrica prohíbe subir datos de la contraparte a la nube; se implementó con un modelo LOCAL, que conserva el motivo del docente —no depender de un diccionario construido a medida— sin usar la red.
 
-La implementación adoptada satisface el motivo del docente —no depender de un diccionario construido a medida, sino de un modelo estándar que cualquiera puede cargar— sin salir de la máquina. La decisión quedó corregida en `decisiones.yaml` conservando la redacción original en un campo aparte, para que el cambio quede trazado. Lo que se midió al implementarla se ve en §5.
+La implementación adoptada satisface el motivo del docente —no depender de un diccionario construido a medida, sino de un modelo estándar que cualquiera puede cargar— sin salir de la máquina. La decisión quedó corregida en `decisiones.yaml` conservando la redacción original en un campo aparte, para que el cambio quede trazado.
 
-## 5. Resultados de la comparación
+## 5. El primer intento falló por el tamaño del modelo, no por la idea
 
-### 5.1 Cómo se comparó
+La primera implementación usó `paraphrase-multilingual-MiniLM-L12-v2`. Sobre el papel cumplía: multilingüe, 384 dimensiones, español correcto. En la práctica rindió **peor** que TF-IDF, y la causa no fue una impresión sino una medida.
+
+### 5.1 Qué pasó con MiniLM
+
+MiniLM procesa como máximo **128 tokens** por texto. Nuestros fragmentos no son frases: nacen de secciones completas de LaTeX y promedian 1 634,7 tokens. El resultado fue que **143 de 150 fragmentos (95,3 %)** se truncaban, y solo se vectorizaba el **7,8 %** del contenido del corpus. El modelo estaba, en la práctica, leyendo el encabezado de cada sección y nada más.
+
+Con esa configuración, la comparación contra TF-IDF quedó así:
+
+| Métrica | TF-IDF | MiniLM |
+|---|---:|---:|
+| Respuesta en el top-1 | 9/20 | 10/20 |
+| Respuesta en el top-3 | 11/20 | 10/20 |
+| Ranking promedio del dato correcto | 8,42 | 26,63 |
+| Cobertura del corpus | 100 % | 7,8 % |
+
+El patrón era revelador: MiniLM **ganaba** donde el dato está al principio del fragmento (el encabezado dice de qué trata) y **perdía estrepitosamente** donde el dato está a mitad o al final. Por ejemplo, en la pregunta por el número de nodos del grafo, TF-IDF ponía el fragmento correcto en la posición 1 y MiniLM en la 128. Eso descartó que el problema fuera «los embeddings no sirven para este corpus»: el problema era que el modelo no llegaba a leer el corpus.
+
+### 5.2 Qué cambió con Granite R2
+
+`ibm-granite/granite-embedding-97m-multilingual-r2` es un modelo de tamaño comparable (97 M de parámetros, 384 dimensiones) pero con dos diferencias decisivas:
+
+1. **Contexto de 32 768 tokens** en lugar de 128: 256 veces más. La arquitectura ModernBERT usa atención alterna —ventanas locales de 128 tokens con atención global cada 3 capas—, que es lo que permite procesar documentos largos en CPU sin agotar la memoria.
+2. **Sin prefijos**: el modelo declara indicaciones vacías para consulta y documento, así que la misma función sirve para ambas (no hizo falta usar `encode_query` ni `encode_document`, aunque existan).
+
+### 5.3 Qué quedó por resolver
+
+El truncamiento **no desaparece del todo**: 2 fragmentos siguen excediendo el límite, porque son más largos que el propio contexto máximo del modelo:
+
+| Fragmento | Tokens |
+|---|---:|
+| `objetivo_3::03_codigo` | 55 502 |
+| `maestro_auditoria::05_codigo` | 55 176 |
+
+En total, la cobertura del corpus sube del 7,8 % al **79,6 %**, y los fragmentos truncados bajan de 143 a 2. Son dos secciones de listado de código (`03_codigo` y `05_codigo`), las más voluminosas del corpus, que por su tamaño superan incluso los 32 768 tokens. Cerrar esa última brecha exigiría trocear esos dos fragmentos, cosa que no se hizo para no alterar el corpus de 150 fragmentos (ver §7.1).
+
+## 6. Resultados de la comparación
+
+### 6.1 Cómo se comparó
 
 El mismo banco de 20 preguntas, el mismo corpus (150 fragmentos de 25 documentos), los dos índices construidos por separado. Por pregunta se comparó: el puntaje del top-1, si la respuesta esperada está en el top-1 y en el top-3, y la posición del fragmento correcto en el ranking completo. El criterio para decidir quién gana en cada pregunta es un orden lexicográfico: primero el acierto en top-1, después el acierto en top-3 y, si empatan, la mejor posición del dato correcto.
 
-### 5.2 Tabla por pregunta
+### 6.2 Tabla por pregunta
 
-| Q | Grupo | Score top-1 TF-IDF | Score top-1 emb. | Top-1 TF-IDF | Top-1 emb. | Top-3 TF-IDF | Top-3 emb. | Rank TF-IDF | Rank emb. | Gana |
+| Q | Grupo | Score top-1 TF-IDF | Score top-1 Granite | Top-1 TF-IDF | Top-1 Granite | Top-3 TF-IDF | Top-3 Granite | Rank TF-IDF | Rank Granite | Gana |
 |---|---|---:|---:|:--:|:--:|:--:|:--:|---:|---:|---|
-| 1 | A | 0,0505 | 0,6556 | sí | sí | sí | sí | 1 | 1 | empate |
-| 2 | A | 0,0462 | 0,6231 | sí | sí | sí | sí | 1 | 1 | empate |
-| 3 | A | 0,1074 | 0,7177 | sí | sí | sí | sí | 1 | 1 | empate |
-| 4 | A | 0,0822 | 0,6363 | no | no | no | no | 5 | 4 | embeddings |
-| 5 | A | 0,1054 | 0,5010 | no | no | no | no | 9 | 5 | embeddings |
-| 6 | A | 0,1105 | 0,6330 | no | sí | no | sí | 8 | 1 | embeddings |
-| 7 | A | 0,1091 | 0,5256 | no | sí | sí | sí | 2 | 1 | embeddings |
-| 8 | A | 0,0409 | 0,4960 | no | no | sí | no | 2 | 118 | tfidf |
-| 9 | A | 0,0526 | 0,3902 | sí | no | sí | no | 1 | 128 | tfidf |
-| 10 | A | 0,0500 | 0,6955 | no | no | no | no | 19 | 107 | tfidf |
-| 11 | B | 0,0456 | 0,5613 | no | sí | no | sí | 4 | 1 | embeddings |
-| 12 | B | 0,0529 | 0,6523 | sí | sí | sí | sí | 1 | 1 | empate |
-| 13 | A | 0,0984 | 0,5339 | no | no | no | no | 16 | 23 | tfidf |
-| 14 | B | 0,0529 | 0,5664 | no | no | no | no | — | — | empate |
-| 15 | B | 0,0652 | 0,5968 | no | no | no | no | 82 | 4 | embeddings |
-| 16 | C | 0,1051 | 0,4849 | sí | sí | sí | sí | 1 | 1 | empate |
-| 17 | C | 0,0732 | 0,6220 | sí | no | sí | no | 1 | 95 | tfidf |
-| 18 | A | 0,0651 | 0,5941 | sí | sí | sí | sí | 1 | 1 | empate |
-| 19 | C | 0,0546 | 0,5394 | sí | sí | sí | sí | 1 | 1 | empate |
-| 20 | C | 0,2047 | 0,5606 | no | no | no | no | 4 | 12 | tfidf |
+| 1 | A | 0,0505 | 0,8654 | sí | sí | sí | sí | 1 | 1 | empate |
+| 2 | A | 0,0462 | 0,8657 | sí | no | sí | sí | 1 | 2 | tfidf |
+| 3 | A | 0,1074 | 0,9169 | sí | sí | sí | sí | 1 | 1 | empate |
+| 4 | A | 0,0822 | 0,8858 | no | no | no | no | 5 | 5 | empate |
+| 5 | A | 0,1054 | 0,8455 | no | no | no | no | 9 | 17 | tfidf |
+| 6 | A | 0,1105 | 0,8690 | no | no | no | no | 8 | 8 | empate |
+| 7 | A | 0,1091 | 0,8909 | no | sí | sí | sí | 2 | 1 | embeddings |
+| 8 | A | 0,0409 | 0,8391 | no | sí | sí | sí | 2 | 1 | embeddings |
+| 9 | A | 0,0526 | 0,8314 | sí | no | sí | no | 1 | 58 | tfidf |
+| 10 | A | 0,0500 | 0,8670 | no | no | no | no | 19 | 129 | tfidf |
+| 11 | B | 0,0456 | 0,8843 | no | sí | no | sí | 4 | 1 | embeddings |
+| 12 | B | 0,0529 | 0,8749 | sí | sí | sí | sí | 1 | 1 | empate |
+| 13 | A | 0,0984 | 0,8657 | no | no | no | no | 16 | 4 | embeddings |
+| 14 | B | 0,0529 | 0,8555 | no | no | no | no | — | — | empate |
+| 15 | B | 0,0652 | 0,8533 | no | no | no | no | 82 | 22 | embeddings |
+| 16 | C | 0,1051 | 0,8269 | sí | no | sí | no | 1 | 6 | tfidf |
+| 17 | C | 0,0732 | 0,8753 | sí | no | sí | no | 1 | 137 | tfidf |
+| 18 | A | 0,0651 | 0,8887 | sí | no | sí | sí | 1 | 3 | tfidf |
+| 19 | C | 0,0546 | 0,8794 | sí | no | sí | sí | 1 | 3 | tfidf |
+| 20 | C | 0,2047 | 0,8390 | no | sí | no | sí | 4 | 1 | embeddings |
 
-### 5.3 Agregados
+### 6.3 Agregados
 
-| Métrica | TF-IDF | Embeddings |
+| Métrica | TF-IDF | Granite |
 |---|---:|---:|
-| Respuesta en el top-1 | **9/20** | **10/20** |
+| Respuesta en el top-1 | **9/20** | **7/20** |
 | Respuesta en el top-3 | **11/20** | **10/20** |
 | Respuesta presente en el corpus | 19/20 | 19/20 |
-| Score promedio del top-1 | 0,0786 | 0,5793 |
-| Ranking promedio del dato correcto | **8,42** | **26,63** |
-| Preguntas ganadas | 6 | 6 (+8 empates) |
+| Score promedio del top-1 | 0,0786 | 0,8660 |
+| Ranking promedio del dato correcto | **8,42** | **21,11** |
+| Preguntas ganadas | 8 | 6 (+6 empates) |
 
 Por grupos del banco (A = datos que deberían estar en el corpus, B = datos que no, C = datos del propio sistema):
 
-| Grupo | n | Top-1 TF-IDF | Top-1 emb. | Top-3 TF-IDF | Top-3 emb. |
+| Grupo | n | Top-1 TF-IDF | Top-1 Granite | Top-3 TF-IDF | Top-3 Granite |
 |---|---:|---:|---:|---:|---:|
-| A | 12 | 5 | 6 | 7 | 6 |
+| A | 12 | 5 | 4 | 7 | 6 |
 | B | 4 | 1 | 2 | 1 | 2 |
-| C | 4 | 3 | 2 | 3 | 2 |
+| C | 4 | 3 | 1 | 3 | 2 |
 
-### 5.4 En qué casos gana cada método
+### 6.4 En qué casos gana cada método
 
-- **Embeddings encuentra y TF-IDF no, en el top-1** (Q6, Q7, Q11): son preguntas redactadas con otras palabras que el documento («¿cuántas referencias tiene el estado del arte?», «¿cuántos commits tiene el repo auditado?»). Aquí el embedding hace exactamente lo que promete: relaciona significado sin compartir vocabulario.
-- **TF-IDF encuentra y embeddings no, en el top-1** (Q9, Q17): son preguntas cuyo dato es una cifra o un identificador exacto («¿cuántos nodos tiene el grafo?» → 255; «¿cuántos informes de validación cubre el corpus?» → once). La coincidencia literal es imbatible para una bolsa de palabras.
-- **Top-3**: embeddings gana en Q6, Q11 y TF-IDF en Q8, Q9, Q17.
-- En 8 preguntas los dos métodos empatan, y en 19 de las 20 el dato está en el corpus de todos modos.
+- **Granite encuentra y TF-IDF no, en el top-1**: Q7, Q8, Q11, Q20.
+- **TF-IDF encuentra y Granite no, en el top-1**: Q2, Q9, Q16, Q17, Q18, Q19.
+- **En el top-3**: Granite gana en Q11, Q20 y TF-IDF en Q9, Q16, Q17.
+- En 6 preguntas los dos métodos empatan, y en 19 de las 20 el dato está en el corpus de todos modos.
 
-### 5.5 La causa medida: el modelo solo ve el 7,8 % de cada fragmento
+Conviene leer estos números junto al ranking promedio. Las preguntas en que TF-IDF conserva ventaja son las que buscan **una cifra o un identificador exacto**: para una bolsa de palabras, coincidir en el token literal es imbatible. Las que gana Granite son las redactadas con **palabras distintas** a las del documento, que es justo lo que un embedding está entrenado para resolver.
 
-La diferencia de ranking no es una opinión ni una impresión: tiene una causa medible.
+### 6.5 Comparación de los dos modelos de embeddings
 
-| Medida | Valor |
-|---|---:|
-| Longitud máxima que procesa el modelo | **128 tokens** |
-| Tokens por fragmento (promedio) | 1 634,7 |
-| Tokens por fragmento (mediana) | 497 |
-| Tokens del fragmento más largo | 65 127 |
-| Fragmentos que superan el máximo | **143 de 150 (95,3 %)** |
-| Contenido realmente vectorizado | **7,8 %** |
+| Medida | MiniLM (128 tokens) | Granite (32 768 tokens) |
+|---|---:|---:|
+| Fragmentos que superan el contexto | 143 de 150 (95,3 %) | 2 de 150 (1,3 %) |
+| Contenido realmente vectorizado | 7,8 % | **79,6 %** |
+| Top-1 con respuesta | 10/20 | 7/20 |
+| Top-3 con respuesta | 10/20 | 10/20 |
+| Ranking promedio del dato correcto | 26,63 | **21,11** |
 
-El modelo `paraphrase-multilingual-MiniLM-L12-v2` está diseñado para frases, no para documentos: mira como mucho 128 tokens y descarta el resto sin avisar. Nuestros fragmentos nacen de secciones completas de LaTeX —el mayor, `objetivo_3::03_codigo`, tiene 65 127 tokens— de modo que **143 de 150 fragmentos (95,3 %)** se vectorizan solo por su encabezado. Cuando la respuesta está al principio del fragmento, el embedding la encuentra; cuando está a mitad o al final, es invisible para él, mientras que TF-IDF la ve porque cuenta palabras en todo el texto.
+El cambio de modelo mejoró las tres métricas de los embeddings y multiplicó por 10,2 la cobertura del corpus. Dicho de otro modo: la conclusión del intento anterior —«los embeddings no superan a TF-IDF»— era **correcta para ese modelo y esa configuración**, pero no era una conclusión sobre los embeddings en general. El cuello de botella era el contexto.
 
-Esto explica las dos observaciones que de otro modo parecerían contradictorias: el top-1 mejora ligeramente (el encabezado de un fragmento suele decir de qué trata) pero el ranking promedio empeora mucho, porque el dato concreto casi nunca está en el encabezado.
+### 6.6 Dos comprobaciones de honestidad
 
-### 5.6 Dos comprobaciones de honestidad
+1. **TF-IDF no se rompió.** La corrida nueva de TF-IDF es **idéntica** a la corrida histórica (resultados_banco_preguntas.json, del 2026-10-01T17:25:51) en las 20 preguntas: mismos puntajes, mismos rankings, mismos aciertos. Cambiar el modelo de embeddings no cambió el comportamiento del respaldo.
+2. **Los puntajes no son comparables entre métodos.** El promedio del top-1 es 0,0786 con TF-IDF y 0,8660 con Granite, pero eso **no** mide cuánto mejor es uno: los cosenos de un modelo de frases parten de una base más alta. Los umbrales de banda del banco (alto >0,15) se calibraron sobre TF-IDF: con TF-IDF solo 1 de 20 preguntas caen en «alta», con embeddings prácticamente todas. Lo comparable es **en qué posición** aparece el dato correcto.
 
-1. **TF-IDF no se rompió.** La corrida nueva de TF-IDF es **idéntica** a la corrida histórica (resultados_banco_preguntas.json, del 2026-10-01T17:25:51) en las 20 preguntas: mismos puntajes, mismos rankings, mismos aciertos. Añadir el segundo método no cambió el comportamiento del primero.
-2. **Los puntajes no son comparables entre métodos.** El promedio del top-1 es 0,0786 con TF-IDF y 0,5793 con embeddings, pero eso **no** significa que los embeddings sean siete veces mejores. Los cosenos de un modelo de frases parten de una base mucho más alta: con embeddings las 20 preguntas caen en la banda «alta» del banco (>0,15) y con TF-IDF solo 1. Los umbrales de banda se calibraron sobre TF-IDF y no sirven para comparar métodos; lo que sí es comparable es *en qué posición* aparece el dato correcto.
-
-### 5.7 Un punto a favor de los embeddings que no se ve en el banco
+### 6.7 Un punto a favor de los embeddings que no se ve en el banco
 
 Al cargar el índice de TF-IDF aparece esta advertencia, reproducible en esta máquina:
 
@@ -159,27 +196,40 @@ from version 1.9.0 when using version 1.9.1.
 
 Es decir: **el índice de TF-IDF queda atado a la versión de scikit-learn con la que se construyó**, y una actualización de la librería puede invalidarlo. Esto le da la razón al motivo del docente: un modelo de embeddings es un artefacto estándar y portable, mientras que el «diccionario» de TF-IDF es un archivo serializado dependiente del entorno. Es un argumento de reproducibilidad, no de calidad de recuperación, y conviene no confundirlos.
 
-## 6. Decisión final y siguiente paso
+## 7. Decisión final y siguiente paso
 
-**No se adopta embeddings como método principal todavía.** El sistema queda con los dos métodos disponibles y **TF-IDF como predeterminado**:
+Para que la decisión no dependa de una impresión, se fijó por escrito una **regla de adopción**: los embeddings pasan a ser método principal solo si no empeoran ninguna de las tres métricas que importan.
+
+| Criterio | TF-IDF | Granite | ¿Cumple? |
+|---|---:|---:|:--:|
+| Top-1 con respuesta | 9 | 7 | **no** |
+| Top-3 con respuesta | 11 | 10 | **no** |
+| Ranking promedio no peor que un 120 % | 8,42 | 21,11 | **no** |
+
+**Veredicto: no se cumple la regla en su totalidad, así que TF-IDF sigue siendo el método por defecto.**
+
+El sistema mantiene los dos métodos. La razón de conservarlos no es prudencia excesiva, sino que ganan en casos distintos: TF-IDF es mejor cuando la pregunta busca una cifra o un identificador exacto y ve el fragmento completo sin límite de longitud; los embeddings son mejores cuando la pregunta está parafraseada. Quedarse con uno solo perdería la mitad de los casos.
 
 ```bash
-python -m memoria consultar "..." -k 2                        # TF-IDF (por defecto)
-python -m memoria consultar "..." -k 2 --metodo embeddings    # embeddings locales
-python -m memoria indexar --metodo embeddings                 # reindexar con embeddings
+# TF-IDF (por defecto)
+python -m memoria consultar "..." -k 2
+# Granite R2 (embeddings locales, contexto 32 768)
+python -m memoria consultar "..." -k 2 --metodo embeddings
+# reconstruir cada índice
+python -m memoria indexar                      # TF-IDF
+python -m memoria indexar --metodo embeddings  # Granite
 ```
 
-El motivo de mantener los dos, y no sustituir uno por otro, es que ganan en casos distintos y complementarios: TF-IDF es mejor cuando la pregunta busca una cifra o un identificador exacto y cuando el dato está en cualquier punto del fragmento; los embeddings son mejores cuando la pregunta está parafraseada. Quedarse con uno solo perdería la mitad de los casos.
+### 7.1 Lo que queda pendiente
 
-**El siguiente paso, si se quiere que los embeddings rindan, es trocear los fragmentos.** El problema no es el modelo sino el tamaño de la entrada: hoy 143 de 150 fragmentos exceden el máximo y solo se vectoriza el 7,8 % del texto. Partir cada fragmento en trozos de unas 128 unidades (con solape para no cortar ideas a la mitad) haría que el modelo viera todo el contenido.
+1. **Trocear los dos fragmentos de código que aún se truncan.** Hoy la cobertura es del 79,6 %; los 2 fragmentos que exceden los 32 768 tokens son listados de código (`03_codigo` y `05_codigo`). Partirlos en trozos de unas 8 000 unidades con solape los haría vectorizables por completo. No se hizo aquí porque alteraría el corpus de 150 fragmentos, cifra citada en la documentación y vigilada por la regla R17, y porque R11 exige que el índice cubra exactamente el corpus declarado.
+2. **El coste de indexar con embeddings es alto.** Vectorizar el corpus con Granite tardó 1 704,2 segundos en CPU usando 10 lotes, porque las dos secuencias de 32 768 tokens dominan el tiempo (la atención global es cuadrática). Se paga una vez por índice y no en cada consulta, pero conviene saberlo antes de reindexar en una demostración en vivo.
 
-Ese cambio **no es inocuo y por eso no se hizo**: el corpus pasaría de 150 fragmentos a varios cientos, y la cifra «150 fragmentos» está citada en la documentación y vigilada por la regla R17, además de que R11 exige que el índice cubra exactamente el corpus declarado. Hacerlo obliga a actualizar esas cifras en todos los documentos y a reindexar ambos métodos. Queda como propuesta, no como hecho consumado.
+### 7.2 Estado de la decisión D007
 
-### Estado de la decisión D007
+D007 está en estado `vigente` desde la implementación anterior, con la redacción corregida (embeddings **locales**, no «vía API key») y el resultado de la evaluación en su justificación. Esta ronda no la modificó: cambiar el modelo es una mejora de implementación dentro de la misma decisión, no una decisión nueva.
 
-D007 quedó actualizada en `data/memoria/decisiones.yaml` a estado `vigente`, con la redacción corregida (embeddings **locales**, no «vía API key») y con el resultado de esta evaluación en su justificación. Se documenta además un efecto colateral en las reglas: **R15 seguirá fallando**, y conviene entender por qué.
-
-R15 hace dos comprobaciones simétricas: (a) que la decisión vigente esté implementada en el código, y (b) que una decisión **superada** no siga implementada. La primera ya se cumple —`embedding` aparece en `rag.py`—, pero la segunda sigue disparando porque D002 está marcada como `superada` y su marcador `TfidfVectorizer` continúa en el código. Y continuará mientras TF-IDF siga existiendo como respaldo, que es justamente lo que se decidió conservar. Dicho de otro modo: la regla supone que una técnica sucede y elimina a la anterior, y aquí la decisión real es «sucede como método principal, se conserva como respaldo». Ajustar eso exige tocar la regla o el estado de D002, y ninguna de las dos cosas se hizo sin consultar.
+Se mantiene un efecto colateral conocido en las reglas: **R15 sigue fallando**. R15 comprueba en dos sentidos: (a) que la decisión vigente esté implementada en el código —eso ya se cumple, `embedding` aparece en `rag.py`— y (b) que una decisión **superada** no siga implementada. La segunda sigue disparando porque D002 está marcada como `superada` y su marcador `TfidfVectorizer` continúa en el código, cosa inevitable mientras TF-IDF se conserve como respaldo. La regla supone que una técnica sucede y elimina a la anterior, y aquí lo decidido es «sucede como método principal, se conserva como respaldo». Las opciones son las mismas de la ronda anterior: enmendar R15 para admitir una excepción declarada en decisiones superadas, cambiar el estado de D002 (que R16 limita a `vigente|superada|propuesta|pendiente_implementacion` y exigiría ajustar además el tema de D007), o dejarlo documentado como limitación conocida. Ninguna se aplicó sin consultar.
 
 ## Anexo: trazabilidad y reproducibilidad
 
@@ -187,12 +237,14 @@ R15 hace dos comprobaciones simétricas: (a) que la decisión vigente esté impl
 |---|---|
 | `src/memoria/rag.py` | Los dos métodos (`metodo="tfidf"` por defecto) |
 | `data/memoria/rag_indice.json` | Índice TF-IDF (metadatos), sin cambios: 150 fragmentos |
-| `data/memoria/rag_indice_embeddings.json` | Índice de embeddings: 150 fragmentos, 384 dimensiones |
+| `data/memoria/rag_indice_embeddings.json` | Índice de embeddings con Granite: 150 fragmentos, 384 dimensiones, cobertura 79,6 % |
+| `data/memoria/rag_embeddings.npy` | Matriz de vectores (150 × 384) |
 | `scripts/banco_preguntas.py` | Banco de 20 preguntas, con `--metodo` y `--salida` |
 | `scripts/comparar_rag.py` | Comparación de los dos métodos y análisis de truncamiento |
 | `data/memoria/resultados_banco_tfidf.json` | Resultado del banco con TF-IDF |
-| `data/memoria/resultados_banco_embeddings.json` | Resultado del banco con embeddings |
+| `data/memoria/resultados_banco_embeddings.json` | Resultado del banco con Granite |
 | `data/memoria/comparacion_rag.json` | Todas las cifras citadas aquí |
+| `data/memoria/comparacion_rag_minilm.json` | Evidencia del intento con MiniLM (§5) |
 
 Reproducción completa:
 
@@ -203,6 +255,7 @@ python scripts/banco_preguntas.py --metodo tfidf \
 python scripts/banco_preguntas.py --metodo embeddings \
      --salida data/memoria/resultados_banco_embeddings.json
 python scripts/comparar_rag.py
+python src/generar_comparacion_tfidf_embeddings.py
 ```
 
 El modelo de embeddings **no se descarga**: se carga de la caché local de Hugging Face y el sistema fuerza el modo sin conexión, de modo que si no estuviera presente fallaría con un mensaje explícito en lugar de usar la red.

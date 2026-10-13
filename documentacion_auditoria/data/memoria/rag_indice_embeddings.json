@@ -1,5 +1,5 @@
 {
-  "fecha_construccion": "2026-10-08T15:53:07",
+  "fecha_construccion": "2026-10-13T16:01:00",
   "n_fragmentos": 150,
   "n_documentos": 25,
   "por_coleccion": {
@@ -10,7 +10,7 @@
     "validacion": 86
   },
   "palabras_totales": 116290,
-  "tecnica": "embeddings locales (paraphrase-multilingual-MiniLM-L12-v2) + similitud coseno",
+  "tecnica": "embeddings locales (ibm-granite/granite-embedding-97m-multilingual-r2) + similitud coseno",
   "metodo": "embeddings",
   "corpus": [
     "anteproyecto",
@@ -40,10 +40,38 @@
     "validacion_sota_referencias.md"
   ],
   "hash_corpus": "1a77a04a06e88312",
-  "modelo": "paraphrase-multilingual-MiniLM-L12-v2",
+  "modelo": "ibm-granite/granite-embedding-97m-multilingual-r2",
   "dimension": 384,
   "normalizado": true,
   "n_terminos_vocabulario": null,
-  "tiempo_generacion_segundos": 14.94,
-  "dispositivo": "cpu"
+  "tiempo_generacion_segundos": 1704.15,
+  "dispositivo": "cpu",
+  "precision": "torch.float32",
+  "hilos_torch": 4,
+  "truncamiento": {
+    "max_seq_length": 32768,
+    "n_fragmentos": 150,
+    "n_exceden": 2,
+    "pct_exceden": 1.33,
+    "tokens_min": 80,
+    "tokens_mediana": 489,
+    "tokens_promedio": 1475.4,
+    "tokens_max": 55502,
+    "tokens_totales": 221316,
+    "tokens_efectivos": 176174,
+    "cobertura_pct": 79.6,
+    "fragmentos_excedidos": [
+      {
+        "id": "objetivo_3::03_codigo",
+        "tokens": 55502
+      },
+      {
+        "id": "maestro_auditoria::05_codigo",
+        "tokens": 55176
+      }
+    ],
+    "segundos_tokenizando": 0.69,
+    "lotes": 10,
+    "tope_tokens_por_lote": 16384
+  }
 }
