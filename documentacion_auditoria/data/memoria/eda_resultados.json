@@ -1,0 +1,2122 @@
+{
+  "fecha": "2026-10-14T13:02:20",
+  "fuente": "Fuente: datos.gov.co, dataset bqtm-4y2h — 77 237 registros, 30 086 personas, convocatorias 2013-2021.",
+  "universo": {
+    "registros": 77237,
+    "personas": 30086,
+    "convocatorias": 6
+  },
+  "univariado_persona": {
+    "NME_CLASIFICACION_PR": {
+      "n_categorias": 4,
+      "distribucion": {
+        "Investigador Junior": {
+          "n": 20677,
+          "pct": 68.72631788871901
+        },
+        "Investigador Asociado": {
+          "n": 5788,
+          "pct": 19.238183872897693
+        },
+        "Investigador Sénior": {
+          "n": 3287,
+          "pct": 10.925347337632122
+        },
+        "Investigador Emérito": {
+          "n": 334,
+          "pct": 1.11015090075118
+        }
+      }
+    },
+    "NME_GENERO_PR": {
+      "n_categorias": 4,
+      "distribucion": {
+        "Masculino": {
+          "n": 18228,
+          "pct": 60.586319218241044
+        },
+        "Femenino": {
+          "n": 11849,
+          "pct": 39.383766535930334
+        },
+        "Intersexual": {
+          "n": 5,
+          "pct": 0.016619025460347006
+        },
+        "No disponible": {
+          "n": 4,
+          "pct": 0.013295220368277605
+        }
+      }
+    },
+    "NME_GRAN_AREA_PR": {
+      "n_categorias": 7,
+      "distribucion": {
+        "Ciencias Sociales": {
+          "n": 9239,
+          "pct": 30.708635245629196
+        },
+        "Ciencias Naturales": {
+          "n": 6296,
+          "pct": 20.926676859668948
+        },
+        "Ingeniería y Tecnología": {
+          "n": 5638,
+          "pct": 18.739613109087284
+        },
+        "Ciencias Médicas y de la Salud": {
+          "n": 4573,
+          "pct": 15.199760686033372
+        },
+        "Humanidades": {
+          "n": 2412,
+          "pct": 8.017017882071395
+        },
+        "Ciencias Agrícolas": {
+          "n": 1364,
+          "pct": 4.533670145582663
+        },
+        "No registra": {
+          "n": 564,
+          "pct": 1.8746260719271421
+        }
+      }
+    },
+    "NME_DEPARTAMENTO_RES_PR": {
+      "n_categorias": 35,
+      "distribucion": {
+        "Bogotá, D. C.": {
+          "n": 9813,
+          "pct": 32.61649936847703
+        },
+        "Antioquia": {
+          "n": 4981,
+          "pct": 16.55587316359769
+        },
+        "Valle del Cauca": {
+          "n": 2503,
+          "pct": 8.31948414544971
+        },
+        "Atlántico": {
+          "n": 1878,
+          "pct": 6.242105962906336
+        },
+        "Santander": {
+          "n": 1565,
+          "pct": 5.201754969088612
+        },
+        "Exterior": {
+          "n": 1106,
+          "pct": 3.6761284318287575
+        },
+        "Caldas": {
+          "n": 860,
+          "pct": 2.858472379179685
+        },
+        "Boyacá": {
+          "n": 786,
+          "pct": 2.612510802366549
+        },
+        "Bolívar": {
+          "n": 762,
+          "pct": 2.5327394801568834
+        },
+        "Norte de Santander": {
+          "n": 663,
+          "pct": 2.203682776042013
+        },
+        "Cundinamarca": {
+          "n": 586,
+          "pct": 1.947749783952669
+        },
+        "Risaralda": {
+          "n": 569,
+          "pct": 1.8912450973874892
+        },
+        "Cauca": {
+          "n": 449,
+          "pct": 1.492388486339161
+        },
+        "Nariño": {
+          "n": 431,
+          "pct": 1.4325599946819119
+        },
+        "Tolima": {
+          "n": 427,
+          "pct": 1.4192647743136342
+        },
+        "Córdoba": {
+          "n": 426,
+          "pct": 1.4159409692215648
+        },
+        "Magdalena": {
+          "n": 373,
+          "pct": 1.2397792993418866
+        },
+        "Huila": {
+          "n": 296,
+          "pct": 0.9838463072525427
+        },
+        "Quindío": {
+          "n": 271,
+          "pct": 0.9007511799508077
+        },
+        "Meta": {
+          "n": 235,
+          "pct": 0.7810941966363093
+        },
+        "Sucre": {
+          "n": 227,
+          "pct": 0.754503755899754
+        },
+        "No disponible": {
+          "n": 224,
+          "pct": 0.7445323406235458
+        },
+        "La Guajira": {
+          "n": 197,
+          "pct": 0.654789603137672
+        },
+        "Cesar": {
+          "n": 184,
+          "pct": 0.6115801369407698
+        },
+        "Caquetá": {
+          "n": 99,
+          "pct": 0.3290567041148707
+        },
+        "Chocó": {
+          "n": 74,
+          "pct": 0.24596157681313568
+        },
+        "Amazonas": {
+          "n": 37,
+          "pct": 0.12298078840656784
+        },
+        "Casanare": {
+          "n": 31,
+          "pct": 0.10303795785415143
+        },
+        "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+          "n": 12,
+          "pct": 0.03988566110483281
+        },
+        "Arauca": {
+          "n": 9,
+          "pct": 0.02991424582862461
+        },
+        "Putumayo": {
+          "n": 4,
+          "pct": 0.013295220368277605
+        },
+        "Guainía": {
+          "n": 3,
+          "pct": 0.009971415276208203
+        },
+        "Vaupés": {
+          "n": 2,
+          "pct": 0.006647610184138802
+        },
+        "Guaviare": {
+          "n": 2,
+          "pct": 0.006647610184138802
+        },
+        "Vichada": {
+          "n": 1,
+          "pct": 0.003323805092069401
+        }
+      }
+    },
+    "NME_NIV_FORM_PR": {
+      "n_categorias": 10,
+      "distribucion": {
+        "Doctorado": {
+          "n": 14865,
+          "pct": 49.40836269361164
+        },
+        "Maestría/Magister": {
+          "n": 10831,
+          "pct": 36.000132952203685
+        },
+        "Postdoctorado": {
+          "n": 2272,
+          "pct": 7.551685169181679
+        },
+        "Especialidad Médica": {
+          "n": 767,
+          "pct": 2.5493585056172305
+        },
+        "Pregrado/Universitario": {
+          "n": 665,
+          "pct": 2.210330386226152
+        },
+        "Especialización": {
+          "n": 663,
+          "pct": 2.203682776042013
+        },
+        "No disponible": {
+          "n": 19,
+          "pct": 0.06315229674931862
+        },
+        "Cursos de corta duración": {
+          "n": 2,
+          "pct": 0.006647610184138802
+        },
+        "Técnico - nivel superior": {
+          "n": 1,
+          "pct": 0.003323805092069401
+        },
+        "Secundario": {
+          "n": 1,
+          "pct": 0.003323805092069401
+        }
+      }
+    }
+  },
+  "edad": {
+    "n": 30085,
+    "faltantes": 1,
+    "media": 45.51895662290178,
+    "desv": 13.914460942235719,
+    "cuantiles": {
+      "0.0": 17.58,
+      "0.01": 27.08,
+      "0.05": 30.58,
+      "0.25": 37.25,
+      "0.5": 43.75,
+      "0.75": 52.83,
+      "0.95": 64.41799999999999,
+      "0.99": 71.41,
+      "1.0": 956.25
+    },
+    "iqr": 15.579999999999998,
+    "atipicos_bigote": 106,
+    "mayores_100": 11,
+    "maximo": 956.25,
+    "minimo": 17.58,
+    "media_sin_atipicos_100": 45.393083726807205
+  },
+  "convocatorias_por_persona": {
+    "distribucion": {
+      "1": {
+        "n": 10871,
+        "pct": 36.13308515588646
+      },
+      "2": {
+        "n": 7139,
+        "pct": 23.728644552283455
+      },
+      "3": {
+        "n": 4157,
+        "pct": 13.8170577677325
+      },
+      "4": {
+        "n": 2720,
+        "pct": 9.04074985042877
+      },
+      "5": {
+        "n": 2457,
+        "pct": 8.166589111214519
+      },
+      "6": {
+        "n": 2742,
+        "pct": 9.113873562454298
+      }
+    },
+    "media": 2.5672073389616434,
+    "max": 6,
+    "una_sola": 10871,
+    "todas": 2742
+  },
+  "faltantes": {
+    "total_columnas": 30,
+    "columnas_con_vacios": 4,
+    "detalle": {
+      "COD_DANE_NAC_PR": {
+        "n": 4591,
+        "pct": 5.944042363116123,
+        "por_convocatoria": {
+          "2013": 624,
+          "2014": 519,
+          "2015": 694,
+          "2017": 790,
+          "2019": 940,
+          "2021": 1024
+        }
+      },
+      "EDAD_ANOS_PR": {
+        "n": 1,
+        "pct": 0.0012947162629309786,
+        "por_convocatoria": {
+          "2013": 0,
+          "2014": 0,
+          "2015": 0,
+          "2017": 0,
+          "2019": 0,
+          "2021": 1
+        }
+      },
+      "COD_DANE_RES_PR": {
+        "n": 2448,
+        "pct": 3.1694654116550356,
+        "por_convocatoria": {
+          "2013": 347,
+          "2014": 242,
+          "2015": 329,
+          "2017": 291,
+          "2019": 488,
+          "2021": 751
+        }
+      },
+      "INST_FILIA": {
+        "n": 9326,
+        "pct": 12.074523868094307,
+        "por_convocatoria": {
+          "2013": 2016,
+          "2014": 1415,
+          "2015": 1622,
+          "2017": 1634,
+          "2019": 321,
+          "2021": 2318
+        }
+      }
+    }
+  },
+  "bivariado": {
+    "pares": {
+      "2013→2014": {
+        "NME_CLASIFICACION_PR": {
+          "Investigador Asociado": {
+            "n": 1822,
+            "retenidos": 1520,
+            "tasa": 0.8342480790340285
+          },
+          "Investigador Junior": {
+            "n": 5499,
+            "retenidos": 2676,
+            "tasa": 0.4866339334424441
+          },
+          "Investigador Sénior": {
+            "n": 695,
+            "retenidos": 621,
+            "tasa": 0.8935251798561151
+          }
+        },
+        "NME_GENERO_PR": {
+          "Femenino": {
+            "n": 2716,
+            "retenidos": 1580,
+            "tasa": 0.5817378497790869
+          },
+          "Masculino": {
+            "n": 5300,
+            "retenidos": 3237,
+            "tasa": 0.610754716981132
+          }
+        },
+        "NME_GRAN_AREA_PR": {
+          "Ciencias Agrícolas": {
+            "n": 413,
+            "retenidos": 254,
+            "tasa": 0.6150121065375302
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 799,
+            "retenidos": 593,
+            "tasa": 0.7421777221526908
+          },
+          "Ciencias Naturales": {
+            "n": 2080,
+            "retenidos": 1412,
+            "tasa": 0.6788461538461539
+          },
+          "Ciencias Sociales": {
+            "n": 2141,
+            "retenidos": 1082,
+            "tasa": 0.5053713218122373
+          },
+          "Humanidades": {
+            "n": 700,
+            "retenidos": 291,
+            "tasa": 0.4157142857142857
+          },
+          "Ingeniería y Tecnología": {
+            "n": 1256,
+            "retenidos": 899,
+            "tasa": 0.7157643312101911
+          },
+          "No registra": {
+            "n": 627,
+            "retenidos": 286,
+            "tasa": 0.45614035087719296
+          }
+        },
+        "NME_DEPARTAMENTO_RES_PR": {
+          "Amazonas": {
+            "n": 11,
+            "retenidos": 7,
+            "tasa": 0.6363636363636364
+          },
+          "Antioquia": {
+            "n": 1563,
+            "retenidos": 1041,
+            "tasa": 0.6660268714011516
+          },
+          "Arauca": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+            "n": 5,
+            "retenidos": 4,
+            "tasa": 0.8
+          },
+          "Atlántico": {
+            "n": 319,
+            "retenidos": 206,
+            "tasa": 0.64576802507837
+          },
+          "Bogotá, D. C.": {
+            "n": 2944,
+            "retenidos": 1731,
+            "tasa": 0.5879755434782609
+          },
+          "Bolívar": {
+            "n": 183,
+            "retenidos": 122,
+            "tasa": 0.6666666666666666
+          },
+          "Boyacá": {
+            "n": 136,
+            "retenidos": 67,
+            "tasa": 0.49264705882352944
+          },
+          "Caldas": {
+            "n": 256,
+            "retenidos": 176,
+            "tasa": 0.6875
+          },
+          "Caquetá": {
+            "n": 21,
+            "retenidos": 11,
+            "tasa": 0.5238095238095238
+          },
+          "Cauca": {
+            "n": 109,
+            "retenidos": 55,
+            "tasa": 0.5045871559633027
+          },
+          "Cesar": {
+            "n": 22,
+            "retenidos": 13,
+            "tasa": 0.5909090909090909
+          },
+          "Chocó": {
+            "n": 16,
+            "retenidos": 9,
+            "tasa": 0.5625
+          },
+          "Cundinamarca": {
+            "n": 131,
+            "retenidos": 88,
+            "tasa": 0.6717557251908397
+          },
+          "Córdoba": {
+            "n": 84,
+            "retenidos": 56,
+            "tasa": 0.6666666666666666
+          },
+          "Exterior": {
+            "n": 326,
+            "retenidos": 116,
+            "tasa": 0.3558282208588957
+          },
+          "Huila": {
+            "n": 55,
+            "retenidos": 23,
+            "tasa": 0.41818181818181815
+          },
+          "La Guajira": {
+            "n": 25,
+            "retenidos": 14,
+            "tasa": 0.56
+          },
+          "Magdalena": {
+            "n": 81,
+            "retenidos": 52,
+            "tasa": 0.6419753086419753
+          },
+          "Meta": {
+            "n": 54,
+            "retenidos": 22,
+            "tasa": 0.4074074074074074
+          },
+          "Nariño": {
+            "n": 92,
+            "retenidos": 46,
+            "tasa": 0.5
+          },
+          "No disponible": {
+            "n": 21,
+            "retenidos": 6,
+            "tasa": 0.2857142857142857
+          },
+          "Norte de Santander": {
+            "n": 106,
+            "retenidos": 62,
+            "tasa": 0.5849056603773585
+          },
+          "Quindío": {
+            "n": 81,
+            "retenidos": 51,
+            "tasa": 0.6296296296296297
+          },
+          "Risaralda": {
+            "n": 146,
+            "retenidos": 85,
+            "tasa": 0.5821917808219178
+          },
+          "Santander": {
+            "n": 371,
+            "retenidos": 224,
+            "tasa": 0.6037735849056604
+          },
+          "Sucre": {
+            "n": 21,
+            "retenidos": 12,
+            "tasa": 0.5714285714285714
+          },
+          "Tolima": {
+            "n": 98,
+            "retenidos": 60,
+            "tasa": 0.6122448979591837
+          },
+          "Valle del Cauca": {
+            "n": 738,
+            "retenidos": 457,
+            "tasa": 0.6192411924119241
+          }
+        },
+        "NME_NIV_FORM_PR": {
+          "Doctorado": {
+            "n": 5364,
+            "retenidos": 3170,
+            "tasa": 0.5909768829231916
+          },
+          "Especialidad Médica": {
+            "n": 78,
+            "retenidos": 54,
+            "tasa": 0.6923076923076923
+          },
+          "Especialización": {
+            "n": 59,
+            "retenidos": 39,
+            "tasa": 0.6610169491525424
+          },
+          "Maestría/Magister": {
+            "n": 1705,
+            "retenidos": 1045,
+            "tasa": 0.6129032258064516
+          },
+          "Postdoctorado": {
+            "n": 772,
+            "retenidos": 489,
+            "tasa": 0.633419689119171
+          },
+          "Pregrado/Universitario": {
+            "n": 37,
+            "retenidos": 19,
+            "tasa": 0.5135135135135135
+          },
+          "Secundario": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          }
+        }
+      },
+      "2014→2015": {
+        "NME_CLASIFICACION_PR": {
+          "Investigador Asociado": {
+            "n": 2064,
+            "retenidos": 1788,
+            "tasa": 0.8662790697674418
+          },
+          "Investigador Junior": {
+            "n": 5159,
+            "retenidos": 4112,
+            "tasa": 0.7970536925760806
+          },
+          "Investigador Sénior": {
+            "n": 1057,
+            "retenidos": 957,
+            "tasa": 0.9053926206244087
+          }
+        },
+        "NME_GENERO_PR": {
+          "Femenino": {
+            "n": 2934,
+            "retenidos": 2384,
+            "tasa": 0.8125426039536469
+          },
+          "Masculino": {
+            "n": 5346,
+            "retenidos": 4473,
+            "tasa": 0.8367003367003367
+          }
+        },
+        "NME_GRAN_AREA_PR": {
+          "Ciencias Agrícolas": {
+            "n": 429,
+            "retenidos": 361,
+            "tasa": 0.8414918414918415
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 1402,
+            "retenidos": 1187,
+            "tasa": 0.8466476462196861
+          },
+          "Ciencias Naturales": {
+            "n": 2298,
+            "retenidos": 1984,
+            "tasa": 0.8633594429939078
+          },
+          "Ciencias Sociales": {
+            "n": 2005,
+            "retenidos": 1573,
+            "tasa": 0.7845386533665836
+          },
+          "Humanidades": {
+            "n": 483,
+            "retenidos": 359,
+            "tasa": 0.7432712215320911
+          },
+          "Ingeniería y Tecnología": {
+            "n": 1546,
+            "retenidos": 1322,
+            "tasa": 0.8551099611901681
+          },
+          "No registra": {
+            "n": 117,
+            "retenidos": 71,
+            "tasa": 0.6068376068376068
+          }
+        },
+        "NME_DEPARTAMENTO_RES_PR": {
+          "Amazonas": {
+            "n": 12,
+            "retenidos": 11,
+            "tasa": 0.9166666666666666
+          },
+          "Antioquia": {
+            "n": 1709,
+            "retenidos": 1419,
+            "tasa": 0.8303101228788765
+          },
+          "Arauca": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0
+          },
+          "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+            "n": 6,
+            "retenidos": 4,
+            "tasa": 0.6666666666666666
+          },
+          "Atlántico": {
+            "n": 356,
+            "retenidos": 269,
+            "tasa": 0.7556179775280899
+          },
+          "Bogotá, D. C.": {
+            "n": 2944,
+            "retenidos": 2431,
+            "tasa": 0.8257472826086957
+          },
+          "Bolívar": {
+            "n": 227,
+            "retenidos": 206,
+            "tasa": 0.9074889867841409
+          },
+          "Boyacá": {
+            "n": 150,
+            "retenidos": 126,
+            "tasa": 0.84
+          },
+          "Caldas": {
+            "n": 289,
+            "retenidos": 248,
+            "tasa": 0.8581314878892734
+          },
+          "Caquetá": {
+            "n": 20,
+            "retenidos": 13,
+            "tasa": 0.65
+          },
+          "Casanare": {
+            "n": 3,
+            "retenidos": 3,
+            "tasa": 1.0
+          },
+          "Cauca": {
+            "n": 89,
+            "retenidos": 73,
+            "tasa": 0.8202247191011236
+          },
+          "Cesar": {
+            "n": 25,
+            "retenidos": 22,
+            "tasa": 0.88
+          },
+          "Chocó": {
+            "n": 17,
+            "retenidos": 12,
+            "tasa": 0.7058823529411765
+          },
+          "Cundinamarca": {
+            "n": 137,
+            "retenidos": 111,
+            "tasa": 0.8102189781021898
+          },
+          "Córdoba": {
+            "n": 101,
+            "retenidos": 88,
+            "tasa": 0.8712871287128713
+          },
+          "Exterior": {
+            "n": 238,
+            "retenidos": 177,
+            "tasa": 0.7436974789915967
+          },
+          "Guaviare": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Huila": {
+            "n": 59,
+            "retenidos": 46,
+            "tasa": 0.7796610169491526
+          },
+          "La Guajira": {
+            "n": 28,
+            "retenidos": 23,
+            "tasa": 0.8214285714285714
+          },
+          "Magdalena": {
+            "n": 84,
+            "retenidos": 74,
+            "tasa": 0.8809523809523809
+          },
+          "Meta": {
+            "n": 47,
+            "retenidos": 37,
+            "tasa": 0.7872340425531915
+          },
+          "Nariño": {
+            "n": 91,
+            "retenidos": 77,
+            "tasa": 0.8461538461538461
+          },
+          "No disponible": {
+            "n": 4,
+            "retenidos": 3,
+            "tasa": 0.75
+          },
+          "Norte de Santander": {
+            "n": 113,
+            "retenidos": 94,
+            "tasa": 0.831858407079646
+          },
+          "Quindío": {
+            "n": 82,
+            "retenidos": 67,
+            "tasa": 0.8170731707317073
+          },
+          "Risaralda": {
+            "n": 146,
+            "retenidos": 122,
+            "tasa": 0.8356164383561644
+          },
+          "Santander": {
+            "n": 380,
+            "retenidos": 322,
+            "tasa": 0.8473684210526315
+          },
+          "Sucre": {
+            "n": 31,
+            "retenidos": 28,
+            "tasa": 0.9032258064516129
+          },
+          "Tolima": {
+            "n": 108,
+            "retenidos": 87,
+            "tasa": 0.8055555555555556
+          },
+          "Valle del Cauca": {
+            "n": 782,
+            "retenidos": 663,
+            "tasa": 0.8478260869565217
+          }
+        },
+        "NME_NIV_FORM_PR": {
+          "Doctorado": {
+            "n": 4342,
+            "retenidos": 3618,
+            "tasa": 0.833256563795486
+          },
+          "Especialidad Médica": {
+            "n": 203,
+            "retenidos": 177,
+            "tasa": 0.8719211822660099
+          },
+          "Especialización": {
+            "n": 136,
+            "retenidos": 105,
+            "tasa": 0.7720588235294118
+          },
+          "Maestría/Magister": {
+            "n": 2906,
+            "retenidos": 2342,
+            "tasa": 0.8059187887130076
+          },
+          "Postdoctorado": {
+            "n": 651,
+            "retenidos": 582,
+            "tasa": 0.8940092165898618
+          },
+          "Pregrado/Universitario": {
+            "n": 41,
+            "retenidos": 33,
+            "tasa": 0.8048780487804879
+          },
+          "Secundario": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0
+          }
+        }
+      },
+      "2015→2017": {
+        "NME_CLASIFICACION_PR": {
+          "Investigador Asociado": {
+            "n": 2759,
+            "retenidos": 2427,
+            "tasa": 0.8796665458499456
+          },
+          "Investigador Emérito": {
+            "n": 74,
+            "retenidos": 0,
+            "tasa": 0.0
+          },
+          "Investigador Junior": {
+            "n": 6051,
+            "retenidos": 4626,
+            "tasa": 0.7645017352503718
+          },
+          "Investigador Sénior": {
+            "n": 1166,
+            "retenidos": 1111,
+            "tasa": 0.9528301886792453
+          }
+        },
+        "NME_GENERO_PR": {
+          "Femenino": {
+            "n": 3565,
+            "retenidos": 2852,
+            "tasa": 0.8
+          },
+          "Masculino": {
+            "n": 6485,
+            "retenidos": 5312,
+            "tasa": 0.8191210485736314
+          }
+        },
+        "NME_GRAN_AREA_PR": {
+          "Ciencias Agrícolas": {
+            "n": 514,
+            "retenidos": 424,
+            "tasa": 0.8249027237354085
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 1667,
+            "retenidos": 1402,
+            "tasa": 0.8410317936412718
+          },
+          "Ciencias Naturales": {
+            "n": 2646,
+            "retenidos": 2160,
+            "tasa": 0.8163265306122449
+          },
+          "Ciencias Sociales": {
+            "n": 2657,
+            "retenidos": 2053,
+            "tasa": 0.7726759503199097
+          },
+          "Humanidades": {
+            "n": 646,
+            "retenidos": 494,
+            "tasa": 0.7647058823529411
+          },
+          "Ingeniería y Tecnología": {
+            "n": 1920,
+            "retenidos": 1631,
+            "tasa": 0.8494791666666667
+          }
+        },
+        "NME_DEPARTAMENTO_RES_PR": {
+          "Amazonas": {
+            "n": 14,
+            "retenidos": 12,
+            "tasa": 0.8571428571428571
+          },
+          "Antioquia": {
+            "n": 1947,
+            "retenidos": 1637,
+            "tasa": 0.8407806882383153
+          },
+          "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+            "n": 4,
+            "retenidos": 3,
+            "tasa": 0.75
+          },
+          "Atlántico": {
+            "n": 516,
+            "retenidos": 446,
+            "tasa": 0.8643410852713178
+          },
+          "Bogotá, D. C.": {
+            "n": 3500,
+            "retenidos": 2821,
+            "tasa": 0.806
+          },
+          "Bolívar": {
+            "n": 274,
+            "retenidos": 240,
+            "tasa": 0.8759124087591241
+          },
+          "Boyacá": {
+            "n": 202,
+            "retenidos": 159,
+            "tasa": 0.7871287128712872
+          },
+          "Caldas": {
+            "n": 333,
+            "retenidos": 284,
+            "tasa": 0.8528528528528528
+          },
+          "Caquetá": {
+            "n": 28,
+            "retenidos": 22,
+            "tasa": 0.7857142857142857
+          },
+          "Casanare": {
+            "n": 5,
+            "retenidos": 5,
+            "tasa": 1.0
+          },
+          "Cauca": {
+            "n": 116,
+            "retenidos": 92,
+            "tasa": 0.7931034482758621
+          },
+          "Cesar": {
+            "n": 37,
+            "retenidos": 26,
+            "tasa": 0.7027027027027027
+          },
+          "Chocó": {
+            "n": 15,
+            "retenidos": 11,
+            "tasa": 0.7333333333333333
+          },
+          "Cundinamarca": {
+            "n": 176,
+            "retenidos": 148,
+            "tasa": 0.8409090909090909
+          },
+          "Córdoba": {
+            "n": 120,
+            "retenidos": 103,
+            "tasa": 0.8583333333333333
+          },
+          "Exterior": {
+            "n": 323,
+            "retenidos": 147,
+            "tasa": 0.4551083591331269
+          },
+          "Huila": {
+            "n": 73,
+            "retenidos": 54,
+            "tasa": 0.7397260273972602
+          },
+          "La Guajira": {
+            "n": 59,
+            "retenidos": 52,
+            "tasa": 0.8813559322033898
+          },
+          "Magdalena": {
+            "n": 111,
+            "retenidos": 97,
+            "tasa": 0.8738738738738738
+          },
+          "Meta": {
+            "n": 62,
+            "retenidos": 47,
+            "tasa": 0.7580645161290323
+          },
+          "Nariño": {
+            "n": 139,
+            "retenidos": 108,
+            "tasa": 0.7769784172661871
+          },
+          "No disponible": {
+            "n": 6,
+            "retenidos": 5,
+            "tasa": 0.8333333333333334
+          },
+          "Norte de Santander": {
+            "n": 141,
+            "retenidos": 119,
+            "tasa": 0.8439716312056738
+          },
+          "Quindío": {
+            "n": 93,
+            "retenidos": 73,
+            "tasa": 0.7849462365591398
+          },
+          "Risaralda": {
+            "n": 174,
+            "retenidos": 136,
+            "tasa": 0.7816091954022989
+          },
+          "Santander": {
+            "n": 487,
+            "retenidos": 422,
+            "tasa": 0.86652977412731
+          },
+          "Sucre": {
+            "n": 50,
+            "retenidos": 43,
+            "tasa": 0.86
+          },
+          "Tolima": {
+            "n": 128,
+            "retenidos": 104,
+            "tasa": 0.8125
+          },
+          "Valle del Cauca": {
+            "n": 915,
+            "retenidos": 747,
+            "tasa": 0.8163934426229508
+          },
+          "Vaupés": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Vichada": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0
+          }
+        },
+        "NME_NIV_FORM_PR": {
+          "Doctorado": {
+            "n": 5323,
+            "retenidos": 4261,
+            "tasa": 0.8004884463648319
+          },
+          "Especialidad Médica": {
+            "n": 248,
+            "retenidos": 215,
+            "tasa": 0.8669354838709677
+          },
+          "Especialización": {
+            "n": 152,
+            "retenidos": 118,
+            "tasa": 0.7763157894736842
+          },
+          "Maestría/Magister": {
+            "n": 3424,
+            "retenidos": 2817,
+            "tasa": 0.8227219626168224
+          },
+          "Perfeccionamiento": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Postdoctorado": {
+            "n": 842,
+            "retenidos": 706,
+            "tasa": 0.838479809976247
+          },
+          "Pregrado/Universitario": {
+            "n": 60,
+            "retenidos": 46,
+            "tasa": 0.7666666666666667
+          }
+        }
+      },
+      "2017→2019": {
+        "NME_CLASIFICACION_PR": {
+          "Investigador Asociado": {
+            "n": 3595,
+            "retenidos": 3090,
+            "tasa": 0.8595271210013908
+          },
+          "Investigador Emérito": {
+            "n": 124,
+            "retenidos": 0,
+            "tasa": 0.0
+          },
+          "Investigador Junior": {
+            "n": 7575,
+            "retenidos": 5275,
+            "tasa": 0.6963696369636964
+          },
+          "Investigador Sénior": {
+            "n": 1707,
+            "retenidos": 1629,
+            "tasa": 0.9543057996485061
+          }
+        },
+        "NME_GENERO_PR": {
+          "Femenino": {
+            "n": 4858,
+            "retenidos": 3654,
+            "tasa": 0.7521613832853026
+          },
+          "Masculino": {
+            "n": 8143,
+            "retenidos": 6340,
+            "tasa": 0.7785828318801424
+          }
+        },
+        "NME_GRAN_AREA_PR": {
+          "Ciencias Agrícolas": {
+            "n": 624,
+            "retenidos": 467,
+            "tasa": 0.7483974358974359
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 2093,
+            "retenidos": 1625,
+            "tasa": 0.7763975155279503
+          },
+          "Ciencias Naturales": {
+            "n": 3029,
+            "retenidos": 2378,
+            "tasa": 0.7850775833608452
+          },
+          "Ciencias Sociales": {
+            "n": 3813,
+            "retenidos": 2853,
+            "tasa": 0.7482297403619197
+          },
+          "Humanidades": {
+            "n": 904,
+            "retenidos": 651,
+            "tasa": 0.7201327433628318
+          },
+          "Ingeniería y Tecnología": {
+            "n": 2538,
+            "retenidos": 2020,
+            "tasa": 0.7959022852639874
+          }
+        },
+        "NME_DEPARTAMENTO_RES_PR": {
+          "Amazonas": {
+            "n": 18,
+            "retenidos": 12,
+            "tasa": 0.6666666666666666
+          },
+          "Antioquia": {
+            "n": 2395,
+            "retenidos": 1891,
+            "tasa": 0.7895615866388309
+          },
+          "Arauca": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+            "n": 4,
+            "retenidos": 3,
+            "tasa": 0.75
+          },
+          "Atlántico": {
+            "n": 921,
+            "retenidos": 799,
+            "tasa": 0.8675352877307275
+          },
+          "Bogotá, D. C.": {
+            "n": 4362,
+            "retenidos": 3276,
+            "tasa": 0.7510316368638239
+          },
+          "Bolívar": {
+            "n": 342,
+            "retenidos": 262,
+            "tasa": 0.7660818713450293
+          },
+          "Boyacá": {
+            "n": 281,
+            "retenidos": 222,
+            "tasa": 0.7900355871886121
+          },
+          "Caldas": {
+            "n": 419,
+            "retenidos": 327,
+            "tasa": 0.7804295942720764
+          },
+          "Caquetá": {
+            "n": 47,
+            "retenidos": 30,
+            "tasa": 0.6382978723404256
+          },
+          "Casanare": {
+            "n": 13,
+            "retenidos": 6,
+            "tasa": 0.46153846153846156
+          },
+          "Cauca": {
+            "n": 153,
+            "retenidos": 116,
+            "tasa": 0.7581699346405228
+          },
+          "Cesar": {
+            "n": 55,
+            "retenidos": 43,
+            "tasa": 0.7818181818181819
+          },
+          "Chocó": {
+            "n": 16,
+            "retenidos": 13,
+            "tasa": 0.8125
+          },
+          "Cundinamarca": {
+            "n": 259,
+            "retenidos": 190,
+            "tasa": 0.7335907335907336
+          },
+          "Córdoba": {
+            "n": 179,
+            "retenidos": 150,
+            "tasa": 0.8379888268156425
+          },
+          "Exterior": {
+            "n": 286,
+            "retenidos": 175,
+            "tasa": 0.6118881118881119
+          },
+          "Guainía": {
+            "n": 4,
+            "retenidos": 2,
+            "tasa": 0.5
+          },
+          "Huila": {
+            "n": 98,
+            "retenidos": 72,
+            "tasa": 0.7346938775510204
+          },
+          "La Guajira": {
+            "n": 92,
+            "retenidos": 83,
+            "tasa": 0.9021739130434783
+          },
+          "Magdalena": {
+            "n": 165,
+            "retenidos": 132,
+            "tasa": 0.8
+          },
+          "Meta": {
+            "n": 68,
+            "retenidos": 53,
+            "tasa": 0.7794117647058824
+          },
+          "Nariño": {
+            "n": 183,
+            "retenidos": 136,
+            "tasa": 0.7431693989071039
+          },
+          "No disponible": {
+            "n": 5,
+            "retenidos": 4,
+            "tasa": 0.8
+          },
+          "Norte de Santander": {
+            "n": 250,
+            "retenidos": 200,
+            "tasa": 0.8
+          },
+          "Quindío": {
+            "n": 130,
+            "retenidos": 105,
+            "tasa": 0.8076923076923077
+          },
+          "Risaralda": {
+            "n": 205,
+            "retenidos": 163,
+            "tasa": 0.7951219512195122
+          },
+          "Santander": {
+            "n": 652,
+            "retenidos": 494,
+            "tasa": 0.7576687116564417
+          },
+          "Sucre": {
+            "n": 90,
+            "retenidos": 80,
+            "tasa": 0.8888888888888888
+          },
+          "Tolima": {
+            "n": 173,
+            "retenidos": 126,
+            "tasa": 0.7283236994219653
+          },
+          "Valle del Cauca": {
+            "n": 1134,
+            "retenidos": 828,
+            "tasa": 0.7301587301587301
+          },
+          "Vaupés": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0
+          }
+        },
+        "NME_NIV_FORM_PR": {
+          "Cursos de corta duración": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Doctorado": {
+            "n": 6459,
+            "retenidos": 5024,
+            "tasa": 0.7778293853537699
+          },
+          "Especialidad Médica": {
+            "n": 320,
+            "retenidos": 230,
+            "tasa": 0.71875
+          },
+          "Especialización": {
+            "n": 5,
+            "retenidos": 3,
+            "tasa": 0.6
+          },
+          "Maestría/Magister": {
+            "n": 4939,
+            "retenidos": 3710,
+            "tasa": 0.7511642032800162
+          },
+          "No disponible": {
+            "n": 19,
+            "retenidos": 9,
+            "tasa": 0.47368421052631576
+          },
+          "Perfeccionamiento": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0
+          },
+          "Postdoctorado": {
+            "n": 966,
+            "retenidos": 798,
+            "tasa": 0.8260869565217391
+          },
+          "Pregrado/Universitario": {
+            "n": 289,
+            "retenidos": 218,
+            "tasa": 0.754325259515571
+          },
+          "Secundario": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Técnico - nivel superior": {
+            "n": 1,
+            "retenidos": 0,
+            "tasa": 0.0
+          }
+        }
+      },
+      "2019→2021": {
+        "NME_CLASIFICACION_PR": {
+          "Investigador Asociado": {
+            "n": 4349,
+            "retenidos": 3848,
+            "tasa": 0.8848011037020005
+          },
+          "Investigador Emérito": {
+            "n": 53,
+            "retenidos": 0,
+            "tasa": 0.0
+          },
+          "Investigador Junior": {
+            "n": 9921,
+            "retenidos": 7132,
+            "tasa": 0.7188791452474549
+          },
+          "Investigador Sénior": {
+            "n": 2473,
+            "retenidos": 2375,
+            "tasa": 0.9603720177921553
+          }
+        },
+        "NME_GENERO_PR": {
+          "Femenino": {
+            "n": 6411,
+            "retenidos": 4987,
+            "tasa": 0.7778817657151771
+          },
+          "Masculino": {
+            "n": 10385,
+            "retenidos": 8368,
+            "tasa": 0.8057775637939335
+          }
+        },
+        "NME_GRAN_AREA_PR": {
+          "Ciencias Agrícolas": {
+            "n": 716,
+            "retenidos": 552,
+            "tasa": 0.770949720670391
+          },
+          "Ciencias Médicas y de la Salud": {
+            "n": 2604,
+            "retenidos": 2178,
+            "tasa": 0.836405529953917
+          },
+          "Ciencias Naturales": {
+            "n": 3619,
+            "retenidos": 2980,
+            "tasa": 0.8234318872616745
+          },
+          "Ciencias Sociales": {
+            "n": 5199,
+            "retenidos": 3908,
+            "tasa": 0.7516830159646086
+          },
+          "Humanidades": {
+            "n": 1248,
+            "retenidos": 876,
+            "tasa": 0.7019230769230769
+          },
+          "Ingeniería y Tecnología": {
+            "n": 3305,
+            "retenidos": 2790,
+            "tasa": 0.8441754916792739
+          },
+          "No registra": {
+            "n": 105,
+            "retenidos": 71,
+            "tasa": 0.6761904761904762
+          }
+        },
+        "NME_DEPARTAMENTO_RES_PR": {
+          "Amazonas": {
+            "n": 21,
+            "retenidos": 13,
+            "tasa": 0.6190476190476191
+          },
+          "Antioquia": {
+            "n": 2919,
+            "retenidos": 2374,
+            "tasa": 0.8132922233641658
+          },
+          "Arauca": {
+            "n": 5,
+            "retenidos": 4,
+            "tasa": 0.8
+          },
+          "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+            "n": 6,
+            "retenidos": 4,
+            "tasa": 0.6666666666666666
+          },
+          "Atlántico": {
+            "n": 1294,
+            "retenidos": 1098,
+            "tasa": 0.848531684698609
+          },
+          "Bogotá, D. C.": {
+            "n": 5373,
+            "retenidos": 4168,
+            "tasa": 0.7757305043737205
+          },
+          "Bolívar": {
+            "n": 454,
+            "retenidos": 381,
+            "tasa": 0.8392070484581498
+          },
+          "Boyacá": {
+            "n": 464,
+            "retenidos": 364,
+            "tasa": 0.7844827586206896
+          },
+          "Caldas": {
+            "n": 508,
+            "retenidos": 413,
+            "tasa": 0.812992125984252
+          },
+          "Caquetá": {
+            "n": 41,
+            "retenidos": 34,
+            "tasa": 0.8292682926829268
+          },
+          "Casanare": {
+            "n": 13,
+            "retenidos": 10,
+            "tasa": 0.7692307692307693
+          },
+          "Cauca": {
+            "n": 227,
+            "retenidos": 180,
+            "tasa": 0.7929515418502202
+          },
+          "Cesar": {
+            "n": 90,
+            "retenidos": 65,
+            "tasa": 0.7222222222222222
+          },
+          "Chocó": {
+            "n": 36,
+            "retenidos": 26,
+            "tasa": 0.7222222222222222
+          },
+          "Cundinamarca": {
+            "n": 301,
+            "retenidos": 247,
+            "tasa": 0.8205980066445183
+          },
+          "Córdoba": {
+            "n": 251,
+            "retenidos": 219,
+            "tasa": 0.8725099601593626
+          },
+          "Exterior": {
+            "n": 380,
+            "retenidos": 256,
+            "tasa": 0.6736842105263158
+          },
+          "Guainía": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Huila": {
+            "n": 131,
+            "retenidos": 103,
+            "tasa": 0.7862595419847328
+          },
+          "La Guajira": {
+            "n": 141,
+            "retenidos": 116,
+            "tasa": 0.8226950354609929
+          },
+          "Magdalena": {
+            "n": 239,
+            "retenidos": 188,
+            "tasa": 0.7866108786610879
+          },
+          "Meta": {
+            "n": 125,
+            "retenidos": 100,
+            "tasa": 0.8
+          },
+          "Nariño": {
+            "n": 235,
+            "retenidos": 168,
+            "tasa": 0.7148936170212766
+          },
+          "No disponible": {
+            "n": 108,
+            "retenidos": 69,
+            "tasa": 0.6388888888888888
+          },
+          "Norte de Santander": {
+            "n": 377,
+            "retenidos": 320,
+            "tasa": 0.8488063660477454
+          },
+          "Quindío": {
+            "n": 158,
+            "retenidos": 119,
+            "tasa": 0.7531645569620253
+          },
+          "Risaralda": {
+            "n": 324,
+            "retenidos": 253,
+            "tasa": 0.7808641975308642
+          },
+          "Santander": {
+            "n": 868,
+            "retenidos": 739,
+            "tasa": 0.8513824884792627
+          },
+          "Sucre": {
+            "n": 165,
+            "retenidos": 124,
+            "tasa": 0.7515151515151515
+          },
+          "Tolima": {
+            "n": 224,
+            "retenidos": 190,
+            "tasa": 0.8482142857142857
+          },
+          "Valle del Cauca": {
+            "n": 1316,
+            "retenidos": 1008,
+            "tasa": 0.7659574468085106
+          },
+          "Vichada": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          }
+        },
+        "NME_NIV_FORM_PR": {
+          "Cursos de corta duración": {
+            "n": 1,
+            "retenidos": 1,
+            "tasa": 1.0
+          },
+          "Doctorado": {
+            "n": 8259,
+            "retenidos": 6461,
+            "tasa": 0.7822980990434677
+          },
+          "Especialidad Médica": {
+            "n": 385,
+            "retenidos": 319,
+            "tasa": 0.8285714285714286
+          },
+          "Especialización": {
+            "n": 416,
+            "retenidos": 335,
+            "tasa": 0.8052884615384616
+          },
+          "Maestría/Magister": {
+            "n": 6175,
+            "retenidos": 4932,
+            "tasa": 0.7987044534412956
+          },
+          "No disponible": {
+            "n": 6,
+            "retenidos": 5,
+            "tasa": 0.8333333333333334
+          },
+          "Postdoctorado": {
+            "n": 1206,
+            "retenidos": 1041,
+            "tasa": 0.8631840796019901
+          },
+          "Pregrado/Universitario": {
+            "n": 348,
+            "retenidos": 261,
+            "tasa": 0.75
+          }
+        }
+      }
+    },
+    "decomposicion_varianza": {
+      "NME_CLASIFICACION_PR": {
+        "referencia": "2019→2021 (censo)",
+        "p_global": 0.7951297928078114,
+        "estratos": {
+          "Investigador Asociado": {
+            "W_h": 0.25893069778518696,
+            "p_h": 0.8848011037020005,
+            "n_h_censo": 4349
+          },
+          "Investigador Emérito": {
+            "W_h": 0.003155513217432722,
+            "p_h": 0.0,
+            "n_h_censo": 53
+          },
+          "Investigador Junior": {
+            "W_h": 0.5906763515122648,
+            "p_h": 0.7188791452474549,
+            "n_h_censo": 9921
+          },
+          "Investigador Sénior": {
+            "W_h": 0.1472374374851155,
+            "p_h": 0.9603720177921553,
+            "n_h_censo": 2473
+          }
+        },
+        "varianza_entre": 0.01153166648357906,
+        "varianza_dentro": 0.15136673891363925,
+        "varianza_total": 0.1628984053972183,
+        "pct_entre": 7.0790542457796075,
+        "pct_dentro": 92.9209457542204,
+        "chi2": 1188.9979511211425,
+        "gl": 3,
+        "p_valor": 1.7876020035449794e-257,
+        "min_n_h_censo": 53
+      },
+      "NME_GENERO_PR": {
+        "referencia": "2019→2021 (censo)",
+        "p_global": 0.7951297928078114,
+        "estratos": {
+          "Femenino": {
+            "W_h": 0.3816980233388902,
+            "p_h": 0.7778817657151771,
+            "n_h_censo": 6411
+          },
+          "Masculino": {
+            "W_h": 0.6183019766611098,
+            "p_h": 0.8057775637939335,
+            "n_h_censo": 10385
+          }
+        },
+        "varianza_entre": 0.00018365304244479983,
+        "varianza_dentro": 0.1627147523547735,
+        "varianza_total": 0.1628984053972183,
+        "pct_entre": 0.11274084727654181,
+        "pct_dentro": 99.88725915272346,
+        "chi2": 18.935952708568095,
+        "gl": 1,
+        "p_valor": 1.3518094382168352e-05,
+        "min_n_h_censo": 6411
+      },
+      "NME_GRAN_AREA_PR": {
+        "referencia": "2019→2021 (censo)",
+        "p_global": 0.7951297928078114,
+        "estratos": {
+          "Ciencias Agrícolas": {
+            "W_h": 0.04262919742795904,
+            "p_h": 0.770949720670391,
+            "n_h_censo": 716
+          },
+          "Ciencias Médicas y de la Salud": {
+            "W_h": 0.15503691355084545,
+            "p_h": 0.836405529953917,
+            "n_h_censo": 2604
+          },
+          "Ciencias Naturales": {
+            "W_h": 0.2154679685639438,
+            "p_h": 0.8234318872616745,
+            "n_h_censo": 3619
+          },
+          "Ciencias Sociales": {
+            "W_h": 0.30953798523457965,
+            "p_h": 0.7516830159646086,
+            "n_h_censo": 5199
+          },
+          "Humanidades": {
+            "W_h": 0.07430340557275542,
+            "p_h": 0.7019230769230769,
+            "n_h_censo": 1248
+          },
+          "Ingeniería y Tecnología": {
+            "W_h": 0.19677304120028577,
+            "p_h": 0.8441754916792739,
+            "n_h_censo": 3305
+          },
+          "No registra": {
+            "W_h": 0.006251488449630864,
+            "p_h": 0.6761904761904762,
+            "n_h_censo": 105
+          }
+        },
+        "varianza_entre": 0.0022532221070588037,
+        "varianza_dentro": 0.16064518329015953,
+        "varianza_total": 0.16289840539721834,
+        "pct_entre": 1.3832069758844183,
+        "pct_dentro": 98.61679302411558,
+        "chi2": 232.3234436695469,
+        "gl": 6,
+        "p_valor": 2.4444340876396347e-47,
+        "min_n_h_censo": 105
+      },
+      "NME_DEPARTAMENTO_RES_PR": {
+        "referencia": "2019→2021 (censo)",
+        "p_global": 0.7951297928078114,
+        "estratos": {
+          "Amazonas": {
+            "W_h": 0.0012502976899261729,
+            "p_h": 0.6190476190476191,
+            "n_h_censo": 21
+          },
+          "Antioquia": {
+            "W_h": 0.17379137889973803,
+            "p_h": 0.8132922233641658,
+            "n_h_censo": 2919
+          },
+          "Arauca": {
+            "W_h": 0.0002976899261728983,
+            "p_h": 0.8,
+            "n_h_censo": 5
+          },
+          "Archipiélago de San Andrés, Providencia y Santa Catalina": {
+            "W_h": 0.00035722791140747797,
+            "p_h": 0.6666666666666666,
+            "n_h_censo": 6
+          },
+          "Atlántico": {
+            "W_h": 0.07704215289354609,
+            "p_h": 0.848531684698609,
+            "n_h_censo": 1294
+          },
+          "Bogotá, D. C.": {
+            "W_h": 0.3198975946653965,
+            "p_h": 0.7757305043737205,
+            "n_h_censo": 5373
+          },
+          "Bolívar": {
+            "W_h": 0.027030245296499167,
+            "p_h": 0.8392070484581498,
+            "n_h_censo": 454
+          },
+          "Boyacá": {
+            "W_h": 0.02762562514884496,
+            "p_h": 0.7844827586206896,
+            "n_h_censo": 464
+          },
+          "Caldas": {
+            "W_h": 0.030245296499166466,
+            "p_h": 0.812992125984252,
+            "n_h_censo": 508
+          },
+          "Caquetá": {
+            "W_h": 0.002441057394617766,
+            "p_h": 0.8292682926829268,
+            "n_h_censo": 41
+          },
+          "Casanare": {
+            "W_h": 0.0007739938080495357,
+            "p_h": 0.7692307692307693,
+            "n_h_censo": 13
+          },
+          "Cauca": {
+            "W_h": 0.013515122648249583,
+            "p_h": 0.7929515418502202,
+            "n_h_censo": 227
+          },
+          "Cesar": {
+            "W_h": 0.0053584186711121695,
+            "p_h": 0.7222222222222222,
+            "n_h_censo": 90
+          },
+          "Chocó": {
+            "W_h": 0.0021433674684448677,
+            "p_h": 0.7222222222222222,
+            "n_h_censo": 36
+          },
+          "Cundinamarca": {
+            "W_h": 0.01792093355560848,
+            "p_h": 0.8205980066445183,
+            "n_h_censo": 301
+          },
+          "Córdoba": {
+            "W_h": 0.014944034293879496,
+            "p_h": 0.8725099601593626,
+            "n_h_censo": 251
+          },
+          "Exterior": {
+            "W_h": 0.02262443438914027,
+            "p_h": 0.6736842105263158,
+            "n_h_censo": 380
+          },
+          "Guainía": {
+            "W_h": 5.953798523457966e-05,
+            "p_h": 1.0,
+            "n_h_censo": 1
+          },
+          "Huila": {
+            "W_h": 0.007799476065729936,
+            "p_h": 0.7862595419847328,
+            "n_h_censo": 131
+          },
+          "La Guajira": {
+            "W_h": 0.008394855918075733,
+            "p_h": 0.8226950354609929,
+            "n_h_censo": 141
+          },
+          "Magdalena": {
+            "W_h": 0.01422957847106454,
+            "p_h": 0.7866108786610879,
+            "n_h_censo": 239
+          },
+          "Meta": {
+            "W_h": 0.007442248154322458,
+            "p_h": 0.8,
+            "n_h_censo": 125
+          },
+          "Nariño": {
+            "W_h": 0.01399142653012622,
+            "p_h": 0.7148936170212766,
+            "n_h_censo": 235
+          },
+          "No disponible": {
+            "W_h": 0.006430102405334604,
+            "p_h": 0.6388888888888888,
+            "n_h_censo": 108
+          },
+          "Norte de Santander": {
+            "W_h": 0.02244582043343653,
+            "p_h": 0.8488063660477454,
+            "n_h_censo": 377
+          },
+          "Quindío": {
+            "W_h": 0.009407001667063587,
+            "p_h": 0.7531645569620253,
+            "n_h_censo": 158
+          },
+          "Risaralda": {
+            "W_h": 0.01929030721600381,
+            "p_h": 0.7808641975308642,
+            "n_h_censo": 324
+          },
+          "Santander": {
+            "W_h": 0.05167897118361515,
+            "p_h": 0.8513824884792627,
+            "n_h_censo": 868
+          },
+          "Sucre": {
+            "W_h": 0.009823767563705644,
+            "p_h": 0.7515151515151515,
+            "n_h_censo": 165
+          },
+          "Tolima": {
+            "W_h": 0.013336508692545844,
+            "p_h": 0.8482142857142857,
+            "n_h_censo": 224
+          },
+          "Valle del Cauca": {
+            "W_h": 0.07835198856870683,
+            "p_h": 0.7659574468085106,
+            "n_h_censo": 1316
+          },
+          "Vichada": {
+            "W_h": 5.953798523457966e-05,
+            "p_h": 1.0,
+            "n_h_censo": 1
+          }
+        },
+        "varianza_entre": 0.001617366626205547,
+        "varianza_dentro": 0.16128103877101277,
+        "varianza_total": 0.1628984053972183,
+        "pct_entre": 0.9928682986562651,
+        "pct_dentro": 99.00713170134375,
+        "chi2": 166.76215944230626,
+        "gl": 31,
+        "p_valor": 1.5863058865876367e-20,
+        "min_n_h_censo": 1
+      },
+      "NME_NIV_FORM_PR": {
+        "referencia": "2019→2021 (censo)",
+        "p_global": 0.7951297928078114,
+        "estratos": {
+          "Cursos de corta duración": {
+            "W_h": 5.953798523457966e-05,
+            "p_h": 1.0,
+            "n_h_censo": 1
+          },
+          "Doctorado": {
+            "W_h": 0.4917242200523934,
+            "p_h": 0.7822980990434677,
+            "n_h_censo": 8259
+          },
+          "Especialidad Médica": {
+            "W_h": 0.02292212431531317,
+            "p_h": 0.8285714285714286,
+            "n_h_censo": 385
+          },
+          "Especialización": {
+            "W_h": 0.02476780185758514,
+            "p_h": 0.8052884615384616,
+            "n_h_censo": 416
+          },
+          "Maestría/Magister": {
+            "W_h": 0.36764705882352944,
+            "p_h": 0.7987044534412956,
+            "n_h_censo": 6175
+          },
+          "No disponible": {
+            "W_h": 0.00035722791140747797,
+            "p_h": 0.8333333333333334,
+            "n_h_censo": 6
+          },
+          "Postdoctorado": {
+            "W_h": 0.07180281019290308,
+            "p_h": 0.8631840796019901,
+            "n_h_censo": 1206
+          },
+          "Pregrado/Universitario": {
+            "W_h": 0.020719218861633724,
+            "p_h": 0.75,
+            "n_h_censo": 348
+          }
+        },
+        "varianza_entre": 0.0004916178379377397,
+        "varianza_dentro": 0.16240678755928056,
+        "varianza_total": 0.1628984053972183,
+        "pct_entre": 0.3017941377258777,
+        "pct_dentro": 99.69820586227411,
+        "chi2": 50.689343372438316,
+        "gl": 7,
+        "p_valor": 1.057525644771756e-08,
+        "min_n_h_censo": 1
+      }
+    }
+  },
+  "estratos_candidatos": {
+    "NME_CLASIFICACION_PR": {
+      "pct_varianza_explicada": 7.0790542457796075,
+      "reduccion_varianza_teorica_pct": 7.0790542457796075,
+      "n_estratos": 4,
+      "n_h_min_censo": 53,
+      "p_valor": 1.7876020035449794e-257
+    },
+    "NME_GENERO_PR": {
+      "pct_varianza_explicada": 0.11274084727654181,
+      "reduccion_varianza_teorica_pct": 0.11274084727654181,
+      "n_estratos": 2,
+      "n_h_min_censo": 6411,
+      "p_valor": 1.3518094382168352e-05
+    },
+    "NME_GRAN_AREA_PR": {
+      "pct_varianza_explicada": 1.3832069758844183,
+      "reduccion_varianza_teorica_pct": 1.3832069758844183,
+      "n_estratos": 7,
+      "n_h_min_censo": 105,
+      "p_valor": 2.4444340876396347e-47
+    },
+    "NME_DEPARTAMENTO_RES_PR": {
+      "pct_varianza_explicada": 0.9928682986562651,
+      "reduccion_varianza_teorica_pct": 0.9928682986562651,
+      "n_estratos": 32,
+      "n_h_min_censo": 1,
+      "p_valor": 1.5863058865876367e-20
+    },
+    "NME_NIV_FORM_PR": {
+      "pct_varianza_explicada": 0.3017941377258777,
+      "reduccion_varianza_teorica_pct": 0.3017941377258777,
+      "n_estratos": 8,
+      "n_h_min_censo": 1,
+      "p_valor": 1.057525644771756e-08
+    },
+    "NME_CLASIFICACION_PR × NME_GENERO_PR": {
+      "pct_varianza_explicada": 7.115125914307431,
+      "reduccion_varianza_teorica_pct": 7.115125914307431,
+      "n_estratos": 8,
+      "n_h_min_censo": 16,
+      "p_valor": null
+    },
+    "NME_CLASIFICACION_PR × NME_GRAN_AREA_PR": {
+      "pct_varianza_explicada": 8.394095484645794,
+      "reduccion_varianza_teorica_pct": 8.394095484645794,
+      "n_estratos": 27,
+      "n_h_min_censo": 2,
+      "p_valor": null
+    }
+  }
+}
