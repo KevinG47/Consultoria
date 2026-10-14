@@ -41,56 +41,103 @@ REPO = RAIZ / "datos_originales" / "repo_mejorado"
 # `texto_original` debe aparecer EXACTAMENTE UNA VEZ en el archivo.
 # ===========================================================================
 
+# Archivos que cambian por REGENERACION, no por parche de texto. Se declaran aqui
+# para que `verificar_arreglos.py` los acepte como cambios legitimos y no los
+# reporte como "alterados sin declarar".
+REGENERADOS = {
+    # Regenerado con `poetry lock` por quien tiene poetry y red (aqui no se puede).
+    # Debe reflejar las dependencias de pyproject.toml, incluidas las 5 anadidas.
+    "poetry.lock",
+}
+
 # --- Modulo nuevo: exportacion tolerante a la ausencia de kaleido ----------
 EXPORTACION_PY = '''"""
 exportacion.py
 ==============
 
-Exportacion de figuras a PNG tolerando la ausencia del motor de imagen.
+Exportacion de figuras a PNG tolerando que el motor de imagen no este disponible.
 
-`plotly` genera el HTML por si mismo, pero para exportar un PNG necesita
-`kaleido`. Sin kaleido, `fig.write_image(...)` lanza RuntimeError (o ValueError,
-segun la version) y el script abortaba DESPUES de haber generado el HTML, de modo
-que se perdia el resto del trabajo y el fallo parecia un bug del script.
+`plotly` genera el HTML por si mismo, pero para exportar un PNG necesita un motor
+externo: `kaleido`. Y desde kaleido 1.x ese motor tampoco dibuja por su cuenta:
+maneja un navegador Chromium real a traves de `choreographer`. Eso da DOS formas
+distintas de fallar, con excepciones de modulos distintos:
 
-Aqui la exportacion a PNG es *best-effort*: si falta el motor se avisa con el
-comando exacto para instalarlo y se continua con el resto de las salidas. Solo se
-absorben los fallos relacionados con kaleido; cualquier otro error se propaga.
+1. kaleido no instalado -> RuntimeError/ValueError cuyo mensaje menciona "kaleido".
+2. kaleido instalado pero **el navegador no arranca** ->
+   `choreographer.browsers._errors.BrowserFailedError` (subclase de RuntimeError)
+   cuyo mensaje NO menciona "kaleido": dice "The browser seemed to close
+   immediately after starting".
+
+La primera version de este modulo solo miraba el mensaje, asi que el caso 2 se le
+escapaba y el script moria igual. Se descubrio al probar con las LIBRERIAS REALES:
+los dobles de prueba no podian reproducirlo. Por eso ahora se mira tambien el
+MODULO de la clase de la excepcion, que es estable entre versiones.
+
+En ambos casos la exportacion a PNG es *best-effort*: se avisa con la instruccion
+concreta y se continua, porque el HTML y los CSV ya estan generados y siguen siendo
+utiles. Cualquier otro error se propaga tal cual.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-MENSAJE = ('falta kaleido, el motor de exportacion de imagenes de plotly. '
-           'Instalalo con:  pip install "kaleido>=1"')
+# Modulos raiz que identifican al motor de imagenes y a su gestor de navegador.
+MODULOS_MOTOR = frozenset({"kaleido", "choreographer"})
 
 
 def exportar_png(fig, ruta, **kwargs) -> bool:
     """
-    Exporta `fig` a PNG. Devuelve True si lo consiguio y False si falta kaleido.
+    Exporta `fig` a PNG. Devuelve True si lo consiguio y False si el motor de
+    imagen no esta disponible (kaleido ausente o navegador que no arranca).
 
-    En el segundo caso imprime un aviso accionable y NO interrumpe el script: el
-    HTML ya esta generado y las demas salidas siguen siendo utiles.
+    En el segundo caso imprime un aviso accionable y NO interrumpe el script.
     """
     try:
         fig.write_image(ruta, **kwargs)
         return True
-    except (ImportError, ModuleNotFoundError) as exc:
-        _avisar(ruta, exc)
-        return False
-    except (RuntimeError, ValueError) as exc:
-        # plotly senala la ausencia del motor con RuntimeError o ValueError; si el
-        # mensaje no menciona kaleido es otro problema y debe verse tal cual.
-        if "kaleido" not in str(exc).lower():
+    except Exception as exc:                                    # noqa: BLE001
+        if not es_fallo_del_motor(exc):
             raise
         _avisar(ruta, exc)
         return False
 
 
+def es_fallo_del_motor(exc: BaseException) -> bool:
+    """
+    True si la excepcion viene del motor de imagenes.
+
+    Se recorre la jerarquia de la clase y se mira su MODULO, no el texto: asi se
+    reconoce `BrowserFailedError` (de `choreographer`), que por mensaje es
+    indistinguible de cualquier otro RuntimeError.
+    """
+    for cls in type(exc).__mro__:
+        if (cls.__module__ or "").split(".")[0] in MODULOS_MOTOR:
+            return True
+    return "kaleido" in str(exc).lower()
+
+
+def _es_fallo_de_navegador(exc: BaseException) -> bool:
+    """True cuando kaleido esta presente pero no logra arrancar el navegador."""
+    return any((cls.__module__ or "").split(".")[0] == "choreographer"
+               for cls in type(exc).__mro__)
+
+
 def _avisar(ruta, exc) -> None:
     detalle = str(exc).splitlines()[0][:140] if str(exc) else type(exc).__name__
-    print(f"      [aviso] no se pudo escribir {Path(ruta).name}: {MENSAJE}")
+    print(f"      [aviso] no se pudo escribir {Path(ruta).name}")
+    if _es_fallo_de_navegador(exc):
+        print("              motivo: kaleido esta instalado, pero el navegador con el")
+        print("              que dibuja no arranca.")
+        print("              opciones, de menos a mas esfuerzo:")
+        print("                1) seguir sin el PNG: el HTML ya se genero y sirve")
+        print("                   para ver el grafico;")
+        print("                2) usar un navegador ya instalado:")
+        print("                   set BROWSER_PATH=C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe")
+        print("                3) instalar el navegador propio de kaleido (requiere red):")
+        print("                   kaleido_get_chrome")
+    else:
+        print('              motivo: falta kaleido. Instalalo con:  pip install "kaleido>=1"')
     print(f"              detalle: {type(exc).__name__}: {detalle}")
     print("              el HTML SI se genero; solo falta la imagen.")
 '''
@@ -125,7 +172,6 @@ def aviso_produccion_ausente(exc: Exception) -> int:
 '''
 
 ARREGLOS: list[tuple[str, str, str, str, str]] = [
-
     # =====================================================================
     # A. Kaleido: los dos scripts que abortaban en fig.write_image()
     # =====================================================================
@@ -133,11 +179,17 @@ ARREGLOS: list[tuple[str, str, str, str, str]] = [
      "Ficha sprint6_sankey_categoria.py:146-147: 'write_image sin comprobacion de "
      "kaleido: dependencia implicita que rompe la ejecucion en entornos minimos'. "
      "El script ya habia escrito el HTML y abortaba despues. Se delega en "
-     "src/exportacion.exportar_png, que avisa y continua.",
+     "src/exportacion.exportar_png, que avisa y continua. Ademas se CORRIGE EL "
+     "MENSAJE: el original imprimia '...html + .png' pasara lo que pasara, asi que "
+     "anunciaba un PNG inexistente (se descubrio al correr con librerias reales).",
      """        fig.write_image(ARTIFACTS / f"{nombre}.png",
-                        width=1100, height=520, scale=2)""",
-     """        exportar_png(fig, ARTIFACTS / f"{nombre}.png",
-                     width=1100, height=520, scale=2)"""),
+                        width=1100, height=520, scale=2)
+        print(f"      {nombre}.html + .png  ({len(flujos)} flujos)")""",
+     """        hubo_png = exportar_png(fig, ARTIFACTS / f"{nombre}.png",
+                                width=1100, height=520, scale=2)
+        producido = f"{nombre}.html + .png" if hubo_png else \\
+            f"{nombre}.html (PNG no generado: ver aviso)"
+        print(f"      {producido}  ({len(flujos)} flujos)")"""),
 
     ("A2", "scripts/sprint6_sankey_categoria.py",
      "Import del helper de exportacion.",
@@ -147,11 +199,17 @@ ARREGLOS: list[tuple[str, str, str, str, str]] = [
     ("A3", "scripts/sprint6_sankey_territorial.py",
      "Ficha sprint6_sankey_territorial.py:125-129: misma dependencia implicita de "
      "kaleido; el log del pipeline auditado registra 'RuntimeError: Image export "
-     "requires the Kaleido package' con EXIT=1.",
+     "requires the Kaleido package' con EXIT=1. Se corrige tambien el mensaje, que "
+     "imprimia la ruta del PNG aunque no se hubiera generado.",
      """    fig.write_image(ARTIFACTS / "sankey_territorial.png",
-                     width=1200, height=620, scale=2)""",
-     """    exportar_png(fig, ARTIFACTS / "sankey_territorial.png",
-                 width=1200, height=620, scale=2)"""),
+                     width=1200, height=620, scale=2)
+    print(f"      {ARTIFACTS / 'sankey_territorial.html'}")
+    print(f"      {ARTIFACTS / 'sankey_territorial.png'}")""",
+     """    hubo_png = exportar_png(fig, ARTIFACTS / "sankey_territorial.png",
+                            width=1200, height=620, scale=2)
+    print(f"      {ARTIFACTS / 'sankey_territorial.html'}")
+    print(f"      {ARTIFACTS / 'sankey_territorial.png'}"
+          + ("" if hubo_png else "   (PNG no generado: ver aviso)"))"""),
 
     ("A4", "scripts/sprint6_sankey_territorial.py",
      "Import del helper de exportacion.",

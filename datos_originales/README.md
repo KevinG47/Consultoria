@@ -40,6 +40,8 @@ cómo se probó. `repo_mejorado/README.md` explica qué funciona ya y cómo usar
 | `construir_repo_mejorado.py` | 1 | — | Construye `repo_mejorado/` desde la copia verbatim |
 | `aplicar_arreglos.py` | 1 | — | Los 30 arreglos, declarados con su ancla y su justificación |
 | `verificar_arreglos.py` | 1 | — | Verifica los arreglos (6 niveles de comprobación) |
+| `probar_librerias_reales.py` | 1 | — | Ejecuta los 6 scripts con las librerías de verdad y comprueba qué salidas se regeneran |
+| `fs_robusto.py` | 1 | — | Borrado de árboles tolerante a OneDrive (reparse points de solo lectura y carpeta bloqueada) |
 | `_stubs/` | 4 | — | Dobles de prueba para poder ejecutar sin seaborn/plotly/duckdb |
 | `README.md`, `ERRATA.md` | 2 | — | Este archivo y las contradicciones conocidas del auditado |
 

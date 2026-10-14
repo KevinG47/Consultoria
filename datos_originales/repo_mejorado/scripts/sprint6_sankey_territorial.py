@@ -128,10 +128,11 @@ def main() -> None:
     fig.write_html(ARTIFACTS / "sankey_territorial.html",
                     include_plotlyjs="cdn",
                     full_html=True)
-    exportar_png(fig, ARTIFACTS / "sankey_territorial.png",
-                 width=1200, height=620, scale=2)
+    hubo_png = exportar_png(fig, ARTIFACTS / "sankey_territorial.png",
+                            width=1200, height=620, scale=2)
     print(f"      {ARTIFACTS / 'sankey_territorial.html'}")
-    print(f"      {ARTIFACTS / 'sankey_territorial.png'}")
+    print(f"      {ARTIFACTS / 'sankey_territorial.png'}"
+          + ("" if hubo_png else "   (PNG no generado: ver aviso)"))
 
 
 if __name__ == "__main__":

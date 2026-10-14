@@ -159,6 +159,11 @@ chequeo de sintaxis y por eso no se ejecutan.
 """
 
 
+# El borrado robusto vive en fs_robusto.py, compartido con los otros scripts
+# de verificacion: una sola implementacion para el mismo problema de OneDrive.
+from fs_robusto import borrar_arbol, vaciar  # noqa: E402
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[3])
     ap.add_argument("--dry-run", action="store_true")
@@ -205,8 +210,28 @@ def main() -> int:
         return 0
 
     if DESTINO.exists():
-        shutil.rmtree(DESTINO)
-    DESTINO.mkdir(parents=True)
+        # Archivos que NO se regeneran al reconstruir y que, sin esta salvaguarda,
+        # se perderian:
+        #   - poetry.lock: lo produce `poetry lock` (aqui no hay poetry ni red).
+        #   - CHANGELOG.md: documento redactado a mano, no un parche de texto.
+        # El README.md SI se rehace: el parche J1 antepone la guia al README
+        # original del proyecto auditado.
+        preservados = {}
+        for nombre in ("poetry.lock", "CHANGELOG.md"):
+            f = DESTINO / nombre
+            if f.exists():
+                preservados[nombre] = f.read_bytes()
+        if preservados:
+            detalle = ", ".join(f"{k} ({len(v)} B)" for k, v in preservados.items())
+            print(f"  [conserva] {detalle}")
+            print("             (no se regeneran: se restauran tras reconstruir)")
+        # Se VACIA en vez de borrar: os.rmdir sobre la carpeta puede
+        # fallar con [WinError 5] porque OneDrive la mantiene abierta, y no
+        # hace falta eliminarla.
+        vaciar(DESTINO)
+    else:
+        preservados = {}
+    DESTINO.mkdir(parents=True, exist_ok=True)
 
     # 1. copia verbatim, saltando residuos
     copiados = 0
@@ -255,6 +280,11 @@ def main() -> int:
 
     (DESTINO / "legacy_referencia" / "README.md").write_text(
         LEGACY_README, encoding="utf-8")
+
+    if preservados:
+        for nombre, contenido in preservados.items():
+            (DESTINO / nombre).write_bytes(contenido)
+        print(f"  [restaurados] {', '.join(preservados)}")
 
     n = sum(1 for p in DESTINO.rglob("*") if p.is_file())
     print(f"\ndestino: {DESTINO.relative_to(RAIZ)}  ({n} archivos)")

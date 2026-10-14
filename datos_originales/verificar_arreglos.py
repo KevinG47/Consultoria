@@ -54,10 +54,13 @@ PRUEBA = RAIZ / "datos_originales" / "_prueba_ejecucion"
 # arreglos, no se escribe a mano: asi esta comprobacion no puede quedarse
 # desactualizada cuando se anade un arreglo.
 sys.path.insert(0, str(RAIZ / "datos_originales"))
-from aplicar_arreglos import ARREGLOS                # noqa: E402
+from aplicar_arreglos import ARREGLOS, REGENERADOS    # noqa: E402
 from construir_repo_mejorado import LEGACY           # noqa: E402
+from fs_robusto import borrar_arbol                  # noqa: E402
 
-TOCADOS = {ruta for _, ruta, _, _, _ in ARREGLOS} | {"docs/manual.ipynb"}
+TOCADOS = ({ruta for _, ruta, _, _, _ in ARREGLOS}
+           | REGENERADOS
+           | {"docs/manual.ipynb"})
 NUEVOS = {"datos/raw/README.md", "datos/processed/README.md",
           "models/README.md", "src/exportacion.py",
           "CHANGELOG.md", "legacy_referencia/README.md"}
@@ -169,21 +172,55 @@ def connect(*a, **k):
 '''
 
 
-def preparar_stubs() -> None:
-    if STUBS.exists():
-        shutil.rmtree(STUBS)
-    (STUBS / "plotly").mkdir(parents=True)
-    (STUBS / "seaborn.py").write_text(SEABORN_STUB, encoding="utf-8")
-    (STUBS / "plotly" / "__init__.py").write_text("", encoding="utf-8")
-    (STUBS / "plotly" / "graph_objects.py").write_text(
-        PLOTLY_GRAPH_OBJECTS, encoding="utf-8")
-    (STUBS / "duckdb.py").write_text(DUCKDB_STUB, encoding="utf-8")
+FALTANTES: list[str] = []      # lo rellena preparar_stubs(); lo usa el resumen
+
+
+def preparar_stubs() -> list[str]:
+    """
+    Crea dobles SOLO para las dependencias que falten de verdad.
+
+    Antes se creaban siempre y, al ir primero en el PYTHONPATH, tapaban a las
+    librerias reales: con seaborn/plotly/duckdb instalados la verificacion seguia
+    probando los dobles, que es la prueba mas debil. Ahora, si una dependencia
+    esta instalada se usa la de verdad; el doble queda como respaldo para
+    entornos minimos.
+    """
+    import importlib.util
+
+    faltantes = [m for m in ("seaborn", "plotly", "duckdb")
+                 if importlib.util.find_spec(m) is None]
+
+    # borrar_arbol (no shutil.rmtree): OneDrive deja los directorios como
+    # reparse points de solo lectura y rmtree falla con [WinError 5].
+    borrar_arbol(STUBS)
+    # exist_ok: borrar_arbol deja la carpeta vacia si no puede borrarla
+    # (OneDrive la mantiene abierta), asi que puede seguir existiendo.
+    STUBS.mkdir(parents=True, exist_ok=True)
+    if "seaborn" in faltantes:
+        (STUBS / "seaborn.py").write_text(SEABORN_STUB, encoding="utf-8")
+    if "plotly" in faltantes:
+        (STUBS / "plotly").mkdir()
+        (STUBS / "plotly" / "__init__.py").write_text("", encoding="utf-8")
+        (STUBS / "plotly" / "graph_objects.py").write_text(
+            PLOTLY_GRAPH_OBJECTS, encoding="utf-8")
+    if "duckdb" in faltantes:
+        (STUBS / "duckdb.py").write_text(DUCKDB_STUB, encoding="utf-8")
+
     (STUBS / "README.md").write_text(
-        "# _stubs/\n\nDobles de prueba minimos (seaborn, plotly, duckdb) para poder\n"
-        "EJECUTAR los scripts de `repo_mejorado/` en un entorno sin esas\n"
-        "dependencias instalables. Los genera `verificar_arreglos.py` y no forman\n"
-        "parte de la version mejorada: existen solo para la verificacion.\n",
+        "# _stubs/\n\nDobles de prueba minimos para poder EJECUTAR los scripts de\n"
+        "`repo_mejorado/` cuando el entorno no tiene la dependencia de verdad.\n"
+        "Los genera `verificar_arreglos.py`, que solo crea los que faltan: si\n"
+        "seaborn/plotly/duckdb estan instalados se usan los reales.\n"
+        f"En esta corrida se usaron dobles para: {faltantes or 'ninguna'}.\n",
         encoding="utf-8")
+    global FALTANTES
+    FALTANTES = faltantes
+    if faltantes:
+        print(f"  [dobles] faltan de verdad: {', '.join(faltantes)}")
+    else:
+        print("  [dobles] ninguna: todas las dependencias estan instaladas, "
+              "se usan las REALES")
+    return faltantes
 
 
 def entorno_con_stubs(base: Path) -> dict:
@@ -258,6 +295,13 @@ def n1_limpieza() -> None:
         if rel in en_aud:
             continue
         sobrantes.append(f"{rel} (archivo no declarado)")
+
+    # Los archivos nuevos declarados tambien deben EXISTIR. Sin esta comprobacion,
+    # borrar CHANGELOG.md pasaba desapercibido: la comprobacion de sobrantes solo
+    # miraba que no hubiera archivos de mas, no que estuvieran los de menos.
+    for rel in sorted(NUEVOS):
+        if rel not in en_mej:
+            faltan.append(f"{rel} (archivo nuevo declarado y ausente)")
 
     print(f"  archivos en repo_auditado : {len(en_aud)}")
     print(f"  archivos en repo_mejorado : {len(en_mej)}")
@@ -435,6 +479,19 @@ def n1_exportacion() -> None:
         def write_image(self, ruta, **k):
             raise ValueError("alguna otra cosa salio mal")
 
+    # Caso REAL de kaleido 1.x: esta instalado pero el navegador no arranca. La
+    # excepcion viene de choreographer y su mensaje NO menciona "kaleido", asi que
+    # la primera version del guardia (que miraba el texto) la dejaba escapar y el
+    # script moria igual. Esta prueba es la regresion de ese hallazgo.
+    class BrowserFailedError(RuntimeError):
+        pass
+    BrowserFailedError.__module__ = "choreographer.browsers._errors"
+
+    class FigSinNavegador:
+        def write_image(self, ruta, **k):
+            raise BrowserFailedError(
+                "The browser seemed to close immediately after starting.")
+
     print("  caso 1: falta kaleido -> debe devolver False y NO lanzar")
     r1 = exportar_png(FigSinKaleido(), STUBS / "x.png", width=100)
     print(f"          devolvio {r1}")
@@ -442,6 +499,17 @@ def n1_exportacion() -> None:
         fallos.append("exportar_png no devolvio False sin kaleido")
     else:
         print("  -> PRUEBA: el script ya no aborta por falta de kaleido")
+
+    print("  caso 1b: kaleido presente pero el NAVEGADOR no arranca "
+          "(BrowserFailedError de choreographer) -> debe devolver False")
+    r1b = exportar_png(FigSinNavegador(), STUBS / "x2.png", width=100)
+    print(f"          devolvio {r1b}")
+    if r1b is not False:
+        fallos.append("exportar_png no reconoce el fallo del navegador "
+                      "(BrowserFailedError de choreographer)")
+    else:
+        print("  -> PRUEBA: reconoce el fallo por el MODULO de la excepcion, "
+              "no por el texto del mensaje")
 
     print("  caso 2: kaleido presente -> debe escribir y devolver True")
     r2 = exportar_png(FigOk(), STUBS / "y.png", width=100)
@@ -525,9 +593,17 @@ def n1_aviso_produccion() -> None:
 # NIVEL 2
 # ---------------------------------------------------------------------------
 def n2_scripts() -> None:
-    titulo("NIVEL 2 — Ejecucion de los 6 scripts con dobles de prueba")
-    print("  AVISO: los dobles sustituyen seaborn/plotly/duckdb, que no se pueden")
-    print("  instalar aqui. Se prueba el FLUJO y los ARREGLOS, no el dibujo real.")
+    titulo("NIVEL 2 — Ejecucion de los 6 scripts")
+    faltantes = preparar_stubs()
+    if faltantes:
+        print("  AVISO: se sustituyen con dobles las dependencias ausentes "
+              f"({', '.join(faltantes)}).")
+        print("  Se prueba el FLUJO y los ARREGLOS, no el dibujo real.")
+        print("  Para la prueba con librerias de verdad: "
+              "python datos_originales/probar_librerias_reales.py")
+    else:
+        print("  Todas las dependencias estan instaladas: esta corrida usa las "
+              "librerias REALES.")
     print("  Los scripts ESCRIBEN figuras y CSV, asi que se ejecutan sobre una")
     print("  copia desechable (_prueba_ejecucion) para no contaminar el entregable.")
     print("  Para pasar de la carga inicial se deja ahi el consolidado en")
@@ -541,7 +617,7 @@ def n2_scripts() -> None:
         "scripts/sprint6_sankey_territorial.py":
             ({0}, "ya no aborta sin kaleido: genera el HTML y avisa del PNG"),
         "scripts/sprint6_sankey_categoria.py":
-            ({0}, "guardia de kaleido y recorrido completo de los 5 pares"),
+            ({0}, "guardia de kaleido y recorrido de todos los pares de la entrada"),
         "scripts/sprint5_produccion.py":
             ({3}, "avisa de datos faltantes y sale con codigo 3, sin traceback"),
         "scripts/sprint6_ocde_composicion.py":
@@ -550,9 +626,8 @@ def n2_scripts() -> None:
             ({3}, "avisa de la base DuckDB ausente y sale con codigo 3"),
     }
 
-    if PRUEBA.exists():
-        shutil.rmtree(PRUEBA)
-    shutil.copytree(MEJORADO, PRUEBA)
+    borrar_arbol(PRUEBA)
+    shutil.copytree(MEJORADO, PRUEBA, dirs_exist_ok=True)
     fixture = PRUEBA / "datos" / "raw" / "investigadores_consolidado.csv"
     origen = PRUEBA / "datos" / "tarea_join" / "investigadores_consolidado.csv"
     try:
@@ -599,7 +674,7 @@ def n2_scripts() -> None:
                 print(f"      -> CSV de flujos reescrito: {csv_fl.exists()}")
     finally:
         if PRUEBA.exists():
-            shutil.rmtree(PRUEBA)
+            borrar_arbol(PRUEBA)
             print("\n  [copia desechable] _prueba_ejecucion eliminada")
 
 
@@ -624,11 +699,23 @@ def main() -> int:
     print(f"  avisos : {len(avisos)}")
     for a in avisos:
         print(f"    [!] {a}")
-    print("\n  NO VERIFICABLE EN ESTE ENTORNO (se declara, no se disimula):")
-    print("    - poetry.lock: no hay poetry ni red para regenerarlo.")
-    print("    - PNG/Sankey reales: faltan plotly y kaleido.")
-    print("    - Conversaciones DuckDB reales: falta duckdb.")
-    print("    - El manual.ipynb no se ejecuta: faltan openpyxl, seaborn y plotly.")
+    print("\n  ALCANCE DE ESTA VERIFICACION (se declara, no se disimula):")
+    if FALTANTES:
+        print(f"    - Se sustituyeron con DOBLES: {', '.join(FALTANTES)}.")
+        print("      Por eso no se probaron el dibujo ni las consultas reales.")
+        print("      Con las dependencias instaladas, la prueba fuerte es:")
+        print("        python datos_originales/probar_librerias_reales.py")
+    else:
+        print("    - Todas las dependencias estan instaladas: NO se uso ningun doble")
+        print("      (seaborn, plotly, kaleido, duckdb, openpyxl, nbformat).")
+        print("      Para la prueba con foco en librerias reales y salidas:")
+        print("        python datos_originales/probar_librerias_reales.py")
+    print("    - PNG/Sankey: si kaleido no logra arrancar un navegador, el script")
+    print("      avisa y continua; el HTML y los CSV si se generan.")
+    print("    - docs/manual.ipynb: se valida sintaxis y coherencia con el")
+    print("      generador, no su corrida (3 secciones exigen produccion).")
+    if (RAIZ / "datos_originales" / "repo_mejorado" / "poetry.lock").exists():
+        print("    - poetry.lock: presente y preservado por el constructor.")
     if not fallos:
         print("\n[OK] Todos los arreglos verificables pasan.")
         return 0

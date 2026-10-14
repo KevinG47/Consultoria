@@ -144,9 +144,11 @@ def main() -> None:
         fig.write_html(ARTIFACTS / f"{nombre}.html",
                        include_plotlyjs="cdn",
                        full_html=True)
-        exportar_png(fig, ARTIFACTS / f"{nombre}.png",
-                     width=1100, height=520, scale=2)
-        print(f"      {nombre}.html + .png  ({len(flujos)} flujos)")
+        hubo_png = exportar_png(fig, ARTIFACTS / f"{nombre}.png",
+                                width=1100, height=520, scale=2)
+        producido = f"{nombre}.html + .png" if hubo_png else \
+            f"{nombre}.html (PNG no generado: ver aviso)"
+        print(f"      {producido}  ({len(flujos)} flujos)")
         todos_flujos.append(flujos)
 
     print("\n[3/3] Exportando flujos consolidados...")
