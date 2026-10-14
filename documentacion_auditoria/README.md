@@ -97,7 +97,20 @@ cierre contra la rúbrica: `data/validacion/validacion_cierre_D.md` y
 ### Memoria del agente de IA (RAG + grafo + reglas)
 
 Sistema de gestión de información del agente, en `src/memoria/`, ejecutado sobre
-los datos reales del proyecto:
+los datos reales del proyecto.
+
+> **Dónde ejecutarlo.** El paquete se importa como `memoria`, así que estos
+> comandos se lanzan **desde `documentacion_auditoria/src/`**:
+>
+> ```bash
+> cd documentacion_auditoria/src     # desde la raíz del repositorio
+> python -m memoria validar
+> ```
+>
+> Desde `documentacion_auditoria/` también funciona con `python -m src.memoria …`.
+> Los scripts de análisis, en cambio, se lanzan desde la raíz por ruta completa
+> (`python documentacion_auditoria/src/eda_longitudinal.py`), porque resuelven sus
+> rutas con `Path(__file__)`.
 
 ```bash
 python -m memoria indexar                    # memoria semántica (TF-IDF; ver decisión D007)
