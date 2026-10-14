@@ -268,7 +268,82 @@ No es un detalle decorativo: confirma que las dos implementaciones son coherente
 
 La columna «estimador más cercano al censo» se calcula comparando cada estimación con el valor poblacional verdadero. Es una comprobación valiosa **porque aquí el censo se conoce**, y sirve para verificar que las implementaciones no están sesgadas. Pero **no** es un criterio válido para elegir estimador: el error realizado es **una sola realización** de la muestra. Si se hubiera sorteado otra semilla, el orden podría cambiar. El criterio correcto para elegir es la **varianza** (la ganancia de precisión de la sección 6.3), que sí es una propiedad del estimador y no del sorteo concreto. Por eso el documento reporta las dos cosas por separado y no elige por el error observado.
 
-## 7. Conclusión: qué se reporta y por qué
+## 7. Diagnósticos y verificación de supuestos
+
+Hedlin et al. (2001) recomiendan no dar por buena una estimación asistida por modelo sin antes analizar **los g-weights, los residuos y los diagnósticos estándar de regresión**. Esta sección los presenta. El entorno no dispone de `statsmodels`, así que cada prueba se implementó directamente: la corrección de Lilliefors por Monte Carlo (el KS con parámetros estimados de los propios datos no es válido), Breusch-Pagan, una versión recortada de White, Levene y Bartlett, errores estándar robustos HC3 y los g-weights del GREG.
+
+### 7.1 Normalidad de la única variable continua: la edad
+
+| Conjunto | n | Asimetría | Curtosis (exceso) | Shapiro-Wilk W (p) | Lilliefors D (p) |
+|---|---:|---:|---:|---|---|
+| Edad — **censo** | 30 085 | **25,396** | **1 562,470** | 0,8386 (1,34e-57) | 0,0927 (< 10⁻³⁰⁰) |
+| Edad — muestra MAS | 2 224 | **0,493** | **-0,212** | 0,9774 (2,78e-18) | 0,0681 (< 10⁻³⁰⁰) |
+| Residuos del modelo de edad | 2 224 | **0,495** | **-0,130** | 0,9797 (2,79e-17) | 0,0630 (< 10⁻³⁰⁰) |
+
+**Conclusión, y aquí está el matiz importante.** Con n grande las pruebas formales rechazan casi siempre, y este caso lo ilustra: en la muestra el p-valor de Shapiro-Wilk es 2,78e-18 y el de Lilliefors es < 10⁻³⁰⁰, es decir rechazan la normalidad. Pero la asimetría (0,493) y el exceso de curtosis (-0,212) están **dentro de los umbrales aceptables** (|asimetría| < 1 y |curtosis| < 7; Field, 2009, recomienda precisamente los momentos para n > 200). El rechazo es un efecto del tamaño, no una desviación relevante.
+
+**El censo cuenta otra historia**: asimetría 25,40 y curtosis 1 562,5, valores incompatibles con una normal y que no son ruido: los producen los 11 registros con más de 100 años (máximo 956,25). Dicho de otro modo, **la conclusión sobre normalidad depende de si se analiza el censo o la muestra**, porque la muestra no captura esa cola patológica. Es un argumento más para (i) reportar el censo y (ii) tratar esas edades como error de captura y no como una característica de la población.
+
+Conviene añadir que la normalidad de `y` **no es un supuesto del que dependa la validez del GREG** (consistente por diseño) ni la insesgadez de MCO: solo condiciona los intervalos en muestras finitas. Por eso se evaluó también la normalidad de los **residuos**, que es la que importa: asimetría 0,495 y exceso de curtosis -0,130, ambas aceptables, con pruebas formales que vuelven a rechazar por tamaño. El Q-Q plot correspondiente está en `data/memoria/eda/07_qq_edad.png`.
+
+### 7.2 Heterocedasticidad del modelo GREG
+
+Modelo diagnosticado: la edad con auxiliares género, gran área y región (2 224 observaciones, 18 parámetros).
+
+| Prueba | Estadístico | gl | p | Lectura |
+|---|---:|---:|---|---|
+| Breusch-Pagan | LM = 25,10 | 17 | 9,24e-02 | **sin evidencia** de heterocedasticidad al 5 % |
+| White (recortada) | LM = 62,12 | 152 | 1,00e+00 | degenerada: ver nota |
+| Levene entre celdas | 1,057 | — | 3,52e-01 | **sin evidencia** |
+| Bartlett entre celdas | 59,99 | — | 8,43e-01 | **sin evidencia** |
+
+**Sobre la prueba de White: aquí no aplica limpiamente, y conviene explicar por qué.** Con regresores **solo dicotómicos**, el cuadrado de una variable dummy es la propia dummy y el producto cruzado de dos dummies es otra dummy. Los términos adicionales que White introduce son por tanto colineales con los niveles, y la matriz de diseño queda singular. Se ejecutó una versión recortada (únicamente los 135 productos cruzados distintos): da LM = 62,1 con 152 grados de libertad, un resultado degenerado que no aporta información. Lo apropiado con un diseño factorial de este tipo es comparar las **varianzas entre las celdas del modelo**, que es lo que hacen Levene y Bartlett, y ninguna de las dos encuentra diferencias.
+
+Queda un matiz honesto: la razón entre la varianza mayor y la menor de las celdas es de 30,4×, que en abstracto parece grande. La razón de que los contrastes no la detecten es que las celdas con varianza extrema son muy pequeñas (la menor tiene 5 observaciones), y un contraste no puede declarar una diferencia estable con esa base. Se reportan las dos cosas en lugar de elegir la que conviene.
+
+**¿Se justifican errores robustos?** No. El error estándar clásico de la media ajustada es 1,1450 y el robusto HC3 es 1,1206: la razón es **0,979**, es decir la corrección robusta no solo no agranda el error sino que lo reduce ligeramente. Con esa evidencia, un modelo con errores robustos añadiría complejidad sin cambiar ninguna conclusión.
+
+**El caso de la retención es distinto y hay que decirlo.** En una variable binaria la heterocedasticidad es **estructural** —`Var(y) = p(1−p)` depende de `p`—, así que Breusch-Pagan la detecta siempre (LM = 125,1, p = 1,92e-10). No es un defecto del ajuste: es la razón por la que el GREG de la retención se implementó con un modelo **logístico** y no con una probabilidad lineal. Como comprobación de que la lineal no bastaba, sus valores ajustados se salen del intervalo [0, 1]: van de -0,028 a 1,126.
+
+### 7.3 g-weights e influencia
+
+Los g-weights son los pesos implícitos que el GREG introduce sobre los pesos de diseño: `w_i^G = w_i · g_i`, con `g_i = 1 + λ′x_i`. Un g-weight grande significa que unas pocas observaciones están cargando con toda la corrección del modelo, y es la primera cosa que Hedlin et al. (2001) recomiendan mirar.
+
+| Modelo | Mínimo | q05 | Mediana | q95 | Máximo | \> 5 | \> 10 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Edad (género, área, región) | 0,584 | 0,827 | 1,020 | 1,103 | **1,471** | 0 | 0 |
+| Retención 2019→2021 (lineal) | 0,374 | 0,753 | 1,006 | 1,228 | **2,696** | 0 | 0 |
+
+**No hay ningún g-weight extremo**: el máximo es 1,471 en el modelo de edad y 2,696 en el de retención, muy por debajo de los umbrales de alarma de 5 y 10. La media es exactamente 1, como debe ser. Adicionalmente se comprobó la propiedad de calibración: `Σ w_i g_i = N` se cumple de forma exacta (razón 1,000000).
+
+**Un hallazgo que sí conviene declarar.** Los totales auxiliares se reproducen exactamente **salvo dos columnas** de género, y por una razón de diseño, no de cálculo: las categorías *Intersexual* y *No disponible* tienen cero observaciones en la muestra, así que ninguna observación las representa y su total poblacional no es calibrable. La matriz de calibración tiene número de condición 2,3e+17, es decir numéricamente singular, precisamente por esas columnas vacías. Es un límite del método frente a categorías no representadas, y la solución —si interesara— sería de diseño: garantizar representación de esas categorías o colapsarlas.
+
+**Observaciones influyentes.** Leverage medio 0,0072 y máximo 0,0941; distancia de Cook máxima **0,0211**. Aquí hay que leer los umbrales con cuidado: superan el umbral de Cook (`4/n` = 0,0018) 79 observaciones y el de leverage (`2k/n` = 0,0162) 100, pero el criterio convencional de preocupación es Cook > 1 y el máximo observado es 0,0211: **dos órdenes de magnitud por debajo**. Con n grande esos umbrales señalizan muchas observaciones sin que ninguna sea materialmente influyente. Lo que decide es la magnitud, no el recuento.
+
+Para no quedarse en la teoría, se recalculó el estimador GREG **eliminando** las observaciones de g más alto y se midió el efecto:
+
+| Se eliminan | Estimador de la edad | Cambio | g máximo restante |
+|---|---:|---:|---:|
+| las 0 de mayor g | 45,1528 | 0,00000 | 1,471 |
+| las 5 de mayor g | 45,1423 | -0,01054 | 2,428 |
+| las 10 de mayor g | 45,1110 | -0,04178 | 8,205 |
+| las 25 de mayor g | 45,1705 | 0,01766 | 1,314 |
+| ninguna (completo) | 45,1528 | 0,00000 | 1,471 |
+
+El efecto máximo de quitar las 25 observaciones con mayor g es de 0,04178 años, es decir **menos de un mes de edad media**: ninguna observación individual está moviendo el resultado.
+
+### 7.4 Conclusión: ¿es razonable el modelo GREG?
+
+**Sí, con dos matices documentados.** La evidencia:
+
+1. **Sin g-weights extremos.** Máximo 1,471 (edad) y 2,696 (retención); ninguno supera 5. La calibración se verifica exactamente (`Σ w_i g_i = N`).
+2. **Sin observaciones influyentes materiales.** Distancia de Cook máxima 0,0211, muy por debajo del nivel de preocupación; quitar las observaciones de mayor g mueve la estimación menos de 0,05 años.
+3. **Sin heterocedasticidad que exija corrección.** Breusch-Pagan p = 9,24e-02, Levene p = 3,52e-01, Bartlett p = 8,43e-01; y la razón HC3/clásico de 0,979 confirma que los errores robustos no aportan.
+4. **La normalidad no es un supuesto crítico.** No se cumple en el censo por 11 edades erróneas, pero la consistencia del GREG es por diseño y no depende de ella.
+
+**Los dos matices.** Primero, los totales de dos categorías de género no son calibrables porque no tienen representación en la muestra: el límite está en el diseño muestral, no en el estimador, y se declara en lugar de omitirse. Segundo, la prueba de White no es aplicable a un diseño de solo dicotómicas y se sustituye por contrastes de homocedasticidad entre celdas, que es lo apropiado para un modelo factorial. Con esas salvedades, los diagnósticos respaldan el uso del GREG que se reporta en las secciones 5 y 6.
+
+## 8. Conclusión: qué se reporta y por qué
 
 1. **Las cifras oficiales del análisis longitudinal son las del censo.** La base completa está disponible, así que no hay razón para reportar una estimación cuando se puede reportar el parámetro. Toda la maquinaria de muestreo de este documento tiene un valor **metodológico y de verificación**, no de sustitución.
 2. **Si hubiera que estimar a partir de la muestra, el MAS simple ya sería suficiente y es el que menos supuestos exige.** Es insesgado por diseño y en esta aplicación resultó el más cercano al censo en 4 de los 6 pares, precisamente porque la muestra quedó equilibrada.
@@ -288,6 +363,9 @@ La columna «estimador más cercano al censo» se calcula comparando cada estima
 - StatsRef.com (s. f.). *Exploratory data analysis*. En *Statistics Reference Online*. — «EDA ... is typically the first stage of any such analysis»; síntesis de la posición de Cochran (1977) sobre el trabajo exploratorio previo.
 - OhioLINK ETD Center. *Post-stratification variance*. — La distribución asintótica del estimador post-estratificado coincide con la del estimador de un muestreo estratificado con asignación proporcional (Cochran, 1977; Lohr, 1999).
 - Canadian Journal of Forest Research (2019). *Efficiency of post-stratification for a large-scale forest inventory*. — Recomendación de Cochran (1977, pp. 132-134) sobre el número de estratos y el tamaño mínimo por estrato.
+- Hedlin, D., y Falvey, H. *Does the model matter for GREG estimation? A business survey example*. — Análisis de g-weights, residuos y diagnósticos de regresión para verificar que una estimación GREG es razonable. Nota de transparencia: la ficha se verificó por búsqueda en línea ([Semantic Scholar](https://www.semanticscholar.org/paper/Does-the-model-matter-for-GREG-estimation-A-survey-Hedlin-Falvey/d3c64e3a52567dda61f325c5c392339f9950e4b1) y [DiVA, Universidad de Estocolmo](https://su.diva-portal.org/smash/record.jsf?pid=diva2%3A584783)), pero el año (2001) procede del enunciado de la tarea: el metadato accesible no permitió confirmarlo en este entorno.
+- Valliant, R. et al. *svydiags: Regression Model Diagnostics for Survey Data* [paquete de R]. CRAN. https://cran.r-project.org/web/packages/svydiags/refman/svydiags.html — Diagnósticos de regresión (residuos, leverage, influencia) adaptados a datos de encuesta.
+- Field, A. (2009). *Discovering Statistics Using SPSS* (3rd ed.). SAGE. — Recomendación de usar asimetría y curtosis como criterio principal de normalidad cuando n > 200.
 
 ## Anexo: artefactos y reproducibilidad
 
@@ -298,11 +376,18 @@ La columna «estimador más cercano al censo» se calcula comparando cada estima
 | `data/memoria/eda/` | 6 gráficas del EDA |
 | `src/estimadores_longitudinal.py` | Post-estratificación y GREG (Partes 2-3) |
 | `data/memoria/estimadores_resultados.json` | Cifras de los estimadores |
+| `src/diagnosticos_greg.py` | Diagnósticos de supuestos y g-weights (§7) |
+| `data/memoria/diagnosticos_greg.json` | Cifras de los diagnósticos |
+| `data/memoria/eda/07_qq_edad.png` | Q-Q plot de la edad (censo y muestra) |
+| `data/memoria/eda/08_residuos_vs_ajustados.png` | Residuos vs ajustados y scale-location |
+| `data/memoria/eda/09_gweights.png` | Distribución de los g-weights |
+| `data/memoria/eda/10_influencia.png` | Distancia de Cook y leverage |
 | `src/generar_metodologia_muestreo.py` | Genera este documento |
 
 ```bash
 python src/eda_longitudinal.py
 python src/estimadores_longitudinal.py
+python src/diagnosticos_greg.py
 python src/generar_metodologia_muestreo.py
 ```
 

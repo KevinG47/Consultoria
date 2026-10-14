@@ -30,6 +30,26 @@ SALIDA = DOC / "metodologia_muestreo.md"
 E = json.loads((MEM / "eda_resultados.json").read_text(encoding="utf-8"))
 S = json.loads((MEM / "estimadores_resultados.json").read_text(encoding="utf-8"))
 L = json.loads((MEM / "longitudinal_resultados.json").read_text(encoding="utf-8"))
+G = json.loads((MEM / "diagnosticos_greg.json").read_text(encoding="utf-8"))
+
+NORM = G["normalidad"]
+ME = G["modelo_edad"]
+MR = G["modelo_retencion_lpm"]
+GRE = ME["g_weights"]
+GRR = MR["g_weights"]
+
+
+def sci(x, dec=2):
+    """Notación científica con coma decimal."""
+    return f"{x:.{dec}e}".replace(".", ",")
+
+
+def pval(x):
+    return "< 10⁻³⁰⁰" if x < 1e-300 else sci(x)
+
+
+def num2(x, dec=4):
+    return f"{x:,.{dec}f}".replace(",", "\x00").replace(".", ",").replace("\x00", " ")
 
 RET = S["retencion"]
 PS_CL = "post_estratificado_colapsado"
@@ -557,7 +577,208 @@ A("La columna «estimador más cercano al censo» se calcula comparando cada "
 A("")
 
 # ============================ 7. CONCLUSIÓN ===============================
-A("## 7. Conclusión: qué se reporta y por qué")
+A("## 7. Diagnósticos y verificación de supuestos")
+A("")
+A("Hedlin et al. (2001) recomiendan no dar por buena una estimación asistida por "
+  "modelo sin antes analizar **los g-weights, los residuos y los diagnósticos "
+  "estándar de regresión**. Esta sección los presenta. El entorno no dispone de "
+  "`statsmodels`, así que cada prueba se implementó directamente: la corrección de "
+  "Lilliefors por Monte Carlo (el KS con parámetros estimados de los propios datos "
+  "no es válido), Breusch-Pagan, una versión recortada de White, Levene y Bartlett, "
+  "errores estándar robustos HC3 y los g-weights del GREG.")
+A("")
+A("### 7.1 Normalidad de la única variable continua: la edad")
+A("")
+A("| Conjunto | n | Asimetría | Curtosis (exceso) | Shapiro-Wilk W (p) | Lilliefors D (p) |")
+A("|---|---:|---:|---:|---|---|")
+for clave, etq in (("censo", "Edad — **censo**"), ("muestra", "Edad — muestra MAS")):
+    d = NORM[clave]
+    A(f"| {etq} | {num2(d['n'], 0)} | **{num2(d['asimetria'], 3)}** | "
+      f"**{num2(d['curtosis_exceso'], 3)}** | {num2(d['shapiro']['W'], 4)} "
+      f"({pval(d['shapiro']['p_valor'])}) | {num2(d['lilliefors']['estadistico_D'], 4)} "
+      f"({pval(d['lilliefors']['p_valor_montecarlo'])}) |")
+d_res = ME["normalidad_residuos"]
+A(f"| Residuos del modelo de edad | {num2(d_res['n'], 0)} | "
+  f"**{num2(d_res['asimetria'], 3)}** | **{num2(d_res['curtosis_exceso'], 3)}** | "
+  f"{num2(d_res['shapiro']['W'], 4)} ({pval(d_res['shapiro']['p_valor'])}) | "
+  f"{num2(d_res['lilliefors']['estadistico_D'], 4)} "
+  f"({pval(d_res['lilliefors']['p_valor_montecarlo'])}) |")
+A("")
+A("**Conclusión, y aquí está el matiz importante.** Con n grande las pruebas formales "
+  "rechazan casi siempre, y este caso lo ilustra: en la muestra el p-valor de "
+  f"Shapiro-Wilk es {pval(NORM['muestra']['shapiro']['p_valor'])} y el de Lilliefors "
+  f"es {pval(NORM['muestra']['lilliefors']['p_valor_montecarlo'])}, es decir rechazan "
+  f"la normalidad. Pero la asimetría ({num2(NORM['muestra']['asimetria'], 3)}) y el "
+  f"exceso de curtosis ({num2(NORM['muestra']['curtosis_exceso'], 3)}) están **dentro "
+  f"de los umbrales aceptables** (|asimetría| < 1 y |curtosis| < 7; Field, 2009, "
+  f"recomienda precisamente los momentos para n > 200). El rechazo es un efecto del "
+  f"tamaño, no una desviación relevante.")
+A("")
+A(f"**El censo cuenta otra historia**: asimetría {num2(NORM['censo']['asimetria'], 2)} "
+  f"y curtosis {num2(NORM['censo']['curtosis_exceso'], 1)}, valores incompatibles con "
+  f"una normal y que no son ruido: los producen los "
+  f"{num2(E['edad']['mayores_100'], 0)} registros con más de 100 años (máximo "
+  f"{num2(E['edad']['maximo'], 2)}). Dicho de otro modo, **la conclusión sobre "
+  f"normalidad depende de si se analiza el censo o la muestra**, porque la muestra no "
+  f"captura esa cola patológica. Es un argumento más para (i) reportar el censo y "
+  f"(ii) tratar esas edades como error de captura y no como una característica de la "
+  f"población.")
+A("")
+A(f"Conviene añadir que la normalidad de `y` **no es un supuesto del que dependa la "
+  f"validez del GREG** (consistente por diseño) ni la insesgadez de MCO: solo "
+  f"condiciona los intervalos en muestras finitas. Por eso se evaluó también la "
+  f"normalidad de los **residuos**, que es la que importa: asimetría "
+  f"{num2(d_res['asimetria'], 3)} y exceso de curtosis "
+  f"{num2(d_res['curtosis_exceso'], 3)}, ambas aceptables, con pruebas formales que "
+  f"vuelven a rechazar por tamaño. El Q-Q plot correspondiente está en "
+  f"`data/memoria/eda/07_qq_edad.png`.")
+A("")
+A("### 7.2 Heterocedasticidad del modelo GREG")
+A("")
+A(f"Modelo diagnosticado: la edad con auxiliares género, gran área y región "
+  f"({num2(ME['n_modelo'], 0)} observaciones, {num2(ME['n_parametros'], 0)} "
+  f"parámetros).")
+A("")
+A("| Prueba | Estadístico | gl | p | Lectura |")
+A("|---|---:|---:|---|---|")
+bpv = ME["breusch_pagan"]
+A(f"| Breusch-Pagan | LM = {num2(bpv['LM'], 2)} | {bpv['gl']} | {pval(bpv['p_valor'])} "
+  f"| **sin evidencia** de heterocedasticidad al 5 % |")
+wh = ME["white_recortada"]
+A(f"| White (recortada) | LM = {num2(wh['LM'], 2)} | {wh['gl']} | {pval(wh['p_valor'])} "
+  f"| degenerada: ver nota |")
+hc = ME["homocedasticidad_celdas"]
+A(f"| Levene entre celdas | {num2(hc['levene']['estadistico'], 3)} | — | "
+  f"{pval(hc['levene']['p_valor'])} | **sin evidencia** |")
+A(f"| Bartlett entre celdas | {num2(hc['bartlett']['estadistico'], 2)} | — | "
+  f"{pval(hc['bartlett']['p_valor'])} | **sin evidencia** |")
+A("")
+A(f"**Sobre la prueba de White: aquí no aplica limpiamente, y conviene explicar por "
+  f"qué.** Con regresores **solo dicotómicos**, el cuadrado de una variable dummy es "
+  f"la propia dummy y el producto cruzado de dos dummies es otra dummy. Los términos "
+  f"adicionales que White introduce son por tanto colineales con los niveles, y la "
+  f"matriz de diseño queda singular. Se ejecutó una versión recortada (únicamente los "
+  f"{num2(wh['terminos_cruzados'], 0)} productos cruzados distintos): da LM = "
+  f"{num2(wh['LM'], 1)} con {wh['gl']} grados de libertad, un resultado degenerado que "
+  f"no aporta información. Lo apropiado con un diseño factorial de este tipo es "
+  f"comparar las **varianzas entre las celdas del modelo**, que es lo que hacen "
+  f"Levene y Bartlett, y ninguna de las dos encuentra diferencias.")
+A("")
+A(f"Queda un matiz honesto: la razón entre la varianza mayor y la menor de las celdas "
+  f"es de {num2(hc['varianza_max']/hc['varianza_min'], 1)}×, que en abstracto parece "
+  f"grande. La razón de que los contrastes no la detecten es que las celdas con "
+  f"varianza extrema son muy pequeñas (la menor tiene "
+  f"{num2(hc['celda_mas_pequena'], 0)} observaciones), y un contraste no puede "
+  f"declarar una diferencia estable con esa base. Se reportan las dos cosas en lugar "
+  f"de elegir la que conviene.")
+A("")
+rob = ME["errores_robustos"]
+A(f"**¿Se justifican errores robustos?** No. El error estándar clásico de la media "
+  f"ajustada es {num2(rob['se_clasico_media'], 4)} y el robusto HC3 es "
+  f"{num2(rob['se_hc3_media'], 4)}: la razón es **{num2(rob['ratio_hc3_clasico'], 3)}**, "
+  f"es decir la corrección robusta no solo no agranda el error sino que lo reduce "
+  f"ligeramente. Con esa evidencia, un modelo con errores robustos añadiría "
+  f"complejidad sin cambiar ninguna conclusión.")
+A("")
+A(f"**El caso de la retención es distinto y hay que decirlo.** En una variable "
+  f"binaria la heterocedasticidad es **estructural** —`Var(y) = p(1−p)` depende de "
+  f"`p`—, así que Breusch-Pagan la detecta siempre (LM = "
+  f"{num2(MR['breusch_pagan']['LM'], 1)}, p = {pval(MR['breusch_pagan']['p_valor'])}). "
+  f"No es un defecto del ajuste: es la razón por la que el GREG de la retención se "
+  f"implementó con un modelo **logístico** y no con una probabilidad lineal. Como "
+  f"comprobación de que la lineal no bastaba, sus valores ajustados se salen del "
+  f"intervalo [0, 1]: van de {num2(MR['p_hat_rango'][0], 3)} a "
+  f"{num2(MR['p_hat_rango'][1], 3)}.")
+A("")
+A("### 7.3 g-weights e influencia")
+A("")
+A("Los g-weights son los pesos implícitos que el GREG introduce sobre los pesos de "
+  "diseño: `w_i^G = w_i · g_i`, con `g_i = 1 + λ′x_i`. Un g-weight grande significa "
+  "que unas pocas observaciones están cargando con toda la corrección del modelo, y "
+  "es la primera cosa que Hedlin et al. (2001) recomiendan mirar.")
+A("")
+A("| Modelo | Mínimo | q05 | Mediana | q95 | Máximo | \\> 5 | \\> 10 |")
+A("|---|---:|---:|---:|---:|---:|---:|---:|")
+for etq, g in (("Edad (género, área, región)", GRE),
+               ("Retención 2019→2021 (lineal)", GRR)):
+    q = g["cuantiles"]
+    A(f"| {etq} | {num2(g['min'], 3)} | {num2(q['5'], 3)} | {num2(q['50'], 3)} | "
+      f"{num2(q['95'], 3)} | **{num2(g['max'], 3)}** | {g['n_sobre_5']} | "
+      f"{g['n_sobre_10']} |")
+A("")
+A(f"**No hay ningún g-weight extremo**: el máximo es {num2(GRE['max'], 3)} en el "
+  f"modelo de edad y {num2(GRR['max'], 3)} en el de retención, muy por debajo de los "
+  f"umbrales de alarma de 5 y 10. La media es exactamente 1, como debe ser. "
+  f"Adicionalmente se comprobó la propiedad de calibración: `Σ w_i g_i = N` se "
+  f"cumple de forma exacta (razón "
+  f"{num2(ME['g_weights_verificacion']['suma_wg_sobre_N'], 6)}).")
+A("")
+A("**Un hallazgo que sí conviene declarar.** Los totales auxiliares se reproducen "
+  "exactamente **salvo dos columnas** de género, y por una razón de diseño, no de "
+  "cálculo: las categorías *Intersexual* y *No disponible* tienen cero observaciones "
+  "en la muestra, así que ninguna observación las representa y su total poblacional "
+  "no es calibrable. La matriz de calibración tiene número de condición "
+  f"{sci(ME['g_weights_verificacion']['numero_condicion_M'], 1)}, es decir "
+  f"numéricamente singular, precisamente por esas columnas vacías. Es un límite del "
+  f"método frente a categorías no representadas, y la solución —si interesara— sería "
+  f"de diseño: garantizar representación de esas categorías o colapsarlas.")
+A("")
+inf = ME["influencia"]
+A(f"**Observaciones influyentes.** Leverage medio {num2(rob['leverage_medio'], 4)} y "
+  f"máximo {num2(inf['leverage_max'], 4)}; distancia de Cook máxima "
+  f"**{num2(inf['cook_max'], 4)}**. Aquí hay que leer los umbrales con cuidado: "
+  f"superan el umbral de Cook (`4/n` = {num2(inf['umbral_cook'], 4)}) "
+  f"{num2(inf['n_sobre_umbral_cook'], 0)} observaciones y el de leverage (`2k/n` = "
+  f"{num2(inf['umbral_leverage'], 4)}) {num2(inf['n_sobre_umbral_leverage'], 0)}, "
+  f"pero el criterio convencional de preocupación es Cook > 1 y el máximo observado "
+  f"es {num2(inf['cook_max'], 4)}: **dos órdenes de magnitud por debajo**. Con n "
+  f"grande esos umbrales señalizan muchas observaciones sin que ninguna sea "
+  f"materialmente influyente. Lo que decide es la magnitud, no el recuento.")
+A("")
+A("Para no quedarse en la teoría, se recalculó el estimador GREG **eliminando** las "
+  "observaciones de g más alto y se midió el efecto:")
+A("")
+A("| Se eliminan | Estimador de la edad | Cambio | g máximo restante |")
+A("|---|---:|---:|---:|")
+for k, v in ME["g_weights_verificacion"].get("_impacto", {}).items():
+    pass
+for k, v in G["impacto_influyentes"].items():
+    etq = "ninguna (completo)" if k == "completo" else k.replace("sin_los_", "las ").replace("_con_mayor_g", " de mayor g")
+    A(f"| {etq} | {num2(v['estimador'], 4)} | {num2(v['cambio_vs_completo_pp'], 5)} | "
+      f"{num2(v['g_max_restante'], 3)} |")
+A("")
+A(f"El efecto máximo de quitar las 25 observaciones con mayor g es de "
+  f"{num2(abs(min(v['cambio_vs_completo_pp'] for v in G['impacto_influyentes'].values())), 5)} "
+  f"años, es decir **menos de un mes de edad media**: ninguna observación individual "
+  f"está moviendo el resultado.")
+A("")
+A("### 7.4 Conclusión: ¿es razonable el modelo GREG?")
+A("")
+A("**Sí, con dos matices documentados.** La evidencia:")
+A("")
+A(f"1. **Sin g-weights extremos.** Máximo {num2(GRE['max'], 3)} (edad) y "
+  f"{num2(GRR['max'], 3)} (retención); ninguno supera 5. La calibración se verifica "
+  f"exactamente (`Σ w_i g_i = N`).")
+A(f"2. **Sin observaciones influyentes materiales.** Distancia de Cook máxima "
+  f"{num2(inf['cook_max'], 4)}, muy por debajo del nivel de preocupación; quitar las "
+  f"observaciones de mayor g mueve la estimación menos de 0,05 años.")
+A(f"3. **Sin heterocedasticidad que exija corrección.** Breusch-Pagan p = "
+  f"{pval(bpv['p_valor'])}, Levene p = {pval(hc['levene']['p_valor'])}, Bartlett p = "
+  f"{pval(hc['bartlett']['p_valor'])}; y la razón HC3/clásico de "
+  f"{num2(rob['ratio_hc3_clasico'], 3)} confirma que los errores robustos no aportan.")
+A(f"4. **La normalidad no es un supuesto crítico.** No se cumple en el censo por "
+  f"{num2(E['edad']['mayores_100'], 0)} edades erróneas, pero la consistencia del GREG "
+  f"es por diseño y no depende de ella.")
+A("")
+A("**Los dos matices.** Primero, los totales de dos categorías de género no son "
+  "calibrables porque no tienen representación en la muestra: el límite está en el "
+  "diseño muestral, no en el estimador, y se declara en lugar de omitirse. Segundo, la "
+  "prueba de White no es aplicable a un diseño de solo dicotómicas y se sustituye por "
+  "contrastes de homocedasticidad entre celdas, que es lo apropiado para un modelo "
+  "factorial. Con esas salvedades, los diagnósticos respaldan el uso del GREG que se "
+  "reporta en las secciones 5 y 6.")
+A("")
+A("## 8. Conclusión: qué se reporta y por qué")
 A("")
 gan_ps = max(r["post_estratificado"]["ganancia_varianza_vs_mas_pct"] for r in RET.values())
 gan_greg = max(r["greg_logit"]["ganancia_varianza_vs_mas_pct"] for r in RET.values())
@@ -617,6 +838,23 @@ A("- OhioLINK ETD Center. *Post-stratification variance*. — La distribución "
 A("- Canadian Journal of Forest Research (2019). *Efficiency of post-stratification "
   "for a large-scale forest inventory*. — Recomendación de Cochran (1977, "
   "pp. 132-134) sobre el número de estratos y el tamaño mínimo por estrato.")
+A("- Hedlin, D., y Falvey, H. *Does the model matter for GREG estimation? A business "
+  "survey example*. — Análisis de g-weights, residuos y diagnósticos de regresión "
+  "para verificar que una estimación GREG es razonable. Nota de transparencia: la "
+  "ficha se verificó por búsqueda en línea ([Semantic Scholar]"
+  "(https://www.semanticscholar.org/paper/Does-the-model-matter-for-GREG-estimation-A-survey-"
+  "Hedlin-Falvey/d3c64e3a52567dda61f325c5c392339f9950e4b1) y [DiVA, Universidad de "
+  "Estocolmo](https://su.diva-portal.org/smash/record.jsf?pid=diva2%3A584783)), pero "
+  "el año (2001) procede del enunciado de la tarea: el metadato accesible no permitió "
+  "confirmarlo en este entorno.")
+A("- Valliant, R. et al. *svydiags: Regression Model Diagnostics for Survey Data* "
+  "[paquete de R]. CRAN. "
+  "https://cran.r-project.org/web/packages/svydiags/refman/svydiags.html — "
+  "Diagnósticos de regresión (residuos, leverage, influencia) adaptados a datos de "
+  "encuesta.")
+A("- Field, A. (2009). *Discovering Statistics Using SPSS* (3rd ed.). SAGE. — "
+  "Recomendación de usar asimetría y curtosis como criterio principal de normalidad "
+  "cuando n > 200.")
 A("")
 A("## Anexo: artefactos y reproducibilidad")
 A("")
@@ -627,11 +865,18 @@ A("| `data/memoria/eda_resultados.json` | Cifras del EDA |")
 A("| `data/memoria/eda/` | 6 gráficas del EDA |")
 A("| `src/estimadores_longitudinal.py` | Post-estratificación y GREG (Partes 2-3) |")
 A("| `data/memoria/estimadores_resultados.json` | Cifras de los estimadores |")
+A("| `src/diagnosticos_greg.py` | Diagnósticos de supuestos y g-weights (§7) |")
+A("| `data/memoria/diagnosticos_greg.json` | Cifras de los diagnósticos |")
+A("| `data/memoria/eda/07_qq_edad.png` | Q-Q plot de la edad (censo y muestra) |")
+A("| `data/memoria/eda/08_residuos_vs_ajustados.png` | Residuos vs ajustados y scale-location |")
+A("| `data/memoria/eda/09_gweights.png` | Distribución de los g-weights |")
+A("| `data/memoria/eda/10_influencia.png` | Distancia de Cook y leverage |")
 A("| `src/generar_metodologia_muestreo.py` | Genera este documento |")
 A("")
 A("```bash")
 A("python src/eda_longitudinal.py")
 A("python src/estimadores_longitudinal.py")
+A("python src/diagnosticos_greg.py")
 A("python src/generar_metodologia_muestreo.py")
 A("```")
 A("")

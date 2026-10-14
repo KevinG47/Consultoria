@@ -504,7 +504,8 @@ A("## Anexo B — Post-estratificación y GREG")
 A("")
 A("Comparación de los tres estimadores frente al valor censal. El desarrollo "
   "conceptual, los modelos y las referencias están en `metodologia_muestreo.md` "
-  "(§4-§7); aquí se resume el resultado.")
+  "(§4-§8), incluidos los diagnósticos de supuestos (normalidad, "
+  "heterocedasticidad y g-weights); aquí se resume el resultado.")
 A("")
 A("| Parámetro | Censo | MAS | Post-estratificado | GREG |")
 A("|---|---:|---:|---:|---:|")

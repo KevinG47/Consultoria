@@ -297,7 +297,7 @@ Estos contrastes se calculan sobre la muestra, así que sus p-valores son orient
 
 ## Anexo B — Post-estratificación y GREG
 
-Comparación de los tres estimadores frente al valor censal. El desarrollo conceptual, los modelos y las referencias están en `metodologia_muestreo.md` (§4-§7); aquí se resume el resultado.
+Comparación de los tres estimadores frente al valor censal. El desarrollo conceptual, los modelos y las referencias están en `metodologia_muestreo.md` (§4-§8), incluidos los diagnósticos de supuestos (normalidad, heterocedasticidad y g-weights); aquí se resume el resultado.
 
 | Parámetro | Censo | MAS | Post-estratificado | GREG |
 |---|---:|---:|---:|---:|
