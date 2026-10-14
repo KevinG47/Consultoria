@@ -37,6 +37,14 @@ ME = G["modelo_edad"]
 MR = G["modelo_retencion_lpm"]
 GRE = ME["g_weights"]
 GRR = MR["g_weights"]
+# Colapso de las categorias de genero no representadas en la muestra.
+GC = G["colapso_genero"]
+FR = GC["frecuencias"]
+CAL_ANTES, CAL_DESPUES, CAL_EXCL = (GC["sin_colapsar"], GC["colapsado"],
+                                    GC["colapsado_excluyendo_la_columna_no_representada"])
+# Representatividad del genero: con la columna colapsada y con la cruda.
+RG_C = L["representatividad"]["genero"]
+RG_S = L["representatividad_genero_sin_colapsar"]
 
 
 def sci(x, dec=2):
@@ -169,7 +177,7 @@ A("")
 A("| Variable | Categorías | Distribución |")
 A("|---|---:|---|")
 for col, etq in [("NME_CLASIFICACION_PR", "Categoría"),
-                 ("NME_GENERO_PR", "Género"),
+                 ("NME_GENERO_COL", "Género †"),
                  ("NME_GRAN_AREA_PR", "Gran área"),
                  ("NME_NIV_FORM_PR", "Nivel de formación")]:
     d = E["univariado_persona"][col]["distribucion"]
@@ -181,6 +189,15 @@ for col, etq in [("NME_CLASIFICACION_PR", "Categoría"),
 A(f"| Departamento | {E['univariado_persona']['NME_DEPARTAMENTO_RES_PR']['n_categorias']} "
   f"| Bogotá D. C. 32,6 % · Antioquia 16,6 % · Valle del Cauca 8,3 % · Atlántico 6,2 % "
   f"· Santander 5,2 % · … |")
+A("")
+A(f"† El género se presenta **colapsado**: *Intersexual* "
+  f"({n(FR['categorias_colapsadas']['Intersexual']['personas_censo'])} personas) y "
+  f"*No disponible* "
+  f"({n(FR['categorias_colapsadas']['No disponible']['personas_censo'])}) se agrupan en "
+  f"*{FR['etiqueta_colapsada']}* "
+  f"({n(FR['personas_colapsadas_censo'])} personas, {pc(FR['pct_colapsado_censo'], 3)} % "
+  f"del censo) porque **ninguna de las dos aparece en la muestra**. La decisión y sus "
+  f"consecuencias se documentan en la §7.4.")
 A("")
 ed = E["edad"]
 A(f"**Edad.** Media {n(ed['media'], 2)} años, desviación {n(ed['desv'], 2)}, mediana "
@@ -431,9 +448,12 @@ A("Para cada variable de interés se ajustó un modelo con variables auxiliares 
 A("")
 A("| Variable de interés | Modelo | Auxiliares |")
 A("|---|---|---|")
-A("| Retención (sí/no) | Logístico | categoría, género, gran área, departamento de residencia |")
-A("| Edad | Lineal | género, gran área, región de residencia |")
-A("| Ascenso de categoría | Ordinal (odds proporcionales, 3 niveles) y logístico (binario) | categoría en t₁, género, gran área |")
+A("| Retención (sí/no) | Logístico | categoría, género †, gran área, departamento de residencia |")
+A("| Edad | Lineal | género †, gran área, región de residencia |")
+A("| Ascenso de categoría | Ordinal (odds proporcionales, 3 niveles) y logístico (binario) | categoría en t₁, género †, gran área |")
+A("")
+A(f"† El género entra por la columna **colapsada** (*{FR['etiqueta_colapsada']}*), no "
+  f"por las cuatro categorías originales. Motivo y consecuencias en la §7.4.")
 A("")
 A("El modelo ordinal se ajustó por máxima verosimilitud implementada directamente "
   "(con penalización L2 para estabilizar), porque el entorno no dispone de "
@@ -714,14 +734,23 @@ A(f"**No hay ningún g-weight extremo**: el máximo es {num2(GRE['max'], 3)} en 
   f"{num2(ME['g_weights_verificacion']['suma_wg_sobre_N'], 6)}).")
 A("")
 A("**Un hallazgo que sí conviene declarar.** Los totales auxiliares se reproducen "
-  "exactamente **salvo dos columnas** de género, y por una razón de diseño, no de "
-  "cálculo: las categorías *Intersexual* y *No disponible* tienen cero observaciones "
-  "en la muestra, así que ninguna observación las representa y su total poblacional "
-  "no es calibrable. La matriz de calibración tiene número de condición "
-  f"{sci(ME['g_weights_verificacion']['numero_condicion_M'], 1)}, es decir "
-  f"numéricamente singular, precisamente por esas columnas vacías. Es un límite del "
-  f"método frente a categorías no representadas, y la solución —si interesara— sería "
-  f"de diseño: garantizar representación de esas categorías o colapsarlas.")
+  "exactamente **salvo una columna** de género, y por una razón de diseño, no de "
+  f"cálculo: la categoría *{FR['etiqueta_colapsada']}* tiene cero observaciones en la "
+  "muestra, así que ninguna observación la representa y su total poblacional no es "
+  "calibrable. La matriz de calibración tiene número de condición "
+  f"{sci(ME['g_weights_verificacion']['numero_condicion_M'], 1)} y rango "
+  f"{n(ME['g_weights_verificacion']['rango_M'])} sobre "
+  f"{n(ME['g_weights_verificacion']['columnas_auxiliares'])} columnas. Es un límite del "
+  f"método frente a categorías no representadas, y la solución —si interesara— sería de "
+  f"diseño: garantizar representación de esas categorías. La §7.4 lo cuantifica.")
+A("")
+A(f"Las demás columnas se reproducen con precisión de máquina (desvío máximo "
+  f"{sci(ME['g_weights_verificacion']['max_desvio_calibrables'], 1)} en las "
+  f"calibrables), y la masa que queda sin calibrar son "
+  f"{n(ME['g_weights_verificacion']['masa_no_calibrada'])} personas de "
+  f"{n(ME['g_weights_verificacion']['N_poblacion'])}, es decir el "
+  f"{pc(100 * ME['g_weights_verificacion']['masa_no_calibrada'] / ME['g_weights_verificacion']['N_poblacion'], 4)} % "
+  f"del universo de esa población.")
 A("")
 inf = ME["influencia"]
 A(f"**Observaciones influyentes.** Leverage medio {num2(rob['leverage_medio'], 4)} y "
@@ -752,7 +781,114 @@ A(f"El efecto máximo de quitar las 25 observaciones con mayor g es de "
   f"años, es decir **menos de un mes de edad media**: ninguna observación individual "
   f"está moviendo el resultado.")
 A("")
-A("### 7.4 Conclusión: ¿es razonable el modelo GREG?")
+A("### 7.4 Colapso de las categorías de género no representadas")
+A("")
+A("**El problema.** El registro reconoce cuatro categorías de género. Dos de ellas "
+  "tienen una presencia mínima en el universo y **ninguna** en la muestra:")
+A("")
+A("| Categoría | Personas en el censo | % del censo | Registros | Observaciones en la muestra |")
+A("|---|---:|---:|---:|---:|")
+for k in ("Intersexual", "No disponible"):
+    d = FR["categorias_colapsadas"][k]
+    A(f"| {k} | {n(d['personas_censo'])} | {pc(d['pct_censo'], 4)} % | "
+      f"{n(d['registros_censo'])} | **{n(d['personas_muestra'])}** |")
+A(f"| *{FR['etiqueta_colapsada']}* (colapsada) | "
+  f"{n(FR['personas_colapsadas_censo'])} | {pc(FR['pct_colapsado_censo'], 4)} % | — | "
+  f"**{n(FR['observaciones_en_muestra'])}** |")
+A("")
+A(f"Las **{n(FR['personas_colapsadas_censo'])} personas** son el "
+  f"{pc(FR['pct_colapsado_censo'], 3)} % del censo. Un detalle que importa para lo que "
+  f"sigue: las etiquetas *Intersexual* y *No disponible* aparecen **únicamente en la "
+  f"convocatoria 2021** ({n(FR['categorias_colapsadas']['Intersexual']['registros_censo'])} "
+  f"y {n(FR['categorias_colapsadas']['No disponible']['registros_censo'])} registros, "
+  f"respectivamente). Las mismas personas sí figuran en convocatorias anteriores, pero "
+  f"con otra etiqueta de género.")
+A("")
+A("**La consecuencia.** Una categoría auxiliar con cero observaciones en la muestra no "
+  "es calibrable: el GREG no puede reproducir su total poblacional porque ninguna "
+  "observación lo representa, y su coeficiente queda indeterminado. No es un error de "
+  "cálculo; es un límite del diseño. En la comprobación de calibración aparecía como un "
+  "desvío exactamente igual al recuento censal de la columna "
+  f"({num2(CAL_ANTES['masa_no_calibrada'], 0)} personas sin calibrar, repartidas en dos "
+  f"columnas). Son {num2(CAL_ANTES['masa_no_calibrada'], 0)} y no "
+  f"{n(FR['personas_colapsadas_censo'])} porque el modelo de edad excluye a la persona "
+  f"sin edad registrada, que es una de las "
+  f"{n(FR['personas_colapsadas_censo'])} colapsadas.")
+A("")
+A(f"**La decisión.** En **todos los análisis desagregados por género** las dos "
+  f"categorías se colapsan en una sola, *{FR['etiqueta_colapsada']}*. Se conserva la "
+  f"columna original del registro para dos usos que sí necesitan el dato crudo: el "
+  f"control de calidad de género contradictorio (que cuenta categorías distintas por "
+  f"persona y por eso debe ver el registro tal como está) y el visor de trayectorias, "
+  f"que reproduce el censo sin transformarlo.")
+A("")
+A("**Qué cambia y qué no.** Se midieron tres variantes del vector auxiliar del modelo "
+  "de edad. Los estimadores son idénticos en las tres:")
+A("")
+A("| Variante | Columnas | Rango(M) | cond(M) | Columnas no calibrables | Personas sin calibrar | GREG de la edad |")
+A("|---|---:|---:|---:|---:|---:|---:|")
+for etq, c in (("Sin colapsar (4 categorías crudas)", CAL_ANTES),
+               ("**Colapsada (decisión adoptada)**", CAL_DESPUES),
+               ("Colapsada y columna excluida del vector", CAL_EXCL)):
+    A(f"| {etq} | {n(c['columnas_auxiliares'])} | "
+      f"{n(c['rango_M'])} de {n(c['columnas_auxiliares'])} | "
+      f"{sci(c['numero_condicion_M'], 1)} | {n(c['n_columnas_no_calibrables'])} | "
+      f"{num2(c['masa_no_calibrada'], 0)} | {num2(GC['estimador_edad_colapsado'], 4)} |")
+A("")
+A(f"El colapso **no devuelve la calibrabilidad** a la categoría: la causa es la "
+  f"ausencia en la muestra, no la granularidad excesiva. Reduce de dos a una las "
+  f"columnas no calibrables y agrupa el hueco en un rótulo, pero la masa sin calibrar "
+  f"sigue siendo de {num2(CAL_DESPUES['masa_no_calibrada'], 0)} personas y el rango de M "
+  f"no mejora. Tampoco empeora el ajuste: el desvío de esa columna es exactamente su "
+  f"recuento censal y las demás se reproducen con precisión de máquina.")
+A("")
+A("Dos consecuencias verificadas que conviene dejar dichas, porque podrían esperarse "
+  "mal:")
+A("")
+A(f"1. **El estimador y su varianza no cambian en absoluto** (diferencia "
+  f"{num2(GC['diferencia_estimador'], 0)} años entre colapsar y no colapsar). Era "
+  f"previsible: en la muestra ambas columnas eran constantes cero, así que su "
+  f"coeficiente ya era nulo y el colapso solo fusiona dos columnas nulas en una. "
+  f"El colapso es una decisión de **coherencia y trazabilidad**, no una corrección "
+  f"numérica, y así se reporta.")
+A(f"2. **Las tablas de retención y transición por género no cambian.** La convocatoria "
+  f"base de cada par es siempre anterior a 2021, y las etiquetas solo existen en 2021: "
+  f"ninguna persona aparece con ellas como base de un par. Se comprobó sobre los "
+  f"resultados del panel y no hay ni una sola celda de las tablas desagregadas por "
+  f"género que las contenga. Lo que sí cambia es la prueba de representatividad, y solo "
+  f"en los grados de libertad: el estadístico es invariante "
+  f"(χ² = {num2(RG_C['chi2'], 4)} en ambos casos, porque una celda con observado cero "
+  f"aporta a χ² exactamente su esperado), mientras los gl bajan de "
+  f"{n(RG_S['gl'])} a {n(RG_C['gl'])} y el p-valor sube de "
+  f"{num2(RG_S['p_valor'], 4)} a {num2(RG_C['p_valor'], 4)}. Con el colapso la "
+  f"distribución de género de la muestra sigue siendo compatible con la del censo, y el "
+  f"supuesto de frecuencia esperada mínima sigue sin cumplirse en ninguno de los dos "
+  f"casos (esperado mínimo {num2(RG_C['min_esperado'], 4)} < 5).")
+A(f"3. **Los diagnósticos que se normalizan por el número de parámetros sí se mueven, "
+  f"y en la proporción esperada.** La distancia de Cook máxima pasa de "
+  f"{num2(GC['cook_max_sin_colapsar'], 4)} a {num2(GC['cook_max_colapsado'], 4)}: el "
+  f"factor es el cociente de parámetros "
+  f"({n(GC['n_parametros_sin_colapsar'])}/{n(GC['n_parametros_colapsado'])} = "
+  f"{num2(GC['n_parametros_sin_colapsar'] / GC['n_parametros_colapsado'], 4)}), porque "
+  f"la fórmula de Cook divide por `k`, más el ajuste de `n − k` en la varianza "
+  f"residual. El ajuste no cambia —los residuos son los mismos— pero conviene decirlo "
+  f"para que la diferencia no parezca un efecto del colapso sobre el modelo.")
+A("")
+A(f"**La limitación que permanece, y su salida.** La categoría colapsada sigue sin ser "
+  f"calibrable, así que los totales auxiliares no se reproducen al 100 %. Si se quisiera "
+  f"cerrar el hueco por completo hay dos caminos, y ninguno es un truco de cálculo: "
+  f"(i) **de diseño**, garantizar representación de esas categorías en la muestra; o "
+  f"(ii) **de alcance**, excluir del vector auxiliar la columna no representada y "
+  f"declarar que el género de esas {num2(CAL_DESPUES['masa_no_calibrada'], 0)} personas "
+  f"queda fuera de la calibración. La tercera fila de la tabla anterior mide la variante "
+  f"(ii): deja **cero** columnas sin calibrar y un número de condición de "
+  f"{sci(CAL_EXCL['numero_condicion_M'], 1)} —frente a {sci(CAL_DESPUES['numero_condicion_M'], 1)}— "
+  f"con el **mismo estimador**. No se adoptó porque la decisión acordada es colapsar y "
+  f"declarar, y porque dejar la columna dentro hace visible la limitación en la propia "
+  f"comprobación de calibración; pero está medida y disponible si se prefiere la "
+  f"calibración exacta.")
+A("")
+A("### 7.5 Conclusión: ¿es razonable el modelo GREG?")
 A("")
 A("**Sí, con dos matices documentados.** La evidencia:")
 A("")
@@ -770,13 +906,14 @@ A(f"4. **La normalidad no es un supuesto crítico.** No se cumple en el censo po
   f"{num2(E['edad']['mayores_100'], 0)} edades erróneas, pero la consistencia del GREG "
   f"es por diseño y no depende de ella.")
 A("")
-A("**Los dos matices.** Primero, los totales de dos categorías de género no son "
-  "calibrables porque no tienen representación en la muestra: el límite está en el "
-  "diseño muestral, no en el estimador, y se declara en lugar de omitirse. Segundo, la "
-  "prueba de White no es aplicable a un diseño de solo dicotómicas y se sustituye por "
-  "contrastes de homocedasticidad entre celdas, que es lo apropiado para un modelo "
-  "factorial. Con esas salvedades, los diagnósticos respaldan el uso del GREG que se "
-  "reporta en las secciones 5 y 6.")
+A("**Los dos matices.** Primero, la categoría de género "
+  f"*{FR['etiqueta_colapsada']}* no es calibrable porque no tiene representación en la "
+  f"muestra: el límite está en el diseño muestral, no en el estimador, y se declara en "
+  f"lugar de omitirse (ver la §7.4, donde además se mide la variante que sí calibra "
+  f"exactamente). Segundo, la prueba de White no es aplicable a un diseño de solo "
+  f"dicotómicas y se sustituye por contrastes de homocedasticidad entre celdas, que es "
+  f"lo apropiado para un modelo factorial. Con esas salvedades, los diagnósticos "
+  f"respaldan el uso del GREG que se reporta en las secciones 5 y 6.")
 A("")
 A("## 8. Conclusión: qué se reporta y por qué")
 A("")
@@ -865,6 +1002,7 @@ A("| `data/memoria/eda_resultados.json` | Cifras del EDA |")
 A("| `data/memoria/eda/` | 6 gráficas del EDA |")
 A("| `src/estimadores_longitudinal.py` | Post-estratificación y GREG (Partes 2-3) |")
 A("| `data/memoria/estimadores_resultados.json` | Cifras de los estimadores |")
+A("| `src/genero_comun.py` | Colapso de las categorías de género (§7.4) |")
 A("| `src/diagnosticos_greg.py` | Diagnósticos de supuestos y g-weights (§7) |")
 A("| `data/memoria/diagnosticos_greg.json` | Cifras de los diagnósticos |")
 A("| `data/memoria/eda/07_qq_edad.png` | Q-Q plot de la edad (censo y muestra) |")

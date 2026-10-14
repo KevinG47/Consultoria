@@ -40,7 +40,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 from estimadores_longitudinal import (  # noqa: E402
-    AUX_EDAD, AUX_RET, CONV_ORDEN, IDS, cargar, matriz_aux)
+    AUX_EDAD, AUX_RET, CONV_ORDEN, IDS, cargar, greg_lineal, matriz_aux)
+from genero_comun import (  # noqa: E402
+    COL_GENERO, COL_GENERO_COL, ETIQUETA_OTRO, MOTIVO, resumen_colapso)
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
@@ -241,6 +243,82 @@ def g_weights(X_s: np.ndarray, X_U: np.ndarray, N: int) -> tuple:
     return 1.0 + Xs @ lam, X_U_tot, X_ht, lam, w, float(np.linalg.cond(M))
 
 
+def nombres_columnas(pop: pd.DataFrame, samp: pd.DataFrame,
+                     cols: list[str]) -> list[str]:
+    """
+    Nombres legibles de las columnas del modelo, en el orden de `matriz_aux`.
+
+    OJO: en pandas 3 los nombres que produce `get_dummies` son cadenas planas
+    ("col_categoria"), no tuplas, así que se reconstruyen a partir de las
+    categorías de cada columna. `drop_first=True` elimina la primera categoría de
+    **cada** columna (en orden alfabético) y las columnas se agrupan por variable
+    de entrada en el orden de `cols`.
+    """
+    todo = pd.concat([pop[cols].reset_index(drop=True),
+                      samp[cols].reset_index(drop=True)], ignore_index=True)
+    dummies = pd.get_dummies(todo, drop_first=True, dtype=float)
+    nombres = ["(intercepto)"]
+    for c in cols:
+        categorias = sorted(str(v) for v in todo[c].unique())[1:]
+        nombres += [f"{c}={v}" for v in categorias]
+    if len(nombres) != dummies.shape[1] + 1:
+        raise ValueError(
+            f"los nombres reconstruidos ({len(nombres) - 1}) no coinciden con las "
+            f"columnas de get_dummies ({dummies.shape[1]}): la lista de nombres no "
+            f"sería fiable, y etiquetar mal las columnas no calibrables es peor que "
+            f"no etiquetarlas")
+    return nombres
+
+
+def calibrabilidad(pop: pd.DataFrame, samp: pd.DataFrame, cols: list[str], N: int,
+                   excluir: tuple = ()) -> dict:
+    """
+    Calidad de la calibración de un vector auxiliar: qué columnas no se pueden
+    reproducir, el rango y el número de condición de la matriz M.
+
+    `excluir` permite medir la variante en la que la columna no representada se
+    saca del vector auxiliar en lugar de dejarla dentro con su total sin reproducir.
+    """
+    X_U, X_s = matriz_aux(pop, samp, cols)
+    # OJO con los indices: `nombres_columnas` incluye "(intercepto)" en la posicion
+    # 0, pero X_U/X_s solo tienen las columnas de las auxiliares. La seleccion se
+    # hace sobre la lista de dummies, sin el intercepto, para no borrar la columna
+    # equivocada.
+    nombres_dum = nombres_columnas(pop, samp, cols)[1:]
+    if excluir:
+        fuera = [i for i, n in enumerate(nombres_dum) if n in excluir]
+        if not fuera:
+            raise ValueError(
+                f"ninguna columna coincide con {list(excluir)}; nombres disponibles: "
+                f"{nombres_dum}")
+        X_U = np.delete(X_U, fuera, axis=1)
+        X_s = np.delete(X_s, fuera, axis=1)
+        nombres_dum = [n for i, n in enumerate(nombres_dum) if i not in fuera]
+    nombres = ["(intercepto)"] + nombres_dum
+    g, X_U_tot, X_ht, lam, w, cond = g_weights(X_s, X_U, N)
+    Xs = np.hstack([np.ones((len(X_s), 1)), X_s])
+    desv = (w * g) @ Xs - X_U_tot
+    fallan = [{"columna": nombres[i], "desvio": float(desv[i]),
+               "total_poblacional": float(X_U_tot[i]),
+               "n_muestra_col": int((Xs[:, i] > 0).sum())}
+              for i in np.where(np.abs(desv) > 1e-6)[0]]
+    malas = {f["columna"] for f in fallan}
+    buenas = [abs(d) for i, d in enumerate(desv) if nombres[i] not in malas]
+    return {
+        "columnas_auxiliares": len(nombres),
+        "N_poblacion": int(N),
+        "n_muestra": int(len(X_s)),
+        "rango_M": int(np.linalg.matrix_rank(w * (Xs.T @ Xs))),
+        "numero_condicion_M": float(cond),
+        "columnas_no_calibrables": fallan,
+        "n_columnas_no_calibrables": len(fallan),
+        # masa = personas cuyo total auxiliar NO se reproduce (suma de magnitudes)
+        "masa_no_calibrada": float(sum(abs(f["desvio"]) for f in fallan)),
+        "max_desvio_calibrables": float(max(buenas) if buenas else 0.0),
+        "suma_wg_sobre_N": float((w * g).sum() / N),
+    }
+
+
 def influencia(e: np.ndarray, X: np.ndarray, y: np.ndarray) -> dict:
     """Leverage, residuos estudentizados y distancia de Cook."""
     n, k = X.shape
@@ -322,18 +400,10 @@ def main() -> int:
     inf = influencia(e, Xs, y_s)
     g, X_U_tot, X_ht, lam, w, cond_M = g_weights(X_s, X_U, len(pop))
     rg = resumen_g(g)
-    # ¿Qué columnas auxiliares NO se pueden reproducir? Una categoría con cero
-    # observaciones en la muestra no es calibrable: su total poblacional no puede
-    # representarse y aparece como desvío exacto igual a su recuento.
-    nombres_aux = (["(intercepto)"]
-                   + [f"{c}={v}" for c, v in zip(AUX_EDAD * 99,
-                                                 [])] if False else
-                   [f"col_{i}" for i in range(Xs.shape[1])])
-    desv_col = (w * g) @ Xs - X_U_tot
-    cols_no_calibrables = [{"columna": int(i), "desvio": float(desv_col[i]),
-                            "total_poblacional": float(X_U_tot[i]),
-                            "n_muestra_col": int((Xs[:, i] > 0).sum())}
-                           for i in np.where(np.abs(desv_col) > 1e-6)[0]]
+    # Calibración del vector auxiliar: columnas que no se pueden reproducir,
+    # rango y número de condición de M (con nombres legibles).
+    cal = calibrabilidad(pop, samp, AUX_EDAD, len(pop))
+    cols_no_calibrables = cal["columnas_no_calibrables"]
     res["modelo_edad"] = {
         "auxiliares": AUX_EDAD, "n_modelo": int(len(y_s)), "n_parametros": int(Xs.shape[1]),
         "normalidad_residuos": normal_res,
@@ -347,16 +417,80 @@ def main() -> int:
             "max_desvio_totales_auxiliares": float(
                 np.max(np.abs((w * g) @ Xs - X_U_tot))),
             "numero_condicion_M": cond_M,
+            "rango_M": cal["rango_M"],
+            "columnas_auxiliares": cal["columnas_auxiliares"],
+            "N_poblacion": cal["N_poblacion"],
+            "n_muestra": cal["n_muestra"],
             "columnas_no_calibrables": cols_no_calibrables,
+            "masa_no_calibrada": cal["masa_no_calibrada"],
+            "max_desvio_calibrables": cal["max_desvio_calibrables"],
             "nota_no_calibrable": (
                 "Una categoría auxiliar con CERO observaciones en la muestra no es "
                 "calibrable: el GREG no puede reproducir su total poblacional porque "
                 "ninguna observación lo representa. No es un error de cálculo sino un "
-                "límite del método, y aquí afecta a las categorías de género "
-                "Intersexual y No disponible, ausentes de la muestra (los totales "
-                "exactos de cada columna están en `columnas_no_calibrables`)."),
+                "límite del método. Tras colapsar Intersexual y No disponible en "
+                f"'{ETIQUETA_OTRO}', la columna no representada es una sola y su "
+                "desvío es exactamente su recuento en el censo; las demás columnas se "
+                "reproducen con precisión de máquina (ver `colapso_genero`)."),
         },
     }
+    # ============ COLAPSO DE GÉNERO: efecto sobre la calibración ==========
+    print("\n== Colapso de género: efecto sobre la calibración ==")
+    AUX_EDAD_CRUDA = [COL_GENERO if a == COL_GENERO_COL else a for a in AUX_EDAD]
+    X_U_c, X_s_c = matriz_aux(pop, samp, AUX_EDAD_CRUDA)
+    cal_antes = calibrabilidad(pop, samp, AUX_EDAD_CRUDA, len(pop))
+    cal_excl = calibrabilidad(pop, samp, AUX_EDAD, len(pop),
+                              excluir=(f"{COL_GENERO_COL}={ETIQUETA_OTRO}",))
+    greg_antes = greg_lineal(y_s, X_s_c, X_U_c, len(pop))["estimador"]
+    greg_despues = greg_lineal(y_s, X_s, X_U, len(pop))["estimador"]
+    # La distancia de Cook se normaliza por el numero de parametros k, asi que el
+    # colapso (una columna menos) la mueve aunque el ajuste sea identico. Se mide
+    # en las dos variantes para poder documentar la proporcion.
+    Xs_antes = np.hstack([np.ones((len(X_s_c), 1)), X_s_c])
+    inf_antes = influencia(None, Xs_antes, y_s)
+    res["colapso_genero"] = {
+        "decision": ("colapsar 'Intersexual' y 'No disponible' en "
+                     f"'{ETIQUETA_OTRO}' en todos los análisis desagregados por género"),
+        "motivo": MOTIVO,
+        "frecuencias": resumen_colapso(df, ids_muestra=ids),
+        "sin_colapsar": cal_antes,
+        "colapsado": cal,
+        "colapsado_excluyendo_la_columna_no_representada": cal_excl,
+        "estimador_edad_sin_colapsar": greg_antes,
+        "estimador_edad_colapsado": greg_despues,
+        "diferencia_estimador": greg_despues - greg_antes,
+        "cook_max_sin_colapsar": inf_antes["cook_max"],
+        "cook_max_colapsado": inf["cook_max"],
+        "n_parametros_sin_colapsar": int(Xs_antes.shape[1]),
+        "n_parametros_colapsado": int(Xs.shape[1]),
+        "nota_cook": ("Cook se normaliza por el número de parámetros k: el colapso "
+                      "quita una columna nula, así que k baja de "
+                      f"{int(Xs_antes.shape[1])} a {int(Xs.shape[1])} y el máximo sube "
+                      "en la proporción k_sin/k_con, más el ajuste de (n-k) en la "
+                      "varianza residual. Los residuos son idénticos."),
+        "nota": ("El colapso NO devuelve la calibrabilidad a la categoría: la causa es "
+                 "la ausencia en la muestra, no la granularidad. Reduce de 2 a 1 las "
+                 "columnas no calibrables y deja la masa sin calibrar en las mismas 8 "
+                 "personas. Ni el estimador ni su varianza cambian (diferencia 0), "
+                 "porque en la muestra ambas columnas eran constantes cero y su "
+                 "coeficiente ya era nulo. La calibración perfecta solo se logra "
+                 "sacando la columna no representada del vector auxiliar "
+                 "(`colapsado_excluyendo_la_columna_no_representada`), variante que da "
+                 "exactamente el mismo estimador."),
+    }
+    for etq, c in (("sin colapsar ", cal_antes), ("colapsado    ", cal),
+                   ("colapsado s/col. no repres.", cal_excl)):
+        print(f"   {etq}: aux={c['columnas_auxiliares']:2d} "
+              f"rango(M)={c['rango_M']:2d} cond(M)={c['numero_condicion_M']:.3e} "
+              f"no calibrables={c['n_columnas_no_calibrables']} "
+              f"masa={c['masa_no_calibrada']:.0f}")
+        for f in c["columnas_no_calibrables"]:
+            print(f"        sin calibrar: {f['columna']} "
+                  f"(total censal {f['total_poblacional']:.0f}, "
+                  f"n en muestra {f['n_muestra_col']})")
+    print(f"   GREG edad: {greg_antes:.12f} -> {greg_despues:.12f}  "
+          f"(diferencia {greg_despues - greg_antes:.2e} años)")
+
     print(f"   residuos: asim={normal_res['asimetria']:+.3f} "
           f"curt={normal_res['curtosis_exceso']:+.3f} "
           f"Shapiro p={normal_res['shapiro']['p_valor']:.2e} "
@@ -505,7 +639,7 @@ def main() -> int:
     axes[0].set_ylabel("personas")
     axes[0].set_title("Distribución de los g-weights", fontsize=10)
     axes[0].legend(frameon=False, fontsize=8)
-    axes[1].boxplot([g, g_r], vert=True, widths=0.5, patch_artist=True,
+    axes[1].boxplot([g, g_r], orientation="vertical", widths=0.5, patch_artist=True,
                     tick_labels=["Edad\n(género, área, región)",
                                  "Retención\n(cat., género, área, depto.)"],
                     boxprops=dict(facecolor="#D6E0F2", color=AZUL),

@@ -42,10 +42,12 @@ y con un modelo **lineal** adopta la forma clásica `Y_GREG = ȳ_s + (X̄_U − 
 | Variable | Categorías | Distribución |
 |---|---:|---|
 | Categoría | 4 | Investigador Junior 68,7 % · Investigador Asociado 19,2 % · Investigador Sénior 10,9 % · Investigador Emérito 1,1 % |
-| Género | 4 | Masculino 60,6 % · Femenino 39,4 % · Intersexual 0,0 % · No disponible 0,0 % |
+| Género † | 3 | Masculino 60,6 % · Femenino 39,4 % · Otro / No especificado 0,0 % |
 | Gran área | 7 | Ciencias Sociales 30,7 % · Ciencias Naturales 20,9 % · Ingeniería y Tecnología 18,7 % · Ciencias Médicas y de la Salud 15,2 % · Humanidades 8,0 % · … (7 en total) |
 | Nivel de formación | 10 | Doctorado 49,4 % · Maestría/Magister 36,0 % · Postdoctorado 7,6 % · Especialidad Médica 2,5 % · Pregrado/Universitario 2,2 % · … (10 en total) |
 | Departamento | 35 | Bogotá D. C. 32,6 % · Antioquia 16,6 % · Valle del Cauca 8,3 % · Atlántico 6,2 % · Santander 5,2 % · … |
+
+† El género se presenta **colapsado**: *Intersexual* (5 personas) y *No disponible* (4) se agrupan en *Otro / No especificado* (9 personas, 0,030 % del censo) porque **ninguna de las dos aparece en la muestra**. La decisión y sus consecuencias se documentan en la §7.4.
 
 **Edad.** Media 45,52 años, desviación 13,91, mediana 43,8, rango intercuartílico 15,6 (Q1 = 37,2; Q3 = 52,8). El criterio del bigote 1,5·IQR marca **106 valores atípicos**, y 11 personas declaran **más de 100 años** (máximo registrado: 956,25). Sin esos casos la media baja a 45,39 años: es un problema de **calidad de captura**, no de la población, y por eso se reporta explícitamente.
 
@@ -69,7 +71,7 @@ Para cada par de convocatorias consecutivas se calculó la retención por estrat
 | Estrato candidato | Estratos | Varianza **entre** grupos | Varianza **dentro** | χ² | p |
 |---|---:|---:|---:|---:|---:|
 | `CLASIFICACION` | 4 | **7,1 %** | 92,9 % | 1 189,0 | < 10⁻²⁰⁰ |
-| `GENERO` | 2 | **0,1 %** | 99,9 % | 18,9 | 1,35e-05 |
+| `GENERO_COL` | 2 | **0,1 %** | 99,9 % | 18,9 | 1,35e-05 |
 | `GRAN_AREA` | 7 | **1,4 %** | 98,6 % | 232,3 | 2,44e-47 |
 | `DEPARTAMENTO_RES` | 32 | **1,0 %** | 99,0 % | 166,8 | 1,59e-20 |
 | `NIV_FORM` | 8 | **0,3 %** | 99,7 % | 50,7 | 1,06e-08 |
@@ -81,12 +83,12 @@ Los contrastes χ² dan significativos todos los candidatos, pero eso es casi in
 | Candidato | Estratos | Reducción teórica de varianza | Estrato más pequeño (censo) |
 |---|---:|---:|---:|
 | `CLASIFICACION × GRAN_AREA` | 27 | 8,4 % | 2 |
-| `CLASIFICACION × GENERO` | 8 | 7,1 % | 16 |
+| `CLASIFICACION × GENERO_COL` | 8 | 7,1 % | 16 |
 | `CLASIFICACION` | 4 | 7,1 % | 53 |
 | `GRAN_AREA` | 7 | 1,4 % | 105 |
 | `DEPARTAMENTO_RES` | 32 | 1,0 % | 1 |
 | `NIV_FORM` | 8 | 0,3 % | 1 |
-| `GENERO` | 2 | 0,1 % | 6 411 |
+| `GENERO_COL` | 2 | 0,1 % | 6 411 |
 
 Lectura del EDA, que es la que sostiene las decisiones posteriores:
 
@@ -176,9 +178,11 @@ Para cada variable de interés se ajustó un modelo con variables auxiliares **c
 
 | Variable de interés | Modelo | Auxiliares |
 |---|---|---|
-| Retención (sí/no) | Logístico | categoría, género, gran área, departamento de residencia |
-| Edad | Lineal | género, gran área, región de residencia |
-| Ascenso de categoría | Ordinal (odds proporcionales, 3 niveles) y logístico (binario) | categoría en t₁, género, gran área |
+| Retención (sí/no) | Logístico | categoría, género †, gran área, departamento de residencia |
+| Edad | Lineal | género †, gran área, región de residencia |
+| Ascenso de categoría | Ordinal (odds proporcionales, 3 niveles) y logístico (binario) | categoría en t₁, género †, gran área |
+
+† El género entra por la columna **colapsada** (*Otro / No especificado*), no por las cuatro categorías originales. Motivo y consecuencias en la §7.4.
 
 El modelo ordinal se ajustó por máxima verosimilitud implementada directamente (con penalización L2 para estabilizar), porque el entorno no dispone de `statsmodels`. Del modelo ordinal se deriva `P(asciende)` por persona y se usa como modelo de trabajo del GREG, igual que con el logístico.
 
@@ -288,20 +292,20 @@ Conviene añadir que la normalidad de `y` **no es un supuesto del que dependa la
 
 ### 7.2 Heterocedasticidad del modelo GREG
 
-Modelo diagnosticado: la edad con auxiliares género, gran área y región (2 224 observaciones, 18 parámetros).
+Modelo diagnosticado: la edad con auxiliares género, gran área y región (2 224 observaciones, 17 parámetros).
 
 | Prueba | Estadístico | gl | p | Lectura |
 |---|---:|---:|---|---|
-| Breusch-Pagan | LM = 25,10 | 17 | 9,24e-02 | **sin evidencia** de heterocedasticidad al 5 % |
-| White (recortada) | LM = 62,12 | 152 | 1,00e+00 | degenerada: ver nota |
+| Breusch-Pagan | LM = 25,10 | 16 | 6,80e-02 | **sin evidencia** de heterocedasticidad al 5 % |
+| White (recortada) | LM = 62,12 | 136 | 1,00e+00 | degenerada: ver nota |
 | Levene entre celdas | 1,057 | — | 3,52e-01 | **sin evidencia** |
 | Bartlett entre celdas | 59,99 | — | 8,43e-01 | **sin evidencia** |
 
-**Sobre la prueba de White: aquí no aplica limpiamente, y conviene explicar por qué.** Con regresores **solo dicotómicos**, el cuadrado de una variable dummy es la propia dummy y el producto cruzado de dos dummies es otra dummy. Los términos adicionales que White introduce son por tanto colineales con los niveles, y la matriz de diseño queda singular. Se ejecutó una versión recortada (únicamente los 135 productos cruzados distintos): da LM = 62,1 con 152 grados de libertad, un resultado degenerado que no aporta información. Lo apropiado con un diseño factorial de este tipo es comparar las **varianzas entre las celdas del modelo**, que es lo que hacen Levene y Bartlett, y ninguna de las dos encuentra diferencias.
+**Sobre la prueba de White: aquí no aplica limpiamente, y conviene explicar por qué.** Con regresores **solo dicotómicos**, el cuadrado de una variable dummy es la propia dummy y el producto cruzado de dos dummies es otra dummy. Los términos adicionales que White introduce son por tanto colineales con los niveles, y la matriz de diseño queda singular. Se ejecutó una versión recortada (únicamente los 120 productos cruzados distintos): da LM = 62,1 con 136 grados de libertad, un resultado degenerado que no aporta información. Lo apropiado con un diseño factorial de este tipo es comparar las **varianzas entre las celdas del modelo**, que es lo que hacen Levene y Bartlett, y ninguna de las dos encuentra diferencias.
 
 Queda un matiz honesto: la razón entre la varianza mayor y la menor de las celdas es de 30,4×, que en abstracto parece grande. La razón de que los contrastes no la detecten es que las celdas con varianza extrema son muy pequeñas (la menor tiene 5 observaciones), y un contraste no puede declarar una diferencia estable con esa base. Se reportan las dos cosas en lugar de elegir la que conviene.
 
-**¿Se justifican errores robustos?** No. El error estándar clásico de la media ajustada es 1,1450 y el robusto HC3 es 1,1206: la razón es **0,979**, es decir la corrección robusta no solo no agranda el error sino que lo reduce ligeramente. Con esa evidencia, un modelo con errores robustos añadiría complejidad sin cambiar ninguna conclusión.
+**¿Se justifican errores robustos?** No. El error estándar clásico de la media ajustada es 1,1447 y el robusto HC3 es 1,1206: la razón es **0,979**, es decir la corrección robusta no solo no agranda el error sino que lo reduce ligeramente. Con esa evidencia, un modelo con errores robustos añadiría complejidad sin cambiar ninguna conclusión.
 
 **El caso de la retención es distinto y hay que decirlo.** En una variable binaria la heterocedasticidad es **estructural** —`Var(y) = p(1−p)` depende de `p`—, así que Breusch-Pagan la detecta siempre (LM = 125,1, p = 1,92e-10). No es un defecto del ajuste: es la razón por la que el GREG de la retención se implementó con un modelo **logístico** y no con una probabilidad lineal. Como comprobación de que la lineal no bastaba, sus valores ajustados se salen del intervalo [0, 1]: van de -0,028 a 1,126.
 
@@ -316,9 +320,11 @@ Los g-weights son los pesos implícitos que el GREG introduce sobre los pesos de
 
 **No hay ningún g-weight extremo**: el máximo es 1,471 en el modelo de edad y 2,696 en el de retención, muy por debajo de los umbrales de alarma de 5 y 10. La media es exactamente 1, como debe ser. Adicionalmente se comprobó la propiedad de calibración: `Σ w_i g_i = N` se cumple de forma exacta (razón 1,000000).
 
-**Un hallazgo que sí conviene declarar.** Los totales auxiliares se reproducen exactamente **salvo dos columnas** de género, y por una razón de diseño, no de cálculo: las categorías *Intersexual* y *No disponible* tienen cero observaciones en la muestra, así que ninguna observación las representa y su total poblacional no es calibrable. La matriz de calibración tiene número de condición 2,3e+17, es decir numéricamente singular, precisamente por esas columnas vacías. Es un límite del método frente a categorías no representadas, y la solución —si interesara— sería de diseño: garantizar representación de esas categorías o colapsarlas.
+**Un hallazgo que sí conviene declarar.** Los totales auxiliares se reproducen exactamente **salvo una columna** de género, y por una razón de diseño, no de cálculo: la categoría *Otro / No especificado* tiene cero observaciones en la muestra, así que ninguna observación la representa y su total poblacional no es calibrable. La matriz de calibración tiene número de condición 5,2e+17 y rango 16 sobre 17 columnas. Es un límite del método frente a categorías no representadas, y la solución —si interesara— sería de diseño: garantizar representación de esas categorías. La §7.4 lo cuantifica.
 
-**Observaciones influyentes.** Leverage medio 0,0072 y máximo 0,0941; distancia de Cook máxima **0,0211**. Aquí hay que leer los umbrales con cuidado: superan el umbral de Cook (`4/n` = 0,0018) 79 observaciones y el de leverage (`2k/n` = 0,0162) 100, pero el criterio convencional de preocupación es Cook > 1 y el máximo observado es 0,0211: **dos órdenes de magnitud por debajo**. Con n grande esos umbrales señalizan muchas observaciones sin que ninguna sea materialmente influyente. Lo que decide es la magnitud, no el recuento.
+Las demás columnas se reproducen con precisión de máquina (desvío máximo 4,0e-11 en las calibrables), y la masa que queda sin calibrar son 8 personas de 30 085, es decir el 0,0266 % del universo de esa población.
+
+**Observaciones influyentes.** Leverage medio 0,0072 y máximo 0,0941; distancia de Cook máxima **0,0223**. Aquí hay que leer los umbrales con cuidado: superan el umbral de Cook (`4/n` = 0,0018) 84 observaciones y el de leverage (`2k/n` = 0,0153) 103, pero el criterio convencional de preocupación es Cook > 1 y el máximo observado es 0,0223: **dos órdenes de magnitud por debajo**. Con n grande esos umbrales señalizan muchas observaciones sin que ninguna sea materialmente influyente. Lo que decide es la magnitud, no el recuento.
 
 Para no quedarse en la teoría, se recalculó el estimador GREG **eliminando** las observaciones de g más alto y se midió el efecto:
 
@@ -332,16 +338,50 @@ Para no quedarse en la teoría, se recalculó el estimador GREG **eliminando** l
 
 El efecto máximo de quitar las 25 observaciones con mayor g es de 0,04178 años, es decir **menos de un mes de edad media**: ninguna observación individual está moviendo el resultado.
 
-### 7.4 Conclusión: ¿es razonable el modelo GREG?
+### 7.4 Colapso de las categorías de género no representadas
+
+**El problema.** El registro reconoce cuatro categorías de género. Dos de ellas tienen una presencia mínima en el universo y **ninguna** en la muestra:
+
+| Categoría | Personas en el censo | % del censo | Registros | Observaciones en la muestra |
+|---|---:|---:|---:|---:|
+| Intersexual | 5 | 0,0166 % | 5 | **0** |
+| No disponible | 4 | 0,0133 % | 4 | **0** |
+| *Otro / No especificado* (colapsada) | 9 | 0,0299 % | — | **0** |
+
+Las **9 personas** son el 0,030 % del censo. Un detalle que importa para lo que sigue: las etiquetas *Intersexual* y *No disponible* aparecen **únicamente en la convocatoria 2021** (5 y 4 registros, respectivamente). Las mismas personas sí figuran en convocatorias anteriores, pero con otra etiqueta de género.
+
+**La consecuencia.** Una categoría auxiliar con cero observaciones en la muestra no es calibrable: el GREG no puede reproducir su total poblacional porque ninguna observación lo representa, y su coeficiente queda indeterminado. No es un error de cálculo; es un límite del diseño. En la comprobación de calibración aparecía como un desvío exactamente igual al recuento censal de la columna (8 personas sin calibrar, repartidas en dos columnas). Son 8 y no 9 porque el modelo de edad excluye a la persona sin edad registrada, que es una de las 9 colapsadas.
+
+**La decisión.** En **todos los análisis desagregados por género** las dos categorías se colapsan en una sola, *Otro / No especificado*. Se conserva la columna original del registro para dos usos que sí necesitan el dato crudo: el control de calidad de género contradictorio (que cuenta categorías distintas por persona y por eso debe ver el registro tal como está) y el visor de trayectorias, que reproduce el censo sin transformarlo.
+
+**Qué cambia y qué no.** Se midieron tres variantes del vector auxiliar del modelo de edad. Los estimadores son idénticos en las tres:
+
+| Variante | Columnas | Rango(M) | cond(M) | Columnas no calibrables | Personas sin calibrar | GREG de la edad |
+|---|---:|---:|---:|---:|---:|---:|
+| Sin colapsar (4 categorías crudas) | 18 | 16 de 18 | 2,3e+17 | 2 | 8 | 45,1528 |
+| **Colapsada (decisión adoptada)** | 17 | 16 de 17 | 5,2e+17 | 1 | 8 | 45,1528 |
+| Colapsada y columna excluida del vector | 16 | 16 de 16 | 3,9e+02 | 0 | 0 | 45,1528 |
+
+El colapso **no devuelve la calibrabilidad** a la categoría: la causa es la ausencia en la muestra, no la granularidad excesiva. Reduce de dos a una las columnas no calibrables y agrupa el hueco en un rótulo, pero la masa sin calibrar sigue siendo de 8 personas y el rango de M no mejora. Tampoco empeora el ajuste: el desvío de esa columna es exactamente su recuento censal y las demás se reproducen con precisión de máquina.
+
+Dos consecuencias verificadas que conviene dejar dichas, porque podrían esperarse mal:
+
+1. **El estimador y su varianza no cambian en absoluto** (diferencia 0 años entre colapsar y no colapsar). Era previsible: en la muestra ambas columnas eran constantes cero, así que su coeficiente ya era nulo y el colapso solo fusiona dos columnas nulas en una. El colapso es una decisión de **coherencia y trazabilidad**, no una corrección numérica, y así se reporta.
+2. **Las tablas de retención y transición por género no cambian.** La convocatoria base de cada par es siempre anterior a 2021, y las etiquetas solo existen en 2021: ninguna persona aparece con ellas como base de un par. Se comprobó sobre los resultados del panel y no hay ni una sola celda de las tablas desagregadas por género que las contenga. Lo que sí cambia es la prueba de representatividad, y solo en los grados de libertad: el estadístico es invariante (χ² = 3,1283 en ambos casos, porque una celda con observado cero aporta a χ² exactamente su esperado), mientras los gl bajan de 3 a 2 y el p-valor sube de 0,3723 a 0,2093. Con el colapso la distribución de género de la muestra sigue siendo compatible con la del censo, y el supuesto de frecuencia esperada mínima sigue sin cumplirse en ninguno de los dos casos (esperado mínimo 0,6653 < 5).
+3. **Los diagnósticos que se normalizan por el número de parámetros sí se mueven, y en la proporción esperada.** La distancia de Cook máxima pasa de 0,0211 a 0,0223: el factor es el cociente de parámetros (18/17 = 1,0588), porque la fórmula de Cook divide por `k`, más el ajuste de `n − k` en la varianza residual. El ajuste no cambia —los residuos son los mismos— pero conviene decirlo para que la diferencia no parezca un efecto del colapso sobre el modelo.
+
+**La limitación que permanece, y su salida.** La categoría colapsada sigue sin ser calibrable, así que los totales auxiliares no se reproducen al 100 %. Si se quisiera cerrar el hueco por completo hay dos caminos, y ninguno es un truco de cálculo: (i) **de diseño**, garantizar representación de esas categorías en la muestra; o (ii) **de alcance**, excluir del vector auxiliar la columna no representada y declarar que el género de esas 8 personas queda fuera de la calibración. La tercera fila de la tabla anterior mide la variante (ii): deja **cero** columnas sin calibrar y un número de condición de 3,9e+02 —frente a 5,2e+17— con el **mismo estimador**. No se adoptó porque la decisión acordada es colapsar y declarar, y porque dejar la columna dentro hace visible la limitación en la propia comprobación de calibración; pero está medida y disponible si se prefiere la calibración exacta.
+
+### 7.5 Conclusión: ¿es razonable el modelo GREG?
 
 **Sí, con dos matices documentados.** La evidencia:
 
 1. **Sin g-weights extremos.** Máximo 1,471 (edad) y 2,696 (retención); ninguno supera 5. La calibración se verifica exactamente (`Σ w_i g_i = N`).
-2. **Sin observaciones influyentes materiales.** Distancia de Cook máxima 0,0211, muy por debajo del nivel de preocupación; quitar las observaciones de mayor g mueve la estimación menos de 0,05 años.
-3. **Sin heterocedasticidad que exija corrección.** Breusch-Pagan p = 9,24e-02, Levene p = 3,52e-01, Bartlett p = 8,43e-01; y la razón HC3/clásico de 0,979 confirma que los errores robustos no aportan.
+2. **Sin observaciones influyentes materiales.** Distancia de Cook máxima 0,0223, muy por debajo del nivel de preocupación; quitar las observaciones de mayor g mueve la estimación menos de 0,05 años.
+3. **Sin heterocedasticidad que exija corrección.** Breusch-Pagan p = 6,80e-02, Levene p = 3,52e-01, Bartlett p = 8,43e-01; y la razón HC3/clásico de 0,979 confirma que los errores robustos no aportan.
 4. **La normalidad no es un supuesto crítico.** No se cumple en el censo por 11 edades erróneas, pero la consistencia del GREG es por diseño y no depende de ella.
 
-**Los dos matices.** Primero, los totales de dos categorías de género no son calibrables porque no tienen representación en la muestra: el límite está en el diseño muestral, no en el estimador, y se declara en lugar de omitirse. Segundo, la prueba de White no es aplicable a un diseño de solo dicotómicas y se sustituye por contrastes de homocedasticidad entre celdas, que es lo apropiado para un modelo factorial. Con esas salvedades, los diagnósticos respaldan el uso del GREG que se reporta en las secciones 5 y 6.
+**Los dos matices.** Primero, la categoría de género *Otro / No especificado* no es calibrable porque no tiene representación en la muestra: el límite está en el diseño muestral, no en el estimador, y se declara en lugar de omitirse (ver la §7.4, donde además se mide la variante que sí calibra exactamente). Segundo, la prueba de White no es aplicable a un diseño de solo dicotómicas y se sustituye por contrastes de homocedasticidad entre celdas, que es lo apropiado para un modelo factorial. Con esas salvedades, los diagnósticos respaldan el uso del GREG que se reporta en las secciones 5 y 6.
 
 ## 8. Conclusión: qué se reporta y por qué
 
@@ -376,6 +416,7 @@ El efecto máximo de quitar las 25 observaciones con mayor g es de 0,04178 años
 | `data/memoria/eda/` | 6 gráficas del EDA |
 | `src/estimadores_longitudinal.py` | Post-estratificación y GREG (Partes 2-3) |
 | `data/memoria/estimadores_resultados.json` | Cifras de los estimadores |
+| `src/genero_comun.py` | Colapso de las categorías de género (§7.4) |
 | `src/diagnosticos_greg.py` | Diagnósticos de supuestos y g-weights (§7) |
 | `data/memoria/diagnosticos_greg.json` | Cifras de los diagnósticos |
 | `data/memoria/eda/07_qq_edad.png` | Q-Q plot de la edad (censo y muestra) |

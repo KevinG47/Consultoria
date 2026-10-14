@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-14T13:02:20",
+  "fecha": "2026-10-14T15:12:25",
   "fuente": "Fuente: datos.gov.co, dataset bqtm-4y2h — 77 237 registros, 30 086 personas, convocatorias 2013-2021.",
   "universo": {
     "registros": 77237,
@@ -28,8 +28,8 @@
         }
       }
     },
-    "NME_GENERO_PR": {
-      "n_categorias": 4,
+    "NME_GENERO_COL": {
+      "n_categorias": 3,
       "distribucion": {
         "Masculino": {
           "n": 18228,
@@ -39,13 +39,9 @@
           "n": 11849,
           "pct": 39.383766535930334
         },
-        "Intersexual": {
-          "n": 5,
-          "pct": 0.016619025460347006
-        },
-        "No disponible": {
-          "n": 4,
-          "pct": 0.013295220368277605
+        "Otro / No especificado": {
+          "n": 9,
+          "pct": 0.02991424582862461
         }
       }
     },
@@ -296,6 +292,95 @@
     "minimo": 17.58,
     "media_sin_atipicos_100": 45.393083726807205
   },
+  "genero_colapso": {
+    "columna_original": "NME_GENERO_PR",
+    "columna_analisis": "NME_GENERO_COL",
+    "etiqueta_colapsada": "Otro / No especificado",
+    "motivo": "Las categorías 'Intersexual' y 'No disponible' tienen cero observaciones en la muestra MAS (2 224 personas), así que su total poblacional no es calibrable. Se colapsan en 'Otro / No especificado' en todos los análisis desagregados por género. El colapso no restaura la calibrabilidad —la causa es la ausencia en la muestra, no la granularidad— pero reduce de dos a una las columnas no calibrables y deja un hueco único y rotulado.",
+    "categorias_originales": [
+      "Masculino",
+      "Femenino",
+      "Intersexual",
+      "No disponible"
+    ],
+    "distribucion_censo": {
+      "Masculino": {
+        "n": 18228,
+        "pct": 60.586319218241044
+      },
+      "Femenino": {
+        "n": 11849,
+        "pct": 39.383766535930334
+      },
+      "Intersexual": {
+        "n": 5,
+        "pct": 0.016619025460347006
+      },
+      "No disponible": {
+        "n": 4,
+        "pct": 0.013295220368277605
+      }
+    },
+    "distribucion_muestra": {
+      "Masculino": 0,
+      "Femenino": 0,
+      "Intersexual": 0,
+      "No disponible": 0
+    },
+    "distribucion_censo_colapsada": {
+      "Masculino": {
+        "n": 18228,
+        "pct": 60.586319218241044
+      },
+      "Femenino": {
+        "n": 11849,
+        "pct": 39.383766535930334
+      },
+      "Otro / No especificado": {
+        "n": 9,
+        "pct": 0.02991424582862461
+      }
+    },
+    "categorias_colapsadas": {
+      "Intersexual": {
+        "personas_censo": 5,
+        "pct_censo": 0.016619025460347006,
+        "personas_muestra": 0,
+        "registros_censo": 5,
+        "convocatorias_con_la_etiqueta": [
+          21
+        ],
+        "convocatorias_de_esas_personas": [
+          16,
+          18,
+          19,
+          20,
+          21
+        ]
+      },
+      "No disponible": {
+        "personas_censo": 4,
+        "pct_censo": 0.013295220368277605,
+        "personas_muestra": 0,
+        "registros_censo": 4,
+        "convocatorias_con_la_etiqueta": [
+          21
+        ],
+        "convocatorias_de_esas_personas": [
+          17,
+          18,
+          21
+        ]
+      }
+    },
+    "personas_colapsadas_censo": 9,
+    "pct_colapsado_censo": 0.02991424582862461,
+    "observaciones_en_muestra": 0,
+    "etiquetas_solo_en_2021": true,
+    "nota_2021": "Las etiquetas 'Intersexual' y 'No disponible' no aparecen en ninguna convocatoria anterior a 2021 (31 registros en total, todos de 2021). Por eso ninguna tabla de retención o transición por género cambia: la convocatoria base de cada par es siempre anterior a 2021.",
+    "calibrable": false,
+    "nota": "El colapso no restaura la calibrabilidad: la categoría resultante sigue teniendo cero observaciones en la muestra."
+  },
   "convocatorias_por_persona": {
     "distribucion": {
       "1": {
@@ -402,7 +487,7 @@
             "tasa": 0.8935251798561151
           }
         },
-        "NME_GENERO_PR": {
+        "NME_GENERO_COL": {
           "Femenino": {
             "n": 2716,
             "retenidos": 1580,
@@ -654,7 +739,7 @@
             "tasa": 0.9053926206244087
           }
         },
-        "NME_GENERO_PR": {
+        "NME_GENERO_COL": {
           "Femenino": {
             "n": 2934,
             "retenidos": 2384,
@@ -921,7 +1006,7 @@
             "tasa": 0.9528301886792453
           }
         },
-        "NME_GENERO_PR": {
+        "NME_GENERO_COL": {
           "Femenino": {
             "n": 3565,
             "retenidos": 2852,
@@ -1183,7 +1268,7 @@
             "tasa": 0.9543057996485061
           }
         },
-        "NME_GENERO_PR": {
+        "NME_GENERO_COL": {
           "Femenino": {
             "n": 4858,
             "retenidos": 3654,
@@ -1470,7 +1555,7 @@
             "tasa": 0.9603720177921553
           }
         },
-        "NME_GENERO_PR": {
+        "NME_GENERO_COL": {
           "Femenino": {
             "n": 6411,
             "retenidos": 4987,
@@ -1761,7 +1846,7 @@
         "p_valor": 1.7876020035449794e-257,
         "min_n_h_censo": 53
       },
-      "NME_GENERO_PR": {
+      "NME_GENERO_COL": {
         "referencia": "2019→2021 (censo)",
         "p_global": 0.7951297928078114,
         "estratos": {
@@ -2076,7 +2161,7 @@
       "n_h_min_censo": 53,
       "p_valor": 1.7876020035449794e-257
     },
-    "NME_GENERO_PR": {
+    "NME_GENERO_COL": {
       "pct_varianza_explicada": 0.11274084727654181,
       "reduccion_varianza_teorica_pct": 0.11274084727654181,
       "n_estratos": 2,
@@ -2104,7 +2189,7 @@
       "n_h_min_censo": 1,
       "p_valor": 1.057525644771756e-08
     },
-    "NME_CLASIFICACION_PR × NME_GENERO_PR": {
+    "NME_CLASIFICACION_PR × NME_GENERO_COL": {
       "pct_varianza_explicada": 7.115125914307431,
       "reduccion_varianza_teorica_pct": 7.115125914307431,
       "n_estratos": 8,

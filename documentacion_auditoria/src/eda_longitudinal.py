@@ -36,6 +36,12 @@ from scipy import stats
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
+# El genero se analiza con la columna COLAPSADA (Intersexual + No disponible ->
+# "Otro / No especificado"); ver genero_comun.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from genero_comun import (  # noqa: E402
+    COL_GENERO_COL, agregar_genero_colapsado, resumen_colapso)
+
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 CSV = RAIZ / "Datos" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
@@ -65,7 +71,7 @@ def cargar() -> pd.DataFrame:
                                      chunksize=50_000, encoding="utf-8")]
     df = pd.concat(partes, ignore_index=True)
     df["conv_i"] = df["ID_CONVOCATORIA"].astype(int)
-    return df
+    return agregar_genero_colapsado(df)
 
 
 def pct(x, d=1):
@@ -91,7 +97,9 @@ def main() -> int:
     # Univariado: categóricas a nivel de PERSONA (última convocatoria observada,
     # misma regla que el resto del análisis, para que todo sea comparable).
     ult = (df.sort_values("conv_i").groupby("ID_PERSONA_PR", observed=True).last())
-    CATS = ["NME_CLASIFICACION_PR", "NME_GENERO_PR", "NME_GRAN_AREA_PR",
+    # OJO: el genero se analiza con la columna COLAPSADA. La columna cruda
+    # (NME_GENERO_PR) se conserva en el DataFrame para el control de calidad.
+    CATS = ["NME_CLASIFICACION_PR", COL_GENERO_COL, "NME_GRAN_AREA_PR",
             "NME_DEPARTAMENTO_RES_PR", "NME_NIV_FORM_PR"]
     univ: dict = {}
     for c in CATS:
@@ -124,6 +132,15 @@ def main() -> int:
           f"mediana={q[0.5]:.1f} bigote={atip_bigote} >100={res['edad']['mayores_100']} "
           f"max={res['edad']['maximo']}")
 
+    # ---- genero: colapso de las categorias no representadas ---------------
+    res["genero_colapso"] = resumen_colapso(df)
+    gc = res["genero_colapso"]
+    print(f"\n== Género: colapso en '{gc['etiqueta_colapsada']}' ==")
+    for k, d in gc["categorias_colapsadas"].items():
+        print(f"   {k:16s} censo={d['personas_censo']:2d} "
+              f"etiqueta_en={d['convocatorias_con_la_etiqueta']}")
+    print(f"   -> {gc['distribucion_censo_colapsada']}")
+
     # ---- convocatorias por persona ---------------------------------------
     nconv = df.groupby("ID_PERSONA_PR", observed=True)["conv_i"].nunique()
     dist_n = nconv.value_counts().sort_index()
@@ -138,7 +155,10 @@ def main() -> int:
           f"una_sola={(nconv==1).sum()} todas={(nconv==6).sum()}")
 
     # ---- faltantes por variable y por convocatoria ------------------------
-    cols = [c for c in df.columns if c not in ("conv_i",)]
+    # Solo cuentan las columnas del FUENTE: `conv_i` y la columna derivada de
+    # genero colapsado no son variables del registro y contarlas inflaria el
+    # total (30 -> 31) falseando el hallazgo.
+    cols = [c for c in df.columns if c not in ("conv_i", COL_GENERO_COL)]
     falt: dict = {}
     for c in cols:
         vacio = (df[c].astype(str).str.strip() == "")
@@ -236,7 +256,7 @@ def main() -> int:
                    "n_h_min_censo": d["min_n_h_censo"],
                    "p_valor": d["p_valor"]}
     # combinaciones de dos vías
-    for c1, c2 in [("NME_CLASIFICACION_PR", "NME_GENERO_PR"),
+    for c1, c2 in [("NME_CLASIFICACION_PR", COL_GENERO_COL),
                    ("NME_CLASIFICACION_PR", "NME_GRAN_AREA_PR")]:
         comb = base[c1].astype(str) + " | " + base[c2].astype(str)
         p_h = y.groupby(comb, observed=True).mean()
@@ -266,9 +286,10 @@ def main() -> int:
     # --- 01 univariado categóricas
     fig, axes = plt.subplots(2, 2, figsize=(12.4, 8.4))
     for ax, col, titulo in zip(axes.ravel(),
-                               ["NME_CLASIFICACION_PR", "NME_GENERO_PR",
+                               ["NME_CLASIFICACION_PR", COL_GENERO_COL,
                                 "NME_GRAN_AREA_PR", "NME_NIV_FORM_PR"],
-                               ["Categoría de reconocimiento", "Género",
+                               ["Categoría de reconocimiento",
+                                "Género (colapsado en “Otro / No especificado”)",
                                 "Gran área de conocimiento", "Nivel de formación"]):
         vc = ult[col].value_counts().head(11)[::-1]
         etiquetas = [str(i)[:34] for i in vc.index]
@@ -368,7 +389,7 @@ def main() -> int:
     fig, axes = plt.subplots(2, 2, figsize=(12.8, 8.6))
     par_ref = biv["pares"]["2019→2021"]
     for ax, col, titulo in zip(axes.ravel(),
-                               ["NME_CLASIFICACION_PR", "NME_GENERO_PR",
+                               ["NME_CLASIFICACION_PR", COL_GENERO_COL,
                                 "NME_GRAN_AREA_PR", "NME_NIV_FORM_PR"],
                                ["Categoría", "Género", "Gran área", "Nivel de formación"]):
         d = par_ref[col]

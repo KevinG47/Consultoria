@@ -100,6 +100,12 @@ demográficos agregados que publica MinCiencias.
   *cada* convocatoria, no solo el último, y avisa con una etiqueta cuando algo
   cambia: la categoría cambia en 8 755 personas, el nivel de formación en 3 844,
   la gran área en 1 389, el departamento de residencia en 1 203 y el género en 42.
+- **El género se muestra tal como está en el registro.** Las cuatro categorías del
+  censo (*Masculino*, *Femenino*, *Intersexual* y *No disponible*) aparecen sin
+  agrupar, porque la herramienta reproduce el dato fuente. Los análisis
+  estadísticos, en cambio, usan el género **colapsado** en *Otro / No
+  especificado* —decisión documentada en `metodologia_muestreo.md` §7.4—, porque
+  *Intersexual* y *No disponible* no tienen ninguna observación en la muestra.
 - **Edades fuera de rango:** 22 registros declaran más de 100 años; la ficha lo
   advierte cuando ocurre.
 - La **retención de la cohorte** y los promedios por gran área se calculan sobre

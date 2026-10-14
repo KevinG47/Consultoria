@@ -36,6 +36,10 @@ from scipy import stats
 # Rutas y constantes
 # --------------------------------------------------------------------------
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from genero_comun import (  # noqa: E402
+    COL_GENERO, COL_GENERO_COL, agregar_genero_colapsado, resumen_colapso)
+
 RAIZ = Path(__file__).resolve().parents[2]
 CSV = RAIZ / "Datos" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 DIR_SALIDA = RAIZ / "documentacion_auditoria" / "data" / "memoria"
@@ -62,12 +66,13 @@ FUENTE = ("Fuente: datos.gov.co, dataset bqtm-4y2h — Investigadores reconocido
 
 COL_PERSONA = "ID_PERSONA_PR"
 COL_CAT = "NME_CLASIFICACION_PR"
-COL_GENERO = "NME_GENERO_PR"
 COL_AREA = "NME_GRAN_AREA_PR"
 COL_NIVEL = "NME_NIV_FORM_PR"
 COL_DEPTO = "NME_DEPARTAMENTO_RES_PR"
 
-EJE_GENERO = (COL_GENERO, None)
+# El genero se desagrega con la columna COLAPSADA (ver genero_comun.py). La
+# columna cruda COL_GENERO se reserva para el control de calidad del registro.
+EJE_GENERO = (COL_GENERO_COL, None)
 EJE_DEPTO = (COL_DEPTO, TOP5_DEPTO)
 EJE_AREA = (COL_AREA, None)
 EJE_NIVEL = (COL_NIVEL, None)
@@ -96,7 +101,7 @@ def cargar() -> pd.DataFrame:
     df = pd.concat(partes, ignore_index=True)
     df["_conv"] = df["ID_CONVOCATORIA"].astype(int)
     df["_anio"] = df["_conv"].map(CONV_ANIO)
-    return df
+    return agregar_genero_colapsado(df)
 
 
 # --------------------------------------------------------------------------
@@ -395,7 +400,12 @@ def presencia_personas(panel: pd.DataFrame) -> dict:
 
 
 def genero_inconsistente(panel: pd.DataFrame) -> dict:
-    """Personas cuyo genero declarado cambia entre convocatorias."""
+    """Personas cuyo genero declarado cambia entre convocatorias.
+
+    Usa la columna CRUDA a proposito: es un hallazgo de calidad del registro, y
+    colapsar antes de contarla ocultaria los cambios Intersexual <-> No
+    disponible. No es una desagregacion por genero.
+    """
     g = panel.groupby(COL_PERSONA, observed=True)[COL_GENERO].nunique()
     ids = set(g[g > 1].index)
     sub = panel[panel[COL_PERSONA].isin(ids)].sort_values("_conv")
@@ -633,7 +643,8 @@ def main() -> int:
     def perfil(d: pd.DataFrame) -> pd.DataFrame:
         return (d.sort_values("_conv")
                  .groupby(COL_PERSONA, observed=True)
-                 .last()[[COL_GENERO, COL_CAT, COL_AREA, COL_NIVEL, COL_DEPTO]])
+                 .last()[[COL_GENERO, COL_GENERO_COL, COL_CAT, COL_AREA,
+                          COL_NIVEL, COL_DEPTO]])
 
     perfil_pob = perfil(df)
     perfil_mue = perfil(mues)
@@ -654,13 +665,20 @@ def main() -> int:
     # ---- Tarea 3 -------------------------------------------------------
     print("\n== Tarea 3: representatividad ==")
     rep = {}
-    for nombre, col in [("genero", COL_GENERO), ("categoria", COL_CAT),
+    for nombre, col in [("genero", COL_GENERO_COL), ("categoria", COL_CAT),
                         ("gran_area", COL_AREA), ("departamento", COL_DEPTO),
                         ("nivel_formacion", COL_NIVEL)]:
         rep[nombre] = comparar_poblacion(perfil_pob[col], perfil_mue[col])
         r = rep[nombre]
         print(f"   {nombre:16s} chi2={r['chi2']:.3f}  gl={r['gl']}  p={r['p_valor']:.4f}"
               f"  max dif={r['max_diferencia_pp']:.3f} pp")
+    # Misma prueba sobre la columna CRUDA, para poder documentar qué cambia el
+    # colapso: el estadistico es invariante (las celdas con observado 0 aportan su
+    # esperado), pero los grados de libertad bajan de 3 a 2 y con ellos el p-valor.
+    rep_genero_crudo = comparar_poblacion(perfil_pob[COL_GENERO],
+                                          perfil_mue[COL_GENERO])
+    print(f"   {'genero (crudo)':16s} chi2={rep_genero_crudo['chi2']:.3f}  "
+          f"gl={rep_genero_crudo['gl']}  p={rep_genero_crudo['p_valor']:.4f}")
 
     # ---- Tarea 4 -------------------------------------------------------
     print("\n== Tarea 4: retencion, entradas y salidas ==")
@@ -773,6 +791,9 @@ def main() -> int:
 
     # consistencia de atributos dentro de la persona (calidad)
     inc = {}
+    # Coherencia de atributos: se mide sobre la columna CRUDA de genero, porque
+    # es un control de calidad del registro, no una desagregacion. Si se midiera
+    # sobre la colapsada, un cambio Intersexual -> No disponible dejaria de contar.
     for col in [COL_GENERO, COL_DEPTO, COL_AREA, COL_NIVEL, COL_CAT]:
         n = df.groupby(COL_PERSONA, observed=True)[col].nunique()
         inc[col] = int((n > 1).sum())
@@ -795,10 +816,12 @@ def main() -> int:
                                                   for c in CONV_ORDEN},
                     "media_registros_por_persona": len(mues) / len(muestra_ids)},
         "perfil_poblacion": {c: perfil_pob[c].value_counts().to_dict()
-                             for c in [COL_GENERO, COL_CAT, COL_AREA, COL_NIVEL]},
+                             for c in [COL_GENERO_COL, COL_CAT, COL_AREA, COL_NIVEL]},
         "perfil_muestra": {c: perfil_mue[c].value_counts().to_dict()
-                           for c in [COL_GENERO, COL_CAT, COL_AREA, COL_NIVEL]},
+                           for c in [COL_GENERO_COL, COL_CAT, COL_AREA, COL_NIVEL]},
+        "genero_colapso": resumen_colapso(df, ids_muestra=muestra_set),
         "representatividad": rep,
+        "representatividad_genero_sin_colapsar": rep_genero_crudo,
         "convocatorias_fecha": {str(c): str(fechas_conv[c]) for c in CONV_ORDEN},
         "intervalos_anios_reales": {f"{CONV_ANIO[a]}->{CONV_ANIO[a + 1]}": round(v, 4)
                                     for a, v in inter_reales.items()},

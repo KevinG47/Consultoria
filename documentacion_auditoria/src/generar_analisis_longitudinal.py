@@ -43,6 +43,11 @@ PU, PM = D["pares_universo"], D["pares_muestra"]
 TU, TM = D["transiciones_universo"], D["transiciones_muestra"]
 GL = D["retencion_global_2013_2021"]
 HC = D["hallazgos_calidad"]
+# Colapso de las categorias de genero no representadas en la muestra (§7.4 de la
+# metodologia). El genero se analiza con la columna colapsada.
+FR = D["genero_colapso"]
+RG_C = D["representatividad"]["genero"]
+RG_S = D["representatividad_genero_sin_colapsar"]
 CATS = ["Investigador Junior", "Investigador Asociado",
         "Investigador Sénior", "Investigador Emérito"]
 CORTOS = [c.replace("Investigador ", "") for c in CATS]
@@ -264,7 +269,7 @@ A("")
 pares_lbl = [p["par"] for p in PU]
 for col, titulo in [("NME_CLASIFICACION_PR", "Categoría"),
                     ("NME_GRAN_AREA_PR", "Gran área de conocimiento"),
-                    ("NME_GENERO_PR", "Género")]:
+                    ("NME_GENERO_COL", "Género (colapsado †)")]:
     A(f"**{titulo}**")
     A("")
     A("| Grupo | " + " | ".join(pares_lbl) + " |")
@@ -281,6 +286,11 @@ A("Las tres tablas cuentan la misma historia que el EDA: la **categoría** separ
   "comportamientos (los Junior retienen bastante menos que los Sénior), la **gran "
   "área** separa algo (Ingeniería y Ciencias Médicas por encima de Sociales y "
   "Humanidades) y el **género** apenas separa.")
+A("")
+A(f"† El género se desagrega **colapsado** (*{FR['etiqueta_colapsada']}*), decisión "
+  f"documentada en `metodologia_muestreo.md` §7.4. Estas tablas no cambian con el "
+  f"colapso: las etiquetas *Intersexual* y *No disponible* solo aparecen en la "
+  f"convocatoria 2021, y 2021 nunca es convocatoria base de un par.")
 A("")
 A("### 2.8 Calidad del registro que revela el panel")
 A("")
@@ -424,8 +434,21 @@ A("Cuatro de los cinco ejes tienen p > 0,05. El único que baja de ese umbral es
   "del margen de diseño de ±2 pp. Conviene decirlo con precisión: en un MAS la "
   "representatividad **está garantizada por el diseño** en esperanza; estos χ² son "
   "una comprobación de la implementación, no evidencia de representatividad. La "
-  "limitación real es que dos categorías de género del universo (Intersexual, 5 "
-  "personas, y No disponible, 4) no quedan representadas en la muestra.")
+  "limitación real es que la categoría de género "
+  f"*{FR['etiqueta_colapsada']}* "
+  f"({num(FR['personas_colapsadas_censo'])} personas en el universo: Intersexual, "
+  f"{num(FR['categorias_colapsadas']['Intersexual']['personas_censo'])}, y No "
+  f"disponible, {num(FR['categorias_colapsadas']['No disponible']['personas_censo'])}) "
+  f"no queda representada en la muestra. Por eso el género se analiza colapsado; el "
+  f"detalle de la decisión y su efecto medido están en "
+  f"`metodologia_muestreo.md` §7.4.")
+A("")
+A(f"El colapso no altera el estadístico de género (χ² = "
+  f"{pcs(RG_C['chi2'], 4)} con y sin colapsar) pero sí sus grados de libertad, que "
+  f"bajan de {RG_S['gl']} a {RG_C['gl']}: el p-valor pasa de "
+  f"{pcs(RG_S['p_valor'], 4)} a {pcs(RG_C['p_valor'], 4)}. En ninguno de los dos "
+  f"casos se cumple el supuesto de frecuencia esperada mínima "
+  f"({pcs(RG_C['min_esperado'], 4)} < 5).")
 A("")
 A("### A.3 Contraste muestra vs censo")
 A("")

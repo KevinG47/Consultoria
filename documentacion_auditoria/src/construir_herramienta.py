@@ -108,6 +108,11 @@ def main() -> int:
     lista_niv, mapa_niv = codigos(df["NME_NIV_FORM_PR"])
     lista_dep, mapa_dep = codigos(df["NME_DEPARTAMENTO_RES_PR"])
     lista_gen, mapa_gen = codigos(df["NME_GENERO_PR"])
+    # A PROPOSITO se usa la columna CRUDA de genero: la herramienta reproduce el
+    # registro censal tal como esta y no calcula estadisticos por genero. El
+    # colapso de Intersexual + No disponible en "Otro / No especificado" que
+    # aplican los analisis (ver genero_comun.py y metodologia_muestreo.md §7.4) no
+    # se replica aqui, para no falsear el dato fuente.
     inst_vals = sorted({v for v in df["INST_FILIA"] if v.strip()})
     lista_inst = inst_vals
     mapa_inst = {v: i for i, v in enumerate(lista_inst)}

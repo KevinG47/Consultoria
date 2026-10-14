@@ -42,6 +42,13 @@ from sklearn.linear_model import LogisticRegression
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
+# Colapso de las categorias de genero no representadas en la muestra (ver
+# genero_comun.py). El genero entra en los auxiliares por la columna COLAPSADA;
+# la columna cruda se conserva para el control de calidad.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from genero_comun import (  # noqa: E402
+    COL_GENERO, COL_GENERO_COL, agregar_genero_colapsado, resumen_colapso)
+
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 CSV = RAIZ / "Datos" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
@@ -54,9 +61,9 @@ CATEGORIAS = ["Investigador Junior", "Investigador Asociado",
               "Investigador Sénior", "Investigador Emérito"]
 RANGO = {c: i for i, c in enumerate(CATEGORIAS)}
 
-AUX_RET = ["NME_CLASIFICACION_PR", "NME_GENERO_PR", "NME_GRAN_AREA_PR",
+AUX_RET = ["NME_CLASIFICACION_PR", COL_GENERO_COL, "NME_GRAN_AREA_PR",
            "NME_DEPARTAMENTO_RES_PR"]
-AUX_EDAD = ["NME_GENERO_PR", "NME_GRAN_AREA_PR", "NME_REGION_RES_PR"]
+AUX_EDAD = [COL_GENERO_COL, "NME_GRAN_AREA_PR", "NME_REGION_RES_PR"]
 
 
 def cargar() -> pd.DataFrame:
@@ -64,7 +71,7 @@ def cargar() -> pd.DataFrame:
                                      chunksize=50_000, encoding="utf-8")]
     df = pd.concat(partes, ignore_index=True)
     df["conv_i"] = df["ID_CONVOCATORIA"].astype(int)
-    return df
+    return agregar_genero_colapsado(df)
 
 
 def matriz_aux(pop: pd.DataFrame, samp: pd.DataFrame, cols: list[str],
@@ -269,6 +276,18 @@ def main() -> int:
     presentes = {c: set(df.loc[df["conv_i"] == c, "ID_PERSONA_PR"]) for c in CONV_ORDEN}
     ult = df.sort_values("conv_i").groupby("ID_PERSONA_PR", observed=True).last()
 
+    # ------------- colapso de genero (decision documentada) ---------------
+    res["genero_colapso"] = resumen_colapso(df, ids_muestra=ids)
+    gc = res["genero_colapso"]
+    print("\n== Genero: colapso de categorias no representadas ==")
+    for c, d in gc["categorias_colapsadas"].items():
+        print(f"   {c:16s} censo={d['personas_censo']:2d}  muestra={d['personas_muestra']}"
+              f"  etiqueta solo en {d['convocatorias_con_la_etiqueta']}")
+    print(f"   -> '{gc['etiqueta_colapsada']}': "
+          f"{gc['personas_colapsadas_censo']} personas "
+          f"({gc['pct_colapsado_censo']:.4f} % del censo), "
+          f"{gc['observaciones_en_muestra']} en la muestra -> no calibrable")
+
     # ======================= 1) RETENCIÓN =================================
     print("\n== Retención: MAS / post-estratificado / GREG ==")
     ret: dict = {}
@@ -379,7 +398,8 @@ def main() -> int:
     y_U = pop_mov["_asciende"].to_numpy()
     y_s = samp_mov["_asciende"].to_numpy()
     X_U, X_s = matriz_aux(pop_mov, samp_mov,
-                          ["NME_CLASIFICACION_PR", "NME_GENERO_PR", "NME_GRAN_AREA_PR"])
+                          ["NME_CLASIFICACION_PR", COL_GENERO_COL,
+                           "NME_GRAN_AREA_PR"])
     asc = resumen(y_s, X_s, X_U, len(pop_mov), samp_mov["NME_CLASIFICACION_PR"],
                   pop_mov["NME_CLASIFICACION_PR"], y_U=y_U)
     # modelo ordinal (odds proporcionales) sobre el movimiento de 3 niveles

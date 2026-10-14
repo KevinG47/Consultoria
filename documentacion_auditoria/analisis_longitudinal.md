@@ -164,7 +164,7 @@ Tasas de retención por par. Se calculan sobre el universo, no sobre la muestra.
 | Ingeniería y Tecnología | 71,58 % | 85,51 % | 84,95 % | 79,59 % | 84,42 % |
 | No registra | 45,61 % | 60,68 % | — | — | 67,62 % |
 
-**Género**
+**Género (colapsado †)**
 
 | Grupo | 2013→2014 | 2014→2015 | 2015→2017 | 2017→2019 | 2019→2021 |
 |---|---|---|---|---|---|
@@ -172,6 +172,8 @@ Tasas de retención por par. Se calculan sobre el universo, no sobre la muestra.
 | Masculino | 61,08 % | 83,67 % | 81,91 % | 77,86 % | 80,58 % |
 
 Las tres tablas cuentan la misma historia que el EDA: la **categoría** separa comportamientos (los Junior retienen bastante menos que los Sénior), la **gran área** separa algo (Ingeniería y Ciencias Médicas por encima de Sociales y Humanidades) y el **género** apenas separa.
+
+† El género se desagrega **colapsado** (*Otro / No especificado*), decisión documentada en `metodologia_muestreo.md` §7.4. Estas tablas no cambian con el colapso: las etiquetas *Intersexual* y *No disponible* solo aparecen en la convocatoria 2021, y 2021 nunca es convocatoria base de un par.
 
 ### 2.8 Calidad del registro que revela el panel
 
@@ -235,13 +237,15 @@ Perfil de cada persona en su última convocatoria observada. Contraste de bondad
 
 | Eje | χ² | gl | p | Diferencia absoluta máxima |
 |---|---:|---:|---:|---:|
-| Género | 3,128 | 3 | 0,372 | 1,6 pp |
+| Género | 3,128 | 2 | 0,209 | 1,6 pp |
 | Categoría | 9,473 | 3 | 0,024 | 1,9 pp |
 | Gran área | 5,145 | 6 | 0,525 | 1,0 pp |
 | Departamento | 43,473 | 34 | 0,128 | 1,2 pp |
 | Nivel de formación | 10,473 | 9 | 0,314 | 1,0 pp |
 
-Cuatro de los cinco ejes tienen p > 0,05. El único que baja de ese umbral es la categoría; con cinco contrastes simultáneos el umbral de Bonferroni es 0,01 y ese p-valor no lo alcanza, y la mayor discrepancia observada en categoría queda dentro del margen de diseño de ±2 pp. Conviene decirlo con precisión: en un MAS la representatividad **está garantizada por el diseño** en esperanza; estos χ² son una comprobación de la implementación, no evidencia de representatividad. La limitación real es que dos categorías de género del universo (Intersexual, 5 personas, y No disponible, 4) no quedan representadas en la muestra.
+Cuatro de los cinco ejes tienen p > 0,05. El único que baja de ese umbral es la categoría; con cinco contrastes simultáneos el umbral de Bonferroni es 0,01 y ese p-valor no lo alcanza, y la mayor discrepancia observada en categoría queda dentro del margen de diseño de ±2 pp. Conviene decirlo con precisión: en un MAS la representatividad **está garantizada por el diseño** en esperanza; estos χ² son una comprobación de la implementación, no evidencia de representatividad. La limitación real es que la categoría de género *Otro / No especificado* (9 personas en el universo: Intersexual, 5, y No disponible, 4) no queda representada en la muestra. Por eso el género se analiza colapsado; el detalle de la decisión y su efecto medido están en `metodologia_muestreo.md` §7.4.
+
+El colapso no altera el estadístico de género (χ² = 3,1283 con y sin colapsar) pero sí sus grados de libertad, que bajan de 3 a 2: el p-valor pasa de 0,3723 a 0,2093. En ninguno de los dos casos se cumple el supuesto de frecuencia esperada mínima (0,6653 < 5).
 
 ### A.3 Contraste muestra vs censo
 
