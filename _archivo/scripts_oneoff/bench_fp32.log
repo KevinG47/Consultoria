@@ -1,0 +1,10 @@
+hilos=4 capacidad=AVX2
+carga 8.6 s · dtype torch.bfloat16
+conversion a float32: 0.1 s · dtype final torch.float32
+corto         80 tokens ->     0.19 s (   2.386 ms/token)
+mediano      489 tokens ->     1.02 s (   2.081 ms/token)
+grande      8483 tokens ->    50.56 s (   5.960 ms/token)
+tasa 5.994 ms/token
+  -> indice con tope 32768: 176174 tokens ~ 17.6 min
+  -> indice con tope  8192: 126731 tokens ~ 12.7 min
+FIN

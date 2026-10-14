@@ -15,10 +15,28 @@ documentacion_auditoria/
 │   ├── inventario_codigo.csv        # Inventario de los 51 archivos de código
 │   ├── analisis_codigo/             # JSON por archivo de código (auditoría)
 │   │   └── *.json                   #   descripción, lógica, crítica, ejecutabilidad
-│   └── ejecucion_log.txt            # Log de ejecución real de los scripts
+│   ├── validacion/                  # Informes de los agentes validadores (R13)
+│   ├── memoria/                     # Sistema del agente: RAG, grafo, reglas, decisiones
+│   │   ├── decisiones.yaml          #   bitácora de decisiones (D001–D010)
+│   │   ├── fuentes_externas.yaml    #   fuentes consultadas con URL verificada
+│   │   ├── rag_indice*.json         #   índices TF-IDF y de embeddings (D007)
+│   │   ├── grafo*.json / *.png      #   memoria estructural y sus figuras
+│   │   ├── validacion_reglas.json   #   resultado de la última corrida de las 17 reglas
+│   │   └── herramienta_trayectorias.html  # visor interactivo del panel
+│   ├── capas.yaml / objetivos.yaml / glosario.yaml
+│   └── ejecucion_resumen.csv        # EXIT y tiempo de los 16 scripts del auditado
 ├── src/
 │   ├── generar_documento.py         # Genera secciones LaTeX desde data/
-│   └── compilar.py                  # Compila proyectos LaTeX a PDF
+│   ├── compilar.py                  # Compila proyectos LaTeX a PDF (con puerta de reglas)
+│   ├── analisis_longitudinal.py     # Panel, retención y transiciones
+│   ├── eda_longitudinal.py          # EDA (Parte 1 de la metodología)
+│   ├── estimadores_longitudinal.py  # Post-estratificación y GREG (Partes 2-3)
+│   ├── diagnosticos_greg.py         # Diagnósticos de supuestos y g-weights (§7)
+│   ├── genero_comun.py              # Colapso de categorías de género (§7.4)
+│   ├── construir_herramienta.py     # Genera el visor de trayectorias (HTML)
+│   ├── parsear_log.py               # Tabla EXIT/tiempo del pipeline auditado
+│   ├── extraer_errores.py           # Tracebacks de los scripts que fallaron
+│   └── memoria/                     # RAG + grafo + reglas (17) + herramientas CLI
 ├── latex/
 │   ├── comun/preambulo.tex          # Preámbulo compartido (Overleaf-ready)
 │   ├── maestro_auditoria/           # Documento maestro (proyecto Overleaf completo)
@@ -27,8 +45,15 @@ documentacion_auditoria/
 │   │   ├── secciones/               # 01_portada … 09_apendice_inventario
 │   │   └── refs.bib
 │   └── objetivo_<n>/                # (generados desde data/objetivos.yaml)
+├── scripts/                         # banco_preguntas.py, comparar_rag.py
+├── zip_overleaf/                    # ZIPs listos para subir a Overleaf
 └── pdf/                             # PDFs compilados
 ```
+
+> **Los logs del pipeline auditado no están en `data/`** sino en
+> `_archivo/logs_pipeline_auditado/` (`ejecucion_log.txt`, `errores_ejecucion.txt`,
+> `pip_install*.log`, `dependencias_latex.txt`); la tabla curada está en
+> `data/ejecucion_resumen.csv`.
 
 ## Estado actual (versión 4 — LITE con reglas de build, glosario parametrizado, evidencia de código)
 
@@ -117,8 +142,17 @@ python -m memoria evidencia                  # informe legible de la última eje
 - **Evidencia:** `data/memoria/evidencia_validacion.md` y `validacion_reglas.json`.
   Texto justificativo de §6.2: `data/memoria/texto_seccion_6_2.md`, ya integrado
   como `latex/anteproyecto/secciones/06b_memoria_agente.tex`.
-- Los artefactos derivados del RAG (matriz, vectorizador, corpus y cachés de git)
-  están en `.gitignore`: se regeneran con `python -m memoria indexar`.
+- **Repositorio autocontenido (sin el clon auditado).** El contenido versionado del
+  proyecto auditado está copiado byte a byte en `datos_originales/repo_auditado/`
+  (236 archivos, commit `1528939`), verificado con `manifiesto_sha256.csv` y
+  `python datos_originales/verificar_hashes.py`. Los dos cachés de git
+  (`git_log_real.csv`, `git_ls_files_real.txt`) están **versionados**, así que R5,
+  R6 y R9 se resuelven sin el clon; R7 usa el ancla
+  `data/memoria/commit_auditado.txt` cuando el clon no está. `--refrescar-git` sí
+  requiere el clon. Detalle en `datos_originales/README.md`.
+- Los artefactos derivados del RAG (corpus, matriz TF-IDF y vectorizador) están en
+  `.gitignore`: se regeneran en segundos con `python -m memoria indexar`, que es el
+  primer paso al clonar el repositorio.
 
 ### Estado del Arte (revisión de literatura)
 
@@ -169,7 +203,8 @@ PyYAML. Para la ejecución de los scripts del repositorio se creó un venv en
 una ruta corta (`%TEMP%/obs_venv`) porque el venv dentro de la carpeta
 OneDrive falla por exceso de longitud de ruta (MAX_PATH de Windows,
 `jedi/third_party/...`). Los logs de instalación y ejecución están en
-`data/pip_install*.log` y `data/ejecucion_log.txt`.
+`_archivo/logs_pipeline_auditado/` (`pip_install*.log`, `ejecucion_log.txt`,
+`errores_ejecucion.txt`).
 
 ## Datos de auditoría
 
@@ -178,7 +213,8 @@ OneDrive falla por exceso de longitud de ruta (MAX_PATH de Windows,
 | `commits_timeline.csv` | 133 commits: hash, fecha, autor, correo, asunto |
 | `inventario_codigo.csv` | 51 archivos: ruta, lenguaje, líneas, KB, rol |
 | `analisis_codigo/*.json` | Ficha por archivo: descripción, lógica, fortalezas, debilidades, mejoras, ejecutabilidad, producción esperada, bugs, recomendación |
-| `ejecucion_log.txt` | Resultado de ejecutar cada script del repo en un venv Python (exit code, tiempo, salidas) |
+| `ejecucion_resumen.csv` | Resultado de ejecutar cada script del repo en un venv Python (exit code, tiempo, causa del fallo) |
+| `_archivo/logs_pipeline_auditado/ejecucion_log.txt` | Log crudo de esa ejecución (codificación mixta UTF-8/UTF-16LE; lo parsea `src/parsear_log.py`) |
 
 ## Notas de la auditoría
 

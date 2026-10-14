@@ -51,7 +51,7 @@ from genero_comun import (  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-CSV = RAIZ / "Datos" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
+CSV = RAIZ / "datos_originales" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 IDS = DOC / "data" / "memoria" / "muestra_ids.csv"
 SALIDA = DOC / "data" / "memoria" / "estimadores_resultados.json"
 

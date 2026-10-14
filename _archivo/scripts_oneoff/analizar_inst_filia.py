@@ -9,7 +9,7 @@ for _f in (sys.stdout, sys.stderr):
         _f.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-CSV = RAIZ / "Datos" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
+CSV = RAIZ / "datos_originales" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 
 partes = [t for t in pd.read_csv(CSV, dtype=str, keep_default_na=False, chunksize=50_000,
                                  usecols=["ID_PERSONA_PR", "INST_FILIA"])]

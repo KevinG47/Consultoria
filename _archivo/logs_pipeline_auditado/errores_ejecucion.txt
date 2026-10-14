@@ -1,4 +1,8 @@
-### sprint6_ocde_composicion.py
+# Errores de ejecución del pipeline auditado
+# Fuente: _archivo\logs_pipeline_auditado\ejecucion_log.txt
+# Scripts con EXIT != 0 en el log: 6 de 16
+
+### sprint6_ocde_composicion.py  (EXIT=1)
    ^^^^^^^^^^^^^^^^^^^
    File "C:\Users\InfoPersonal\OneDrive - Universidad Santo
    Tom�s\Escritorio\consultoria\Observatorio_Ministerio_de_Ciencias_Grupo8\src\ingesta\__init__.py", line 45, in
@@ -6,7 +10,7 @@
    raise FileNotFoundError(
    FileNotFoundError: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
 
-### sprint6_sankey_categoria.py
+### sprint6_sankey_categoria.py  (EXIT=1)
    in write_image
    raise RuntimeError(KALEIDO_REQUIRED_MSG)
    RuntimeError:
@@ -14,7 +18,7 @@
    which can be installed using pip:
    $ pip install --upgrade "kaleido>=1"
 
-### sprint6_geografia_institucional.py
+### sprint6_geografia_institucional.py  (EXIT=1)
    line 261, in main
    print("\n[3/5] Construyendo tabla de flujos residencia \u2192 instituci�n...")
    File "C:\Users\InfoPersonal\AppData\Local\Programs\Python\Python311\Lib\encodings\cp1252.py", line 19, in encode
@@ -22,7 +26,7 @@
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 48: character maps to <undefined>
 
-### sprint6_sankey_territorial.py
+### sprint6_sankey_territorial.py  (EXIT=1)
    in write_image
    raise RuntimeError(KALEIDO_REQUIRED_MSG)
    RuntimeError:
@@ -30,7 +34,7 @@
    which can be installed using pip:
    $ pip install --upgrade "kaleido>=1"
 
-### sprint5_produccion.py
+### sprint5_produccion.py  (EXIT=1)
    ^^^^^^^^^^^^^^^^^^^
    File "C:\Users\InfoPersonal\OneDrive - Universidad Santo
    Tom�s\Escritorio\consultoria\Observatorio_Ministerio_de_Ciencias_Grupo8\src\ingesta\__init__.py", line 45, in
@@ -38,10 +42,10 @@
    raise FileNotFoundError(
    FileNotFoundError: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
 
-### sprint5_duckdb.py
-   ^^^^^^^^^^^^^^^^^^^
+### sprint5_duckdb.py  (EXIT=1)
    File "C:\Users\InfoPersonal\OneDrive - Universidad Santo
    Tom�s\Escritorio\consultoria\Observatorio_Ministerio_de_Ciencias_Grupo8\src\ingesta\__init__.py", line 45, in
    cargar_produccion
    raise FileNotFoundError(
    FileNotFoundError: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
+   === FIN 08/29/2026 20:10:39 ===

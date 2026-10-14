@@ -99,7 +99,29 @@ def git_archivos_reales(refrescar: bool = False) -> list[str]:
 
 
 def commit_auditado_real() -> str:
-    return _git(config.CLON, "rev-parse", "--short", "HEAD").strip()
+    """
+    Commit auditado según el clon, con ancla de respaldo.
+
+    El repositorio es autocontenido: no depende de que el clon del proyecto
+    auditado esté presente. Si el clon no existe o no es un repositorio git, se
+    devuelve el commit ANCLADO en la transferencia
+    (`data/memoria/commit_auditado.txt`), que es el mismo del que se extrajo el
+    contenido de `datos_originales/repo_auditado/`. Antes esta función lanzaba
+    RuntimeError y tumbaba la construcción del grafo, de modo que R7 no fallaba:
+    el programa se caía entero.
+    """
+    try:
+        return _git(config.CLON, "rev-parse", "--short", "HEAD").strip()
+    except Exception as exc:                                    # noqa: BLE001
+        if not config.COMMIT_ANCLADO.exists():
+            raise RuntimeError(
+                f"no hay clon en {config.CLON} ({type(exc).__name__}) y tampoco "
+                f"existe el ancla {config.COMMIT_ANCLADO}; no se puede determinar "
+                f"el commit auditado") from exc
+        ancla = config.COMMIT_ANCLADO.read_text(encoding="utf-8").strip()
+        print(f"[memoria] clon del repo auditado no disponible; commit anclado "
+              f"= {ancla} (ver datos_originales/README.md)")
+        return ancla
 
 
 # --------------------------------------------------------------------------

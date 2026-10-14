@@ -118,5 +118,5 @@ demográficos agregados que publica MinCiencias.
 python documentacion_auditoria/src/construir_herramienta.py
 ```
 
-Lee `Datos/Investigadores_Reconocidos_por_convocatoria_20261006.csv` (que no
-modifica) y reescribe el HTML. El proceso es determinista.
+Lee `datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`
+(que no modifica) y reescribe el HTML. El proceso es determinista.

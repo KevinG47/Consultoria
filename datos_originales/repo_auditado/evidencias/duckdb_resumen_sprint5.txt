@@ -1,0 +1,62 @@
+Modelo extendido — Sprint 5 (Producción)
+=======================================================
+
+
+-------------------------------------------------------
+productos_por_convocatoria
+-------------------------------------------------------
+ ID_CONVOCATORIA  n_productos  n_autores_unicos  n_productos_unicos
+              16       238407             27323              228425
+              17       342160             29876              332393
+              18       376653             33578              367429
+              19       536648             42518              521191
+              20       762719             53470              748223
+              21       910042             59935              901273
+
+-------------------------------------------------------
+cobertura_reconocimiento
+-------------------------------------------------------
+ ANO_CONVO_INT  n_productos  firmados_por_reconocido  pct_reconocido
+          2013       238407                 123683.0           51.88
+          2014       342160                 180040.0           52.62
+          2015       376653                 204425.0           54.27
+          2017       536648                 305935.0           57.01
+          2019       762719                 450358.0           59.05
+          2021       910042                 576403.0           63.34
+
+-------------------------------------------------------
+productividad_por_categoria
+-------------------------------------------------------
+categoria_normalizada  n_investigadores  n_productos  prom_productos
+               Junior             23493       704569           29.99
+             Asociado              9800       640520           65.36
+               Senior              3998       485730          121.49
+              Emérito               297        10025           33.75
+
+-------------------------------------------------------
+top_grupos_productivos
+-------------------------------------------------------
+                                                                   NME_GRUPO_GR COD_GRUPO_GR  n_productos
+                                 Grupo de Investigación en Dirección y Gerencia   COL0004854         4997
+                                                     Perdurabilidad Empresarial   COL0004854         4997
+                                  Grupo de Estudios Políticos e Internacionales   COL0025282         4956
+                           Centro de Estudios Políticos e Internacionales -CEPI   COL0025282         4956
+               GRUPO DE FISICA DE ALTAS ENERGIAS DE LA UNIVERSIDAD DE LOS ANDES   COL0005879         4719
+                                               GESTION Y DESARROLLO EMPRESARIAL   COL0026922         4345
+                                                           Espíritu Empresarial   COL0002027         4160
+                                                Administración y Organizaciones   COL0013011         4076
+                                                        La gerencia en Colombia   COL0013011         4076
+Laboratorio de investigación y desarrollo sobre informática y educación -LIDIE-   COL0021971         4003
+
+-------------------------------------------------------
+tipologias_dominantes
+-------------------------------------------------------
+                                                   NME_TIPO_MEDICION_PD  n_productos   pct
+                                    Formación de recursos humano Tipo B      1055009 33.32
+                                    Apropiación social del conocimiento       964353 30.45
+Apropiación social del conocimiento y divulgación pública de la ciencia       331261 10.46
+                                              Nuevo conocimiento Tipo A       311964  9.85
+                                              Nuevo conocimiento Tipo B       236169  7.46
+                                                 Nuevo conocimiento Top       226992  7.17
+                                    Formación de recursos humano Tipo A        40613  1.28
+                                                        No categorizado          268  0.01

@@ -1,0 +1,4 @@
+metodo,n_registros,media,mediana,desv_estandar,max
+original,77237,44.84,43.29,13.23,956.25
+eliminacion (>100),77215,44.73,43.29,10.04,100.0
+imputacion mediana por grupo,77237,44.73,43.29,10.04,100.0

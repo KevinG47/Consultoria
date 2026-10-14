@@ -1,7 +1,29 @@
-# ── Repositorio clonado auditado (se referencia en README, no se versiona aquí) ──
+# ════════════════════════════════════════════════════════════════════════════
+# .gitignore del repositorio de consultoría
+#
+# Regla de fondo: SÍ se versiona todo lo que el próximo grupo necesita para
+# reproducir, verificar y continuar el trabajo —incluidos los datos fuente y la
+# copia verbatim del repositorio auditado—; NO se versiona lo que se regenera,
+# lo que pesa por ser entorno de ejecución, ni el material interno de
+# sustentación.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── Clon local del repositorio auditado ─────────────────────────────────────
+# NO se versiona el clon (441 MB, de los que 383,8 son su .venv), pero tampoco
+# hace falta: su contenido versionado está copiado byte a byte en
+# datos_originales/repo_auditado/ y verificado con manifiesto SHA-256. El clon
+# solo se necesita para RE-extraer (datos_originales/extraer_repo_auditado.py).
 Observatorio_Ministerio_de_Ciencias_Grupo8/
 
-# ── Basura de compilación LaTeX (se regenera; lo canónico vive en pdf/) ──
+# ── Entornos de ejecución y cachés de Python (se regeneran) ────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# ── Basura de compilación LaTeX (se regenera; lo canónico vive en pdf/) ────
 *.aux
 *.bbl
 *.blg
@@ -16,39 +38,45 @@ Observatorio_Ministerio_de_Ciencias_Grupo8/
 *.toc
 *.vrb
 documentacion_auditoria/latex/**/main.pdf
+# El patrón *.log de arriba es para la basura de compilación LaTeX, pero también
+# atraparía la evidencia del pipeline auditado. Esos SÍ se versionan: son el
+# registro de por qué 6 de los 16 scripts fallan y de cómo hubo que montar el
+# entorno (el venv dentro de OneDrive falla por longitud de ruta, MAX_PATH).
+!_archivo/**/*.log
+# OJO: los patrones de datos crudos van ANCLADOS a la raíz. Sin la barra
+# inicial, `datos/raw/` también ignoraría datos_originales/repo_auditado/datos/raw/
+# y perdería archivos de la copia verbatim sin avisar.
+/datos/raw/
+/datos/processed/
+*.1.2GB*
 
-# ── Python ──
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-.pytest_cache/
-
-# ── Sistema ──
+# ── Sistema ────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# ── Datos grandes de producción (no versionar) ──
-# Base fuente descargada de datos.gov.co (31,3 MB): se re-descarga, no se versiona
-Datos/
-*.1.2GB*
-datos/raw/
+# ── Datos fuente ───────────────────────────────────────────────────────────
+# SE VERSIONA el CSV fuente (31,3 MB, bajo el límite de 100 MB de GitHub) para
+# que el repositorio sea usable al clonar:
+#   datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
+# Antes estaba ignorado y el análisis no era reproducible sin descargarlo.
 
-# ── Memoria del agente: artefactos DERIVADOS del RAG (se regeneran con
-#    `python -m memoria indexar` y `python -m memoria grafo`).
-#    Sí se versiona la evidencia legible: evidencia_validacion.md,
-#    validacion_reglas.json, grafo.json, grafo_resumen.json,
-#    consultas_rag.jsonl y texto_seccion_6_2.md ──
+# ── Memoria del agente: SOLO artefactos derivados del RAG ──────────────────
+# Se versiona la evidencia legible y todo lo que las reglas necesitan sin red:
+# rag_indice.json, rag_indice_embeddings.json, rag_embeddings.npy, grafo.json,
+# grafo_resumen.json, validacion_reglas.json, evidencia_validacion.md,
+# consultas_rag.jsonl, texto_seccion_6_2.md — y ademas, desde la preparacion
+# para el proximo grupo, los dos caches de git (git_log_real.csv y
+# git_ls_files_real.txt), que son los que sostienen R5, R6 y R9 sin el clon.
+#
+# Estos tres SÍ se ignoran porque se regeneran en segundos con
+# `python -m memoria indexar` (el README lo indica como primer paso):
 documentacion_auditoria/data/memoria/rag_corpus.jsonl
 documentacion_auditoria/data/memoria/rag_matriz.npz
 documentacion_auditoria/data/memoria/rag_vectorizer.pkl
-documentacion_auditoria/data/memoria/git_log_real.csv
-documentacion_auditoria/data/memoria/git_ls_files_real.txt
 
-# ── Material interno de sustentación (NO se versiona: el docente no debe verlo).
-#    El archivo se conserva en disco; solo se excluye de git.
-#    El patrón sin barra ya ignora el nombre en cualquier carpeta; la segunda
-#    línea lo deja explícito por si el archivo se mueve a docs/ algún día. ──
+# ── Material interno de sustentación (NO se versiona: el docente no debe verlo)
+#    Los archivos se conservan en disco; solo se excluyen de git. ───────────
 guion_sustentacion_nada_sin_fuente.md
 docs/guion_sustentacion_nada_sin_fuente.md
+documentacion_auditoria/slides_nada_sin_fuente/

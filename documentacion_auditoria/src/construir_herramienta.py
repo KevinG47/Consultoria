@@ -33,7 +33,7 @@ for _f in (sys.stdout, sys.stderr):
         _f.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-CSV = RAIZ / "Datos" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
+CSV = RAIZ / "datos_originales" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 DIR_MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
 SALIDA = DIR_MEM / "herramienta_trayectorias.html"
 JSON_LONG = DIR_MEM / "longitudinal_resultados.json"

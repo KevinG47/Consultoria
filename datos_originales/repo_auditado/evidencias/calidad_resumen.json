@@ -1,0 +1,9 @@
+{
+  "n_total": 77237,
+  "n_atipicos_edad": 22,
+  "n_validos_edad": 77215,
+  "pct_atipicos": 0.0285,
+  "umbral_aplicado": 100,
+  "metodo": "eliminacion",
+  "justificacion": "22 casos sobre 77237 (0.028%). Sesgo despreciable. Eliminación preferida sobre imputación por trazabilidad y reproducibilidad."
+}

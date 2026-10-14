@@ -1,0 +1,308 @@
+fuentes:
+- nombre: Investigadores Reconocidos — Consolidado 2013-2021
+  plataforma: datos.gov.co
+  socrata_id: bqtm-4y2h
+  url: https://www.datos.gov.co/resource/bqtm-4y2h.csv
+  formato: csv
+  tamanio_registros: 77237
+  investigadores_unicos: 30086
+  num_variables: 30
+  periodicidad: Por convocatoria (no periódica fija; se abre cada 1-3 años)
+  ultimo_pull: '2026-04-28'
+  notas: 'Dataset unificado con las 6 convocatorias históricas de MinCiencias. Plataforma
+    ScienTI - Colombia. Una fila por investigador por convocatoria. El campo inst_filia
+    puede contener múltiples instituciones separadas por pipe (|).
+
+    '
+  convocatorias:
+  - id: 16
+    nombre: Convocatoria 640 de 2013
+    anio: 2013
+    registros: 8016
+  - id: 17
+    nombre: Convocatoria 693 de 2014
+    anio: 2014
+    registros: 8280
+  - id: 18
+    nombre: Convocatoria 737 de 2015
+    anio: 2015
+    registros: 10050
+  - id: 19
+    nombre: Convocatoria 781 de 2017
+    anio: 2017
+    registros: 13001
+  - id: 20
+    nombre: Convocatoria 833 de 2018
+    anio: 2018
+    ano_convo_campo: 2019
+    registros: 16796
+    nota: El campo ANO_CONVO registra 2019-12-06 (fecha de publicación de resultados);
+      el año nominal de la convocatoria es 2018.
+  - id: 21
+    nombre: Convocatoria 894 de 2021
+    anio: 2021
+    registros: 21094
+  variables:
+  - nombre: id_convocatoria
+    tipo: integer
+    descripcion: Identificador numérico de la convocatoria
+    valores_ejemplo:
+    - 16
+    - 17
+    - 18
+    - 19
+    - 20
+    - 21
+  - nombre: nme_convocatoria
+    tipo: string
+    descripcion: Nombre completo de la convocatoria
+    valores_ejemplo:
+    - Convocatoria 640 de 2013
+    - Convocatoria 894 de 2021
+  - nombre: ano_convo
+    tipo: integer
+    descripcion: Año de la convocatoria
+    valores_ejemplo:
+    - 2013
+    - 2014
+    - 2015
+    - 2017
+    - 2018
+    - 2021
+  - nombre: id_persona_pr
+    tipo: string
+    descripcion: Identificador único del investigador en el sistema ScienTI. Clave
+      para tracking longitudinal entre convocatorias.
+    uso_analitico: JOIN entre convocatorias para panel longitudinal
+  - nombre: id_area_con_pr
+    tipo: integer
+    descripcion: Identificador numérico del área de conocimiento OCDE
+  - nombre: nme_gran_area_pr
+    tipo: string
+    descripcion: Gran área de conocimiento según clasificación OCDE (nivel 1)
+    valores_ejemplo:
+    - Ciencias Naturales
+    - Ingeniería y Tecnología
+    - Ciencias Médicas y de la Salud
+    - Ciencias Agrícolas
+    - Ciencias Sociales
+    - Humanidades
+  - nombre: nme_area_pr
+    tipo: string
+    descripcion: Área de conocimiento según clasificación OCDE (nivel 2)
+  - nombre: nme_esp_area_pr
+    tipo: string
+    descripcion: Especialidad del área de conocimiento OCDE (nivel 3, más granular)
+  - nombre: nme_genero_pr
+    tipo: string
+    descripcion: Género del investigador declarado en ScienTI
+    valores_ejemplo:
+    - Masculino
+    - Femenino
+  - nombre: nme_pais_nac_pr
+    tipo: string
+    descripcion: País de nacimiento del investigador
+  - nombre: nme_region_nac_pr
+    tipo: string
+    descripcion: Región de nacimiento (agrupación supradepartamental)
+  - nombre: nme_departamento_nac_pr
+    tipo: string
+    descripcion: Departamento de nacimiento
+  - nombre: nme_municipio_nac_pr
+    tipo: string
+    descripcion: Municipio de nacimiento
+  - nombre: cod_dane_nac_pr
+    tipo: string
+    descripcion: Código DANE del municipio de nacimiento (5 dígitos)
+  - nombre: id_niv_formacion_pr
+    tipo: integer
+    descripcion: Identificador numérico del nivel de formación más alto alcanzado
+  - nombre: nme_niv_form_pr
+    tipo: string
+    descripcion: Nombre del nivel de formación más alto
+    valores_ejemplo:
+    - Doctorado
+    - Maestría
+    - Especialización
+    - Pregrado
+  - nombre: nro_orden_form_pr
+    tipo: integer
+    descripcion: Orden numérico del nivel de formación (mayor = más alto)
+  - nombre: id_clas_pr
+    tipo: integer
+    descripcion: Identificador numérico de la categoría de clasificación
+  - nombre: nme_clasificacion_pr
+    tipo: string
+    descripcion: Categoría de clasificación MinCiencias resultado de la convocatoria
+    valores_ejemplo:
+    - Investigador Junior
+    - Investigador Asociado
+    - Investigador Senior
+    - Investigador Emérito
+  - nombre: orden_clas_pr
+    tipo: integer
+    descripcion: Orden numérico de la categoría (1=Junior, 4=Emérito). Útil para matrices
+      de transición.
+  - nombre: edad_anos_pr
+    tipo: integer
+    descripcion: Edad del investigador en años al momento de la convocatoria
+  - nombre: nme_pais_res_pr
+    tipo: string
+    descripcion: País de residencia del investigador
+  - nombre: nme_region_res_pr
+    tipo: string
+    descripcion: Región de residencia (agrupación supradepartamental)
+  - nombre: nme_departamento_res_pr
+    tipo: string
+    descripcion: Departamento de residencia
+  - nombre: nme_municipio_res_pr
+    tipo: string
+    descripcion: Municipio de residencia
+  - nombre: cod_dane_res_pr
+    tipo: string
+    descripcion: Código DANE del municipio de residencia (5 dígitos). Útil para joins
+      con shapefiles geográficos.
+  - nombre: id_victima_conflicto
+    tipo: string
+    descripcion: Indicador si el investigador es víctima del conflicto armado interno
+    valores_ejemplo:
+    - Si
+    - 'No'
+  - nombre: txt_grupo_etnico
+    tipo: string
+    descripcion: Grupo étnico al que pertenece el investigador
+    valores_ejemplo:
+    - Ninguno de los anteriores
+    - Afrocolombiano
+    - Indígena
+    - Palenquero
+    - Raizal
+    - Rom
+  - nombre: txt_poblacion_disca
+    tipo: string
+    descripcion: Condición de discapacidad declarada por el investigador
+  - nombre: inst_filia
+    tipo: string
+    descripcion: 'Nombre(s) de la(s) institución(es) de afiliación del investigador.
+      Cuando hay múltiples, están separadas por pipe (|). Usada para análisis de redes
+      de co-filiación institucional.
+
+      '
+    uso_analitico: Separar por | y construir grafo bipartito investigador-institución
+- nombre: Producción Grupos Investigación — Consolidado 2013-2021
+  plataforma: datos.gov.co
+  socrata_id: 33dq-ab5a
+  url: https://www.datos.gov.co/resource/33dq-ab5a.csv
+  formato: csv
+  tamanio_registros: 3166629
+  personas_unicas_autoras: 77401
+  grupos_unicos: 7467
+  num_convocatorias: 6
+  periodicidad: Por convocatoria (mismas 6 ventanas que investigadores)
+  ultimo_pull: '2026-04-30'
+  notas: 'Producción revisada y evaluada con la cual participó el grupo de investigación
+    de acuerdo con la ventana de observación para la convocatoria. Una fila por producto-autor
+    (un mismo producto puede tener varios autores). 77.401 personas autoras de productos
+    vs 30.086 investigadores reconocidos: hay autores que firman productos sin ser
+    investigadores reconocidos.
+
+    '
+  llave_cruce_investigadores:
+    columna_aqui: id_persona_pd
+    columna_alla: id_persona_pr
+    formato: string 10 caracteres con ceros a la izquierda
+    extra: Combinar con id_convocatoria para asegurar la ventana correcta
+  registros_por_convocatoria:
+  - id: 16
+    productos: 238407
+  - id: 17
+    productos: 342160
+  - id: 18
+    productos: 376653
+  - id: 19
+    productos: 536648
+  - id: 20
+    productos: 762719
+  - id: 21
+    productos: 910042
+  variables:
+  - nombre: id_persona_pd
+    tipo: string
+    descripcion: Identificador del autor del producto. Misma identidad que id_persona_pr
+      en investigadores reconocidos (sufijo _pd por "producto").
+    uso_analitico: JOIN con investigadores.id_persona_pr para vincular productividad
+      a investigador reconocido.
+  - nombre: id_convocatoria
+    tipo: string
+    descripcion: Identificador de la convocatoria (ventana de observación).
+  - nombre: ano_convo
+    tipo: timestamp
+    descripcion: Fecha de la convocatoria.
+  - nombre: id_producto_pd
+    tipo: string
+    descripcion: Identificador único del producto.
+  - nombre: nme_producto_pd
+    tipo: string
+    descripcion: Título o nombre del producto.
+  - nombre: nme_categoria_pd
+    tipo: string
+    descripcion: Categoría del producto (ej. "Artículos de investigación Con Calidad
+      A1", "Tesis de pregrado Con Calidad B").
+  - nombre: nme_clase_pd
+    tipo: string
+    descripcion: Clase del producto.
+  - nombre: nme_tipo_medicion_pd
+    tipo: string
+    descripcion: Tipo de medición MinCiencias (ej. "Apropiación social del conocimiento",
+      "Formación de recursos humano Tipo B").
+  - nombre: id_tipo_pd_med
+    tipo: string
+    descripcion: Identificador numérico del tipo de medición.
+  - nombre: nme_tipologia_pd
+    tipo: string
+    descripcion: Tipología del producto.
+  - nombre: fcreacion_pd
+    tipo: timestamp
+    descripcion: Fecha de creación del producto. Útil para análisis fuera de la ventana
+      de la convocatoria.
+  - nombre: cod_grupo_gr
+    tipo: string
+    descripcion: Código del grupo de investigación al que se asocia el producto (ej.
+      "COL0014313"). Llave para futuro cruce con dataset de grupos reconocidos.
+  - nombre: nme_grupo_gr
+    tipo: string
+    descripcion: Nombre del grupo de investigación.
+  - nombre: nme_convocatoria
+    tipo: string
+    descripcion: Nombre completo de la convocatoria.
+campos_clave_analiticos:
+  llave_unica_seguimiento: id_persona_pr
+  variable_tiempo: ano_convo
+  variable_categoria_codigo: id_clas_pr
+  variable_categoria_nombre: nme_clasificacion_pr
+  variable_categoria_orden: orden_clas_pr
+  variables_territoriales:
+  - nme_region_nac_pr
+  - nme_departamento_nac_pr
+  - nme_municipio_nac_pr
+  - cod_dane_nac_pr
+  - nme_region_res_pr
+  - nme_departamento_res_pr
+  - nme_municipio_res_pr
+  - cod_dane_res_pr
+  cruces_entre_fuentes:
+    investigadores_x_produccion:
+      llave_principal: id_persona_pr ↔ id_persona_pd
+      llave_secundaria: id_convocatoria
+      proposito: Vincular productividad a investigador reconocido para análisis cruzados
+        de género, territorio, categoría y diversidad.
+documentacion_referencia:
+- sitio: Repositorio e-Anaquel MinCiencias
+  proposito: Validación de resultados oficiales y publicaciones de convocatorias
+  url: https://repositorio.minciencias.gov.co/
+- sitio: ScienTI Colombia
+  proposito: Consulta de perfiles de investigadores y avales institucionales
+  url: https://www.minciencias.gov.co/scienti
+- sitio: datos.gov.co — Dataset bqtm-4y2h
+  proposito: Fuente primaria del dataset consolidado (API Socrata)
+  url: https://www.datos.gov.co/resource/bqtm-4y2h.csv

@@ -48,6 +48,18 @@ EXTS_CODIGO = {".py", ".r", ".ipynb"}
 GIT_LOG_CACHE = MEMORIA / "git_log_real.csv"
 GIT_FILES_CACHE = MEMORIA / "git_ls_files_real.txt"
 
+# --- Ancla del commit auditado (repositorio autocontenido) ----------------
+# El repositorio ya NO necesita el clon del proyecto auditado: su contenido
+# versionado esta copiado byte a byte en datos_originales/repo_auditado/ (ver
+# datos_originales/README.md y el manifiesto SHA-256), y los dos cachés de git
+# estan versionados, de modo que R5, R6 y R9 se resuelven sin red ni clon.
+# R7 necesita el HEAD real: si el clon no esta disponible (o no es un
+# repositorio git), `grafo.commit_auditado_real()` cae a este ancla, que se fija
+# en la transferencia. Si algun dia se re-audita contra otro commit, hay que
+# actualizar el ancla Y volver a extraer el contenido con
+# `python datos_originales/extraer_repo_auditado.py`.
+COMMIT_ANCLADO = MEMORIA / "commit_auditado.txt"
+
 # Artefactos del sistema
 RAG_CHUNKS = MEMORIA / "rag_corpus.jsonl"
 RAG_MATRIZ = MEMORIA / "rag_matriz.npz"
