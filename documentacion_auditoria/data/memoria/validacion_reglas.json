@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-13T17:13:19",
+  "fecha": "2026-10-14T14:00:44",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
@@ -367,7 +367,7 @@
         "decisiones": 10,
         "problemas": [],
         "avisos": [
-          "D002 está SUPERADA (D007) pero su implementación sigue en el código: 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py — respaldo declarado: TF-IDF no se retira: se conserva como método por DEFECTO y como respaldo directo de los embeddings locales (D007). El sistema mantiene los dos métodos con `--metodo` porque ganan en casos distintos y complementarios. TF-IDF es más rápido, no arrastra torch, es explicable término a término y no tiene límite de longitud; en el banco de 20 preguntas rinde igual o mejor que Granite R2 (top-1 9/20 frente a 7/20; top-3 11/20 frente a 10/20; posición promedio del dato 8,4 frente a 21,1). Retirarlo dejaría al sistema sin método cuando el modelo local no esté disponible, que es justo lo contrario de la reproducibilidad que pidió el docente.\n"
+          "D002 está SUPERADA (D007) pero su implementación sigue en el código: 'TfidfVectorizer' en documentacion_auditoria/src/memoria/rag.py — respaldo declarado: TF-IDF no se retira: se conserva como método por DEFECTO y como respaldo directo de los embeddings locales (D007). El sistema mantiene los dos métodos con `--metodo` porque ganan en casos distintos y complementarios. TF-IDF es más rápido, no arrastra torch, es explicable término a término y no tiene límite de longitud; en el banco de 20 preguntas rinde igual o mejor que Granite R2 (top-1 9/20 frente a 7/20; top-3 11/20 frente a 10/20; posición promedio del dato 8,4 frente a 21,7). Retirarlo dejaría al sistema sin método cuando el modelo local no esté disponible, que es justo lo contrario de la reproducibilidad que pidió el docente.\n"
         ],
         "documentos_con_decision_superada": [],
         "decisiones_actuales_por_tema": {
