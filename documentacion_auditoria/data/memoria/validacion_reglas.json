@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-14T14:00:44",
+  "fecha": "2026-10-14T15:58:08",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
@@ -416,7 +416,7 @@
       "id": "R17",
       "descripcion": "Las cifras del sistema (índice, grafo, reglas, decisiones), el recuento de estados y los estados de regla del banco coinciden con la ejecución real",
       "estado": "PASA",
-      "detalle": "5 documento(s) revisado(s); 49 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad.",
+      "detalle": "5 documento(s) revisado(s); 50 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad.",
       "evidencia": {
         "esperado": {
           "fragmentos": 150,
@@ -451,7 +451,7 @@
           "data/memoria/texto_seccion_6_2.md",
           "scripts/banco_preguntas.py"
         ],
-        "citas_correctas": 49,
+        "citas_correctas": 50,
         "estados_de_regla_citados": [
           {
             "regla": "R15",
