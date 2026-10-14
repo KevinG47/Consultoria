@@ -1,0 +1,18 @@
+# Instalacion rapida con pip del conjunto que el codigo realmente importa.
+# La declaracion completa (con restricciones de version y dependencias de
+# desarrollo) esta en pyproject.toml; este archivo es para "pip install -r".
+streamlit>=1.31
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13
+plotly>=5.18
+openpyxl>=3.1
+PyYAML>=6.0
+kaleido>=1
+networkx>=3.2
+duckdb>=1.0
+pyvis>=0.3
+sodapy>=2.2
+nbformat>=5.9
+ipython>=8.0

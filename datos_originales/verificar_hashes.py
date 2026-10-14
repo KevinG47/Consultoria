@@ -69,17 +69,32 @@ def main() -> int:
         else:
             distintos.append(f["ruta"])
 
+    # Archivos SOBRANTES: la carpeta debe contener exactamente el contenido
+    # versionado. Sin esta comprobacion, cualquier residuo (tipicamente
+    # __pycache__ generado al importar estos modulos desde un script de prueba)
+    # se colaba sin que la verificacion dijera nada: se comprobaba que todo lo
+    # esperado estuviera, no que no hubiera nada de mas.
+    base = RAIZ / "datos_originales" / "repo_auditado"
+    esperados = {f["ruta"] for f in filas}
+    en_disco = {p.relative_to(base).as_posix() for p in base.rglob("*") if p.is_file()}
+    sobran = sorted(en_disco - esperados)
+
     total = len(filas)
     print(f"manifiesto: {total} archivos ({filas[0]['origen'] if filas else '?'})")
     print(f"  identicos : {ok}")
     print(f"  faltantes : {len(faltan)}")
     print(f"  distintos : {len(distintos)}")
-    for r in (faltan + distintos)[:20]:
+    print(f"  sobrantes : {len(sobran)}")
+    for r in (faltan + distintos + sobran)[:20]:
         print(f"    [!] {r}")
+    if sobran:
+        print("\n  Los sobrantes suelen ser __pycache__ creado al importar estos")
+        print("  modulos desde otro script. Borralos: la carpeta es una copia")
+        print("  verbatim y debe contener exactamente el contenido versionado.")
 
-    if ok == total:
-        print("\n[OK] Los 236 archivos son byte a byte identicos al contenido "
-              "versionado del repositorio auditado.")
+    if ok == total and not sobran:
+        print(f"\n[OK] Los {total} archivos son byte a byte identicos al contenido "
+              "versionado del repositorio auditado, y no hay archivos de mas.")
         return 0
     print("\n[x] Hay diferencias: revisa antes de publicar.")
     return 1

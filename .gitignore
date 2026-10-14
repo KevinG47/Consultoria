@@ -60,6 +60,14 @@ desktop.ini
 # que el repositorio sea usable al clonar:
 #   datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
 # Antes estaba ignorado y el análisis no era reproducible sin descargarlo.
+#
+# SE VERSIONA también datos_originales/repo_mejorado/ (37 MB) aunque sea
+# reproducible: el próximo grupo lo necesita al clonar. Se reconstruye con
+# construir_repo_mejorado.py + aplicar_arreglos.py.
+#
+# NO se versionan los artefactos de la verificación, que se regeneran solos:
+datos_originales/_stubs/
+datos_originales/_prueba_ejecucion/
 
 # ── Memoria del agente: SOLO artefactos derivados del RAG ──────────────────
 # Se versiona la evidencia legible y todo lo que las reglas necesitan sin red:

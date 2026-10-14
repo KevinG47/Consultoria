@@ -1,0 +1,61 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# === Entornos virtuales ===
+.venv/
+venv/
+env/
+
+# === Datos pesados (usar DVC para versionar) ===
+datos/raw/*.csv
+datos/raw/*.xlsx
+datos/raw/*.parquet
+datos/processed/*.csv
+datos/processed/*.parquet
+datos/interim/
+*.duckdb
+*.sqlite
+*.db
+
+# === Artefactos de modelos ===
+models/*.pkl
+models/*.joblib
+artifacts/*.pkl
+artifacts/*.joblib
+
+# === Jupyter ===
+.ipynb_checkpoints/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Secretos ===
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# === MLflow ===
+mlruns/
+
+# === Misc ===
+*.log
+*.tmp
+.coverage
+htmlcov/
+
+# === Claude Code context (local only) ===
+CLAUDE.md

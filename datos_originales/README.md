@@ -4,15 +4,45 @@
 grupo puede clonarlo, reproducir todo el análisis y verificar cualquier cita de la
 auditoría **sin clonar el repositorio auditado** ni descargar nada.
 
+## Las tres cosas que hay aquí, y por qué están separadas
+
+| Carpeta | Qué es | Se puede editar | Para qué sirve |
+|---|---|---|---|
+| `repo_auditado/` | Copia **verbatim** del commit `1528939` (236 archivos) | **NO** | Es la **prueba**: aquí valen los números de línea que citan las 51 fichas y los `.tex` |
+| `repo_mejorado/` | El mismo código con **30 arreglos** aplicados (235 archivos) | sí | Es el **código de trabajo**: los 6 scripts que fallaban ya no fallan |
+| `datos_fuente/` | El CSV de datos.gov.co que alimenta el análisis | no | La **entrada** de todo el análisis longitudinal y muestral |
+
+**Por qué las dos copias del código y no una.** `repo_auditado/` es evidencia: sus
+236 hashes están verificados contra el commit y **no se toca**, porque corregirlo
+destruiría la prueba y rompería las 51 fichas que citan líneas exactas. Pero
+tampoco sirve para trabajar: 6 de sus scripts fallan. La separación permite
+**verificar** contra una copia y **trabajar** sobre la otra, y las dos se
+mantienen sincronizadas de forma reproducible:
+
+```bash
+python datos_originales/construir_repo_mejorado.py   # repo_mejorado = repo_auditado + estructura
+python datos_originales/aplicar_arreglos.py          # aplica los 30 arreglos declarados
+python datos_originales/verificar_arreglos.py        # comprueba: 0 fallos
+python datos_originales/verificar_hashes.py          # repo_auditado sigue intacto
+```
+
+`repo_mejorado/CHANGELOG.md` documenta cada arreglo con su cita de la ficha y
+cómo se probó. `repo_mejorado/README.md` explica qué funciona ya y cómo usarlo.
+
 | Contenido | Archivos | Peso | Qué es |
 |---|---:|---:|---|
 | `repo_auditado/` | 236 | 37,40 MB | Copia **verbatim** del contenido versionado del proyecto auditado |
+| `repo_mejorado/` | 235 | 37,43 MB | El mismo código con los arreglos aplicados |
 | `datos_fuente/` | 1 | 31,32 MB | El CSV que alimenta nuestro análisis longitudinal y muestral |
-| `manifiesto_sha256.csv` | 1 | 27 KB | SHA-256 de cada uno de los 236 archivos |
-| `extraer_repo_auditado.py` | 1 | — | Cómo se generó la copia (re-ejecutable si hay clon) |
-| `verificar_hashes.py` | 1 | — | Comprueba la integridad de la copia |
+| `manifiesto_sha256.csv` | 1 | 27 KB | SHA-256 de cada uno de los 236 archivos verbatim |
+| `extraer_repo_auditado.py` | 1 | — | Cómo se generó la copia verbatim (re-ejecutable si hay clon) |
+| `verificar_hashes.py` | 1 | — | Comprueba la integridad de la copia verbatim (faltantes **y sobrantes**) |
+| `construir_repo_mejorado.py` | 1 | — | Construye `repo_mejorado/` desde la copia verbatim |
+| `aplicar_arreglos.py` | 1 | — | Los 30 arreglos, declarados con su ancla y su justificación |
+| `verificar_arreglos.py` | 1 | — | Verifica los arreglos (6 niveles de comprobación) |
+| `_stubs/` | 4 | — | Dobles de prueba para poder ejecutar sin seaborn/plotly/duckdb |
 | `README.md`, `ERRATA.md` | 2 | — | Este archivo y las contradicciones conocidas del auditado |
-| **Total** | **241** | **67,03 MB** | |
+
 
 ---
 

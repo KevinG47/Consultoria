@@ -1,0 +1,85 @@
+Modelo estrella — observatorio.duckdb
+==================================================
+
+
+--------------------------------------------------
+investigadores_por_convocatoria
+--------------------------------------------------
+ ano_convo_int  n_registros  n_investigadores
+          2013         8016              8016
+          2014         8280              8280
+          2015        10050             10050
+          2017        13001             13001
+          2019        16796             16796
+          2021        21094             21094
+
+--------------------------------------------------
+distribucion_categorias
+--------------------------------------------------
+ nme_clasificacion_pr  orden_clas_pr  n_registros
+  INVESTIGADOR JUNIOR           12.0        47575
+INVESTIGADOR ASOCIADO           13.0        19190
+  INVESTIGADOR SÉNIOR           14.0        10138
+ INVESTIGADOR EMÉRITO           15.0          334
+
+--------------------------------------------------
+top10_instituciones
+--------------------------------------------------
+                                                                nme_institucion  apariciones
+                                                       UNIVERSIDAD DE ANTIOQUIA         3669
+UNIVERSIDAD NACIONAL DE COLOMBIA SEDE BOGOTA (UNIVERSIDAD NACIONAL DE COLOMBIA)         3642
+                                               PONTIFICIA UNIVERSIDAD JAVERIANA         2392
+                                                       UNIVERSIDAD DE LOS ANDES         2071
+                                                          UNIVERSIDAD DEL VALLE         1964
+                                            UNIVERSIDAD INDUSTRIAL DE SANTANDER         1429
+                                             UNIVERSIDAD PONTIFICIA BOLIVARIANA         1239
+                                       COLEGIO MAYOR NUESTRA SENORA DEL ROSARIO         1123
+                                                FUNDACION UNIVERSIDAD DEL NORTE         1077
+                                 UNIVERSIDAD DISTRITAL FRANCISCO JOSE DE CALDAS          968
+
+--------------------------------------------------
+investigadores_por_gran_area
+--------------------------------------------------
+              nme_gran_area_pr  n_investigadores
+             CIENCIAS SOCIALES              9386
+            CIENCIAS NATURALES              6641
+       INGENIERÍA Y TECNOLOGÍA              5788
+CIENCIAS MÉDICAS Y DE LA SALUD              4684
+                   HUMANIDADES              2511
+            CIENCIAS AGRÍCOLAS              1440
+                   NO REGISTRA              1027
+
+--------------------------------------------------
+concentracion_bogota_medellin_cali
+--------------------------------------------------
+nme_municipio_res_pr  n_registros   pct
+        BOGOTÁ, D.C.        25671 57.67
+            MEDELLÍN        13032 29.27
+                CALI         5813 13.06
+
+--------------------------------------------------
+edad_promedio_por_categoria_y_anio
+--------------------------------------------------
+ ano_convo_int categoria_normalizada  edad_promedio     n
+          2013                Junior           46.5  5497
+          2013              Asociado           46.1  1822
+          2013                Senior           50.7   695
+          2014                Junior           42.6  5158
+          2014              Asociado           46.3  2064
+          2014                Senior           50.2  1057
+          2015                Junior           42.6  6050
+          2015              Asociado           46.2  2758
+          2015                Senior           49.3  1166
+          2015               Emérito           69.5    74
+          2017                Junior           42.6  7571
+          2017              Asociado           45.7  3595
+          2017                Senior           48.9  1707
+          2017               Emérito           69.6   124
+          2019                Junior           42.7  9916
+          2019              Asociado           45.5  4347
+          2019                Senior           48.9  2473
+          2019               Emérito           68.2    53
+          2021                Junior           43.0 13363
+          2021              Asociado           45.7  4598
+          2021                Senior           48.7  3039
+          2021               Emérito           67.1    83
