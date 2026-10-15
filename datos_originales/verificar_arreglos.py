@@ -637,6 +637,13 @@ def n2_scripts() -> None:
                   f"({fixture.stat().st_size / 1e6:.1f} MB)\n")
 
         for script, (codes, desc) in esperado.items():
+            # La copia trae los HTML del proyecto auditado. Sin esta foto previa,
+            # contar los que EXISTEN despues hace creer que el script genero 5
+            # pares cuando el consolidado versionado solo tiene 3 convocatorias
+            # (2 pares). Se cuenta lo REGENERADO, no lo presente.
+            carpeta_sankey = PRUEBA / "artifacts" / "sprint6_sankey"
+            antes_html = {p: p.stat().st_mtime
+                          for p in carpeta_sankey.glob("sankey_20*.html")}
             try:
                 rc, salida = correr(script, PRUEBA)
             except subprocess.TimeoutExpired:
@@ -667,10 +674,12 @@ def n2_scripts() -> None:
                         "sankey_territorial.html")
                 print(f"      -> HTML generado: {html.exists()}")
             if script.endswith("sprint6_sankey_categoria.py"):
-                htmls = list((PRUEBA / "artifacts" / "sprint6_sankey").glob(
-                    "sankey_20*.html"))
+                htmls = list(carpeta_sankey.glob("sankey_20*.html"))
+                regenerados = [p for p in htmls
+                               if antes_html.get(p) != p.stat().st_mtime]
                 csv_fl = PRUEBA / "evidencias" / "sankey_transiciones.csv"
-                print(f"      -> HTMLs de pares generados: {len(htmls)}")
+                print(f"      -> HTMLs de pares REGENERADOS: {len(regenerados)} "
+                      f"(de {len(htmls)} presentes: el resto viene de la copia)")
                 print(f"      -> CSV de flujos reescrito: {csv_fl.exists()}")
     finally:
         if PRUEBA.exists():

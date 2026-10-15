@@ -1,0 +1,516 @@
+﻿artefactos en el inventario: 51
+dependencias declaradas en pyproject.toml: 21
+
+VERSIONES EN USO
+  pandas         3.0.6
+  numpy          2.4.6
+  matplotlib     3.11.2
+  seaborn        0.13.2
+  plotly         7.1.0
+  kaleido        1.5.0
+  duckdb         1.5.6
+  openpyxl       3.1.5
+  nbformat       5.11.1
+  streamlit      1.66.0
+  scikit-learn   1.9.1
+  networkx       3.6.1
+  pytest         NO INSTALADA (se aporta desde PYTHONPATH si aplica)
+  pyvis          NO INSTALADA (se aporta desde PYTHONPATH si aplica)
+  sodapy         NO INSTALADA (se aporta desde PYTHONPATH si aplica)
+  pandera        NO INSTALADA (se aporta desde PYTHONPATH si aplica)
+  nbclient       NO INSTALADA (se aporta desde PYTHONPATH si aplica)
+  [aviso] no se pudo borrar _prueba_inventario (PermissionError); se vacia en su lugar
+
+creando copia desechable _prueba_inventario/ ...
+  [datos] observatorio.duckdb copiado del clon
+  [datos] produccion_grupos.csv presente: False
+
+==============================================================================
+[ 1/51] app\streamlit_app.py   (Python, 17 lineas, modo=streamlit)
+==============================================================================
+  -> CORRE
+     streamlit sirvio la app (100 s de arranque)
+
+==============================================================================
+[ 2/51] docs\manual.ipynb   (Notebook, 805 lineas, modo=notebook)
+==============================================================================
+  -> IMPORTA OK
+     valido: 49 celdas (26 de codigo, 0 con magia de Colab); todas compilan
+
+==============================================================================
+[ 3/51] notebooks\01_eda.ipynb   (Notebook, 240 lineas, modo=notebook)
+==============================================================================
+  -> IMPORTA OK
+     valido: 16 celdas (10 de codigo, 0 con magia de Colab); todas compilan
+
+==============================================================================
+[ 4/51] notebooks\tarea_anlisis_bases_de_datos\2019_codigo.py   (Python, 174 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: compila como Python
+
+==============================================================================
+[ 5/51] notebooks\tarea_anlisis_bases_de_datos\datos_2021.ipynb   (Notebook, 2338 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: valido: 32 celdas (20 de codigo, 0 con magia de Colab); todas compilan
+
+==============================================================================
+[ 6/51] notebooks\tarea_anlisis_bases_de_datos\inv_17_codigo_graficas.R   (R, 614 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: R: parse() sin errores
+
+==============================================================================
+[ 7/51] notebooks\tarea_dimensiones_y_hechos\codigo_dimensiones_C.R   (R, 40 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: R: parse() sin errores
+
+==============================================================================
+[ 8/51] notebooks\tarea_dimensiones_y_hechos\dimensiones.ipynb   (Notebook, 289 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: valido: 5 celdas (5 de codigo, 0 con magia de Colab); todas compilan
+
+==============================================================================
+[ 9/51] notebooks\tarea_dimensiones_y_hechos\tabla_hechos_codigo.R   (R, 20 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: R: parse() sin errores
+
+==============================================================================
+[10/51] notebooks\tarea_gran_tabla\analisis_de_clusters.R   (R, 94 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: R: parse() sin errores
+
+==============================================================================
+[11/51] notebooks\tarea_gran_tabla\analisis_multivariado_base_gran_table.R   (R, 405 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: R: parse() sin errores
+
+==============================================================================
+[12/51] notebooks\tarea_gran_tabla\analisis2.ipynb   (Notebook, 294 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: nbformat no puede leerlo: NotJSONError: Notebook does not appear to be JSON: '# -*- coding: utf-8 -*-\n"""analisis2.i...
+
+==============================================================================
+[13/51] notebooks\tarea_gran_tabla\codigo_analisis_univariado.py   (Python, 123 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: compila como Python
+
+==============================================================================
+[14/51] notebooks\tarea_gran_tabla\codigo_creacion_gran_tabla_a_partir_del_modelo_estrella.py   (Python, 205 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: no compila: invalid syntax (linea 157)
+
+==============================================================================
+[15/51] notebooks\tarea_join\codigo_join.py   (Python, 26 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: compila como Python
+
+==============================================================================
+[16/51] notebooks\tarea_tabla\arreglar_base_consultoria_7.R   (R, 125 lineas, modo=legacy)
+==============================================================================
+  -> LEGACY (no migrado)
+     [F5 - artefacto legado no migrado (por diseno)] esta en legacy_referencia/ por decision del proyecto
+     en legacy_referencia/: R: parse() sin errores
+
+==============================================================================
+[17/51] scripts\generar_manual.py   (Python, 610 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (1 s) | Notebook generado: C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_pru | Celdas totales: 49 |   Markdown: 23 |   Codigo:   26
+
+==============================================================================
+[18/51] scripts\sprint2_duckdb.py   (Python, 127 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (71 s) |           2021                Junior           43.0 13363 |           2021              Asociado           45.7  4598 |           2021                Senior           48.7  3039 |           2021               Emérito           67.1    83 | Base de datos : datos\processed\observatorio.duckdb | Reporte       : evidencias\duckdb_resumen_modelo.txt
+
+==============================================================================
+[19/51] scripts\sprint2_genero_ocde.py   (Python, 182 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (73 s) | HUMANIDADES                       35.0 | CIENCIAS AGRÍCOLAS                34.5 | INGENIERÍA Y TECNOLOGÍA           26.1 | [4/4] Exportando evidencias... | Figuras : artifacts\sprint2_genero_ocde | CSVs    : evidencias
+
+==============================================================================
+[20/51] scripts\sprint2_matrices_transicion.py   (Python, 125 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (72 s) | Emérito              0.0000    0.0000  0.0000   0.0000      1.0000 | Junior               0.5602    0.1286  0.0293   0.0007      0.2811 | Senior               0.0356    0.1270  0.7796   0.0182      0.0396 | [4/4] Generando figuras y exportando... | Figuras : artifacts\sprint2_transiciones | CSVs    : evidencias
+
+==============================================================================
+[21/51] scripts\sprint2_panel_longitudinal.py   (Python, 229 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (79 s) |   periodo  anio_inicial  anio_final  total_inicial  retenidos  tasa_retencion  nuevos_en_final | 2017–2019          2017        2019          13001       9994          0.7687             6802 | 2019–2021          2019        2021          16796      13355          0.7951             7739 | [4/4] Exportando evidencias... | Figuras : artifacts\sprint2_longitudinal | CSVs    : evidencias
+
+==============================================================================
+[22/51] scripts\sprint2_territorial.py   (Python, 142 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (72 s) |           2017 0.218003    13001              9 |           2019 0.208435    16796              9 |           2021 0.200627    21094              9 | [4/4] Exportando evidencias... | Figuras : artifacts\sprint2_territorial | CSVs    : evidencias
+
+==============================================================================
+[23/51] scripts\sprint3_grafo_interactivo.py   (Python, 72 lineas, modo=script)
+==============================================================================
+  -> FALLA
+     [F2 - dependencia declarada, no instalada en este entorno] `pyvis` esta declarada en pyproject.toml y no esta instalada
+     exit=1 (60 s) |     main() |   File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventa |     generar_html_pyvis( |   File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventa |     from pyvis.network import Network | ModuleNotFoundError: No module named 'pyvis'
+
+==============================================================================
+[24/51] scripts\sprint3_redes.py   (Python, 134 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (69 s) | [5/5] Exportando evidencias... | Resumen por convocatoria: |  anio  n_nodos  n_aristas  grado_max                 nodo_mayor_grado |  2019      446        503         73 UNIVERSIDAD NACIONAL DE COLOMBIA | Figuras : artifacts\sprint3_redes | CSVs    : evidencias
+
+==============================================================================
+[25/51] scripts\sprint4_diversidad.py   (Python, 172 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (72 s) |                      RROM                   6             0.03          0.005                      0.2 | DISCAPACIDAD (cualquiera)                 181             0.89          7.100                      8.0 |         VICTIMA CONFLICTO                 421             2.06         17.700                      8.6 | [5/5] Generando figuras y exportando evidencias... | Figuras : artifacts\sprint4_diversidad | CSVs    : evidencias
+
+==============================================================================
+[26/51] scripts\sprint5_duckdb.py   (Python, 193 lineas, modo=script)
+==============================================================================
+  -> CORRE (sin datos de entrada)
+     [F1 - datos de entrada ausentes] sale con codigo 3: falta el dataset de entrada
+     exit=3 (3 s) |   El archivo NO esta versionado (~1,2 GB). Para obtenerlo: |       python -m src.ingesta.produccion |   Requiere conexion a la API de Socrata. Sin el, este script no puede |   generar sus tablas ni figuras: se prefiere avisar antes que dejar |   evidencia parcial que parezca completa. | ======================================================================
+
+==============================================================================
+[27/51] scripts\sprint5_produccion.py   (Python, 251 lineas, modo=script)
+==============================================================================
+  -> CORRE (sin datos de entrada)
+     [F1 - datos de entrada ausentes] sale con codigo 3: falta el dataset de entrada
+     exit=3 (87 s) |   El archivo NO esta versionado (~1,2 GB). Para obtenerlo: |       python -m src.ingesta.produccion |   Requiere conexion a la API de Socrata. Sin el, este script no puede |   generar sus tablas ni figuras: se prefiere avisar antes que dejar |   evidencia parcial que parezca completa. | ======================================================================
+
+==============================================================================
+[28/51] scripts\sprint6_geografia_institucional.py   (Python, 302 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (87 s) | --- Highlights --- | GUAINIA: 5 investigadores, 0% trabajan en su dpto, destino externo principal: ATLANTICO (5) | AMAZONAS: 30 investigadores, 77% trabajan en su dpto, destino externo principal: BOGOTA (5) | CHOCO: 39 investigadores, 97% trabajan en su dpto, destino externo principal: BOGOTA (1) | BOGOTA: 7,631 investigadores, 93% trabajan en su dpto, destino externo principal: CUNDINAMARCA (123) | ANTIOQUIA: 3,992 investigadores, 91% trabajan en su dpto, destino externo principal: BOGOTA (190)
+
+==============================================================================
+[29/51] scripts\sprint6_ocde_composicion.py   (Python, 183 lineas, modo=script)
+==============================================================================
+  -> CORRE (sin datos de entrada)
+     [F1 - datos de entrada ausentes] sale con codigo 3: falta el dataset de entrada
+     exit=3 (77 s) |   El archivo NO esta versionado (~1,2 GB). Para obtenerlo: |       python -m src.ingesta.produccion |   Requiere conexion a la API de Socrata. Sin el, este script no puede |   generar sus tablas ni figuras: se prefiere avisar antes que dejar |   evidencia parcial que parezca completa. | ======================================================================
+
+==============================================================================
+[30/51] scripts\sprint6_sankey_categoria.py   (Python, 184 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (91 s) | periodo                                     | 2017-2019   730        3007      7018  2246 | 2019-2021  1362        3441      9657  2336 | Figuras: artifacts\sprint6_sankey | Wait expired, Browser is being closed by watchdog. | Wait expired, Browser is being closed by watchdog.
+
+==============================================================================
+[31/51] scripts\sprint6_sankey_territorial.py   (Python, 135 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (16 s) |                    kaleido_get_chrome |               detalle: BrowserFailedError: ('The browser seemed to close immediately after starting.', 'You can set the  |               el HTML SI se genero; solo falta la imagen. |       C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventari |       C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventari | Wait expired, Browser is being closed by watchdog.
+
+==============================================================================
+[32/51] scripts\sprint6_tabla_maestra_ies.py   (Python, 635 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (9 s) |                  Universidad de San Buenaventura          USB    privada                  4           Antioquia | Bogotá |                         Universidad de Cartagena Unicartagena    publica                  1                              |               Universidad Tecnológica de Pereira          UTP    publica                  1                              |                         Universidad de La Sabana    Unisabana    privada                  1                              |                            Universidad de Caldas      Ucaldas    publica                  1  
+
+==============================================================================
+[33/51] scripts\sprint6_validacion_calidad.py   (Python, 121 lineas, modo=script)
+==============================================================================
+  -> CORRE
+     exit=0 (90 s) |                     original        50891  44.62     43.0          13.99 956.25 |           eliminacion (>100)        50872  44.48     43.0           9.99 100.00 | imputacion mediana por grupo        50891  44.48     43.0           9.99 100.00 | [4/4] Figuras y exportación... | Figura : artifacts\sprint6_calidad/fig_edad_antes_despues.png | CSVs   : evidencias/calidad_*.csv, calidad_resumen.json
+
+==============================================================================
+[34/51] src\__init__.py   (Python, 2 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import src: OK
+
+==============================================================================
+[35/51] src\analisis\__init__.py   (Python, 80 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis: OK
+
+==============================================================================
+[36/51] src\analisis\calidad.py   (Python, 105 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis.calidad: OK
+
+==============================================================================
+[37/51] src\analisis\diversidad.py   (Python, 162 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis.diversidad: OK
+
+==============================================================================
+[38/51] src\analisis\genero.py   (Python, 85 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis.genero: OK
+
+==============================================================================
+[39/51] src\analisis\longitudinal.py   (Python, 207 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis.longitudinal: OK
+
+==============================================================================
+[40/51] src\analisis\produccion.py   (Python, 340 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis.produccion: OK
+
+==============================================================================
+[41/51] src\analisis\redes.py   (Python, 225 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis.redes: OK
+
+==============================================================================
+[42/51] src\analisis\territorial.py   (Python, 107 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import analisis.territorial: OK
+
+==============================================================================
+[43/51] src\ingesta\__init__.py   (Python, 53 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import ingesta: OK
+
+==============================================================================
+[44/51] src\ingesta\minciencias.py   (Python, 70 lineas, modo=import)
+==============================================================================
+  -> FALLA
+     [F2 - dependencia declarada, no instalada en este entorno] `sodapy` esta declarada en pyproject.toml y no esta instalada
+     import ingesta.minciencias: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventario\src\ingesta\minciencias.py", line 20, in <module>
+    from sodapy import Socrata
+ModuleNotFoundError: No module named 'sodapy'
+
+==============================================================================
+[45/51] src\ingesta\produccion.py   (Python, 106 lineas, modo=import)
+==============================================================================
+  -> FALLA
+     [F2 - dependencia declarada, no instalada en este entorno] `sodapy` esta declarada en pyproject.toml y no esta instalada
+     import ingesta.produccion: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventario\src\ingesta\produccion.py", line 25, in <module>
+    from sodapy import Socrata
+ModuleNotFoundError: No module named 'sodapy'
+
+==============================================================================
+[46/51] src\modelo\__init__.py   (Python, 2 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import modelo: OK
+
+==============================================================================
+[47/51] src\modelo\dimensional.py   (Python, 286 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import modelo.dimensional: OK
+
+==============================================================================
+[48/51] src\Transformacion.py   (Python, 222 lineas, modo=import)
+==============================================================================
+  -> IMPORTA OK
+     import Transformacion: OK
+
+==============================================================================
+[49/51] streamlit_app.py   (Python, 983 lineas, modo=streamlit)
+==============================================================================
+  -> CORRE
+     streamlit sirvio la app (100 s de arranque)
+
+==============================================================================
+[50/51] tests\__init__.py   (Python, 0 lineas, modo=test)
+==============================================================================
+  -> N/A (sin pruebas)
+     no contiene pruebas (pytest: exit 5)
+
+==============================================================================
+[51/51] tests\test_ingesta.py   (Python, 8 lineas, modo=test)
+==============================================================================
+  -> TEST PASA
+     .                                                                        [100%]
+1 passed in 0.16s
+
+==============================================================================
+TABLA DE LOS 51 ARTEFACTOS
+==============================================================================
+   #  ruta                                                           lineas  estado
+   1  app\streamlit_app.py                                               17  CORRE
+   2  docs\manual.ipynb                                                 805  IMPORTA OK
+   3  notebooks\01_eda.ipynb                                            240  IMPORTA OK
+   4  notebooks\tarea_anlisis_bases_de_datos\2019_codigo.py             174  LEGACY (no migrado)
+   5  notebooks\tarea_anlisis_bases_de_datos\datos_2021.ipynb          2338  LEGACY (no migrado)
+   6  notebooks\tarea_anlisis_bases_de_datos\inv_17_codigo_graficas.R    614  LEGACY (no migrado)
+   7  notebooks\tarea_dimensiones_y_hechos\codigo_dimensiones_C.R        40  LEGACY (no migrado)
+   8  notebooks\tarea_dimensiones_y_hechos\dimensiones.ipynb            289  LEGACY (no migrado)
+   9  notebooks\tarea_dimensiones_y_hechos\tabla_hechos_codigo.R         20  LEGACY (no migrado)
+  10  notebooks\tarea_gran_tabla\analisis_de_clusters.R                  94  LEGACY (no migrado)
+  11  notebooks\tarea_gran_tabla\analisis_multivariado_base_gran_table.R    405  LEGACY (no migrado)
+  12  notebooks\tarea_gran_tabla\analisis2.ipynb                        294  LEGACY (no migrado)
+  13  notebooks\tarea_gran_tabla\codigo_analisis_univariado.py          123  LEGACY (no migrado)
+  14  notebooks\tarea_gran_tabla\codigo_creacion_gran_tabla_a_partir_del_modelo_estrella.py    205  LEGACY (no migrado)
+  15  notebooks\tarea_join\codigo_join.py                                26  LEGACY (no migrado)
+  16  notebooks\tarea_tabla\arreglar_base_consultoria_7.R               125  LEGACY (no migrado)
+  17  scripts\generar_manual.py                                         610  CORRE
+  18  scripts\sprint2_duckdb.py                                         127  CORRE
+  19  scripts\sprint2_genero_ocde.py                                    182  CORRE
+  20  scripts\sprint2_matrices_transicion.py                            125  CORRE
+  21  scripts\sprint2_panel_longitudinal.py                             229  CORRE
+  22  scripts\sprint2_territorial.py                                    142  CORRE
+  23  scripts\sprint3_grafo_interactivo.py                               72  FALLA
+  24  scripts\sprint3_redes.py                                          134  CORRE
+  25  scripts\sprint4_diversidad.py                                     172  CORRE
+  26  scripts\sprint5_duckdb.py                                         193  CORRE (sin datos de entrada)
+  27  scripts\sprint5_produccion.py                                     251  CORRE (sin datos de entrada)
+  28  scripts\sprint6_geografia_institucional.py                        302  CORRE
+  29  scripts\sprint6_ocde_composicion.py                               183  CORRE (sin datos de entrada)
+  30  scripts\sprint6_sankey_categoria.py                               184  CORRE
+  31  scripts\sprint6_sankey_territorial.py                             135  CORRE
+  32  scripts\sprint6_tabla_maestra_ies.py                              635  CORRE
+  33  scripts\sprint6_validacion_calidad.py                             121  CORRE
+  34  src\__init__.py                                                     2  IMPORTA OK
+  35  src\analisis\__init__.py                                           80  IMPORTA OK
+  36  src\analisis\calidad.py                                           105  IMPORTA OK
+  37  src\analisis\diversidad.py                                        162  IMPORTA OK
+  38  src\analisis\genero.py                                             85  IMPORTA OK
+  39  src\analisis\longitudinal.py                                      207  IMPORTA OK
+  40  src\analisis\produccion.py                                        340  IMPORTA OK
+  41  src\analisis\redes.py                                             225  IMPORTA OK
+  42  src\analisis\territorial.py                                       107  IMPORTA OK
+  43  src\ingesta\__init__.py                                            53  IMPORTA OK
+  44  src\ingesta\minciencias.py                                         70  FALLA
+  45  src\ingesta\produccion.py                                         106  FALLA
+  46  src\modelo\__init__.py                                              2  IMPORTA OK
+  47  src\modelo\dimensional.py                                         286  IMPORTA OK
+  48  src\Transformacion.py                                             222  IMPORTA OK
+  49  streamlit_app.py                                                  983  CORRE
+  50  tests\__init__.py                                                   0  N/A (sin pruebas)
+  51  tests\test_ingesta.py                                               8  TEST PASA
+
+==============================================================================
+RESUMEN POR ESTADO
+==============================================================================
+   15  CORRE
+   15  IMPORTA OK
+   13  LEGACY (no migrado)
+    3  FALLA
+    3  CORRE (sin datos de entrada)
+    1  N/A (sin pruebas)
+    1  TEST PASA
+
+  artefactos activos (en repo_mejorado/): 38
+  artefactos en legacy_referencia/: 13
+
+==============================================================================
+CLASIFICACION DE FALLOS (F1-F5)
+==============================================================================
+
+  F1 - datos de entrada ausentes: 3
+     - scripts\sprint5_duckdb.py
+       sale con codigo 3: falta el dataset de entrada
+     - scripts\sprint5_produccion.py
+       sale con codigo 3: falta el dataset de entrada
+     - scripts\sprint6_ocde_composicion.py
+       sale con codigo 3: falta el dataset de entrada
+
+  F2 - dependencia declarada, no instalada en este entorno: 3
+     - scripts\sprint3_grafo_interactivo.py
+       `pyvis` esta declarada en pyproject.toml y no esta instalada
+     - src\ingesta\minciencias.py
+       `sodapy` esta declarada en pyproject.toml y no esta instalada
+     - src\ingesta\produccion.py
+       `sodapy` esta declarada en pyproject.toml y no esta instalada
+
+  F3 - cambio de comportamiento de libreria (breaking change): 0
+
+  F4 - limitacion del entorno (navegador/red/tiempo): 0
+
+  F5 - artefacto legado no migrado (por diseno): 13
+     - notebooks\tarea_anlisis_bases_de_datos\2019_codigo.py
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_anlisis_bases_de_datos\datos_2021.ipynb
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_anlisis_bases_de_datos\inv_17_codigo_graficas.R
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_dimensiones_y_hechos\codigo_dimensiones_C.R
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_dimensiones_y_hechos\dimensiones.ipynb
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_dimensiones_y_hechos\tabla_hechos_codigo.R
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_gran_tabla\analisis_de_clusters.R
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_gran_tabla\analisis_multivariado_base_gran_table.R
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_gran_tabla\analisis2.ipynb
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_gran_tabla\codigo_analisis_univariado.py
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_gran_tabla\codigo_creacion_gran_tabla_a_partir_del_modelo_estrella.py
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_join\codigo_join.py
+       esta en legacy_referencia/ por decision del proyecto
+     - notebooks\tarea_tabla\arreglar_base_consultoria_7.R
+       esta en legacy_referencia/ por decision del proyecto
+
+==============================================================================
+FALLOS (detalle)
+==============================================================================
+
+  [scripts\sprint3_grafo_interactivo.py]  (Python, modo=script)
+    exit=1 (60 s) |     main() |   File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventa |     generar_html_pyvis( |   File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventa |     from pyvis.network import Network | ModuleNotFoundError: No module named 'pyvis'
+
+  [src\ingesta\minciencias.py]  (Python, modo=import)
+    import ingesta.minciencias: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventario\src\ingesta\minciencias.py", line 20, in <module>
+    from sodapy import Socrata
+ModuleNotFoundError: No module named 'sodapy'
+
+  [src\ingesta\produccion.py]  (Python, modo=import)
+    import ingesta.produccion: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\InfoPersonal\OneDrive - Universidad Santo Tomás\Escritorio\consultoria\datos_originales\_prueba_inventario\src\ingesta\produccion.py", line 25, in <module>
+    from sodapy import Socrata
+ModuleNotFoundError: No module named 'sodapy'
+
+==============================================================================
+VEREDICTO
+==============================================================================
+  artefactos ACTIVOS probados        : 38
+  corren o se importan sin problema  : 32
+  corren pero les faltan datos (F1)  : 3
+  fallan                             : 3
+  fallos por breaking change (F3)    : 0
+
+  tabla escrita en datos_originales\reporte_ejecucion_51_moderno.csv
+  [aviso] no se pudo borrar _prueba_inventario (PermissionError); se vacia en su lugar
+  copia desechable eliminada

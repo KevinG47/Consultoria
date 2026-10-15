@@ -1,0 +1,46 @@
+Verifica versiones: el lock, Poetry y los 51 artefactos del inventario
+
+RESPUESTA A LA PREGUNTA SOBRE EL LOCK
+- Pesa mas: SI (407 370 B frente a 327 093 B, +24,5 %).
+- Tiene mas paquetes: SI (158 distintos frente a 130, +28).
+- Tiene versiones mas modernas: NO. De los 129 paquetes comunes, 128 quedan
+  en la misma version, 0 suben y 1 baja (ipython 9.10.0 -> 8.38.0, porque
+  pyproject.toml declara "^8.0").
+- Su valor real: completa 7 dependencias que el pyproject declara y al lock
+  auditado le faltaban (sodapy, duckdb, networkx, pyvis, pytest, ruff,
+  pandera). Sin ellas, "poetry install" dejaba un entorno incapaz de correr
+  el codigo. Se documenta como ERRATA E6.
+
+VALIDACION DE POETRY (nueva)
+- "poetry check --lock": exit 0 en el lock nuevo; el del auditado FALLA.
+- "poetry install --dry-run": exit 0, 153 instalaciones resueltas sin red.
+- "poetry install" real en entorno limpio: 152/153 paquetes. La red de este
+  entorno es intermitente ("All attempts to connect to pypi.org failed"),
+  no es un defecto del proyecto.
+
+LOS 51 ARTEFACTOS, CON VERSIONES MODERNAS Y CON LAS FIJADAS
+- Nuevo datos_originales/probar_inventario_completo.py: prueba los 51
+  artefactos del inventario (17 scripts, 15 modulos, 2 apps Streamlit,
+  notebooks, tests, R) y clasifica cada fallo F1-F5.
+- Con las versiones del lock: 38 activos, 35 corren/importan, 3 salen con
+  codigo 3 por datos ausentes, 0 fallos.
+- Con versiones modernas (pandas 3.0.6, numpy 2.4.6, plotly 7.1.0): 3 fallos,
+  los TRES F2 (falta pyvis/sodapy en el interprete del sistema).
+- Fallos por breaking change (F3): 0 en ambas corridas. No aparece el
+  problema de Copy-on-Write de pandas 3. Por eso no se toco logica para
+  "hacer pasar" nada: no habia nada roto.
+
+DECISION SOBRE VERSIONES
+- NO se actualizan los rangos de pyproject.toml ni se regenera el lock. El
+  lock actual es valido y coherente; subir rangos invalidaria esa coherencia,
+  exige red estable para re-generarlo y cambia el contrato de instalacion sin
+  que nada este fallando. Queda documentado el procedimiento exacto para
+  hacerlo si el grupo lo decide, con la evidencia de que es seguro.
+
+CORRECCION DE UN DEFECTO PROPIO
+- verificar_arreglos.py contaba los HTML de sankey presentes en la copia como
+  si el script los hubiera generado (decia 5 pares donde el consolidado
+  versionado solo da 2). Ahora cuenta los REGENERADOS por marca de tiempo.
+
+Verificacion final: 17 reglas 15 PASA / 0 FALLA / 2 ADVERTENCIA; compilacion
+sin --forzar exit 0; repo_auditado 236/236 hashes identicos, 0 sobrantes.

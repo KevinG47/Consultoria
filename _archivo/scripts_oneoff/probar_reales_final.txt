@@ -1,0 +1,258 @@
+﻿LIBRERIAS REALES EN USO
+  pandas       3.0.6
+  numpy        2.4.6
+  matplotlib   3.11.2
+  seaborn      0.13.2
+  plotly       7.1.0
+  kaleido      1.5.0
+  duckdb       1.5.6
+  openpyxl     3.1.5
+  nbformat     5.11.1
+  [aviso] no se pudo borrar _prueba_ejecucion (PermissionError); se vacia en su lugar
+
+creando copia desechable _prueba_ejecucion/ ...
+  [datos] observatorio.duckdb copiado del clon (2.90 MB)
+  [datos] produccion_grupos.csv presente: False  (se espera False: ~1,2 GB no versionados)
+
+==============================================================================
+EJECUTANDO scripts/sprint6_geografia_institucional.py
+==============================================================================
+           128
+         RISARALDA                   470                  337             133       71.7                  BOGOTA                   92
+           CORDOBA                   381                  285              96       74.8            CUNDINAMARCA                   30
+             CAUCA                   350                  304              46       86.9                  BOGOTA                   19
+            NARINO                   348                  271              77       77.9               ANTIOQUIA                   29
+            TOLIMA                   332                  236              96       71.1                  BOGOTA                   38
+
+--- Top 20 flujos transversales (residencia → institución) ---
+   DPTO_RESIDENCIA DPTO_INSTITUCION  n_investigadores
+   VALLE DEL CAUCA           BOGOTA               199
+         ANTIOQUIA           BOGOTA               190
+         ATLANTICO           BOGOTA               143
+      CUNDINAMARCA           BOGOTA               128
+          EXTERIOR           BOGOTA               125
+            BOGOTA     CUNDINAMARCA               123
+            BOGOTA        ANTIOQUIA                97
+         RISARALDA           BOGOTA                92
+         SANTANDER           BOGOTA                76
+         ANTIOQUIA        ATLANTICO                72
+            BOYACA           BOGOTA                63
+NORTE DE SANTANDER           BOGOTA                61
+           BOLIVAR           BOGOTA                47
+         SANTANDER        ANTIOQUIA                47
+             HUILA           BOGOTA                44
+            CALDAS           BOGOTA                43
+     NO DISPONIBLE           BOGOTA                41
+            TOLIMA           BOGOTA                38
+            BOGOTA        SANTANDER                37
+            TOLIMA        ANTIOQUIA                35
+
+[5/5] Generando figuras y exportando evidencias...
+
+Figuras: artifacts\sprint6_geografia
+CSVs   : evidencias/geografia_*.csv
+
+--- Highlights ---
+GUAINIA: 5 investigadores, 0% trabajan en su dpto, destino externo principal: ATLANTICO (5)
+AMAZONAS: 30 investigadores, 77% trabajan en su dpto, destino externo principal: BOGOTA (5)
+CHOCO: 39 investigadores, 97% trabajan en su dpto, destino externo principal: BOGOTA (1)
+BOGOTA: 7,631 investigadores, 93% trabajan en su dpto, destino externo principal: CUNDINAMARCA (123)
+ANTIOQUIA: 3,992 investigadores, 91% trabajan en su dpto, destino externo principal: BOGOTA (190)
+
+-> EXIT=0  (73.2 s)
+   salidas declaradas por el script:
+     [REGENERADO                  ] artifacts/sprint6_geografia/fig_heatmap_residencia_institucion.png
+     [REGENERADO                  ] artifacts/sprint6_geografia/fig_pct_local_por_dpto.png
+     [REGENERADO                  ] artifacts/sprint6_geografia/fig_top_destinos_pequenos.png
+     [REGENERADO                  ] evidencias/geografia_flujo_completo.csv
+     [REGENERADO                  ] evidencias/geografia_resumen_por_dpto_residencia.csv
+     [REGENERADO                  ] evidencias/geografia_top_flujos.csv
+   otros archivos escritos: 2
+     - src/__pycache__/Transformacion.cpython-311.pyc
+     - src/ingesta/__pycache__/__init__.cpython-311.pyc
+
+==============================================================================
+EJECUTANDO scripts/sprint6_sankey_categoria.py
+==============================================================================
+tarea_join\investigadores_consolidado.xlsx
+[ingesta] 50,891 registros | 30 columnas
+[transformacion] Pipeline completado. Shape final: (50891, 32)
+      Pares consecutivos: [(np.int64(2017), np.int64(2019)), (np.int64(2019), np.int64(2021))]
+
+[2/3] Construyendo Sankey por cada par...
+      [aviso] no se pudo escribir sankey_2017_2019.png
+              motivo: kaleido esta instalado, pero el navegador con el
+              que dibuja no arranca.
+              opciones, de menos a mas esfuerzo:
+                1) seguir sin el PNG: el HTML ya se genero y sirve
+                   para ver el grafico;
+                2) usar un navegador ya instalado:
+                   set BROWSER_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe
+                3) instalar el navegador propio de kaleido (requiere red):
+                   kaleido_get_chrome
+              detalle: BrowserFailedError: ('The browser seemed to close immediately after starting.', 'You can set the `logging.Logger` level lower to see more output.', 'You may try
+              el HTML SI se genero; solo falta la imagen.
+      sankey_2017_2019.html (PNG no generado: ver aviso)  (16 flujos)
+      [aviso] no se pudo escribir sankey_2019_2021.png
+              motivo: kaleido esta instalado, pero el navegador con el
+              que dibuja no arranca.
+              opciones, de menos a mas esfuerzo:
+                1) seguir sin el PNG: el HTML ya se genero y sirve
+                   para ver el grafico;
+                2) usar un navegador ya instalado:
+                   set BROWSER_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe
+                3) instalar el navegador propio de kaleido (requiere red):
+                   kaleido_get_chrome
+              detalle: BrowserFailedError: ('The browser seemed to close immediately after starting.', 'You can set the `logging.Logger` level lower to see more output.', 'You may try
+              el HTML SI se genero; solo falta la imagen.
+      sankey_2019_2021.html (PNG no generado: ver aviso)  (16 flujos)
+
+[3/3] Exportando flujos consolidados...
+      evidencias\sankey_transiciones.csv
+      Total filas: 32
+
+--- Resumen por periodo ---
+tipo       Baja  Desaparece  Mantiene  Sube
+periodo                                    
+2017-2019   730        3007      7018  2246
+2019-2021  1362        3441      9657  2336
+
+Figuras: artifacts\sprint6_sankey
+Wait expired, Browser is being closed by watchdog.
+Wait expired, Browser is being closed by watchdog.
+
+-> EXIT=0  (49.2 s)
+   salidas declaradas por el script:
+     [REGENERADO                  ] evidencias/sankey_transiciones.csv
+     [REGENERADO                  ] artifacts/sprint6_sankey/sankey_2017_2019.html
+     [preexistente (no regenerado)] artifacts/sprint6_sankey/sankey_2017_2019.png
+     [REGENERADO                  ] artifacts/sprint6_sankey/sankey_2019_2021.html
+     [preexistente (no regenerado)] artifacts/sprint6_sankey/sankey_2019_2021.png
+   otros archivos escritos: 8
+     - src/__pycache__/exportacion.cpython-311.pyc
+     - src/analisis/__pycache__/__init__.cpython-311.pyc
+     - src/analisis/__pycache__/diversidad.cpython-311.pyc
+     - src/analisis/__pycache__/genero.cpython-311.pyc
+     - src/analisis/__pycache__/longitudinal.cpython-311.pyc
+     - src/analisis/__pycache__/produccion.cpython-311.pyc
+     - src/analisis/__pycache__/redes.cpython-311.pyc
+     - src/analisis/__pycache__/territorial.cpython-311.pyc
+
+==============================================================================
+EJECUTANDO scripts/sprint6_sankey_territorial.py
+==============================================================================
+[1/2] Cargando flujos geogr�ficos...
+      Pares unicos: 355
+
+[2/2] Construyendo Sankey territorial...
+      [aviso] no se pudo escribir sankey_territorial.png
+              motivo: kaleido esta instalado, pero el navegador con el
+              que dibuja no arranca.
+              opciones, de menos a mas esfuerzo:
+                1) seguir sin el PNG: el HTML ya se genero y sirve
+                   para ver el grafico;
+                2) usar un navegador ya instalado:
+                   set BROWSER_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe
+                3) instalar el navegador propio de kaleido (requiere red):
+                   kaleido_get_chrome
+              detalle: BrowserFailedError: ('The browser seemed to close immediately after starting.', 'You can set the `logging.Logger` level lower to see more output.', 'You may try
+              el HTML SI se genero; solo falta la imagen.
+      C:\Users\InfoPersonal\OneDrive - Universidad Santo Tom�s\Escritorio\consultoria\datos_originales\_prueba_ejecucion\artifacts\sprint6_sankey\sankey_territorial.html
+      C:\Users\InfoPersonal\OneDrive - Universidad Santo Tom�s\Escritorio\consultoria\datos_originales\_prueba_ejecucion\artifacts\sprint6_sankey\sankey_territorial.png   (PNG no generado: ver aviso)
+Wait expired, Browser is being closed by watchdog.
+
+-> EXIT=0  (4.0 s)
+   salidas declaradas por el script:
+     [REGENERADO                  ] artifacts/sprint6_sankey/sankey_territorial.html
+     [preexistente (no regenerado)] artifacts/sprint6_sankey/sankey_territorial.png
+
+==============================================================================
+EJECUTANDO scripts/sprint5_produccion.py
+==============================================================================
+[1/8] Cargando datasets...
+[ingesta] Cargando XLSX: C:\Users\InfoPersonal\OneDrive - Universidad Santo Tom�s\Escritorio\consultoria\datos_originales\_prueba_ejecucion\datos\tarea_join\investigadores_consolidado.xlsx
+[ingesta] 50,891 registros | 30 columnas
+[transformacion] Pipeline completado. Shape final: (50891, 32)
+
+======================================================================
+[datos faltantes] no se puede continuar sin el dataset de produccion
+======================================================================
+  detalle: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
+  El archivo NO esta versionado (~1,2 GB). Para obtenerlo:
+      python -m src.ingesta.produccion
+  Requiere conexion a la API de Socrata. Sin el, este script no puede
+  generar sus tablas ni figuras: se prefiere avisar antes que dejar
+  evidencia parcial que parezca completa.
+======================================================================
+
+-> EXIT=3  (45.5 s)
+   salidas declaradas por el script:
+     [preexistente (no regenerado)] evidencias/produccion_resumen_cobertura.json
+     [preexistente (no regenerado)] evidencias/produccion_productividad_por_categoria.csv
+
+==============================================================================
+EJECUTANDO scripts/sprint6_ocde_composicion.py
+==============================================================================
+[1/5] Cargando datasets...
+[ingesta] Cargando XLSX: C:\Users\InfoPersonal\OneDrive - Universidad Santo Tom�s\Escritorio\consultoria\datos_originales\_prueba_ejecucion\datos\tarea_join\investigadores_consolidado.xlsx
+[ingesta] 50,891 registros | 30 columnas
+[transformacion] Pipeline completado. Shape final: (50891, 32)
+
+======================================================================
+[datos faltantes] no se puede continuar sin el dataset de produccion
+======================================================================
+  detalle: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
+  El archivo NO esta versionado (~1,2 GB). Para obtenerlo:
+      python -m src.ingesta.produccion
+  Requiere conexion a la API de Socrata. Sin el, este script no puede
+  generar sus tablas ni figuras: se prefiere avisar antes que dejar
+  evidencia parcial que parezca completa.
+======================================================================
+
+-> EXIT=3  (57.8 s)
+   salidas declaradas por el script:
+     [preexistente (no regenerado)] evidencias/ocde_volumen_por_area.csv
+     [preexistente (no regenerado)] evidencias/ocde_composicion_por_area.csv
+
+==============================================================================
+EJECUTANDO scripts/sprint5_duckdb.py
+==============================================================================
+[1/4] Cargando dataset de producci�n...
+
+======================================================================
+[datos faltantes] no se puede continuar sin el dataset de produccion
+======================================================================
+  detalle: Dataset de producci�n no encontrado. Ejecute: python -m src.ingesta.produccion
+  El archivo NO esta versionado (~1,2 GB). Para obtenerlo:
+      python -m src.ingesta.produccion
+  Requiere conexion a la API de Socrata. Sin el, este script no puede
+  generar sus tablas ni figuras: se prefiere avisar antes que dejar
+  evidencia parcial que parezca completa.
+======================================================================
+
+-> EXIT=3  (2.0 s)
+   salidas declaradas por el script:
+     [preexistente (no regenerado)] evidencias/duckdb_resumen_sprint5.txt
+
+==============================================================================
+INFORME
+==============================================================================
+  script                                         exit      s  regeneradas / preexistentes / ausentes
+  scripts/sprint6_geografia_institucional.py        0   73.2  6 / 0 / 0
+  scripts/sprint6_sankey_categoria.py               0   49.2  3 / 2 / 0
+  scripts/sprint6_sankey_territorial.py             0    4.0  1 / 1 / 0
+  scripts/sprint5_produccion.py                     3   45.5  0 / 2 / 0
+  scripts/sprint6_ocde_composicion.py               3   57.8  0 / 2 / 0
+  scripts/sprint5_duckdb.py                         3    2.0  0 / 1 / 0
+
+  con EXIT=0 (corre completo)  : 3
+  con EXIT=3 (faltan datos)    : 3
+  con error real               : 0
+
+  PNG no regenerados: 3
+  -> si el aviso del script habla del navegador, es una limitacion
+     del entorno (kaleido necesita un Chromium que aqui no arranca),
+     no un defecto del script: el HTML y los CSV si se generan.
+  [aviso] no se pudo borrar _prueba_ejecucion (PermissionError); se vacia en su lugar
+
+  copia desechable _prueba_ejecucion/ eliminada

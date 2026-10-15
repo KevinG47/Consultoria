@@ -26,6 +26,16 @@ python datos_originales/verificar_arreglos.py        # comprueba: 0 fallos
 python datos_originales/verificar_hashes.py          # repo_auditado sigue intacto
 ```
 
+Para probar la ejecución de **todo** el código (no solo los 6 scripts arreglados):
+
+```bash
+python datos_originales/probar_inventario_completo.py                 # versiones del sistema
+python datos_originales/probar_inventario_completo.py --etiqueta poetry   # versiones del lock
+```
+
+Escribe `reporte_ejecucion_51[_etiqueta].csv` con los 51 artefactos del inventario,
+su estado y la clasificación del fallo (F1–F5).
+
 `repo_mejorado/CHANGELOG.md` documenta cada arreglo con su cita de la ficha y
 cómo se probó. `repo_mejorado/README.md` explica qué funciona ya y cómo usarlo.
 
@@ -41,7 +51,10 @@ cómo se probó. `repo_mejorado/README.md` explica qué funciona ya y cómo usar
 | `aplicar_arreglos.py` | 1 | — | Los 30 arreglos, declarados con su ancla y su justificación |
 | `verificar_arreglos.py` | 1 | — | Verifica los arreglos (6 niveles de comprobación) |
 | `probar_librerias_reales.py` | 1 | — | Ejecuta los 6 scripts con las librerías de verdad y comprueba qué salidas se regeneran |
+| `probar_inventario_completo.py` | 1 | — | Prueba los **51 artefactos** del inventario (scripts, módulos, notebooks, tests, R) y clasifica cada fallo F1–F5 |
 | `fs_robusto.py` | 1 | — | Borrado de árboles tolerante a OneDrive (reparse points de solo lectura y carpeta bloqueada) |
+| `reporte_ejecucion_51_poetry.csv` | 1 | — | La tabla de los 51 con las versiones **fijadas por el lock** |
+| `reporte_ejecucion_51_moderno.csv` | 1 | — | La misma tabla con versiones **modernas** (pandas 3, numpy 2, plotly 7) |
 | `_stubs/` | 4 | — | Dobles de prueba para poder ejecutar sin seaborn/plotly/duckdb |
 | `README.md`, `ERRATA.md` | 2 | — | Este archivo y las contradicciones conocidas del auditado |
 

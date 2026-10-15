@@ -125,6 +125,44 @@ Reproducir la tabla: `python documentacion_auditoria/src/parsear_log.py --coteja
 
 ---
 
+## E6 · `poetry.lock` no corresponde a `pyproject.toml`: le faltan 7 dependencias declaradas
+
+`poetry check --lock` sobre el par versionado (`pyproject.toml` + `poetry.lock` del
+commit `1528939`) **falla**:
+
+```
+Error: pyproject.toml changed significantly since poetry.lock was last generated.
+Run `poetry lock` to fix the lock file.
+```
+
+No es solo un problema de huella (*content-hash*): **el lock no contiene cuatro
+dependencias de ejecución ni las tres de desarrollo que el propio `pyproject.toml`
+declara.**
+
+| Declarada en `pyproject.toml` | ¿Está en el lock? | Quién la importa |
+|---|---|---|
+| `sodapy = "^2.2"` | **no** | `src/ingesta/minciencias.py:20`, `src/ingesta/produccion.py:25` |
+| `duckdb = "^1.0"` | **no** | `src/modelo/dimensional.py:24`, `scripts/sprint5_duckdb.py:25` |
+| `networkx = "^3.2"` | **no** | `src/analisis/redes.py:49` |
+| `pyvis = "^0.3"` | **no** | `src/analisis/redes.py:175`, `scripts/sprint3_grafo_interactivo.py` |
+| `pytest = "^8.0"` (dev) | **no** | `tests/` |
+| `ruff = "^0.3"` (dev) | **no** | — |
+| `pandera = "^0.18"` (dev) | **no** | — |
+
+Consecuencia: `poetry install` sobre el proyecto auditado deja un entorno **incapaz
+de correr el código** — falla al importar `ingesta`, `analisis.redes` y
+`modelo.dimensional`. Es una causa más de los fallos de E5, y **no aparece en el log
+del pipeline auditado** porque ese pipeline se montó con `pip`, nunca con Poetry
+(ver `_archivo/logs_pipeline_auditado/pip_install.log`).
+
+Comprobado con `poetry check --lock` (falla) y con la lectura de los dos archivos:
+130 paquetes distintos en el lock auditado frente a 158 en el regenerado.
+
+**Corregido en `repo_mejorado/`**: el lock regenerado incluye las 7 y
+`poetry check --lock` da exit 0. Detalle en `repo_mejorado/CHANGELOG.md`.
+
+---
+
 ## Lo que **no** es un error, aunque lo parezca
 
 - **Los conteos de líneas de `inventario_codigo.csv` van uno por debajo** de

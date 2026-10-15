@@ -68,6 +68,16 @@ desktop.ini
 # NO se versionan los artefactos de la verificación, que se regeneran solos:
 datos_originales/_stubs/
 datos_originales/_prueba_ejecucion/
+datos_originales/_prueba_inventario/
+datos_originales/_reporte_ejecucion_51*.json
+# Entorno de prueba de Poetry (venv + caché de artefactos) y las ruedas que se
+# rescatan de la caché de pip para poder probar sin red. Todo se regenera.
+_archivo/tmp_poetry_mej/
+_archivo/tmp_poetry_aud/
+_archivo/tmp_poetry_cache/
+_archivo/tmp_virtualenv_appdata/
+_archivo/wheelhouse/
+_archivo/deps_extra/
 
 # ── Memoria del agente: SOLO artefactos derivados del RAG ──────────────────
 # Se versiona la evidencia legible y todo lo que las reglas necesitan sin red:

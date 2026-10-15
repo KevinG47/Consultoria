@@ -294,22 +294,289 @@ generan. Recetas, de menos a más esfuerzo:
 
 ### `poetry.lock`: regenerado y verificado
 
+| | Lock del proyecto auditado | Lock de `repo_mejorado/` |
+|---|---|---|
+| Tamaño | 327 093 B | **407 370 B** (+80 277 B, **+24,5 %**) |
+| Bloques `[[package]]` | 135 | **164** (+29) |
+| Paquetes distintos | 130 | **158** (+28) |
+| `poetry check --lock` | **falla** (`pyproject.toml changed significantly…`) | **pasa** (exit 0) |
+| Dependencias declaradas que le faltan | **7** | 0 |
+
+**No es que el lock nuevo tenga «versiones más modernas»: es que el viejo estaba
+incompleto.** De los **129 paquetes comunes**, 128 quedan en la **misma versión** y
+solo uno cambia (ver abajo). Lo que hace el lock nuevo es **completar** lo que el
+código ya importaba y el lock viejo no contenía:
+
+| Declarada en `pyproject.toml` | ¿En el lock auditado? | ¿En el nuevo? |
+|---|---|---|
+| `sodapy` (lo importan `src/ingesta/minciencias.py` y `produccion.py`) | **no** | sí, 2.2.0 |
+| `duckdb` (`src/modelo/dimensional.py`, `scripts/sprint5_duckdb.py`) | **no** | sí, 1.5.6 |
+| `networkx` (`src/analisis/redes.py`) | **no** | sí, 3.6.1 |
+| `pyvis` (`src/analisis/redes.py`, `scripts/sprint3_grafo_interactivo.py`) | **no** | sí, 0.3.2 |
+| `pytest` (grupo dev) | **no** | sí, 8.4.2 |
+| `ruff` (grupo dev) | **no** | sí, 0.3.7 |
+| `pandera` (grupo dev) | **no** | sí, 0.18.3 |
+
+Es decir: `poetry install` sobre el proyecto auditado instalaba un proyecto
+**incapaz de correr**, porque faltaban cuatro dependencias de ejecución. Ese es el
+arreglo real, y es la razón por la que el lock pesa más.
+
 | | |
 |---|---|
-| Estado | **regenerado** con `poetry lock` |
-| Tamaño | **407 370 bytes**, **164 paquetes** (el del commit original: 327 093 B) |
-| Dependencias añadidas | `kaleido 1.5.0`, `openpyxl 3.1.5`, `pyyaml 6.0.3`, `nbformat 5.10.4`, `ipython 8.38.0` — **las 5 están** |
+| Dependencias añadidas por el código mejorado | `kaleido 1.5.0`, `openpyxl 3.1.5`, `pyyaml 6.0.3`, `nbformat 5.10.4`, `ipython 8.38.0` — **las 5 están** |
 | Integridad | sobrevive a la reconstrucción de `repo_mejorado/` (`construir_repo_mejorado.py` lo preserva) |
 
-⚠️ **El lock y el entorno no coinciden en dos paquetes**: el lock fija
-`plotly 5.24.1` y `pandas 2.3.3` (respeta los rangos de `pyproject.toml`), mientras
-el entorno de prueba tiene **plotly 7.1.0** y **pandas 3.0.6** (instalados con
-`pip`, sin restricción de versión). La prueba de arriba es, por tanto, con las
-versiones **modernas**, no con las fijadas. Para probar exactamente lo que fija el
-lock: `poetry install`. Si se quisiera fijar también lo moderno, hay que subir los
-rangos en `pyproject.toml` (`plotly = "^7"`, `pandas = "^3"`) y regenerar el lock;
-no lo he hecho porque `pandas 3` tiene cambios de comportamiento que conviene
-decidir aparte.
+⚠️ **`ipython` es el único paquete que BAJA de versión**: el lock auditado traía
+tres bloques (8.38.0 para py3.10, **9.10.0 para py3.11**, 9.11.0 para py3.12) y el
+nuevo trae uno solo (**8.38.0**), porque `pyproject.toml` declara `ipython = "^8.0"`.
+El código (`IPython.display.IFrame` en las celdas del manual) funciona igual en 8 y
+en 9, así que el rango es **más estrecho de lo necesario**. Lo dejo anotado como
+mejora pendiente y no lo cambio ahora:
+
+```toml
+# más correcto, pero exige volver a generar el lock:
+ipython = ">=8,<10"
+```
+
+### Validación del lock con Poetry
+
+Tres comprobaciones, de menos a más exigente:
+
+| Comprobación | Resultado |
+|---|---|
+| `poetry check --lock` | **exit 0** — el lock es sintácticamente válido **y** coherente con `pyproject.toml` |
+| `poetry install --dry-run --no-root` | **exit 0** — resuelve el plan completo sin red: **153 instalaciones** |
+| `poetry install --no-root` (entorno limpio real) | **incompleto**: 152/153 paquetes, bloqueado por la red |
+
+Detalles que importan:
+
+- El **`--dry-run` se resuelve entero a partir del lock**, sin tocar la red: eso
+  demuestra que el lock es autocontenido. El plan incluye exactamente lo que debía:
+  `pandas 2.3.3`, `plotly 5.24.1`, `numpy 1.26.4`, `pyvis 0.3.2`, `sodapy 2.2.0`,
+  `pandera 0.18.3`, `pytest 8.4.2` y las 5 añadidas.
+- Los 153 instalados frente a los 158 nombres del lock es **correcto**: los 5 de
+  diferencia son bloques del mismo paquete para otras versiones de Python
+  (`contourpy`, `networkx`, `scikit-learn`, `scipy`), que Poetry descarta por marca.
+- **`poetry install` sí funciona**, pero la red de este entorno es **intermitente**:
+  entre intentos va descargando y cacheando, y en 20 reintentos llegó de 153 a **1**
+  paquete pendiente (`cycler 0.12.1`), que se completó extrayendo la rueda de la
+  caché de pip. La causa del fallo es siempre la misma y no tiene que ver con el
+  proyecto:
+
+  ```
+  All attempts to connect to pypi.org failed.
+  ```
+
+  Con red estable, `poetry install` termina de una pasada.
+- **Nota de entorno (no del proyecto)**: Poetry quiere escribir su caché y sus
+  entornos en `%APPDATA%` / `%LOCALAPPDATA%`, fuera del espacio de trabajo, y ahí la
+  política de archivos lo deniega (`[WinError 5]`). Se resuelve con
+  `POETRY_CACHE_DIR`, `POETRY_VIRTUALENVS_IN_PROJECT` y
+  `VIRTUALENV_OVERRIDE_APP_DATA` apuntando dentro del proyecto.
+
+### Prueba con las versiones FIJADAS por el lock
+
+El entorno limpio anterior permite algo que antes no se podía: ejecutar los 51
+artefactos con **exactamente** lo que el lock fija (pandas 2.3.3, numpy 1.26.4,
+plotly 5.24.1, ipython 8.38.0), no con lo que hubiera instalado en el sistema.
+
+### Los 51 artefactos del inventario, probados dos veces
+
+`datos_originales/probar_inventario_completo.py` recorre **uno por uno los 51
+artefactos** que el proyecto declara en
+`documentacion_auditoria/data/inventario_codigo.csv`, y lo hace **dos veces**: con
+las versiones **fijadas por el lock** (dentro del entorno que creó `poetry install`)
+y con las **modernas** del sistema.
+
+Cómo se prueba cada tipo de artefacto:
+
+| Tipo | Cuántos | Prueba aplicada |
+|---|---:|---|
+| `scripts/*.py` | 17 | se **ejecutan** |
+| `src/**/*.py` | 15 | se **importan**, con la misma raíz de importación que usa el proyecto (`src/` en el `PYTHONPATH`) |
+| `streamlit_app.py`, `app/streamlit_app.py` | 2 | se arrancan en modo *headless* y se comprueba que sirvan |
+| Notebooks activos | 2 | `nbformat` + compilación de cada celda de código |
+| `tests/*` | 2 | `pytest` |
+| `*.R` y resto de legados | 13 | sintaxis (`Rscript parse()` / `compile()`); viven en `legacy_referencia/` |
+
+Los dos informes completos quedan en `datos_originales/reporte_ejecucion_51_poetry.csv`
+y `datos_originales/reporte_ejecucion_51_moderno.csv`.
+
+#### Resultado
+
+| | Con el lock | Con versiones modernas |
+|---|---:|---:|
+| Artefactos **activos** probados | 38 | 38 |
+| Corren o se importan sin problema | **35** | 32 |
+| Corren, pero les faltan datos (F1) | 3 | 3 |
+| **Fallan** | **0** | **3** |
+| **Fallos por *breaking change* (F3)** | **0** | **0** |
+
+Los 3 fallos de la columna moderna son **todos F2** (falta `pyvis` y `sodapy` en el
+intérprete del sistema): con las versiones del lock **desaparecen**, porque el lock
+sí las trae. Los 3 artefactos que salen con código 3 son los mismos en ambas
+corridas, y es el comportamiento declarado: no existe
+`datos/raw/produccion_grupos.csv` (~1,2 GB, no versionado).
+
+#### Los 51, uno por uno
+
+| # | Artefacto del inventario | Líneas | Con el lock | Con versiones modernas |
+|---:|---|---:|---|---|
+| 1 | `app/streamlit_app.py` | 17 | CORRE | CORRE |
+| 2 | `docs/manual.ipynb` | 805 | IMPORTA | IMPORTA |
+| 3 | `notebooks/01_eda.ipynb` | 240 | IMPORTA | IMPORTA |
+| 4 | `notebooks/tarea_anlisis_bases_de_datos/2019_codigo.py` | 174 | LEGACY | LEGACY |
+| 5 | `notebooks/tarea_anlisis_bases_de_datos/datos_2021.ipynb` | 2338 | LEGACY | LEGACY |
+| 6 | `notebooks/tarea_anlisis_bases_de_datos/inv_17_codigo_graficas.R` | 614 | LEGACY | LEGACY |
+| 7 | `notebooks/tarea_dimensiones_y_hechos/codigo_dimensiones_C.R` | 40 | LEGACY | LEGACY |
+| 8 | `notebooks/tarea_dimensiones_y_hechos/dimensiones.ipynb` | 289 | LEGACY | LEGACY |
+| 9 | `notebooks/tarea_dimensiones_y_hechos/tabla_hechos_codigo.R` | 20 | LEGACY | LEGACY |
+| 10 | `notebooks/tarea_gran_tabla/analisis_de_clusters.R` | 94 | LEGACY | LEGACY |
+| 11 | `notebooks/tarea_gran_tabla/analisis_multivariado_base_gran_table.R` | 405 | LEGACY | LEGACY |
+| 12 | `notebooks/tarea_gran_tabla/analisis2.ipynb` | 294 | LEGACY | LEGACY |
+| 13 | `notebooks/tarea_gran_tabla/codigo_analisis_univariado.py` | 123 | LEGACY | LEGACY |
+| 14 | `notebooks/tarea_gran_tabla/codigo_creacion_gran_tabla_a_partir_del_modelo_estrella.py` | 205 | LEGACY | LEGACY |
+| 15 | `notebooks/tarea_join/codigo_join.py` | 26 | LEGACY | LEGACY |
+| 16 | `notebooks/tarea_tabla/arreglar_base_consultoria_7.R` | 125 | LEGACY | LEGACY |
+| 17 | `scripts/generar_manual.py` | 610 | CORRE | CORRE |
+| 18 | `scripts/sprint2_duckdb.py` | 127 | CORRE | CORRE |
+| 19 | `scripts/sprint2_genero_ocde.py` | 182 | CORRE | CORRE |
+| 20 | `scripts/sprint2_matrices_transicion.py` | 125 | CORRE | CORRE |
+| 21 | `scripts/sprint2_panel_longitudinal.py` | 229 | CORRE | CORRE |
+| 22 | `scripts/sprint2_territorial.py` | 142 | CORRE | CORRE |
+| 23 | `scripts/sprint3_grafo_interactivo.py` | 72 | CORRE | **FALLA (F2)** |
+| 24 | `scripts/sprint3_redes.py` | 134 | CORRE | CORRE |
+| 25 | `scripts/sprint4_diversidad.py` | 172 | CORRE | CORRE |
+| 26 | `scripts/sprint5_duckdb.py` | 193 | CORRE (3) | CORRE (3) |
+| 27 | `scripts/sprint5_produccion.py` | 251 | CORRE (3) | CORRE (3) |
+| 28 | `scripts/sprint6_geografia_institucional.py` | 302 | CORRE | CORRE |
+| 29 | `scripts/sprint6_ocde_composicion.py` | 183 | CORRE (3) | CORRE (3) |
+| 30 | `scripts/sprint6_sankey_categoria.py` | 184 | CORRE | CORRE |
+| 31 | `scripts/sprint6_sankey_territorial.py` | 135 | CORRE | CORRE |
+| 32 | `scripts/sprint6_tabla_maestra_ies.py` | 635 | CORRE | CORRE |
+| 33 | `scripts/sprint6_validacion_calidad.py` | 121 | CORRE | CORRE |
+| 34 | `src/__init__.py` | 2 | IMPORTA | IMPORTA |
+| 35 | `src/analisis/__init__.py` | 80 | IMPORTA | IMPORTA |
+| 36 | `src/analisis/calidad.py` | 105 | IMPORTA | IMPORTA |
+| 37 | `src/analisis/diversidad.py` | 162 | IMPORTA | IMPORTA |
+| 38 | `src/analisis/genero.py` | 85 | IMPORTA | IMPORTA |
+| 39 | `src/analisis/longitudinal.py` | 207 | IMPORTA | IMPORTA |
+| 40 | `src/analisis/produccion.py` | 340 | IMPORTA | IMPORTA |
+| 41 | `src/analisis/redes.py` | 225 | IMPORTA | IMPORTA |
+| 42 | `src/analisis/territorial.py` | 107 | IMPORTA | IMPORTA |
+| 43 | `src/ingesta/__init__.py` | 53 | IMPORTA | IMPORTA |
+| 44 | `src/ingesta/minciencias.py` | 70 | IMPORTA | **FALLA (F2)** |
+| 45 | `src/ingesta/produccion.py` | 106 | IMPORTA | **FALLA (F2)** |
+| 46 | `src/modelo/__init__.py` | 2 | IMPORTA | IMPORTA |
+| 47 | `src/modelo/dimensional.py` | 286 | IMPORTA | IMPORTA |
+| 48 | `src/Transformacion.py` | 222 | IMPORTA | IMPORTA |
+| 49 | `streamlit_app.py` | 983 | CORRE | CORRE |
+| 50 | `tests/__init__.py` | 0 | N/A | N/A |
+| 51 | `tests/test_ingesta.py` | 8 | TEST PASA | TEST PASA |
+
+Leyenda: **CORRE** = termina con código 0 · **CORRE (3)** = termina con código 3
+(faltan datos; comportamiento declarado, no defecto) · **IMPORTA** = el módulo se
+importa sin error (es una librería, no un ejecutable) · **TEST PASA** ·
+**N/A** = el archivo no contiene pruebas · **LEGACY** = está en
+`legacy_referencia/`, fuera del entregable por decisión del proyecto.
+
+#### Clasificación de fallos (F1–F5)
+
+| Categoría | Qué significa | Con el lock | Moderno |
+|---|---|---:|---:|
+| **F1** | datos de entrada ausentes (no versionados) | 3 | 3 |
+| **F2** | dependencia declarada en `pyproject.toml`, no instalada en ese entorno | 0 | 3 |
+| **F3** | cambio de comportamiento de librería (*breaking change*) | **0** | **0** |
+| **F4** | limitación del entorno (navegador de kaleido, red, tiempo) | 0 | 0 |
+| **F5** | artefacto legado no migrado por decisión del proyecto | 13 | 13 |
+
+**No hubo ni un solo *breaking change*.** Es el resultado central de esta fase: el
+código escrito para `pandas 2.2` / `plotly 5.18` funciona igual con `pandas 3.0.6` y
+`plotly 7.1.0`, **sin tocar una línea**. En particular:
+
+- **No apareció el problema de *Copy-on-Write*** de `pandas 3`: ningún artefacto
+  depende de asignación encadenada ni de vistas mutables. Por eso no hubo que
+  arreglar lógica «para que pasara»: no había nada que arreglar.
+- `sprint2_duckdb.py`, `sprint6_sankey_categoria.py`, `sprint6_sankey_territorial.py`,
+  `sprint6_tabla_maestra_ies.py` y `sprint6_validacion_calidad.py` corren
+  **completos** con `pandas 3` y `numpy 2`.
+- El dashboard `streamlit_app.py` (983 líneas) **arranca y sirve** con
+  `streamlit 1.66` y `pandas 3`.
+- La guardia del motor de imagen (arreglo A) se comporta como debe:
+  `sprint6_sankey_territorial.py` termina con **código 0** avisando de que el PNG no
+  se generó, en vez de morir con una traza.
+
+Dos hallazgos menores en los legados, que **no se tocan** y quedan documentados
+(están fuera del entregable por decisión del proyecto):
+
+- `notebooks/tarea_gran_tabla/analisis2.ipynb` **no es un notebook**: es un archivo
+  de Python con extensión `.ipynb` (no es JSON). `nbformat` no puede leerlo.
+- `codigo_creacion_gran_tabla_a_partir_del_modelo_estrella.py` tiene un error de
+  sintaxis en la línea 157.
+
+Los 6 archivos `.R` **sí compilan** con `R 4.5.2` (`Rscript -e "parse(...)"`): su
+sintaxis es correcta; lo que impedía migrarlos son sus rutas de Colab/Windows y sus
+datos, no el lenguaje.
+
+---
+
+## Decisión sobre las versiones: **no se actualizan los rangos**
+
+Se pidió verificar si el lock nuevo «pesa más, tiene más paquetes y versiones más
+modernas». Las dos primeras son ciertas; **la tercera no**, y conviene decirlo sin
+rodeos:
+
+| Afirmación | Verificación |
+|---|---|
+| Pesa más | **cierto**: 407 370 B frente a 327 093 B (**+24,5 %**) |
+| Tiene más paquetes | **cierto**: 158 paquetes distintos frente a 130 (**+28**) |
+| Tiene versiones más modernas | **falso**: de los 129 paquetes comunes, **128 quedan igual**, **0 suben** y **1 baja** (`ipython`) |
+
+El valor del lock nuevo no es la novedad de las versiones, sino que **está completo
+y es coherente** (`poetry check --lock` pasa, y antes no). Por eso **no toco
+`pyproject.toml` ni regenero el lock**: lo que había que arreglar —las 7
+dependencias declaradas que faltaban— ya está arreglado, y un cambio de rangos
+ahora mismo solo añadiría riesgo.
+
+Razones, en orden de peso:
+
+1. **Nada está roto con los rangos actuales.** Los 38 artefactos activos corren con
+   las versiones que fija el lock **sin un solo fallo**. Subir rangos no arregla
+   nada que esté fallando.
+2. **El lock nuevo pasa `poetry check --lock` y el viejo no.** Tocar `pyproject.toml`
+   invalida esa coherencia: habría que volver a generar el lock, y **la red de este
+   entorno es intermitente** (20 reintentos para bajar 152 de 153 paquetes). Un
+   `poetry lock` a medias sobre un archivo que hoy es válido es un mal negocio.
+3. **Subir a `pandas = "^3"` cambia lo que el proyecto promete instalar** a
+   cualquiera que lo clone. Es una decisión de contrato, no un arreglo, y merece
+   decidirse con el lock ya generado y probado, no antes.
+4. **Un hueco menor, sí detectado**: `ipython = "^8.0"` es más estrecho de lo
+   necesario y es lo único que hace *bajar* una versión respecto al lock auditado.
+
+### Si el grupo decide modernizar: es seguro y así se hace
+
+La evidencia dice que **modernizar es seguro**, porque los artefactos activos se
+probaron también con las versiones de última generación y **no hay un solo fallo
+por cambio de comportamiento** (`pandas 3.0.6`, `numpy 2.4.6`, `plotly 7.1.0`,
+`matplotlib 3.11.2`, `seaborn 0.13.2`, `streamlit 1.66.0`, `scikit-learn 1.9.1`).
+Es decir: la decisión de **no** cambiar es conservadora, no forzada por defectos.
+
+Procedimiento, cuando haya red estable:
+
+```bash
+cp poetry.lock poetry.lock.respaldo        # por si el lock nuevo sale peor
+# en pyproject.toml:
+#   pandas   = "^2.2"  ->  ">=2.2,<4"      # admite 2.x y 3.x
+#   plotly   = "^5.18" ->  ">=5.18,<8"     # admite 5.x, 6.x y 7.x
+#   ipython  = "^8.0"  ->  ">=8,<10"       # admite 8.x y 9.x
+poetry lock
+poetry check --lock                        # debe dar exit 0
+poetry install
+python datos_originales/probar_inventario_completo.py --etiqueta moderno
+```
+
+Si `poetry check --lock` falla o algún artefacto empieza a fallar por cambio de
+librería, se restaura el respaldo: `mv poetry.lock.respaldo poetry.lock`.
 
 ---
 
@@ -338,11 +605,18 @@ decidir aparte.
 
 - **PNG no regenerados** (3): kaleido necesita un navegador que no arranca en este
   entorno. El HTML y los CSV sí se generan.
-- **El cuaderno `docs/manual.ipynb` no se ejecuta**: se valida su sintaxis y su
-  coherencia con el generador, no su corrida (necesita el dataset de producción en
-  tres de sus secciones).
+- **Los cuadernos NO se ejecutan, solo se validan**: se leen con `nbformat` y se
+  compila **cada** celda de código, pero no se corren. Hace falta un kernel
+  (`nbclient` + `ipykernel` + `pyzmq`): `nbclient` sí está en la caché de pip, pero
+  `jupyter_client` y `pyzmq` no, y sin red no se pueden instalar. En el entorno de
+  `poetry install` sí están, así que ejecutarlos es una prueba pendiente y barata
+  para quien tenga red.
+  - `docs/manual.ipynb` además necesita el dataset de producción en tres secciones.
 - **Los 3 scripts de producción** no pueden producir salidas sin el dataset de
-  ~1,2 GB, que no está versionado en ninguna parte.
+  ~1,2 GB, que no está versionado en ninguna parte. Salen con código 3.
+- **La red de este entorno es intermitente**: `poetry install` llegó a 152/153
+  paquetes en 20 reintentos, y el último se completó desde la caché de pip. Con red
+  estable, `poetry install` termina de una sola pasada.
 
 ---
 

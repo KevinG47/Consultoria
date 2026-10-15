@@ -1,0 +1,148 @@
+﻿VERIFICACION DE repo_mejorado/
+  auditado (prueba)  : datos_originales\repo_auditado
+  mejorado (trabajo) : datos_originales\repo_mejorado
+  [aviso] no se pudo borrar _stubs (PermissionError); se vacia en su lugar
+  [dobles] ninguna: todas las dependencias estan instaladas, se usan las REALES
+
+==============================================================================
+NIVEL 1a — Limpieza: solo los archivos declarados cambian
+==============================================================================
+  archivos en repo_auditado : 236
+  archivos en repo_mejorado : 236
+  cambios declarados        : 17 archivos + 6 nuevos
+  .gitkeep eliminados       : 6
+  legacy apartados          : 13
+  -> PRUEBA: repo_mejorado = repo_auditado - 6 .gitkeep + 13 legacy apartados + 17 arreglos declarados + 6 archivos nuevos, sin residuos
+
+==============================================================================
+NIVEL 1a — repo_auditado/ sigue siendo la prueba verbatim
+==============================================================================
+  identicos : 236
+  faltantes : 0
+  distintos : 0
+  sobrantes : 0
+[OK] Los 236 archivos son byte a byte identicos al contenido versionado del repositorio auditado, y no hay archivos de mas.
+  -> PRUEBA: los 236 archivos son identicos al commit 1528939
+
+==============================================================================
+NIVEL 1b — Sintaxis de todo el codigo de repo_mejorado/
+==============================================================================
+  .py con sintaxis valida: 37
+  excluidos (legacy_referencia, sintaxis Colab): 4
+  celdas de codigo de manual.ipynb validas: 26
+  comprobaciones positivas de los arreglos:
+    (si no hay lineas [x] arriba, todos los arreglos estan presentes en su sitio)
+  -> PRUEBA: sintaxis valida, defectos de codigo ausentes (via AST), defectos en cadenas ausentes y arreglos presentes
+
+==============================================================================
+NIVEL 1c — Guardia de kaleido (src/exportacion.py), prueba REAL
+==============================================================================
+  caso 1: falta kaleido -> debe devolver False y NO lanzar
+      [aviso] no se pudo escribir x.png
+              motivo: falta kaleido. Instalalo con:  pip install "kaleido>=1"
+              detalle: RuntimeError: Image export requires the Kaleido package, v1.0.0 or greater, which can be installed using pip:  $ pip install --upgrade "kaleido>=1"
+              el HTML SI se genero; solo falta la imagen.
+          devolvio False
+  -> PRUEBA: el script ya no aborta por falta de kaleido
+  caso 1b: kaleido presente pero el NAVEGADOR no arranca (BrowserFailedError de choreographer) -> debe devolver False
+      [aviso] no se pudo escribir x2.png
+              motivo: kaleido esta instalado, pero el navegador con el
+              que dibuja no arranca.
+              opciones, de menos a mas esfuerzo:
+                1) seguir sin el PNG: el HTML ya se genero y sirve
+                   para ver el grafico;
+                2) usar un navegador ya instalado:
+                   set BROWSER_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe
+                3) instalar el navegador propio de kaleido (requiere red):
+                   kaleido_get_chrome
+              detalle: BrowserFailedError: The browser seemed to close immediately after starting.
+              el HTML SI se genero; solo falta la imagen.
+          devolvio False
+  -> PRUEBA: reconoce el fallo por el MODULO de la excepcion, no por el texto del mensaje
+  caso 2: kaleido presente -> debe escribir y devolver True
+          devolvio True y creo el archivo
+  caso 3: error NO relacionado con kaleido -> debe propagarse
+  -> PRUEBA: solo absorbe los fallos de kaleido; el resto se ve
+
+==============================================================================
+NIVEL 1d — comparar_dane() sobre datos reales, prueba REAL
+==============================================================================
+  -> PRUEBA: comparar_dane() reproduce la evidencia versionada fila por fila
+            (afro 3,0x; indigena 7,9x; discapacidad 8,0x; victimas 8,6x)
+            el comentario corregido describe la base que el codigo realmente usa
+  -> PRUEBA: sin mujeres en ningun grupo ya no lanza KeyError
+
+==============================================================================
+NIVEL 1e — aviso_produccion_ausente(), prueba REAL
+==============================================================================
+  llamada real:
+
+======================================================================
+[datos faltantes] no se puede continuar sin el dataset de produccion
+======================================================================
+  detalle: Dataset de producción no encontrado
+  El archivo NO esta versionado (~1,2 GB). Para obtenerlo:
+      python -m src.ingesta.produccion
+  Requiere conexion a la API de Socrata. Sin el, este script no puede
+  generar sus tablas ni figuras: se prefiere avisar antes que dejar
+  evidencia parcial que parezca completa.
+======================================================================
+  devolvio codigo 3
+  -> PRUEBA: codigo 3, distinto de 1 (error real) y de 0 (exito)
+
+==============================================================================
+NIVEL 2 — Ejecucion de los 6 scripts
+==============================================================================
+  [aviso] no se pudo borrar _stubs (PermissionError); se vacia en su lugar
+  [dobles] ninguna: todas las dependencias estan instaladas, se usan las REALES
+  Todas las dependencias estan instaladas: esta corrida usa las librerias REALES.
+  Los scripts ESCRIBEN figuras y CSV, asi que se ejecutan sobre una
+  copia desechable (_prueba_ejecucion) para no contaminar el entregable.
+  Para pasar de la carga inicial se deja ahi el consolidado en
+  datos/raw/investigadores_consolidado.csv (la ruta que prefiere
+  cargar_consolidado()), asi no depende de openpyxl.
+
+  [aviso] no se pudo borrar _prueba_ejecucion (PermissionError); se vacia en su lugar
+  [fixture] consolidado en datos/raw/ (18.8 MB)
+
+  [ok] scripts/sprint6_geografia_institucional.py  exit=0  (ya no muere con UnicodeEncodeError al imprimir la flecha)
+      -> sin traceback
+  [ok] scripts/sprint6_sankey_territorial.py  exit=0  (ya no aborta sin kaleido: genera el HTML y avisa del PNG)
+      -> sin traceback
+      -> avisa de kaleido y continua
+      -> HTML generado: True
+  [ok] scripts/sprint6_sankey_categoria.py  exit=0  (guardia de kaleido y recorrido de todos los pares de la entrada)
+      -> sin traceback
+      -> HTMLs de pares REGENERADOS: 2 (de 5 presentes: el resto viene de la copia)
+      -> CSV de flujos reescrito: True
+  [ok] scripts/sprint5_produccion.py  exit=3  (avisa de datos faltantes y sale con codigo 3, sin traceback)
+      -> aviso accionable presente
+      -> sin traceback
+  [ok] scripts/sprint6_ocde_composicion.py  exit=3  (aviso de datos faltantes y codigo 3, sin traceback)
+      -> aviso accionable presente
+      -> sin traceback
+  [ok] scripts/sprint5_duckdb.py  exit=3  (avisa de la base DuckDB ausente y sale con codigo 3)
+      -> aviso accionable presente
+      -> sin traceback
+  [aviso] no se pudo borrar _prueba_ejecucion (PermissionError); se vacia en su lugar
+
+  [copia desechable] _prueba_ejecucion eliminada
+
+==============================================================================
+RESUMEN
+==============================================================================
+  fallos : 0
+  avisos : 0
+
+  ALCANCE DE ESTA VERIFICACION (se declara, no se disimula):
+    - Todas las dependencias estan instaladas: NO se uso ningun doble
+      (seaborn, plotly, kaleido, duckdb, openpyxl, nbformat).
+      Para la prueba con foco en librerias reales y salidas:
+        python datos_originales/probar_librerias_reales.py
+    - PNG/Sankey: si kaleido no logra arrancar un navegador, el script
+      avisa y continua; el HTML y los CSV si se generan.
+    - docs/manual.ipynb: se valida sintaxis y coherencia con el
+      generador, no su corrida (3 secciones exigen produccion).
+    - poetry.lock: presente y preservado por el constructor.
+
+[OK] Todos los arreglos verificables pasan.
