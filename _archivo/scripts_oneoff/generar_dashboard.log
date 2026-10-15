@@ -1,4 +1,8 @@
-﻿== Carga de fuentes ==
+﻿== Paleta institucional ==
+   template 'usta_institucional' registrado y puesto por defecto
+   primario #1E3780 · dorado #B7871E · alerta #B91C1C (solo excepciones)
+
+== Carga de fuentes ==
    eda_resultados.json, estimadores_resultados.json, diagnosticos_greg.json
 
 == Regeneración y validación de los vectores que faltan ==
@@ -14,5 +18,5 @@
 
 == Escritura del HTML ==
    documentacion_auditoria\data\memoria\dashboard_eda.html
-   peso: 6,616,144 B = 6.31 MB (6.62 MB decimales)
+   peso: 6,522,636 B = 6.22 MB (6.52 MB decimales)
    gráficos: 17 en 4 pestañas

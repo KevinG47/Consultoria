@@ -1,0 +1,60 @@
+Aplica una paleta institucional unica y narrativa a los 17 graficos del EDA
+
+CAMBIO 1 - PALETA
+Antes cada grafico elegia su color suelto (teal en un sitio, morado en otro,
+ambar en otro) y los mapas de calor usaban una rampa rojo-ambar-azul. Ahora la
+paleta se declara UNA vez en el diccionario PALETA y se aplica con un template de
+Plotly registrado como "usta_institucional", puesto como predeterminado antes de
+construir cualquier figura. No queda ni un color suelto:
+
+  barras de una serie -> azul primario (u1..u5)
+  caja                -> azul primario con borde dorado (u6)
+  dos series          -> azul + dorado (genero: azul/dorado/gris; categorias:
+                         rampa de azul y dorado para la categoria mas alta)
+  lineas              -> azul primario la principal, dorado la referencia,
+                         azul claro y gris medio el contexto (r5)
+  mapas de calor      -> rampa de azul de claro a oscuro (r2, r4)
+  treemap             -> rampa de azul + dorado (v2)
+  rojo                -> SOLO excepciones: la nota de los >100 anos (u6), la cola
+                         derecha del Q-Q (d1) y los umbrales de alerta (d4)
+
+Se aplicaron 38 sustituciones con un script que exige que cada patron aparezca
+exactamente una vez y que despues comprueba que no sobreviva ninguna referencia a
+las constantes eliminadas.
+
+CAMBIO 2 - NARRATIVA
+Cada grafico explica ahora tres cosas en un bloque propio: QUE SE HIZO, POR QUE
+(y por que ese grafico y no otro) y COMO SE LEE (que mirar y que error evitar).
+Ademas cada una de las 4 pestanas abre con su narrativa de seccion. Son 21
+bloques con las mismas tres etiquetas: 17 de grafico + 4 de seccion. El texto vive
+en un bloque NARRATIVAS aparte del codigo de los graficos, para poder revisarlo
+seguido sin leer Plotly.
+
+Entre otras cosas la narrativa deja por escrito lo que un docente pregunta:
+- por que se colapsa el genero (9 personas en el censo, 0 en la muestra);
+- por que la categoria es el estrato elegido (7,08 % frente al 0,11 % del genero)
+  y que aun asi queda un 92,92 % de varianza DENTRO de los estratos;
+- que el 56,2 % de la tarjeta es el valor CENSAL y el 56,6 % es la estimacion MAS;
+- que las tasas por departamento sobre bases pequenas no son senal, sino escasez;
+- que la pestaña 4 se calcula sobre la MUESTRA y no sobre el censo;
+- que el rojo marca excepciones y no es decoracion.
+
+DEFECTO CORREGIDO EN MI PROPIO VERIFICADOR
+El verificador de paleta localizaba la zona de cada grafico con `find` de una
+cadena exacta. Si Plotly emitia un espacio tras el parentesis, la rebanada salia
+vacia y la comprobacion del color de alerta PASABA EN FALSO sin avisar. Ahora las
+posiciones se toman del propio regex y, ademas, se comprueba que la rebanada no
+este vacia. Tambien contaba 21 bloques de narrativa esperando 17: los 4 de seccion
+usan la misma clase.
+
+VERIFICACION
+- 0 colores prohibidos (verde, morado, teal, ambar y la rampa anterior).
+- 0 colores por defecto de Plotly en las figuras.
+- El rojo aparece solo en u6(1), d1(1) y d4(3).
+- Los 9 colores de la paleta estan presentes.
+- 21/21 bloques con las tres etiquetas; 4/4 narrativas de seccion.
+- Todo el CSS usa variables definidas (9 usadas, 0 sin definir).
+- 17 reglas: 15 PASA, 0 FALLA, 2 ADVERTENCIA. compilar.py sin --forzar: exit 0.
+- Sigue autocontenido (0 recursos externos), las 4 pestanas siguen funcionando
+  (pruebas_dom_dashboard_eda.js) y las cifras siguen coincidiendo con los JSON.
+- Peso 6 522 944 B = 6,52 MB, por debajo del tope de 10 MB.
