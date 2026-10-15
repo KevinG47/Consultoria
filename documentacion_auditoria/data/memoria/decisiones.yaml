@@ -279,17 +279,30 @@ decisiones:
       marcador_codigo: "D010"
       marcador_doc: "22 registros con edad"
     evidencia: >
-      Medido antes de decidir. El artefacto del repositorio auditado
-      evidencias/calidad_resumen.json registra n_atipicos_edad=19 sobre n_total=50891
-      (0,037 %) y evidencias/calidad_atipicos_edad.csv lista exactamente 19 filas
-      (edad mínima 119,0; máxima 956,25). El 22 viene del informe narrativo del mismo
-      repositorio (docs/informe/informe_final.tex:268 y README, hallazgo 7), calculado
-      sobre 77 237 filas declaradas; y una tercera ficha
-      (docs/inventario_notebooks.md:107) dice 10. El anteproyecto
-      (latex/anteproyecto/secciones/01_problema.tex:55) dice 22 sin aclarar el
-      universo: la cifra no es falsa, es ambigua. Aclaración oral prevista para la
-      sustentación: 19 en el consolidado, 22 en el universo declarado, 10 en una
-      ficha del repositorio auditado (su contradicción interna es el hallazgo).
+      Medido antes de decidir y re-verificado contra el commit, no contra el
+      working tree. En el commit auditado (1528939):
+      evidencias/calidad_resumen.json registra n_atipicos_edad = 22 sobre
+      n_total = 77 237 filas (pct_atipicos = 0,0285), y
+      evidencias/calidad_atipicos_edad.csv lista exactamente 22 filas (edad mínima
+      115,51; máxima 956,25).
+
+      En el working tree regenerado al correr el pipeline de auditoría: 19 sobre
+      50 891 filas (consolidado disponible) y 19 filas en el CSV (edad mínima 119,0;
+      máxima 956,25; pct_atipicos = 0,0373). La diferencia se debe al universo de
+      referencia (77 237 vs 50 891), no a un error del repositorio auditado:
+      77 237 son las 6 convocatorias declaradas y 50 891 las 3 versionadas en
+      datos/tarea_join/investigadores_consolidado.xlsx, que es todo lo que el
+      pipeline puede recalcular sin red.
+
+      Una tercera ficha del repositorio auditado (docs/inventario_notebooks.md:107)
+      dice 10, y su propio README.md:268 lo corrige ("22 casos (no 10)"): la
+      contradicción interna del auditado es 22 frente a 10, no 22 frente a 19.
+      El anteproyecto (latex/anteproyecto/secciones/01_problema.tex:55) dice 22 sin
+      aclarar el universo: la cifra no es falsa, es ambigua. Aclaración oral
+      prevista para la sustentación: 22 en la evidencia calculada del commit, 19 en
+      el consolidado de 3 convocatorias y 10 en una ficha del auditado, que su
+      README ya desmiente.
+
       Consecuencia medida al registrar esta decisión: R17 pasa a FALLA con UNA sola
       cita desactualizada -- latex/anteproyecto/secciones/06b_memoria_agente.tex:67
       cita "9 registradas" cuando la bitácora ya tiene 10 -- porque el §6.2 del

@@ -1,0 +1,30 @@
+Corrige la evidencia de D010: atribuia al commit una cifra del working tree
+
+El parrafo de evidencia de D010 afirmaba que "el artefacto del repositorio
+auditado evidencias/calidad_resumen.json registra n_atipicos_edad=19 sobre
+n_total=50891". Verificado releyendo los dos artefactos, eso es falso: el 19
+solo existe en el working tree que la propia auditoria regenero al correr sus
+scripts.
+
+  commit 1528939 (repo_auditado, hash verificado):
+      n_total=77237, n_atipicos_edad=22, pct=0,0285
+      calidad_atipicos_edad.csv: 22 filas, edad min 115,51 / max 956,25
+  working tree regenerado (clon):
+      n_total=50891, n_atipicos_edad=19, pct=0,0373
+      calidad_atipicos_edad.csv: 19 filas, edad min 119,0 / max 956,25
+
+El texto fallaba en tres cosas: atribuia al repositorio un artefacto que no es
+el suyo, daba 19 filas y edad minima 119,0 al CSV versionado (que tiene 22 y
+115,51), y presentaba el 22 como mera cifra narrativa del informe cuando en
+realidad es la evidencia CALCULADA del commit. Ahora distingue las dos cosas y
+dice explicitamente que la diferencia es el universo de referencia (77 237
+frente a 50 891) y no un error del repositorio auditado.
+
+Se actualiza tambien ERRATA E1, que decia "no he tocado decisiones.yaml" y
+quedaba contradiciendo al archivo.
+
+Verificacion: YAML valido, 10 decisiones, ids unicos, campos que exige R16
+presentes. `python -m memoria validar` -> R16 PASA ("4 fuentes externas y 10
+decisiones registradas; 0 problema(s) de integridad") y recuento global sin
+cambios: 15 PASA, 0 FALLA, 2 ADVERTENCIA. R15 sigue con su unica excepcion
+declarada (D002) y R17 en PASA.

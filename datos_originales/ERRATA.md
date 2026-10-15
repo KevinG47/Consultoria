@@ -20,12 +20,12 @@ porque **hay tres cifras y solo dos pertenecen al repositorio**.
 
 | Fuente | Cifra | Universo | Verificación |
 |---|---|---|---|
-| `evidencias/calidad_resumen.json` | **22** (`n_atipicos_edad`), `n_total = 77 237`, `pct = 0,0285` | 77 237 filas | ✅ leído del archivo transferido |
-| `evidencias/calidad_atipicos_edad.csv` | **22** filas de datos | 77 237 filas | ✅ contadas (23 líneas con cabecera) |
+| `evidencias/calidad_resumen.json` | **22** (`n_atipicos_edad`), `n_total = 77 237`, `pct = 0,0285` | 77 237 filas | ✅ **leído del artefacto del commit `1528939`** |
+| `evidencias/calidad_atipicos_edad.csv` | **22** filas de datos (edad mín. 115,51; máx. 956,25) | 77 237 filas | ✅ contadas |
 | `docs/informe/informe_final.tex:268` | **22** «registros con edad superior a 100 años», máximo 956 | 77 237 | ✅ leído |
 | `docs/inventario_notebooks.md:107` | **10** «registros con edad > 100 años (máx. 956 años)» | — | ✅ leído |
 | `README.md:268` | **22** casos **«(no 10)»**, con el método documentado | — | ✅ leído |
-| `documentacion_auditoria/data/memoria/decisiones.yaml` (D010) | **19** sobre `n_total = 50 891` | 50 891 filas | ⚠️ **no está en el repositorio** |
+| `evidencias/*` del **working tree regenerado** (clon) | **19**, `n_total = 50 891`, `pct = 0,0373`; CSV con 19 filas (mín. 119,0) | 50 891 filas | ✅ leído; **no es el contenido del commit** |
 
 **Lo que hay que entender.** El `README.md` del propio repositorio auditado ya
 corrige la cifra de 10: dice literalmente «22 casos (no 10)». La contradicción
@@ -41,16 +41,22 @@ Observatorio_.../evidencias/calidad_resumen.json  (working tree)  -> n_total=508
 datos_originales/repo_auditado/evidencias/calidad_resumen.json    -> n_total=77237, n_atipicos_edad=22
 ```
 
-> ⚠️ **Consecuencia práctica para el próximo grupo.** El párrafo de evidencia de
-> D010 afirma que «el artefacto del repositorio auditado registra
-> `n_atipicos_edad = 19` sobre `n_total = 50891`». **Eso no se cumple contra el
-> repositorio**: se cumple contra el *working tree local*, que la propia auditoría
-> regeneró al ejecutar sus scripts. Si comparas D010 con
-> `datos_originales/repo_auditado/evidencias/calidad_resumen.json` verás 22 y
-> podrías pensar que la transferencia está mal: no lo está, el archivo es
-> idéntico al commit (hash verificado). **No he tocado `decisiones.yaml`** porque
-> hacerlo exige consulta previa; queda propuesto corregir ese párrafo para que
-> distinga «artefacto versionado (22/77 237)» de «regenerado en local (19/50 891)».
+> ✅ **Corregido (este párrafo ya no describe un defecto abierto).** El párrafo de
+> evidencia de D010 decía que «el artefacto del repositorio auditado registra
+> `n_atipicos_edad = 19` sobre `n_total = 50891`». **Eso no se cumplía contra el
+> repositorio**: se cumplía contra el *working tree local*, que la propia auditoría
+> regeneró al ejecutar sus scripts. Se corrigió para que distinga las dos cosas:
+>
+> - **commit `1528939`**: `n_atipicos_edad = 22` sobre `n_total = 77 237`
+>   (`pct = 0,0285`), y 22 filas en `calidad_atipicos_edad.csv` (mín. 115,51).
+> - **working tree regenerado**: `19` sobre `50 891` (`pct = 0,0373`), 19 filas
+>   (mín. 119,0). La diferencia es el universo (6 convocatorias declaradas frente a
+>   las 3 versionadas), **no un error del repositorio auditado**.
+>
+> Verificado releyendo ambos artefactos, no copiando el texto anterior. R16 sigue en
+> PASA y el recuento global no cambia (15 PASA / 0 FALLA / 2 ADVERTENCIA). Si
+> comparas D010 con `datos_originales/repo_auditado/evidencias/calidad_resumen.json`
+> ahora coinciden: 22. El archivo transferido es idéntico al commit (hash verificado).
 
 ## E2 · El consolidado versionado cubre 3 de las 6 convocatorias
 
