@@ -1,0 +1,63 @@
+Agrega el EDA completo como dashboard HTML interactivo de 4 pestanas
+
+Entregable nuevo: documentacion_auditoria/data/memoria/dashboard_eda.html
+(6 616 144 B = 6,62 MB), autocontenido y sin red, con 17 graficos Plotly
+repartidos en 4 pestanas: Univariado (6), Bivariado/retencion (5), Varianza
+entre grupos (2) y Diagnosticos (4).
+
+AUTOCONTENIDO (verificado, no supuesto)
+Se separo el bundle de Plotly del resto del documento y se comprobo que en el
+resto hay CERO <script src>, <link>, @import, url(http...), http(s)://, fetch,
+XMLHttpRequest, <img src> e <iframe>. Plotly 7.1.0 va embebido una sola vez
+(4 815 765 caracteres) y cada grafico lleva su JSON de datos (no imagenes).
+Peso muy por debajo del tope de 10 MB.
+
+QUE DATOS FALTABAN Y COMO SE RESOLVIERON
+Los JSON guardan estadisticos resumidos, no los vectores por observacion. Faltaban
+cuatro, necesarios para el histograma y el Q-Q de edad, los residuos vs ajustados
+y la distribucion de g-weights. Se regeneran con las MISMAS funciones del proyecto
+(importadas de eda_longitudinal, estimadores_longitudinal y diagnosticos_greg, no
+reescritas) y se VALIDAN antes de usarlas:
+
+  - vector de edades: 6 comprobaciones contra eda_resultados.json
+  - ajustados, residuos y g-weights: 11 comprobaciones contra diagnosticos_greg.json
+
+Si alguna no cuadra, el script falla en vez de dibujar cifras no reproducibles.
+Ningun analisis previo se modifica: los 10 PNG de eda/ y los tres JSON de entrada
+quedan byte a byte intactos (comprobado con git status).
+
+KPI CON VALOR CENSAL COMO PRINCIPAL
+Se revisaron las cinco tarjetas. Cuatro ya eran censales (registros, personas,
+convocatorias, edad media). La de retencion 2013-2021 estaba como estimacion
+(56,6 % MAS) y pasa al valor censal 56,2 %, con la MAS (56,6 %, n=618 en 2013),
+la post-estratificada (57,3 %) y el GREG (56,9 %) como nota al pie. La nota usa
+n=618 y no 2 224 porque ese es el tamano de muestra efectivo de esa estimacion.
+
+DOS DEFECTOS CORREGIDOS DURANTE LA CONSTRUCCION
+- Los modulos del pipeline hacen sys.stdout = TextIOWrapper(sys.stdout.buffer) al
+  importarse; como todos envuelven el mismo buffer, el recolector lo cerraba y la
+  salida moria con "I/O operation on closed file". La importacion se hace ahora
+  con sys.stdout apuntando a devnull.
+- plotly.offline.plot ya NO acepta div_id en Plotly 7 (se elimino junto con
+  post_script): se usa plotly.io.to_html(full_html=False), que produce el mismo div.
+- Los titulos y anotaciones escritos a mano se quedaban con punto decimal mientras
+  las tarjetas usaban coma ("7,08 %" junto a "rango [0.5839, 1.4708]"). Se anaden
+  los ayudantes num() y pval() para que todo el panel use coma decimal.
+
+VERIFICACION
+- 4 pestanas emparejadas con sus 4 paneles; los 17 graficos estan DENTRO de su
+  panel (17/17) y ninguno fuera.
+- Prueba funcional del cambio de pestana sin navegador:
+  node _archivo/scripts_oneoff/pruebas_dom_dashboard_eda.js -> todas pasan.
+  Ejecuta el script REAL extraido del HTML sobre un DOM simulado, hace clic en
+  cada pestana y comprueba que quede activa solo esa y que se pidan los
+  redibujados (Plotly calcula el ancho al dibujar y los paneles ocultos salen a 0).
+- Cifras del HTML contrastadas contra los JSON fuente: 77 237, 30 086, 45,52,
+  56,2 %, 7,08 %, 1,38 %, 0,99 %, 0,30 %, 0,11 %, etc.
+- 17 reglas: 15 PASA, 0 FALLA, 2 ADVERTENCIA (sin cambios).
+- compilar.py anteproyecto sin --forzar: exit 0.
+
+Estilo copiado de herramienta_trayectorias.html (paleta azul #1E3780 / dorado
+#B7871E, tarjetas, tipografia). Montserrat y Fira Code se declaran primero pero
+NO estan instaladas en el equipo, asi que gobierna el fallback: Segoe UI y
+Consolas, exactamente las del referente.

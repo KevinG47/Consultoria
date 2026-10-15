@@ -1,0 +1,18 @@
+﻿== Carga de fuentes ==
+   eda_resultados.json, estimadores_resultados.json, diagnosticos_greg.json
+
+== Regeneración y validación de los vectores que faltan ==
+   poblacion: 30,086 personas | edad no nula: 30,085
+   [ok] vector de edades validado contra eda_resultados.json (6 comprobaciones)
+   [ok] ajustados, residuos y g-weights validados contra diagnosticos_greg.json (11 comprobaciones)
+
+== Construcción de las pestañas ==
+   Univariado     6 gráficos
+   Bivariado      5 gráficos
+   Varianza       2 gráficos
+   Diagnósticos   4 gráficos
+
+== Escritura del HTML ==
+   documentacion_auditoria\data\memoria\dashboard_eda.html
+   peso: 6,616,144 B = 6.31 MB (6.62 MB decimales)
+   gráficos: 17 en 4 pestañas
