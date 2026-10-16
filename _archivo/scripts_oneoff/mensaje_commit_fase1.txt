@@ -1,0 +1,65 @@
+Inicia la Fase 1: evalua el cumplimiento de los objetivos del repositorio auditado
+
+Entregable nuevo: documentacion_auditoria/evaluacion_cumplimiento.md
+
+Responde una pregunta distinta de la que ya responden los 6 criterios: aquellos
+evaluan COMO esta hecho el repositorio; este evalua SI cumplio lo que se propuso.
+
+OBJETIVOS Y PREGUNTAS EXTRAIDOS DE LAS FUENTES
+Objetivo general y 5 especificos de informe_final.md:28 y 32-40; 7 preguntas de
+README.md:47-53. Se documenta una inconsistencia del auditado que afecta al
+alcance: el README declara 7 preguntas y el informe LaTeX 6, y la que desaparece
+es la de redes de co-filiacion, pese a que el informe le dedica seccion propia
+(informe_final.tex:568-579).
+
+METODO: DOS NIVELES DE COBERTURA
+Se distingue "cubierto por la auditoria" (revisamos y evaluamos el producto del
+auditado) de "cubierto con analisis propio" (lo recalculamos o extendimos).
+Confundirlos seria el error mas facil de cometer aqui. Sin esa distincion, casi
+todo pareceria cubierto solo porque los .tex hablan de todos los temas.
+
+RESULTADO: 12 items evaluados (1 general + 5 especificos + 7 preguntas)
+  3 cubiertos  ·  9 parciales  ·  1 no cubierto
+  Objetivos:  1 Si (OE2) · 5 Parcial
+  Preguntas:  2 Si (Q1, Q2) · 4 Parcial · 1 No (Q7)
+Los parciales NO son incumplimientos: en la mayoria de los casos el producto
+existe y lo auditamos, y lo que falta es reproducibilidad (datos no versionados)
+o formalizacion estadistica (inferencia). El unico "No" es de acceso a datos.
+
+HALLAZGOS NUEVOS DE ESTA FASE (verificados, no copiados)
+1. El modelo estrella del objetivo 4 no son "nueve dimensiones": inspeccionando
+   el esquema real de observatorio.duckdb hay 7 dimensiones (dim_area,
+   dim_categoria, dim_convocatoria, dim_formacion, dim_institucion,
+   dim_investigador, dim_territorio) + 1 tabla de hechos (fact_clasificacion,
+   50 891 filas) + 1 tabla puente (bridge_hecho_institucion, 47 187 filas) = 9
+   TABLAS. El "nueve" cuenta tablas, no dimensiones.
+2. El modelo poblado tiene 3 convocatorias (dim_convocatoria = 3 filas, 50 891
+   hechos), mientras su evidencia versionada (duckdb_resumen_modelo.txt) dice 6
+   convocatorias y 77 237 registros. Causa localizada: sprint2_duckdb.py:28 usa
+   cargar_consolidado(), que prefiere datos/raw/ (vacio, gitignored) y cae al
+   XLSX de 3 convocatorias. Es la ERRATA E2 aplicada al modelo dimensional.
+3. La comparacion per capita con DANE 2018 que pide Q3 NO EXISTE en ningun
+   artefacto: el HHI usa cuotas de investigadores (Bogota 0,312 en 2021,
+   Antioquia 0,167), no investigadores por habitante.
+4. La "gran tabla" del objetivo 5 no esta versionada como dato (solo los
+   informes .md) y su generador no compila (SyntaxError, linea 157).
+5. Un solo archivo bloquea Q7 entera, media Q4 y la tabla de hechos de
+   produccion: produccion_grupos.csv (~1,2 GB), no versionado en ningun sitio.
+
+FASE 2 PRIORIZADA
+3 desbloqueantes (dataset de produccion; Q3 per capita con IC bootstrap y
+Gini/Theil; modelo estrella reproducible con las 6 convocatorias) y 7 frentes de
+analisis y formalizacion (redes con modelos nulos, diversidad con IC,
+clustering formalizado, unicidad de IDs, descriptivos por convocatoria,
+inferencia transversal y supervivencia).
+
+VERIFICACION
+- 17 reglas: 15 PASA, 0 FALLA, 2 ADVERTENCIA (sin cambios; el documento no es
+  fuente de ninguna regla).
+- compilar.py anteproyecto sin --forzar: exit 0.
+- repo_auditado intacto: 236/236 hashes identicos (no se toco el auditado).
+- Estructura del documento: 25 encabezados sin saltos de nivel, 11 tablas
+  consistentes, 0 enlaces rotos. El verificador de rutas marca 4 ausentes
+  (Downloads/, produccion_grupos.csv, gran_tabla.csv) que son EXACTAMENTE las
+  que el documento denuncia como inexistentes: confirma el diagnostico en vez de
+  contradecirlo.

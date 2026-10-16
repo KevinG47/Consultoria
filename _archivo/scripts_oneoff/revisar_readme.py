@@ -18,7 +18,11 @@ import unicodedata
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
-RUTA = Path(sys.argv[1]) if len(sys.argv) > 1 else RAIZ / "README.md"
+RUTA = (Path(sys.argv[1]) if len(sys.argv) > 1 else RAIZ / "README.md").resolve()
+# Los .md que viven en documentacion_auditoria/ citan rutas relativas a ESA carpeta
+# (latex/objetivo_*/secciones/..., data/analisis_codigo/...). Se admiten las dos
+# bases al comprobar si una ruta citada existe.
+BASE_DOC = RUTA.parent
 
 # La consola de Windows es cp1252 y el README trae "▶" y "─": sin esto el propio
 # revisor muere con UnicodeEncodeError (el mismo defecto que describe el arreglo B
@@ -102,7 +106,7 @@ for m in re.finditer(r"\]\(([^)#][^)]*)\)", texto):
 faltan = []
 for ruta in sorted(candidatas):
     limpio = ruta.rstrip("/")
-    if (RAIZ / limpio).exists():
+    if (RAIZ / limpio).exists() or (BASE_DOC / limpio).exists():
         continue
     # Tambien se aceptan nombres sueltos que existan en cualquier parte.
     if any(RAIZ.rglob(Path(limpio).name)):
