@@ -1,0 +1,415 @@
+{
+  "fecha": "2026-10-16T21:34:33",
+  "analisis": "F2-5 — Diversidad con intervalos de confianza (Q5/Q6)",
+  "semilla": 20260217,
+  "replicas_bootstrap": 2000,
+  "autotest_wilson": {
+    "mitad_n1000": [
+      0.4690696003681042,
+      0.5309303996318958
+    ],
+    "cero_n100": [
+      3.469446951953614e-18,
+      0.03699349820698568
+    ],
+    "todos_n100": [
+      0.9630065017930143,
+      1.0
+    ],
+    "seis_de_20423": [
+      0.00013465168510604547,
+      0.0006408700152326764
+    ],
+    "todas_ok": true
+  },
+  "cobertura_por_convocatoria": {
+    "2013": {
+      "n": 8016,
+      "ID_VICTIMA_CONFLICTO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_GRUPO_ETNICO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_POBLACION_DISCA": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "NME_GENERO_PR": {
+        "pct_cobertura": 100.0,
+        "pct_no_registra": 0.0,
+        "nota": "'No disponible' es una categoría observada del registro, no un dato ausente: el género está capturado siempre."
+      }
+    },
+    "2014": {
+      "n": 8280,
+      "ID_VICTIMA_CONFLICTO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_GRUPO_ETNICO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_POBLACION_DISCA": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "NME_GENERO_PR": {
+        "pct_cobertura": 100.0,
+        "pct_no_registra": 0.0,
+        "nota": "'No disponible' es una categoría observada del registro, no un dato ausente: el género está capturado siempre."
+      }
+    },
+    "2015": {
+      "n": 10050,
+      "ID_VICTIMA_CONFLICTO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_GRUPO_ETNICO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_POBLACION_DISCA": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "NME_GENERO_PR": {
+        "pct_cobertura": 100.0,
+        "pct_no_registra": 0.0,
+        "nota": "'No disponible' es una categoría observada del registro, no un dato ausente: el género está capturado siempre."
+      }
+    },
+    "2017": {
+      "n": 13001,
+      "ID_VICTIMA_CONFLICTO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_GRUPO_ETNICO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_POBLACION_DISCA": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "NME_GENERO_PR": {
+        "pct_cobertura": 100.0,
+        "pct_no_registra": 0.0,
+        "nota": "'No disponible' es una categoría observada del registro, no un dato ausente: el género está capturado siempre."
+      }
+    },
+    "2019": {
+      "n": 16796,
+      "ID_VICTIMA_CONFLICTO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_GRUPO_ETNICO": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "TXT_POBLACION_DISCA": {
+        "pct_cobertura": 0.0,
+        "pct_no_registra": 100.0
+      },
+      "NME_GENERO_PR": {
+        "pct_cobertura": 100.0,
+        "pct_no_registra": 0.0,
+        "nota": "'No disponible' es una categoría observada del registro, no un dato ausente: el género está capturado siempre."
+      }
+    },
+    "2021": {
+      "n": 21094,
+      "ID_VICTIMA_CONFLICTO": {
+        "pct_cobertura": 96.81900066369585,
+        "pct_no_registra": 3.1809993363041578
+      },
+      "TXT_GRUPO_ETNICO": {
+        "pct_cobertura": 96.81900066369585,
+        "pct_no_registra": 3.1809993363041578
+      },
+      "TXT_POBLACION_DISCA": {
+        "pct_cobertura": 96.80951929458614,
+        "pct_no_registra": 3.1904807054138673
+      },
+      "NME_GENERO_PR": {
+        "pct_cobertura": 100.0,
+        "pct_no_registra": 0.0,
+        "nota": "'No disponible' es una categoría observada del registro, no un dato ausente: el género está capturado siempre."
+      }
+    }
+  },
+  "denominador_etnia": {
+    "respuestas_conocidas": 20423,
+    "mayoria_declarada_incluida": 19794,
+    "n_afro": 453,
+    "pct_con_denominador_correcto": 2.218087450423542,
+    "denominador_si_se_excluye_la_mayoria": 629,
+    "pct_con_denominador_equivocado": 72.01907790143085,
+    "nota": "Excluir «Ningún grupo étnico» y «Blanco o mestizo» del denominador mezclaría bases: compararía «qué proporción de las minorías es afro» con «qué proporción del país es afro». El CÓDIGO del auditado no lo hace y es lo correcto; era el COMENTARIO el que lo pedía (parche E1 del CHANGELOG)."
+  },
+  "alcance_temporal": {
+    "con_datos": [
+      "2021"
+    ],
+    "sin_datos": [
+      "2013",
+      "2014",
+      "2015",
+      "2017",
+      "2019"
+    ],
+    "nota": "La comparación con DANE es una FOTOGRAFÍA de 2021, no una serie: las tres variables de diversidad tienen 0 % de cobertura antes de 2021. Con este registro no puede hablarse de evolución de la diversidad, solo de su estado en la última convocatoria.",
+    "genero_si_es_serie": "NME_GENERO_PR está capturado en las seis convocatorias, así que el género sí admite análisis temporal."
+  },
+  "grupos": {
+    "afro": {
+      "etiqueta": "Afrocolombiano",
+      "variable": "TXT_GRUPO_ETNICO",
+      "n": 453,
+      "denominador_respuestas_conocidas": 20423,
+      "pct": 2.218087450423542,
+      "ic95_wilson_pct": [
+        2.024913148660685,
+        2.4292334243906635
+      ],
+      "dane_pct": 6.7,
+      "fuente_dane": "Censo DANE 2018",
+      "razon": 3.020620309050773,
+      "razon_ic_wilson": [
+        2.7580717162578123,
+        3.3087838875615505
+      ],
+      "n_muestra_grupo": 31,
+      "pct_ic95_diseno": [
+        1.3913931292569877,
+        2.8122665415100525
+      ],
+      "razon_ic_diseno": [
+        2.3824199808608544,
+        4.81531772661393
+      ],
+      "estimable_con_la_muestra": true,
+      "cociente_acotado_con_la_muestra": true
+    },
+    "indigena": {
+      "etiqueta": "Indígena",
+      "variable": "TXT_GRUPO_ETNICO",
+      "n": 114,
+      "denominador_respuestas_conocidas": 20423,
+      "pct": 0.5581941928218186,
+      "ic95_wilson_pct": [
+        0.4648996850698058,
+        0.6700846897199668
+      ],
+      "dane_pct": 4.4,
+      "fuente_dane": "Censo DANE 2018",
+      "razon": 7.882561403508773,
+      "razon_ic_wilson": [
+        6.566334177607896,
+        9.464407357770806
+      ],
+      "n_muestra_grupo": 7,
+      "pct_ic95_diseno": [
+        0.13880223697345637,
+        0.8165654259492983
+      ],
+      "razon_ic_diseno": [
+        5.38842309528937,
+        31.699777294233574
+      ],
+      "estimable_con_la_muestra": true,
+      "cociente_acotado_con_la_muestra": true
+    },
+    "raizal": {
+      "etiqueta": "Raizal",
+      "variable": "TXT_GRUPO_ETNICO",
+      "n": 45,
+      "denominador_respuestas_conocidas": 20423,
+      "pct": 0.220339812955981,
+      "ic95_wilson_pct": [
+        0.16472285106633927,
+        0.294679837351608
+      ],
+      "dane_pct": 0.06,
+      "fuente_dane": "Censo DANE 2018",
+      "razon": 0.27230666666666664,
+      "razon_ic_wilson": [
+        0.2036108087314057,
+        0.36424818785971613
+      ],
+      "n_muestra_grupo": 3,
+      "pct_ic95_diseno": [
+        0.0,
+        0.42526395846541576
+      ],
+      "razon_ic_diseno": null,
+      "estimable_con_la_muestra": true,
+      "cociente_acotado_con_la_muestra": false
+    },
+    "palenquero": {
+      "etiqueta": "Palenquero",
+      "variable": "TXT_GRUPO_ETNICO",
+      "n": 11,
+      "denominador_respuestas_conocidas": 20423,
+      "pct": 0.053860843167017586,
+      "ic95_wilson_pct": [
+        0.030078639583741237,
+        0.09642872511475598
+      ],
+      "dane_pct": 0.014,
+      "fuente_dane": "Censo DANE 2018",
+      "razon": 0.2599290909090909,
+      "razon_ic_wilson": [
+        0.14518495379192414,
+        0.4654465824833244
+      ],
+      "n_muestra_grupo": 1,
+      "pct_ic95_diseno": [
+        0.0,
+        0.17924956638014686
+      ],
+      "razon_ic_diseno": null,
+      "estimable_con_la_muestra": true,
+      "cociente_acotado_con_la_muestra": false
+    },
+    "rrom": {
+      "etiqueta": "Rrom (gitano)",
+      "variable": "TXT_GRUPO_ETNICO",
+      "n": 6,
+      "denominador_respuestas_conocidas": 20423,
+      "pct": 0.029378641727464135,
+      "ic95_wilson_pct": [
+        0.013465168510604548,
+        0.06408700152326764
+      ],
+      "dane_pct": 0.005,
+      "fuente_dane": "Censo DANE 2018",
+      "razon": 0.17019166666666666,
+      "razon_ic_wilson": [
+        0.07801894114494783,
+        0.37132843870926907
+      ],
+      "n_muestra_grupo": 0,
+      "pct_ic95_diseno": null,
+      "razon_ic_diseno": null,
+      "estimable_con_la_muestra": false,
+      "cociente_acotado_con_la_muestra": false
+    },
+    "discapacidad": {
+      "etiqueta": "Discapacidad (cualquiera)",
+      "variable": "TXT_POBLACION_DISCA",
+      "n": 181,
+      "denominador_respuestas_conocidas": 20421,
+      "pct": 0.8863424905734293,
+      "ic95_wilson_pct": [
+        0.7667087975373141,
+        1.0244505588683706
+      ],
+      "dane_pct": 7.1,
+      "fuente_dane": "Censo DANE 2018",
+      "razon": 8.010447513812155,
+      "razon_ic_wilson": [
+        6.930544318159002,
+        9.260360677750613
+      ],
+      "n_muestra_grupo": 18,
+      "pct_ic95_diseno": [
+        0.6692241350488958,
+        1.7650754651917269
+      ],
+      "razon_ic_diseno": [
+        4.022490901956297,
+        10.609300573837269
+      ],
+      "estimable_con_la_muestra": true,
+      "cociente_acotado_con_la_muestra": true
+    },
+    "victima": {
+      "etiqueta": "Víctima del conflicto",
+      "variable": "ID_VICTIMA_CONFLICTO",
+      "n": 421,
+      "denominador_respuestas_conocidas": 20423,
+      "pct": 2.0614013612104,
+      "ic95_wilson_pct": [
+        1.8753558428869346,
+        2.2654774843108143
+      ],
+      "dane_pct": 17.7,
+      "fuente_dane": "RUV 2021 sobre población 2021",
+      "razon": 8.586391923990499,
+      "razon_ic_wilson": [
+        7.812922495402577,
+        9.438208789619631
+      ],
+      "n_muestra_grupo": 31,
+      "pct_ic95_diseno": [
+        1.3528680830808497,
+        2.7820325431524564
+      ],
+      "razon_ic_diseno": [
+        6.362254835431676,
+        13.083315528955545
+      ],
+      "estimable_con_la_muestra": true,
+      "cociente_acotado_con_la_muestra": true
+    }
+  },
+  "referencias_dane": {
+    "afro": {
+      "pct": 6.7,
+      "fuente": "Censo DANE 2018"
+    },
+    "indigena": {
+      "pct": 4.4,
+      "fuente": "Censo DANE 2018"
+    },
+    "raizal": {
+      "pct": 0.06,
+      "fuente": "Censo DANE 2018"
+    },
+    "palenquero": {
+      "pct": 0.014,
+      "fuente": "Censo DANE 2018"
+    },
+    "rrom": {
+      "pct": 0.005,
+      "fuente": "Censo DANE 2018"
+    },
+    "discapacidad": {
+      "pct": 7.1,
+      "fuente": "Censo DANE 2018"
+    },
+    "victima": {
+      "pct": 17.7,
+      "fuente": "RUV 2021 sobre población 2021"
+    }
+  },
+  "grupos_no_estimables_con_la_muestra": [
+    "rrom"
+  ],
+  "grupos_cuyo_cociente_no_queda_acotado": [
+    "raizal",
+    "palenquero",
+    "rrom"
+  ],
+  "nota_grupos_pequenos": "Los grupos pequeños tienen intervalos ANCHOS, y eso es el resultado, no un fallo del análisis: con 114 indígenas y 6 rrom sobre 20 423 respuestas, la precisión está limitada por el tamaño del grupo. En la muestra MAS (n = 2 224) algunos grupos casi desaparecen, y su cociente deja de ser estimable en términos de diseño: se reporta como tal en vez de inventar un intervalo.",
+  "figuras": [
+    "f2_5_cobertura_por_convocatoria.png",
+    "f2_5_razones_subrepresentacion.png"
+  ],
+  "validaciones": {
+    "cobertura_reproducida": true,
+    "n_reproducidos": true,
+    "porcentajes_reproducidos": true,
+    "razones_reproducidas": true,
+    "tres_variables_solo_en_2021": true,
+    "denominador_equivocado_daria_72_pct": true,
+    "wilson_dentro_de_0_1": true
+  }
+}

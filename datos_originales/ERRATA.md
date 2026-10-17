@@ -32,6 +32,35 @@ corrige la cifra de 10: dice literalmente «22 casos (no 10)». La contradicció
 real del repositorio es, por tanto, **22 en el informe y en la evidencia calculada
 frente a 10 en `inventario_notebooks.md`**, y el README la deja zanjada.
 
+### La reconciliación que faltaba: 22 registros son 11 personas
+
+Hay una cuarta cifra, **11**, que aparece en nuestro propio análisis
+(`analisis_longitudinal.md` §2.8, el dashboard del EDA y el modelo de muestreo) y
+que no contradice ninguna de las anteriores: **cuentan unidades distintas**.
+
+| Medición sobre la base completa (77 237 registros) | Valor |
+|---|---:|
+| Registros con edad > 100 | **22** |
+| Personas distintas que los declaran | **12** |
+| Personas al colapsar a una fila por persona (su última convocatoria) | **11** |
+
+Las doce personas producen los 22 registros porque cinco aparecen una vez, cinco
+dos veces, una tres y una cuatro. Contar registros da 22; contar personas da 12; y
+al quedarse con una observación por persona quedan 11.
+
+**Por qué 12 se convierte en 11: el caso `0000671819`.** Una de las doce declara
+**115,51 años en la convocatoria de 2015** y **16,92 en la de 2017**. Su edad
+retrocede **98,6 años** entre dos convocatorias consecutivas, así que en su última
+observación (2021, con 59,25 años) ya no supera los 100 y deja de contarse. Es un
+defecto de captura del propio registro, del mismo tipo que los otros atípicos, y
+es la razón exacta por la que 12 personas dan 11 al colapsar.
+
+Las tres cifras son correctas cada una en su unidad. El 22 coincide con
+`evidencias/calidad_resumen.json` del commit auditado y con
+`calidad_atipicos_edad.csv` (22 filas); el 11 es la cifra comparable de un análisis
+por persona. Se calcula en `documentacion_auditoria/src/eda_longitudinal.py` y se
+guarda en `data/memoria/eda_resultados.json` (`edad.reconciliacion_registros`).
+
 El **19** es otra cosa: aparece al **re-ejecutar** los scripts del repositorio
 sobre el XLSX versionado, que contiene 50 891 filas de 3 convocatorias en lugar de
 las 77 237 de 6. Comprobado en este entorno:
@@ -166,6 +195,56 @@ Comprobado con `poetry check --lock` (falla) y con la lectura de los dos archivo
 
 **Corregido en `repo_mejorado/`**: el lock regenerado incluye las 7 y
 `poetry check --lock` da exit 0. Detalle en `repo_mejorado/CHANGELOG.md`.
+
+---
+
+## E7 · `diversidad.py`: el comentario manda excluir a la mayoría étnica y el código no lo hace (y el código tiene razón)
+
+`src/analisis/diversidad.py:87-92` trae un comentario que ordena excluir «NINGÚN
+GRUPO ÉTNICO» del denominador «para ver minorías», y **la línea siguiente no lo
+hace**:
+
+```python
+# Etnia: excluir "NINGUN GRUPO ETNICO" del denominador para ver minorias
+etnia = df_2021[df_2021["TXT_GRUPO_ETNICO"] != "NO DISPONIBLE"]
+```
+
+El comentario manda quitar la mayoría; el código solo quita los `NO DISPONIBLE`.
+**Verificado con los datos reales: el correcto es el CÓDIGO.** Se comprobó
+ejecutando las funciones del repositorio sin tocarlas
+(`_archivo/scripts_oneoff/verificar_comparar_dane.py`) y, después, con la fuente
+completa de 6 convocatorias en F2-5
+(`documentacion_auditoria/data/memoria/diversidad_inferencia.json`).
+
+**Por qué el comentario está mal.** `DANE_REFERENCIA` son porcentajes de la
+población **total**, así que la base comparable es el total de **respuestas
+conocidas**. «Ningún grupo étnico» (19 674 registros) y «Blanco o mestizo» (120)
+no son datos faltantes: son respuestas **declaradas**, el 96,9 % de las conocidas.
+Excluirlas mezcla bases —compararía «qué proporción de las minorías es afro» con
+«qué proporción del país es afro»— y el resultado se dispara:
+
+| Denominador | Afro sobre… | Porcentaje | Razón frente a DANE (6,7 %) |
+|---|---|---:|---:|
+| **Correcto** (respuestas conocidas) | 20 423 | **2,22 %** | **3,02×** |
+| El que pedía el comentario | 629 | 72,0 % | 0,09× |
+
+El 2,22 % es la cifra publicada y coincide exactamente con
+`evidencias/diversidad_comparacion_dane.csv`. Con el denominador del comentario,
+el informe habría dicho que la población afro está **sobrerrepresentada 11 veces**
+en lugar de subrepresentada 3 veces: el signo del hallazgo se invierte.
+
+**Corregido en `repo_mejorado/`** con el parche **E1** de
+`datos_originales/aplicar_arreglos.py`, que reescribe el comentario para que
+describa la base que el código realmente usa. `verificar_arreglos.py` comprueba
+que el comentario corregido esté presente y que `comparar_dane()` siga
+reproduciendo la evidencia fila por fila (afro 3,0×; indígena 7,9×; discapacidad
+8,0×; víctimas 8,6×).
+
+**Cómo se detectó.** No lo detectó ninguna prueba automática: lo encontró la
+lectura del código al escribir la ficha del artefacto. Una contradicción entre un
+comentario y su línea siguiente no la ve un verificador de sintaxis ni de tipos;
+solo se ve leyendo. Es el motivo de que las 51 fichas de
+`data/analisis_codigo/` citen líneas exactas.
 
 ---
 

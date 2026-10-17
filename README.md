@@ -160,10 +160,11 @@ El proyecto audita el repositorio público
 (commit `1528939`). Su contenido versionado —236 archivos— está copiado **byte a
 byte** en `datos_originales/repo_auditado/`, con manifiesto SHA-256 y verificación
 reproducible, junto con las **contradicciones conocidas** del proyecto auditado en
-`datos_originales/ERRATA.md` (seis entradas, E1–E6: la de «22 vs 19 vs 10 atípicos
+`datos_originales/ERRATA.md` (siete entradas, E1–E7: la de «22 vs 19 vs 10 atípicos
 de edad», que arrastra un matiz importante de la decisión D010; el consolidado que
 cubre 3 de 6 convocatorias; el `poetry.lock` que no corresponde a su
-`pyproject.toml`…).
+`pyproject.toml`; el comentario de `diversidad.py` que contradice a su propio
+código…).
 
 ### `datos_originales/` — qué hay y para qué sirve
 
@@ -173,7 +174,7 @@ cubre 3 de 6 convocatorias; el `poetry.lock` que no corresponde a su
 | `repo_mejorado/` | **Código de trabajo.** El mismo código con **30 arreglos** aplicados y 6 archivos nuevos | Se reconstruye con los scripts de abajo; **no se edita a mano** |
 | `datos_fuente/` | El CSV de datos.gov.co (77 237 registros) que alimenta nuestro análisis | Solo lectura |
 | `manifiesto_sha256.csv` | SHA-256 de los 236 archivos de `repo_auditado/` | Lo comprueba `verificar_hashes.py` |
-| `ERRATA.md` | Las **contradicciones conocidas** del proyecto auditado (E1–E6) | Leer antes de citar cualquier cifra del auditado |
+| `ERRATA.md` | Las **contradicciones conocidas** del proyecto auditado (E1–E7) | Leer antes de citar cualquier cifra del auditado |
 | `README.md` | Procedencia, hashes y el orden correcto de los scripts | — |
 
 ### `datos_originales/repo_mejorado/` — el entregable de código
@@ -206,7 +207,7 @@ virtual. Solo se necesita para **re-extraer** la copia
 consultoria/
 ├── README.md                        ← este archivo
 ├── datos_originales/                ← DATOS + las dos copias del repo auditado
-│   ├── README.md / ERRATA.md        ← procedencia, hashes y contradicciones (E1–E6)
+│   ├── README.md / ERRATA.md        ← procedencia, hashes y contradicciones (E1–E7)
 │   ├── manifiesto_sha256.csv        ← 236 hashes verificables
 │   ├── repo_auditado/               ← EVIDENCIA: 236 archivos del commit 1528939, verbatim
 │   ├── repo_mejorado/               ← CÓDIGO: los mismos 236 con 30 arreglos + CHANGELOG.md
