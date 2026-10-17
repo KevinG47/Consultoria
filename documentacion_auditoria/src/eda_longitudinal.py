@@ -128,6 +128,49 @@ def main() -> int:
         "maximo": float(edad.max()), "minimo": float(edad.min()),
         "media_sin_atipicos_100": float(edad[edad <= 100].mean()),
     }
+
+    # ---- reconciliacion: personas frente a registros ----------------------
+    # `mayores_100` cuenta PERSONAS (una fila por persona, su última
+    # convocatoria). Pero una misma persona puede declarar edad > 100 en VARIAS
+    # convocatorias, así que contar REGISTROS da un número mayor. Sin esta
+    # distinción, nuestro 11 parecería contradecir el 22 que documenta el
+    # repositorio auditado; en realidad cuentan unidades distintas. Es
+    # exactamente la confusión registros/personas que originó la discrepancia
+    # 22 vs 19 vs 10 del auditado (ERRATA E1).
+    edad_reg = pd.to_numeric(df["EDAD_ANOS_PR"].str.replace(",", ".", regex=False),
+                             errors="coerce")
+    masc_reg = edad_reg > 100
+    por_persona = (df.loc[masc_reg].groupby("ID_PERSONA_PR").size()
+                   .value_counts().sort_index())
+    res["edad"]["reconciliacion_registros"] = {
+        "registros_mayores_100": int(masc_reg.sum()),
+        "personas_mayores_100": int(df.loc[masc_reg, "ID_PERSONA_PR"].nunique()),
+        "personas_tras_colapsar": int((edad > 100).sum()),
+        "registros_por_persona": {str(k): int(v) for k, v in por_persona.items()},
+        "convocatorias_con_registros_mayores_100": sorted(
+            int(x) for x in df.loc[masc_reg, "conv_i"].unique()),
+    }
+    # Quien tiene >100 en alguna convocatoria pero NO en la última: al colapsar
+    # desaparece del conteo. Con sus edades, para poder citar el caso concreto.
+    # `ult` está indexado por ID_PERSONA_PR, e `edad` conserva ese índice.
+    salen = set(df.loc[masc_reg, "ID_PERSONA_PR"]) - set(edad[edad > 100].index)
+    _tmp = df.loc[:, ["ID_PERSONA_PR", "conv_i"]].copy()
+    _tmp["edad"] = edad_reg
+    res["edad"]["reconciliacion_registros"]["personas_que_salen_al_colapsar"] = [
+        {
+            "id": str(pid),
+            "edades": {
+                str(ANIOS[int(r["conv_i"])]): float(r["edad"])
+                for _, r in _tmp[_tmp["ID_PERSONA_PR"] == pid]
+                .sort_values("conv_i").iterrows()
+            },
+        }
+        for pid in sorted(salen)
+    ]
+    rc = res["edad"]["reconciliacion_registros"]
+    print(f"   edad >100: {rc['registros_mayores_100']} registros de "
+          f"{rc['personas_mayores_100']} personas -> {rc['personas_tras_colapsar']} "
+          f"al colapsar a una fila por persona")
     print(f"   edad: media={res['edad']['media']:.2f} desv={res['edad']['desv']:.2f} "
           f"mediana={q[0.5]:.1f} bigote={atip_bigote} >100={res['edad']['mayores_100']} "
           f"max={res['edad']['maximo']}")
@@ -332,7 +375,7 @@ def main() -> int:
     axes[2].grid(axis="y", visible=False)
     fig.suptitle(f"Edad a nivel de persona — media {res['edad']['media']:.1f} años · "
                  f"{atip_bigote} atípicos por bigote 1,5·IQR · "
-                 f"{res['edad']['mayores_100']} registros con edad > 100", fontsize=10.5)
+                 f"{res['edad']['mayores_100']} personas con edad > 100", fontsize=10.5)
     _fuente(axes[0])
     fig.tight_layout(rect=(0, 0.04, 1, 0.92))
     fig.savefig(DIR_EDA / "02_edad.png", bbox_inches="tight")

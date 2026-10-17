@@ -1,7 +1,7 @@
 # Análisis longitudinal de la dinámica del reconocimiento de investigadores
 
 **Auditoría estadística del sistema de reconocimiento de MinCiencias — objetivo específico 2**  
-Documento generado por `documentacion_auditoria/src/generar_analisis_longitudinal.py`. Fecha: 2026-10-14.
+Documento generado por `documentacion_auditoria/src/generar_analisis_longitudinal.py`. Fecha: 2026-10-16.
 
 > **Estas cifras son del universo, no de una muestra.** La base completa está disponible (77 237 registros, 30 086 personas), así que el análisis longitudinal se hace sobre el **censo**: no hay razón para reportar una estimación cuando se puede reportar el parámetro. El ejercicio de muestreo con el que se trabajó antes se conserva, pero pasa a ser lo que corresponde: una **validación metodológica** (Anexo A) y una comparación de estimadores (Anexo B). La metodología completa está en `metodologia_muestreo.md`.
 
@@ -181,6 +181,7 @@ Las tres tablas cuentan la misma historia que el EDA: la **categoría** separa c
 - **Género contradictorio**: 42 personas (0,14 % del padrón) figuran con más de un género a lo largo del tiempo —Masculino→Femenino (30), Femenino→Masculino (7), Femenino→Intersexual (2), Masculino→Intersexual (2), Masculino→No disponible (1). El género no es un atributo estable en este registro.
 - **Atributos que cambian dentro de la misma persona**: 42 en genero, 1 203 en departamento_res, 1 389 en gran_area, 3 844 en niv_form, 8 755 en clasificacion. Obliga a declarar qué observación se usa en cada análisis.
 - **Edades imposibles**: 11 personas declaran más de 100 años (máximo 956,25). Es un problema de captura, no de la población.
+  - **Registros frente a personas: por qué aquí se dice 11 y la evidencia del repositorio auditado dice 22.** No se contradicen; cuentan unidades distintas. En los 77 237 registros de la base hay 22 con edad mayor que 100, que pertenecen a 12 personas distintas (5 con 1 registro, 5 con 2 registros, 1 con 3 registros, 1 con 4 registros). Al colapsar a una fila por persona —su última convocatoria observada, el criterio de todo este análisis— quedan 11 porque una de esas doce (ID `0000671819`) declara 115,51 años en 2015 y 16,92 en 2017: la edad retrocede 98,6 años, otra incoherencia del propio registro. El 22 coincide con `evidencias/calidad_resumen.json` del commit auditado (ERRATA E1) y el 11 es la cifra comparable de este análisis.
 - **Faltantes**: 4 de 30 columnas tienen vacíos, concentrados en `INST_FILIA` y los códigos DANE; ninguna es variable del análisis longitudinal.
 
 ## 3. Conclusiones
@@ -198,7 +199,7 @@ Las tres tablas cuentan la misma historia que el EDA: la **categoría** separa c
 3. **Observación solo en las fechas de convocatoria.** Una persona ausente en una convocatoria y presente en la siguiente es indistinguible de alguien que nunca fue reconocido, salvo por el historial previo; por eso se separan reingresos y salidas temporales, pero no se observa lo que ocurre entre convocatorias.
 4. **Censura a la derecha en el último par.** En 2019→2021 las 3 441 salidas no pueden clasificarse en temporales y definitivas. Lo mismo afecta a la condición terminal de Emérito.
 5. **Atributos no constantes.** El perfil de cada persona se toma de su última convocatoria observada, y el género cambia en 42 personas.
-6. **Datos atípicos de edad** sin corregir: se reportan 11 casos por encima de 100 años; el análisis de edad describe el registro tal como está.
+6. **Datos atípicos de edad** sin corregir: se reportan 11 personas por encima de 100 años (22 registros en total, §2.8; y una de ellas declara una edad que retrocede casi un siglo entre convocatorias). El análisis de edad describe el registro tal como está.
 
 ## 5. Referencias
 

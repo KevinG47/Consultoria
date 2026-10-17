@@ -310,6 +310,48 @@ ed = E["edad"]
 A(f"- **Edades imposibles**: {num(ed['mayores_100'])} personas declaran más de 100 "
   f"años (máximo {pcs(ed['maximo'], 2)}). Es un problema de captura, no de la "
   f"población.")
+# --- Reconciliacion registros/personas (22 vs 11) -------------------------
+# Sin esto, nuestro 11 parece contradecir el 22 que documenta el repositorio
+# auditado. No se contradicen: cuentan unidades distintas. Es la misma
+# confusion que origino la discrepancia 22 vs 19 vs 10 (ERRATA E1).
+rc = ed.get("reconciliacion_registros")
+if rc:
+    det = (rc.get("personas_que_salen_al_colapsar") or [{}])[0]
+    edades = det.get("edades") or {}
+    caso = ""
+    if edades:
+        k_max = max(edades, key=lambda k: edades[k])
+        k_min = min(edades, key=lambda k: edades[k])
+        # Las claves son AÑOS de 4 cifras. Si llegara un índice de convocatoria
+        # ('18'), el texto diría "en 18" y quedaría sin sentido: se falla en vez
+        # de publicar eso.
+        for k in (k_max, k_min):
+            if not (str(k).isdigit() and len(str(k)) == 4):
+                raise SystemExit(
+                    f"reconciliacion_registros: la clave {k!r} no es un año de "
+                    f"cuatro cifras. Regenera eda_resultados.json con "
+                    f"eda_longitudinal.py.")
+        caso = (f" porque una de esas doce (ID `{det['id']}`) declara "
+                f"{pcs(edades[k_max], 2)} años en {k_max} y {pcs(edades[k_min], 2)} "
+                f"en {k_min}: la edad retrocede "
+                f"{pcs(edades[k_max] - edades[k_min], 1)} años, otra incoherencia "
+                f"del propio registro")
+    A(f"  - **Registros frente a personas: por qué aquí se dice "
+      f"{num(rc['personas_tras_colapsar'])} y la evidencia del repositorio auditado "
+      f"dice {num(rc['registros_mayores_100'])}.** No se contradicen; cuentan "
+      f"unidades distintas. En los {num(E['universo']['registros'])} "
+      f"registros de la base hay {num(rc['registros_mayores_100'])} con edad mayor "
+      f"que 100, que pertenecen a {num(rc['personas_mayores_100'])} personas "
+      f"distintas ("
+      + ", ".join(f"{num(v)} con {k} registro{'s' if int(k) > 1 else ''}"
+                  for k, v in sorted(rc['registros_por_persona'].items(),
+                                     key=lambda kv: int(kv[0])))
+      + f"). Al colapsar a una fila por persona —su última convocatoria observada, "
+      f"el criterio de todo este análisis— quedan "
+      f"{num(rc['personas_tras_colapsar'])}{caso}. El "
+      f"{num(rc['registros_mayores_100'])} coincide con "
+      f"`evidencias/calidad_resumen.json` del commit auditado (ERRATA E1) y el "
+      f"{num(rc['personas_tras_colapsar'])} es la cifra comparable de este análisis.")
 A(f"- **Faltantes**: {num(E['faltantes']['columnas_con_vacios'])} de "
   f"{num(E['faltantes']['total_columnas'])} columnas tienen vacíos, concentrados en "
   f"`INST_FILIA` y los códigos DANE; ninguna es variable del análisis longitudinal.")
@@ -363,8 +405,10 @@ A("4. **Censura a la derecha en el último par.** En 2019→2021 las "
 A("5. **Atributos no constantes.** El perfil de cada persona se toma de su última "
   f"convocatoria observada, y el género cambia en {num(gin['personas'])} personas.")
 A("6. **Datos atípicos de edad** sin corregir: se reportan "
-  f"{num(ed['mayores_100'])} casos por encima de 100 años; el análisis de edad "
-  f"describe el registro tal como está.")
+  f"{num(ed['mayores_100'])} personas por encima de 100 años "
+  f"({num(rc['registros_mayores_100'])} registros en total, §2.8; y una de ellas "
+  f"declara una edad que retrocede casi un siglo entre convocatorias). El análisis "
+  f"de edad describe el registro tal como está.")
 A("")
 
 # ================================ 5 =======================================

@@ -396,6 +396,52 @@ def nar(hizo: str, por: str, lee: str) -> dict:
     return {"hizo": hizo, "por": por, "lee": lee}
 
 
+def narrativa_reconciliacion_edad(eda: dict) -> str:
+    """
+    Reconciliación registros/personas de los atípicos de edad (11 frente a 22).
+
+    Se compone AQUÍ, con las cifras de `eda_resultados.json`, y no se escribe
+    dentro de NARRATIVAS: así no puede quedar obsoleta si la base cambia, que es
+    el defecto que la regla R17 persigue en otra escala.
+
+    La distinción importa porque es la misma confusión registros/personas que
+    originó la discrepancia 22 vs 19 vs 10 del repositorio auditado (ERRATA E1):
+    una persona puede declarar edad > 100 en varias convocatorias.
+    """
+    ed = eda.get("edad", {})
+    rc = ed.get("reconciliacion_registros")
+    if not rc:
+        return ""
+    det = (rc.get("personas_que_salen_al_colapsar") or [{}])[0]
+    edades = det.get("edades") or {}
+    caso = ""
+    if edades:
+        k_max = max(edades, key=lambda k: edades[k])
+        k_min = min(edades, key=lambda k: edades[k])
+        # Las claves son AÑOS de 4 cifras; si llegara un índice de convocatoria
+        # ('18') el texto diría "en 18". Se falla en vez de publicar eso.
+        for k in (k_max, k_min):
+            if not (str(k).isdigit() and len(str(k)) == 4):
+                raise SystemExit(
+                    f"reconciliacion_registros: la clave {k!r} no es un año de "
+                    f"cuatro cifras. Regenera eda_resultados.json con "
+                    f"eda_longitudinal.py.")
+        caso = (f" Uno de esos casos (ID {det['id']}) declara "
+                f"{num(edades[k_max], 2)} años en {k_max} y "
+                f"{num(edades[k_min], 2)} en {k_min}: la edad retrocede "
+                f"{num(edades[k_max] - edades[k_min], 1)} años, así que en su "
+                f"última convocatoria ya no cuenta como atípico.")
+    return (f" <b>Registros frente a personas:</b> el "
+            f"{miles(ed['mayores_100'])} cuenta personas, no registros: cada una "
+            f"entra una sola vez, con su última convocatoria. En los "
+            f"{miles(eda['universo']['registros'])} registros de "
+            f"la base hay {miles(rc['registros_mayores_100'])} con edad mayor que 100, "
+            f"declarados por {miles(rc['personas_mayores_100'])} personas distintas; al "
+            f"colapsar a una fila por persona quedan "
+            f"{miles(rc['personas_tras_colapsar'])}.{caso} El número de registros es "
+            f"el que coincide con la evidencia del repositorio auditado.")
+
+
 # ============================================================================
 # 3. Las cuatro pestanas
 # ============================================================================
@@ -1337,6 +1383,10 @@ def main() -> int:
     eda, est, dg = cargar_json()
     print(f"   eda_resultados.json, estimadores_resultados.json, "
           f"diagnosticos_greg.json")
+
+    # La narrativa del histograma de edad se completa con la reconciliación
+    # registros/personas (11 frente a 22), calculada sobre los datos.
+    NARRATIVAS["u6"]["lee"] += narrativa_reconciliacion_edad(eda)
 
     print("\n== Regeneración y validación de los vectores que faltan ==")
     vec = regenerar_vectores(eda, dg)

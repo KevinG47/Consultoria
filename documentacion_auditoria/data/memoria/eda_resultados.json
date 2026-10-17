@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-14T16:05:50",
+  "fecha": "2026-10-16T21:07:51",
   "fuente": "Fuente: datos.gov.co, dataset bqtm-4y2h — 77 237 registros, 30 086 personas, convocatorias 2013-2021.",
   "universo": {
     "registros": 77237,
@@ -290,7 +290,36 @@
     "mayores_100": 11,
     "maximo": 956.25,
     "minimo": 17.58,
-    "media_sin_atipicos_100": 45.393083726807205
+    "media_sin_atipicos_100": 45.393083726807205,
+    "reconciliacion_registros": {
+      "registros_mayores_100": 22,
+      "personas_mayores_100": 12,
+      "personas_tras_colapsar": 11,
+      "registros_por_persona": {
+        "1": 5,
+        "2": 5,
+        "3": 1,
+        "4": 1
+      },
+      "convocatorias_con_registros_mayores_100": [
+        16,
+        18,
+        19,
+        20,
+        21
+      ],
+      "personas_que_salen_al_colapsar": [
+        {
+          "id": "0000671819",
+          "edades": {
+            "2015": 115.51,
+            "2017": 16.92,
+            "2019": 57.25,
+            "2021": 59.25
+          }
+        }
+      ]
+    }
   },
   "genero_colapso": {
     "columna_original": "NME_GENERO_PR",
