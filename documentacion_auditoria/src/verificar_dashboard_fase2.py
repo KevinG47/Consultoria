@@ -6,12 +6,14 @@ verificar_dashboard_fase2.py
 Comprueba que `data/memoria/dashboard_fase2.html` cumple lo que promete:
 
   1. **Autocontenido**: ni una referencia externa (http, https, //cdn, @import).
-  2. **Peso** por debajo de 10 MB.
-  3. **Estructura**: 7 pestañas, 7 paneles, 16 graficos, indice con buscador.
+  2. **Peso** por debajo de 6 MB, que es el tope que se fijó al añadir el mapa.
+  3. **Estructura**: 8 pestañas, 8 paneles, 18 graficos, indice con buscador.
   4. **Paleta**: ningun color fuera de la institucional; el rojo solo donde es una
      excepcion negativa declarada.
   5. **Datos**: cada grafico lleva las series que corresponde, leidas del JSON de su
-     analisis (numero de trazas y de puntos), no una version recortada.
+     analisis (numero de trazas y de puntos), no una version recortada. El mapa de
+     flujos (t17) lleva ademas los 33 poligonos del GeoJSON y las rutas de las dos
+     definiciones.
   6. **Cifras clave**: las que sostienen las conclusiones aparecen en el texto.
 
 Sale con codigo 1 si algo falla.
@@ -29,7 +31,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
 HTML = MEM / "dashboard_fase2.html"
-LIMITE_MB = 10
+LIMITE_BYTES = 6_000_000        # 6 MB decimales, el tope acordado para el panel
 
 fallos: list[str] = []
 avisos: list[str] = []
@@ -91,8 +93,9 @@ def main() -> int:
 
     print("== 1. Peso y autocontención ==")
     mb = peso / 1024 / 1024
-    check(mb < LIMITE_MB, f"peso {mb:.2f} MiB ({peso:,} B) < {LIMITE_MB} MB",
-          f"peso {mb:.2f} MiB supera el límite de {LIMITE_MB} MB")
+    check(peso < LIMITE_BYTES,
+          f"peso {peso / 1e6:.2f} MB ({mb:.2f} MiB, {peso:,} B) < 6 MB",
+          f"peso {peso / 1e6:.2f} MB supera el límite de 6 MB")
     externas = []
     for patron in (r'src\s*=\s*["\']https?:', r'href\s*=\s*["\']https?:',
                    r'src\s*=\s*["\']//', r'@import', r'url\(\s*["\']?https?:',
@@ -105,23 +108,25 @@ def main() -> int:
           f"Plotly embebido en el propio archivo ({len(bundle)/1024/1024:.2f} MiB)",
           "no se encontró el bundle de Plotly embebido")
     # Un <script> por gráfico (el que llama a Plotly.newPlot) más el de la página.
-    check(propio.count("<script") == 17,
-          "17 <script> propios: uno por gráfico y el de la página",
-          f"{propio.count('<script')} bloque(s) <script> propios (se esperaban 17)")
+    check(propio.count("<script") == 19,
+          "19 <script> propios: uno por gráfico y el de la página",
+          f"{propio.count('<script')} bloque(s) <script> propios (se esperaban 19)")
 
     print("\n== 2. Estructura ==")
     paneles = re.findall(r'<div class="panel[^"]*" id="([\w-]+)"', texto)
     botones = re.findall(r'data-tab="([\w-]+)"', texto)
-    check(len(paneles) == 7, f"7 paneles: {', '.join(paneles)}",
-          f"{len(paneles)} paneles (se esperaban 7): {paneles}")
+    check(len(paneles) == 8, f"8 paneles: {', '.join(paneles)}",
+          f"{len(paneles)} paneles (se esperaban 8): {paneles}")
     check(botones == paneles, "cada pestaña tiene su botón y en el mismo orden",
           f"botones {botones} != paneles {paneles}")
+    check("tab-migracion" in paneles, "la pestaña 8 (flujos y migración) está presente",
+          "falta la pestaña 8 de flujos y migración")
     n_concl = texto.count('class="concl"')
-    check(n_concl == 7, "7 bloques de conclusión",
-          f"{n_concl} conclusiones (se esperaban 7)")
+    check(n_concl == 8, "8 bloques de conclusión",
+          f"{n_concl} conclusiones (se esperaban 8)")
     n_nar = texto.count('class="nar"')
-    check(n_nar >= 16, f"{n_nar} bloques de narrativa (uno por gráfico)",
-          f"solo {n_nar} narrativas para 16 gráficos")
+    check(n_nar >= 18, f"{n_nar} bloques de narrativa (uno por gráfico)",
+          f"solo {n_nar} narrativas para 18 gráficos")
     check(re.search(r'id=["\']buscador["\']', texto) is not None,
           "el índice de conceptos tiene buscador", "falta el buscador del índice")
     n_conceptos = len(re.findall(r'class=["\']concepto["\']', texto))
@@ -130,8 +135,8 @@ def main() -> int:
     for etiqueta in ("Qué se hizo", "Por qué", "Qué teoría lo respalda",
                      "Cómo se lee"):
         c = texto.count(f'<span class="et">{etiqueta}</span>')
-        check(c >= 16, f'"{etiqueta}" en {c} bloques',
-              f'"{etiqueta}" solo en {c} bloques (se esperaban 16)')
+        check(c >= 18, f'"{etiqueta}" en {c} bloques',
+              f'"{etiqueta}" solo en {c} bloques (se esperaban 18)')
 
     print("\n== 3. Paleta ==")
     for prohibido in ("#7C3AED", "#15803D", "#7c3aed", "#15803d"):
@@ -148,10 +153,10 @@ def main() -> int:
     d = {k: json.loads((MEM / f"{k}.json").read_text(encoding="utf-8"))
          for k in ("percapita_territorial", "modelo_estrella", "redes_nulos",
                    "diversidad_inferencia", "clustering", "validacion_unicidad",
-                   "supervivencia")}
+                   "supervivencia", "flujos_territoriales")}
     tr = trazas(texto)
-    check(len(tr) == 16, f"{len(tr)} gráficos con datos embebidos",
-          f"{len(tr)} gráficos con datos (se esperaban 16): {sorted(tr)}")
+    check(len(tr) == 18, f"{len(tr)} gráficos con datos embebidos",
+          f"{len(tr)} gráficos con datos (se esperaban 18): {sorted(tr)}")
 
     esperado = {
         "t1": (2, 14, "2 series x 7 análisis"),
@@ -170,6 +175,8 @@ def main() -> int:
         "t14": (2, 11, "dos reglas y la sensibilidad"),
         "t15": (2, 12, "hechos por convocatoria"),
         "t16": (3, 10, "los diez análisis planificados"),
+        "t17": (10, 0, "mapa: polígonos, burbujas y rutas de los dos flujos"),
+        "t18": (1, 20, "saldo neto por departamento"),
     }
     for ident, (n_tr, n_pt, desc) in esperado.items():
         if ident not in tr:
@@ -181,6 +188,85 @@ def main() -> int:
         check(ok, f"{ident}: {len(tr[ident])} trazas y {p} puntos ({desc})",
               f"{ident}: {len(tr[ident])} trazas y {p} puntos; se esperaban "
               f">= {n_tr} trazas y >= {n_pt} puntos ({desc})")
+
+    # ---- el mapa de flujos (t17): 33 polígonos, burbujas y dos definiciones ----
+    t17 = tr.get("t17", [])
+    coropletas = [t for t in t17 if t.get("type") == "choropleth"]
+    geo = [t for t in t17 if t.get("type") == "scattergeo"]
+    check(len(coropletas) == 1 and len(geo) >= 8,
+          f"t17: 1 Choropleth y {len(geo)} trazas geográficas (burbujas, rutas y destinos)",
+          f"t17: {len(coropletas)} coropletas y {len(geo)} trazas geográficas")
+    if coropletas:
+        cp = coropletas[0]
+        gj = cp.get("geojson") or {}
+        feats = gj.get("features", []) if isinstance(gj, dict) else []
+        check(isinstance(gj, dict) and len(feats) == 33,
+              "t17 embebe los 33 polígonos del GeoJSON (no los pide a la red)",
+              f"t17 no embebe los 33 polígonos: {type(gj).__name__} con "
+              f"{len(feats) if isinstance(gj, dict) else '?'} features")
+        check(cp.get("featureidkey") == "properties.codigo_dane",
+              "t17 une por código DIVIPOLA (featureidkey properties.codigo_dane)",
+              f"t17 une por {cp.get('featureidkey')!r} y no por codigo_dane")
+        check(len(cp.get("locations", [])) == 33 and len(cp.get("z", [])) == 33,
+              "t17 colorea los 33 departamentos con su tasa",
+              f"t17 tiene {len(cp.get('locations', []))} localizaciones y "
+              f"{len(cp.get('z', []))} valores de tasa")
+        check("Tasa per cápita" in (cp.get("hovertemplate") or ""),
+              "el tooltip del polígono muestra la tasa per cápita de F2-2",
+              "el tooltip del polígono no menciona la tasa per cápita")
+        check(all("codigo_dane" in (f.get("properties") or {}) for f in feats),
+              "cada polígono lleva su codigo_dane en las propiedades",
+              "algún polígono no lleva codigo_dane")
+    check(not any(t.get("type") == "scattermapbox" for t in t17),
+          "t17 no usa scattermapbox (el mapa del auditado sí, y dependía de internet)",
+          "t17 usa scattermapbox: volvería a pedir teselas a internet")
+    check(any((t.get("line") or {}).get("dash") == "dot" for t in geo),
+          "t17 distingue las rutas de área metropolitana con trazo punteado (D2)",
+          "t17 no marca aparte las rutas de área metropolitana")
+    check(any("diamond" in [str(s) for s in ((t.get("marker") or {}).get("symbol") or [])]
+              for t in geo),
+          "t17 marca el destino metropolitano con rombo",
+          "t17 no usa el rombo en el destino metropolitano")
+    textos_mapa = " ".join(str(t.get("text")) for t in geo if t.get("text"))
+    fa, fb = d["flujos_territoriales"]["flujo_a"], d["flujos_territoriales"]["flujo_b"]
+    top_a = fa["top10"][0]
+    dib_b = [r for r in fb["rutas_detalle"] if r["dibujable"]]
+    top_b = dib_b[0]
+    check(f"{top_a['origen']} → {top_a['destino']}" in textos_mapa
+          and f"{top_a['personas']} personas" in textos_mapa,
+          f"t17 dibuja la ruta mayor del flujo A ({top_a['origen']} → "
+          f"{top_a['destino']}, {top_a['personas']} personas)",
+          "t17 no dibuja la ruta mayor del flujo A")
+    check(f"{top_b['origen']} → {top_b['destino']}" in textos_mapa
+          and f"{top_b['personas']} personas" in textos_mapa,
+          f"t17 dibuja la ruta mayor dibujable del flujo B ({top_b['origen']} → "
+          f"{top_b['destino']}, {top_b['personas']} personas)",
+          "t17 no dibuja la ruta mayor dibujable del flujo B")
+    check("Exterior" not in textos_mapa,
+          "t17 no intenta dibujar el origen «Exterior» (no está en el mapa)",
+          "t17 intenta dibujar el origen «Exterior»")
+    # los marcadores de destino: uno por ruta dibujada (los 33 del dept no cuentan)
+    destinos = sorted(len(t.get("lon") or []) for t in geo
+                      if t.get("mode") == "markers" and len(t.get("lon") or []) != 33)
+    a_inter = sum(1 for r in fa["top10"] if not r["area_metropolitana"])
+    a_metro = sum(1 for r in fa["top10"] if r["area_metropolitana"])
+    check(destinos == sorted([a_inter, a_metro, len(dib_b[:10])]),
+          f"t17 marca {a_inter} destinos interdepartamentales, {a_metro} metropolitanos "
+          f"y {len(dib_b[:10])} del flujo B",
+          f"t17 marca {destinos} destinos y se esperaban "
+          f"{sorted([a_inter, a_metro, len(dib_b[:10])])}")
+    check("Flujo A" in texto and "Flujo B" in texto
+          and '"updatemenus"' in texto.replace(" ", ""),
+          "t17 trae los dos botones de flujo (A por defecto, B como vista secundaria)",
+          "t17 no trae los botones de las dos definiciones de flujo")
+    # t18: saldo neto, una barra por departamento con saldo declarado
+    check(puntos(tr["t18"][0]) == len(fa["saldo_neto"]),
+          f"t18 dibuja el saldo neto de los {len(fa['saldo_neto'])} departamentos del JSON",
+          f"t18 dibuja {puntos(tr['t18'][0])} saldos y el JSON declara "
+          f"{len(fa['saldo_neto'])}")
+    check(sum(tr["t18"][0]["x"]) == 0,
+          "t18 cierra en cero (todo el que sale de un departamento entra en otro)",
+          f"la suma de los saldos de t18 es {sum(tr['t18'][0]['x'])} y debería ser 0")
 
     # Comprobación puntual contra los JSON: la red y el Cox son los más expuestos a
     # un cambio de fuente silencioso.

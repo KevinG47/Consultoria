@@ -1,6 +1,9 @@
 # Estudio de viabilidad — Mapas interactivos y flujos territoriales (F2-11)
 
-**Estado:** propuesta para aprobación. **No se ha escrito código del mapa.**
+**Estado:** aprobado y ejecutado. El mapa está construido: ver
+`analisis_flujos.md` y `data/memoria/mapa_migracion.html`. Este documento queda
+como el registro de la decisión —qué se descartó, qué se rescató y por qué—, no
+como una propuesta abierta.
 **Alcance:** decidir qué se rescata de los dos Streamlit del repositorio auditado y
 cómo se construye, offline, un mapa de Colombia con burbujas por departamento y
 flujos de migración.
@@ -29,8 +32,9 @@ flujos de migración.
 5. **La técnica propuesta funciona y está probada** (sondeo en
    `_archivo/scripts_oneoff/sondear_mapa_plotly.py`): Plotly dibuja polígonos +
    burbujas + líneas de flujo con un GeoJSON embebido, **sin una sola referencia
-   externa**. El GeoJSON pesa **613 KB** ya limpio y sus **33 códigos DIVIPOLA
-   coinciden 33/33** con los del DANE que ya usa F2-2.
+   externa**. El GeoJSON pesa **527 KB** ya limpio (613 KB antes de quitar los
+   vértices repetidos que deja el redondeo) y sus **33 códigos DIVIPOLA coinciden
+   33/33** con los del DANE que ya usa F2-2.
 6. **El insumo de flujos existe, pero es pequeño y hay que elegir la definición.**
    Hay 808 personas (4,38 %) que cambian de departamento de residencia entre su
    primera y su última convocatoria, repartidas en 231 rutas; o 11.922 personas
@@ -260,8 +264,10 @@ Propiedades que trae: `DPTO` (código DIVIPOLA de 2 dígitos), `NOMBRE_DPT`, `AR
 | **4 decimales (recomendado)** | ~11 m | **613 KB** |
 | 6 decimales (original) | ~0,1 m | 700 KB |
 
-A 11 m de resolución un mapa nacional de burbujas no pierde nada, y el panel pasa de
-4,83 a **5,44 MiB**: sigue muy por debajo del límite de 10 MB.
+A 11 m de resolución un mapa nacional de burbujas no pierde nada. Medido al
+ejecutar: el archivo final quedó en **527 675 B** (515 KB) con 4 decimales —los
+5 297 vértices repetidos que deja el redondeo también se quitaron—, la página suelta
+en **5,39 MB** y el panel en **5,37 MiB**, por debajo del tope de 6 MB acordado.
 
 **La clave del join son los códigos, no los nombres.** Verificado: los 33 códigos del
 GeoJSON coinciden **33 de 33** con los del CSV del DANE que usa F2-2, sin sobrantes
@@ -374,7 +380,7 @@ El script de F2-11 incluirá sus propias comprobaciones y fallará si no cuadran
 4. las rutas del Top 10 suman lo que dice el JSON;
 5. el número de personas que cambian de departamento no supera a las que tienen 2+
    convocatorias;
-6. el HTML final no contiene ninguna referencia externa y pesa menos de 10 MB.
+6. el HTML final no contiene ninguna referencia externa y pesa menos de 6 MB.
 
 Y un `verificar_mapa.py` en la misma línea que `verificar_dashboard_fase2.py`.
 
@@ -438,22 +444,22 @@ Los pasos 1 y 2 son la mitad del trabajo y son donde están las decisiones.
 
 ---
 
-## 9. Decisiones pendientes de aprobación
+## 9. Decisiones: aprobadas y aplicadas
 
-| # | Decisión | Opciones | Recomendación |
+| # | Decisión | Opciones | Resolución |
 |---|---|---|---|
-| **D1** | ¿Qué definición de flujo va al mapa? | (a) cambio de residencia 2013→2021 · (b) nacimiento → residencia · (c) las dos, en dos pestañas | **(a) como principal y (b) como capa secundaria conmutables**, porque (a) es lo que promete el enunciado y (b) es la que tiene volumen. Si solo puede haber una, **(a)** |
-| **D2** | ¿Cómo se tratan las rutas de área metropolitana (Bogotá ↔ Chía, Cajicá, Mosquera…)? | (a) dibujarlas como cualquier otra · (b) excluirlas · (c) dibujarlas con otra forma o color y una nota | **(c)**: son mudanzas reales (verificado) pero no son migración interdepartamental; mezclarlas sin avisar hace que el mapa diga otra cosa |
-| **D3** | ¿Cuántas rutas? | Top 10 (propuesto) · Top 20 (45,9 % de los movimientos) | **Top 10**, como pediste; el Top 20 queda como opción del gráfico |
-| **D4** | ¿El mapa es un HTML aparte o una pestaña nueva del panel? | (a) `mapa_flujos.html` autocontenido · (b) pestaña 8 de `dashboard_fase2.html` (+613 KB, queda en ~5,44 MiB) | **(b)** para la sustentación, generando además el HTML suelto. Son la misma figura: el coste de las dos es casi cero |
-| **D5** | ¿Centroides del GeoJSON o los 33 del auditado? | (a) calculados del polígono · (b) los del auditado | **(a)**; los del auditado se usan solo como contraste en el documento |
-| **D6** | ¿Se versiona el GeoJSON limpio en el repositorio? | (a) sí, con `.procedencia.txt` · (b) se descarga en cada build | **(a)**: sin él el análisis no es reproducible ni offline |
-| **D7** | ¿Toca F2-11 la red de instituciones? | (a) no · (b) sí, reemplazar el Pyvis | **(a)**: el panel ya la dibuja mejor; F2-11 es de flujos |
-| **D8** | ¿Se toca el `percapita_territorial.json` o se lee tal cual? | (a) leerlo · (b) recalcular | **(a)**: F2-2 ya está auditado; F2-11 no lo repite |
+| **D1** | ¿Qué definición de flujo va al mapa? | (a) cambio de residencia 2013→2021 · (b) nacimiento → residencia · (c) las dos, en dos pestañas | **Aprobada como (c): las dos conmutables, con (a) por defecto y (b) como vista secundaria.** Los dos resultados son legítimos y miden cosas distintas; esconder uno habría sido una decisión editorial. |
+| **D2** | ¿Cómo se tratan las rutas de área metropolitana (Bogotá ↔ Chía, Cajicá, Mosquera…)? | (a) dibujarlas como cualquier otra · (b) excluirlas · (c) dibujarlas con otra forma o color y una nota | **Aprobada (c)**: trazo punteado, color más claro y rombo en el destino, con nota visible en la página y en el hover. |
+| **D3** | ¿Cuántas rutas? | Top 10 (propuesto) · Top 20 (45,9 % de los movimientos) | **Aprobada Top 10**; el Top 20 queda como opción del gráfico (las 231 rutas completas están en el JSON). |
+| **D4** | ¿El mapa es un HTML aparte o una pestaña nueva del panel? | (a) `mapa_flujos.html` autocontenido · (b) pestaña 8 de `dashboard_fase2.html` | **Aprobada: ambas**, generando además el HTML suelto. Son exactamente la misma figura; el verificador lo comprueba traza a traza. |
+| **D5** | ¿Centroides del GeoJSON o los 33 del auditado? | (a) calculados del polígono · (b) los del auditado | **Aprobada (a)**; los 33 del auditado quedan solo como contraste en el documento. |
+| **D6** | ¿Se versiona el GeoJSON limpio en el repositorio? | (a) sí, con `.procedencia.txt` · (b) se descarga en cada build | **Aprobada (a)**: sin él el análisis no es reproducible ni offline. |
+| **D7** | ¿Toca F2-11 la red de instituciones? | (a) no · (b) sí, reemplazar el Pyvis | **Aprobada (a)**: el panel ya la dibuja mejor; F2-11 es de flujos. |
+| **D8** | ¿Se toca el `percapita_territorial.json` o se lee tal cual? | (a) leerlo · (b) recalcular | **Aprobada (a)**: F2-2 ya está auditado; F2-11 no lo repite. |
 
-**Lo que necesito de ti para arrancar:** luz verde a D1 (la definición de flujo) y a
-D4 (dónde vive el mapa). El resto tiene recomendación y puedo aplicarlas salvo que
-diga lo contrario.
+Nota de la ejecución: el nombre del archivo suelto quedó **`mapa_migracion.html`**
+(no `mapa_flujos.html`), porque cubre las dos definiciones de flujo y no solo una.
+Los planos de trabajo y los verificadores están en `analisis_flujos.md`.
 
 ---
 
@@ -470,7 +476,7 @@ diga lo contrario.
 | ¿El GeoJSON de departamentos se puede obtener? | Sí: 1.484 KB, 33 features, campos `DPTO`/`NOMBRE_DPT` |
 | ¿Los códigos coinciden con el DANE? | 33 de 33, sin sobrantes ni faltantes |
 | ¿Plotly dibuja el mapa sin red? | Sí: sondeo con 3 trazas y cero referencias externas |
-| ¿Cuánto pesa? | GeoJSON 613 KB; página autocontenida 5,20 MiB |
+| ¿Cuánto pesa? | GeoJSON 527 675 B (515 KB); página autocontenida 5,20 MiB en el sondeo y 5,39 MB con los datos reales |
 | ¿Hay datos para los flujos? | Sí: 808 personas en 231 rutas (A) y 11.922 en 577 rutas (B) |
 | ¿Las rutas Bogotá ↔ Cundinamarca son ruido de etiqueta? | **No**: las 808 personas cambian también de municipio (0 conservan el mismo) y los destinos son Chía, Cajicá, Mosquera, Zipaquirá. Son mudanzas de área metropolitana |
 | ¿Cómo es el subgrafo que dibuja la app? | 120 nodos, 224 aristas, densidad 0,0314, **8 componentes con uno gigante de 111 nodos (92,5 %)** |

@@ -27,9 +27,11 @@ FUENTES (todas versionadas, ninguna se recalcula aqui)
   data/memoria/clustering.json               F2-6
   data/memoria/validacion_unicidad.json      F2-7
   data/memoria/supervivencia.json            F2-10
+  data/memoria/flujos_territoriales.json     F2-11
+  data/geo/colombia_departamentos.geojson    F2-11 (poligonos del mapa)
   datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
 
-Las dos unicas cosas que se recalculan son:
+Las tres unicas cosas que se recalculan son:
   - la **red de 2019**, porque el JSON guarda sus estadisticos pero no la lista de
     aristas, y para dibujarla hace falta el grafo; se reconstruye con las MISMAS
     funciones del repositorio auditado (`analisis.redes`), no reescribiendolas.
@@ -37,6 +39,9 @@ Las dos unicas cosas que se recalculan son:
     calcula con la misma regla que el resto del proyecto (una fila por persona, la
     ultima convocatoria) y se **valida** contra los tamanos de grupo que el propio
     JSON declara.
+  - el **mapa de flujos de la pestana 8**: la figura la construye
+    `mapa_migracion.py` leyendo los JSON y el GeoJSON versionados. No recalcula los
+    flujos; solo los dibuja.
 
 Este script NO modifica ningun analisis: solo lee JSON y CSV, y escribe el HTML.
 
@@ -70,70 +75,16 @@ SALIDA = MEM / "dashboard_fase2.html"
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 # ---------------------------------------------------------------- paleta y tipo
-# PALETA INSTITUCIONAL UNICA, identica a la de dashboard_eda.html: se declara una
-# vez, se registra como template de Plotly y no queda ningun color suelto.
-#
-# Regla de color:
-#   - barras y lineas -> azul primario; con dos series, azul + dorado;
-#   - series de contexto o sin senal -> gris;
-#   - rojo -> SOLO excepciones negativas declaradas (falsos positivos, umbrales
-#     superados). Nunca decorativo.
-PALETA = {
-    "primario": "#1E3780",
-    "primario_oscuro": "#0F1F4D",
-    "secundario": "#4A6BA8",
-    "claro": "#7BA7D0",
-    "dorado": "#B7871E",
-    "dorado_claro": "#D4A84A",
-    "gris_oscuro": "#334155",
-    "gris_medio": "#64748B",
-    "gris_claro": "#CBD5E1",
-    "fondo": "#F8FAFC",
-    "texto": "#1E293B",
-}
-ALERTA = "#B91C1C"        # solo excepciones negativas
-BLANCO = "#FFFFFF"
+# La PALETA INSTITUCIONAL UNICA vive en `paleta_fase2.py`: la comparten este panel
+# y el mapa de flujos de F2-11, de modo que los dos no puedan divergir en un tono.
+# Aqui solo se importa; el template de Plotly se registra con `registrar_template`.
+from paleta_fase2 import (ALERTA, BLANCO, COLOR_CATEGORIA, CONFIG_PLOTLY,
+                          ESCALA_AZUL, NOMBRE_TEMPLATE, PALETA,
+                          miles, num, pct, registrar_template)
 
-ESCALA_AZUL = [[0.0, "#EAF0F9"], [0.35, PALETA["claro"]],
-               [0.7, PALETA["secundario"]], [1.0, PALETA["primario"]]]
-
-FUENTE_TXT = ('Segoe UI, Montserrat, Roboto, system-ui, -apple-system, '
-              'Arial, sans-serif')
-NOMBRE_TEMPLATE = "usta_institucional"
-
-COLOR_CATEGORIA = {
-    "Investigador Junior": PALETA["claro"],
-    "Investigador Asociado": PALETA["secundario"],
-    "Investigador Sénior": PALETA["primario"],
-    "Investigador Emérito": PALETA["dorado"],
-}
-
-CONFIG_PLOTLY = {
-    "displaylogo": False,
-    "responsive": True,
-    "modeBarButtonsToRemove": ["lasso2d", "select2d", "autoScale2d"],
-    "toImageButtonOptions": {"format": "png", "filename": "fase2_minciencias",
-                             "scale": 2},
-}
-
-
-def registrar_template() -> None:
-    pio.templates[NOMBRE_TEMPLATE] = go.layout.Template(layout=go.Layout(
-        font=dict(family=FUENTE_TXT, color=PALETA["texto"], size=12),
-        paper_bgcolor=PALETA["fondo"],
-        plot_bgcolor=BLANCO,
-        colorway=[PALETA["primario"], PALETA["dorado"], PALETA["secundario"],
-                  PALETA["dorado_claro"], PALETA["claro"], PALETA["gris_medio"]],
-        xaxis=dict(gridcolor=PALETA["gris_claro"],
-                   zerolinecolor=PALETA["gris_claro"], linecolor=PALETA["gris_claro"]),
-        yaxis=dict(gridcolor=PALETA["gris_claro"],
-                   zerolinecolor=PALETA["gris_claro"], linecolor=PALETA["gris_claro"]),
-        hoverlabel=dict(font=dict(family=FUENTE_TXT, size=13), bgcolor=BLANCO,
-                        bordercolor=PALETA["gris_claro"]),
-        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(size=12)),
-        separators=",.",
-    ))
-    pio.templates.default = NOMBRE_TEMPLATE
+# El mapa de flujos (F2-11) es la pestaña 8: la figura y los bloques HTML viven en
+# `mapa_migracion.py` para que la página suelta y el panel sean la MISMA figura.
+import mapa_migracion as mapa_mod
 
 
 # ============================================================================
@@ -231,19 +182,10 @@ def estilo(fig: go.Figure, alto: int = 430, leyenda: bool = True,
     return fig
 
 
-def div(fig: go.Figure, ident: str) -> str:
+def div(fig: go.Figure, ident: str, config: dict | None = None) -> str:
     """HTML del grafico SIN volver a embeber Plotly (se embebe una sola vez)."""
     return pio.to_html(fig, include_plotlyjs=False, full_html=False,
-                       div_id=ident, config=CONFIG_PLOTLY)
-
-
-def miles(n) -> str:
-    return f"{int(n):,}".replace(",", " ")
-
-
-def num(x: float, dec: int = 2) -> str:
-    """Numero con coma decimal y espacio fino de miles, como el resto del panel."""
-    return f"{x:,.{dec}f}".replace(",", "\u202f").replace(".", ",")
+                       div_id=ident, config=config or CONFIG_PLOTLY)
 
 
 def pval(p: float | None, dec: int = 3) -> str:
@@ -252,10 +194,6 @@ def pval(p: float | None, dec: int = 3) -> str:
     if p < 0.001:
         return "p &lt; 0,001"
     return "p = " + num(p, dec)
-
-
-def pct(x: float, dec: int = 2) -> str:
-    return num(x, dec) + " %"
 
 
 # ============================================================================
@@ -1520,6 +1458,36 @@ def pestana_limites() -> tuple[list, str, str]:
 
 
 # ============================================================================
+# 9b. Pestana 8 — Flujos y migracion territorial (F2-11)
+# ============================================================================
+def pestana_migracion() -> tuple[list, str, str]:
+    """
+    Pestana 8 — Flujos y migracion territorial (F2-11).
+
+    La figura y los bloques de texto se importan de `mapa_migracion.py`: son los
+    mismos que genera la pagina suelta `mapa_migracion.html`, no una copia.
+    """
+    per = mapa_mod.cargar_percapita()
+    flujos = mapa_mod.cargar_flujos()
+    fig_mapa = mapa_mod.construir_mapa()
+    fig_saldo = mapa_mod.construir_saldo_neto()
+    config_mapa = dict(CONFIG_PLOTLY)
+    config_mapa["scrollZoom"] = True
+    graficos = [
+        ("t17", "Mapa de flujos y tasa per cápita (F2-11)",
+         mapa_mod.GUIA_LECTURA,
+         mapa_mod.leyenda_html(per) + div(fig_mapa, "t17", config_mapa)),
+        ("t18", "Saldo neto por departamento: quién gana y quién pierde",
+         "Entradas menos salidas de las 808 mudanzas de residencia del periodo. Un "
+         "saldo positivo no significa que el departamento gane investigadores en "
+         "términos absolutos: significa que, entre quienes se mudaron, recibió más "
+         "de los que perdió. La suma de todos los saldos es cero por construcción.",
+         div(fig_saldo, "t18")),
+    ]
+    return graficos, mapa_mod.bloque_tablas_html(flujos), mapa_mod.conclusion_html()
+
+
+# ============================================================================
 # 10. Narrativa: que se hizo, por que, que teoria lo respalda y como se lee
 # ============================================================================
 NARRATIVAS: dict[str, dict[str, str]] = {
@@ -1805,6 +1773,41 @@ NARRATIVAS: dict[str, dict[str, str]] = {
                 "conclusión defendible sobre los datos. Gris: pendiente del equipo. Solo "
                 "los grises son deuda nuestra; el dorado no.",
     },
+    # --------------------------------------- 8. Flujos y migración (F2-11)
+    "t17": {
+        "hizo": "Se dibujaron los 33 departamentos con un GeoJSON embebido en el propio "
+                "archivo: el color del polígono es la tasa per cápita de F2-2, el tamaño "
+                "de la burbuja es el total de investigadores y las líneas son las rutas "
+                "de migración con el destino marcado. El botón cambia entre las dos "
+                "definiciones de flujo.",
+        "por": "El mapa del repositorio auditado pedía <i>teselas</i> de OpenStreetMap en "
+               "el momento de dibujar: sin internet el país desaparecía y quedaban 33 "
+               "burbujas flotando en el vacío. Un mapa de flujos necesita además "
+               "geometrías propias: sin polígono no hay dónde apoyar la línea.",
+        "teoria": "Dos reglas de cartografía. (1) El tamaño se escala con la <b>raíz "
+                  "cuadrada</b> del conteo porque el ojo percibe área, no radio: con el "
+                  "valor bruto, Bogotá taparía medio país. (2) El color del polígono se "
+                  "reserva para una tasa (variable intensiva) y el tamaño para un conteo "
+                  "(extensiva), de modo que un solo canal no codifique dos cosas.",
+        "lee": "Azul más oscuro = más investigadores por habitante; la rampa se corta en "
+                "140 y la tasa nacional se marca en 65,55. Pase el cursor por un "
+                "departamento (tasa, puesto y saldo) o por una ruta (cuántas personas). "
+                "Trazo punteado y rombo = área metropolitana de la sabana de Bogotá.",
+    },
+    "t18": {
+        "hizo": "Para cada departamento se restaron las salidas de las entradas de las "
+                "808 mudanzas entre la primera y la última convocatoria.",
+        "por": "El mapa de líneas dice cuánta gente se movió, pero no en qué dirección "
+               "queda cada departamento. Bogotá aparece en casi todas las rutas grandes y "
+               "aun así su balance es negativo: son dos preguntas distintas.",
+        "teoria": "Saldo neto = inmigración − emigración <i>dentro de la ventana "
+                  "observada</i>. Es un <b>flujo</b>, no un <b>stock</b>: no dice cuántos "
+                  "investigadores viven en el departamento, sino cuántos ganó o perdió "
+                  "entre quienes se mudaron. Por eso la suma de todos los saldos es cero.",
+        "lee": "Bogotá −57, Cundinamarca +31, Boyacá +21, Atlántico +20. Azul oscuro: "
+                "gana; azul claro: pierde. Que una barra sea pequeña no la hace poco "
+                "fiable: es el conteo de personas, no una estimación.",
+    },
 }
 
 NARRATIVAS_PESTANA = {}
@@ -1911,6 +1914,25 @@ CONCEPTOS = [
                                  "conclusión depende de uno de ellos. Se aplicó a la "
                                  "tolerancia de edad, a γ del clustering y a la exclusión de "
                                  "Eméritos.", "6"),
+    # ------------------------------------------------ 8. Flujos y migración (F2-11)
+    ("Flujo A y flujo B", "Dos definiciones de «migración». A compara la primera con la "
+                          "última convocatoria (mudanza del periodo: 808 personas); B compara "
+                          "el nacimiento con la residencia (migración acumulada: 11 922). No "
+                          "se corrigen entre sí: miden cosas distintas y el mapa deja elegir.",
+     "8"),
+    ("DIVIPOLA", "División Político-Administrativa: el código oficial de dos dígitos que "
+                 "identifica el departamento. Es la llave del mapa porque dos fuentes "
+                 "escriben distinto el mismo nombre —«SANTAFE DE BOGOTA D.C» frente a "
+                 "«Bogotá, D. C.»— y unir por nombre perdería casos.", "8"),
+    ("Área metropolitana", "Conurbación de municipios que puede cruzar la frontera "
+                           "departamental. Una mudanza Bogotá → Chía es real, pero en un "
+                           "mapa departamental se ve igual que una migración entre "
+                           "departamentos. Se marca aparte en lugar de esconderla o "
+                           "borrarla.", "8"),
+    ("Escala por raíz cuadrada", "Regla de codificación: el <i>área</i> del símbolo crece "
+                                 "con la cantidad, así que el radio crece con su raíz. Sin "
+                                 "ella, Bogotá (9 888) taparía a Vichada (1) y al resto del "
+                                 "país.", "8"),
 ]
 
 
@@ -2173,12 +2195,13 @@ def construir_html(kpis: list[dict], pestanas: list[tuple], versiones: dict) -> 
   <h1>Fase 2 — Análisis pendientes del Observatorio MinCiencias</h1>
   <div class="sub">Investigadores reconocidos por convocatoria (2013–2021). Panel
   interactivo de {n_graficos} gráficos y {len(pestanas)} pestañas: resumen ejecutivo,
-  territorio, diversidad, redes y clustering, supervivencia, calidad y límites.
-  Cada gráfico explica <b>qué se hizo</b>, <b>por qué</b>, <b>qué teoría lo respalda</b>
-  y <b>cómo se lee</b>.</div>
+  territorio, diversidad, redes y clustering, supervivencia, calidad, límites y flujos
+  y migración. Cada gráfico explica <b>qué se hizo</b>, <b>por qué</b>, <b>qué teoría lo
+  respalda</b> y <b>cómo se lee</b>.</div>
   <div class="meta">Censo completo de {versiones['registros']} registros y
   {versiones['personas']} personas · {versiones['convocatorias']} convocatorias ·
-  {versiones['figuras']} figuras de análisis · generado el {versiones['fecha']}</div>
+  {versiones['figuras']} figuras de los siete análisis y {versiones['figuras_mapa']} del
+  mapa de flujos · generado el {versiones['fecha']}</div>
 </header>
 <div class="wrap">
   <div class="kpis">{''.join(tarjeta_kpi(k) for k in kpis)}</div>
@@ -2191,8 +2214,13 @@ def construir_html(kpis: list[dict], pestanas: list[tuple], versiones: dict) -> 
     <code>Investigadores_Reconocidos_por_convocatoria_20261006.csv</code> (77 237 registros).
     Población: CNPV 2018 del DANE (cuadro 1PD) y proyecciones departamentales.<br>
     <b>Análisis:</b> cada pestaña resume un informe con su script, su JSON de resultados
-    y su documento en <code>documentacion_auditoria/</code> (F2-2 a F2-10). Las cifras de
+    y su documento en <code>documentacion_auditoria/</code> (F2-2 a F2-11). Las cifras de
     este panel se leen de esos JSON; no se recalcula ningún resultado.<br>
+    <b>Geometrías del mapa (pestaña 8):</b>
+    <code>data/geo/colombia_departamentos.geojson</code>, GeoJSON público de john-guerra
+    derivado de DIVIPOLA/IGAC; procedencia, SHA-256 y criterio de limpieza en
+    <code>colombia_departamentos.procedencia.txt</code>. La unión es por código DIVIPOLA,
+    nunca por nombre.<br>
     <b>Autoría:</b> Kevin Leonardo Chaparro Reyes · Valentina Muñoz Palma ·
     Paula Margarita Triana Ancinez — Consultoría Estadística, Universidad Santo Tomás,
     2026-II.<br>
@@ -2254,6 +2282,11 @@ def main() -> int:
         {"titulo": "Reglas de validación", "valor": "15 · 0 · 2",
          "subtitulo": "PASA · FALLA · ADVERTENCIA (17 reglas)",
          "nota": "R12 y R15 son advertencias declaradas y revisadas, no fallos."},
+        {"titulo": "Mudanzas de departamento", "valor": "808",
+         "subtitulo": "4,38 % de las 18 430 personas con dos o más convocatorias",
+         "nota": "231 rutas; 53 movimientos son de área metropolitana (Bogotá ↔ "
+                 "Cundinamarca). El flujo por nacimiento da 11 922 casos y es otra "
+                 "definición de migración."},
     ]
 
     t1 = pestana_resumen(d)
@@ -2263,6 +2296,7 @@ def main() -> int:
     t5 = pestana_supervivencia(d, comp)
     t6 = pestana_calidad(d)
     t7 = pestana_limites()
+    t8 = pestana_migracion()
 
     pestanas = [
         ("tab-resumen", "1 · Resumen ejecutivo", "", t1),
@@ -2272,6 +2306,8 @@ def main() -> int:
         ("tab-supervivencia", "5 · Supervivencia y género (F2-10)", "", t5),
         ("tab-calidad", "6 · Calidad y reproducibilidad (F2-3, F2-7)", "", t6),
         ("tab-limites", "7 · Límites y falencias", "", t7),
+        ("tab-migracion", "8 · Flujos y migración (F2-11)",
+         mapa_mod.NOTA_D1 + "<br><br>" + mapa_mod.NOTA_D2, t8),
     ]
     for pid, nombre, _, cont in pestanas:
         print(f"   {pid:20} {len(cont[0])} gráficos")
@@ -2281,6 +2317,7 @@ def main() -> int:
         "personas": miles(30086),
         "convocatorias": 6,
         "figuras": sum(len(d[k]["figuras"]) for k in d),
+        "figuras_mapa": len(mapa_mod.cargar_flujos()["figuras"]),
         "plotly": plotly.__version__,
         "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
     }
