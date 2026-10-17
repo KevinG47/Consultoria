@@ -1,0 +1,536 @@
+{
+  "fecha": "2026-10-17T01:38:56",
+  "analisis": "F2-6 — Segmentación formalizada (OE5, multivariado)",
+  "semilla": 20260217,
+  "k_max": 10,
+  "n_init": 5,
+  "gamma": 0.5,
+  "metodo": "k-prototypes de Huang (1998), el mismo que kproto() de R",
+  "datos": {
+    "registros": 77237,
+    "personas": 30086,
+    "faltantes_en_variables_del_analisis": 1,
+    "perdida_de_muestra_pct": 0.0,
+    "comparacion_con_el_auditado": "El auditado usaba cc() y descartaba el 8,4 % de la fila por lista. Aquí los faltantes son categorías explícitas, así que la pérdida es 0 %.",
+    "edades_imposibles": 23,
+    "variables_categoricas": {
+      "NME_GRAN_AREA_PR": {
+        "etiqueta": "Gran área",
+        "n_categorias": 7,
+        "categorias": [
+          "Ciencias Agrícolas",
+          "Ciencias Médicas y de la Salud",
+          "Ciencias Naturales",
+          "Ciencias Sociales",
+          "Humanidades",
+          "Ingeniería y Tecnología",
+          "No registra"
+        ]
+      },
+      "NME_GENERO_PR": {
+        "etiqueta": "Género",
+        "n_categorias": 4,
+        "categorias": [
+          "Femenino",
+          "Intersexual",
+          "Masculino",
+          "No disponible"
+        ]
+      },
+      "NME_REGION_NAC_PR": {
+        "etiqueta": "Región de nacimiento",
+        "n_categorias": 9,
+        "categorias": [
+          "Caribe",
+          "Centro Oriente",
+          "Centro Sur",
+          "Distrito Capital",
+          "Eje Cafetero",
+          "Exterior",
+          "Llano",
+          "No disponible",
+          "Pacífico"
+        ]
+      },
+      "NME_NIV_FORM_PR": {
+        "etiqueta": "Nivel de formación",
+        "n_categorias": 11,
+        "categorias": [
+          "Cursos de corta duración",
+          "Doctorado",
+          "Especialidad Médica",
+          "Especialización",
+          "Maestría/Magister",
+          "No disponible",
+          "Perfeccionamiento",
+          "Postdoctorado",
+          "Pregrado/Universitario",
+          "Secundario",
+          "Técnico - nivel superior"
+        ]
+      },
+      "NME_CLASIFICACION_PR": {
+        "etiqueta": "Categoría",
+        "n_categorias": 4,
+        "categorias": [
+          "Investigador Asociado",
+          "Investigador Emérito",
+          "Investigador Junior",
+          "Investigador Sénior"
+        ]
+      },
+      "NME_REGION_RES_PR": {
+        "etiqueta": "Región de residencia",
+        "n_categorias": 9,
+        "categorias": [
+          "Caribe",
+          "Centro Oriente",
+          "Centro Sur",
+          "Distrito Capital",
+          "Eje Cafetero",
+          "Exterior",
+          "Llano",
+          "No disponible",
+          "Pacífico"
+        ]
+      }
+    },
+    "variable_numerica": "EDAD_ANOS_PR",
+    "excluidas_y_por_que": {
+      "TXT_POBLACION_DISCA": "73,6 % 'No disponible': solo existe en 2021 (F2-5). Incluirla alinearía los clusters con la convocatoria, no con un perfil.",
+      "TXT_GRUPO_ETNICO / ID_VICTIMA_CONFLICTO": "misma razón.",
+      "ID_CONVOCATORIA": "identifica el año, no un atributo de la persona.",
+      "INST_FILIA": "alta cardinalidad y texto libre."
+    }
+  },
+  "criterios_k": {
+    "k": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "silhouette": [
+      0.28250132186418836,
+      0.17677128069833148,
+      0.1243468894826354,
+      0.10581262014532222,
+      0.11350288256849493,
+      0.022288114100159257,
+      0.10930097326222608,
+      0.11183847832913353,
+      0.010858179974337068
+    ],
+    "calinski": [
+      6938.179956379412,
+      5487.770332983237,
+      4502.395260139252,
+      3839.4555860224136,
+      3600.2696552172424,
+      3317.029373046066,
+      3246.969723426911,
+      3016.4525756910994,
+      2837.670171667751
+    ],
+    "davies": [
+      3.1750517560221283,
+      3.2833049728357686,
+      3.3138541684462206,
+      3.5721103219910852,
+      3.056426804937606,
+      3.0434438826765704,
+      2.91840095447611,
+      2.883960194118751,
+      2.8042621813342348
+    ],
+    "perdida": [
+      0.840470327255231,
+      0.7649392963114687,
+      0.7321806847893667,
+      0.7089168133974897,
+      0.6851124327608298,
+      0.671103385582901,
+      0.644669842895695,
+      0.6399193234752297,
+      0.624615828830834
+    ],
+    "coste": [
+      174196.3002620828,
+      158541.70102316316,
+      151752.13481978653,
+      146930.45320317041,
+      141996.74537022595,
+      139093.22324760485,
+      133614.5939734832,
+      132629.99894313785,
+      129458.18899139308
+    ],
+    "k_por_silhouette": 2,
+    "k_por_calinski": 2,
+    "k_por_davies_bouldin": 10,
+    "inercia_total_k1": 207260.5,
+    "umbral_silhouette_estructura": 0.25
+  },
+  "prueba_de_estructura": {
+    "descripcion": "Se permuta cada variable por separado, conservando sus marginales y rompiendo la asociación entre ellas. Si el criterio observado no supera al del nulo, la partición no captura estructura conjunta.",
+    "k_evaluado": 2,
+    "filas": 10000,
+    "silhouette_observada": 0.3520383453387698,
+    "silhouette_nulo_medio": 0.35490042080790435,
+    "silhouette_nulo_ic95": [
+      0.26568253161662825,
+      0.39227497450950555
+    ],
+    "silhouette_p": 0.7619047619047619,
+    "calinski_observado": 877.9665459226267,
+    "calinski_nulo_medio": 877.8842693131783,
+    "calinski_p": 0.5238095238095238,
+    "nulo_silhouette": [
+      0.374300731141888,
+      0.3857403365299507,
+      0.35436480315325286,
+      0.26795057246450105,
+      0.38300161507088576,
+      0.3493438957837221,
+      0.3729160900235236,
+      0.38944056676276256,
+      0.38900559613462166,
+      0.381010498062218,
+      0.3925443456602197,
+      0.37527119788268576,
+      0.26363049465902905,
+      0.37462569933009154,
+      0.35985869721701574,
+      0.2743334903029317,
+      0.2721858784703027,
+      0.3919772485008215,
+      0.3798716554572487,
+      0.3666350035504142
+    ],
+    "nulo_calinski": [
+      873.0328855624193,
+      889.0251212199053,
+      842.20606230008,
+      889.1980148991415,
+      888.9476706098518,
+      838.9863984794271,
+      876.4912504742263,
+      889.4453547810987,
+      889.3561399735414,
+      889.2680114187733,
+      889.3102162116681,
+      874.141302564158,
+      889.0736444076865,
+      877.4418133722576,
+      860.1497112344435,
+      873.0627387102863,
+      873.9358938371058,
+      889.3492185403813,
+      889.5386086213523,
+      875.7253290457642
+    ]
+  },
+  "perfiles": {
+    "Gran área": {
+      "categorias": [
+        "Ciencias Agrícolas",
+        "Ciencias Médicas y de la Salud",
+        "Ciencias Naturales",
+        "Ciencias Sociales",
+        "Humanidades",
+        "Ingeniería y Tecnología",
+        "No registra"
+      ],
+      "clusters": {
+        "0": [
+          4.359562694020785,
+          14.792819543798084,
+          24.44864354163855,
+          19.856930759886623,
+          6.030503441760022,
+          28.97287083277095,
+          1.538669186124983
+        ],
+        "1": [
+          4.983578821656051,
+          16.23706210191083,
+          22.444765127388536,
+          36.46496815286624,
+          8.03891321656051,
+          10.487161624203821,
+          1.3435509554140128
+        ]
+      }
+    },
+    "Género": {
+      "categorias": [
+        "Femenino",
+        "Intersexual",
+        "Masculino",
+        "No disponible"
+      ],
+      "clusters": {
+        "0": [
+          37.368065865838844,
+          0.01079767849912269,
+          62.61573761641247,
+          0.005398839249561345
+        ],
+        "1": [
+          37.16908837579618,
+          0.0024880573248407646,
+          62.823447452229296,
+          0.004976114649681529
+        ]
+      }
+    },
+    "Región de nacimiento": {
+      "categorias": [
+        "Caribe",
+        "Centro Oriente",
+        "Centro Sur",
+        "Distrito Capital",
+        "Eje Cafetero",
+        "Exterior",
+        "Llano",
+        "No disponible",
+        "Pacífico"
+      ],
+      "clusters": {
+        "0": [
+          14.841409097044137,
+          14.873802132541503,
+          4.813065190983939,
+          16.98744769874477,
+          30.144418949925765,
+          4.0491294371710085,
+          1.036577135915778,
+          0.19705763260898906,
+          13.057092725064113
+        ],
+        "1": [
+          11.549562101910828,
+          14.094844745222929,
+          4.120222929936306,
+          34.337679140127385,
+          14.007762738853502,
+          7.138236464968154,
+          0.7414410828025477,
+          0.37072054140127386,
+          13.639530254777071
+        ]
+      }
+    },
+    "Nivel de formación": {
+      "categorias": [
+        "Cursos de corta duración",
+        "Doctorado",
+        "Especialidad Médica",
+        "Especialización",
+        "Maestría/Magister",
+        "No disponible",
+        "Perfeccionamiento",
+        "Postdoctorado",
+        "Pregrado/Universitario",
+        "Secundario",
+        "Técnico - nivel superior"
+      ],
+      "clusters": {
+        "0": [
+          0.01079767849912269,
+          37.38426238358753,
+          1.932784451342961,
+          1.6871372654879202,
+          49.250911054123364,
+          0.03509245512214874,
+          0.0,
+          7.253340531785667,
+          2.4402753408017275,
+          0.0026994196247806723,
+          0.0026994196247806723
+        ],
+        "1": [
+          0.0,
+          63.92316878980891,
+          2.734375,
+          1.699343152866242,
+          22.04418789808917,
+          0.04976114649681529,
+          0.004976114649681529,
+          8.62360668789809,
+          0.9156050955414012,
+          0.004976114649681529,
+          0.0
+        ]
+      }
+    },
+    "Categoría": {
+      "categorias": [
+        "Investigador Asociado",
+        "Investigador Emérito",
+        "Investigador Junior",
+        "Investigador Sénior"
+      ],
+      "clusters": {
+        "0": [
+          22.9747604265083,
+          0.0,
+          69.33729248211634,
+          7.687947091375354
+        ],
+        "1": [
+          26.569964171974526,
+          0.8310111464968153,
+          54.46108678343949,
+          18.13793789808917
+        ]
+      }
+    },
+    "Región de residencia": {
+      "categorias": [
+        "Caribe",
+        "Centro Oriente",
+        "Centro Sur",
+        "Distrito Capital",
+        "Eje Cafetero",
+        "Exterior",
+        "Llano",
+        "No disponible",
+        "Pacífico"
+      ],
+      "clusters": {
+        "0": [
+          14.38250776083142,
+          12.298555810500742,
+          2.8451882845188283,
+          21.835605344850855,
+          33.27034687542179,
+          3.4201646645971118,
+          0.8962073154271832,
+          0.5506816034552571,
+          10.500742340396815
+        ],
+        "1": [
+          12.606986464968154,
+          10.295581210191083,
+          2.3711186305732483,
+          43.82961783439491,
+          15.667296974522294,
+          2.152169585987261,
+          0.7090963375796179,
+          0.2786624203821656,
+          12.089470541401273
+        ]
+      }
+    }
+  },
+  "aporte_de_cada_variable": {
+    "Nivel de formación": {
+      "cramer_v": 0.30312480091166827,
+      "n_categorias": 11
+    },
+    "Región de residencia": {
+      "cramer_v": 0.269471710192012,
+      "n_categorias": 9
+    },
+    "Gran área": {
+      "cramer_v": 0.26586516890816403,
+      "n_categorias": 7
+    },
+    "Región de nacimiento": {
+      "cramer_v": 0.2568640867614807,
+      "n_categorias": 9
+    },
+    "Categoría": {
+      "cramer_v": 0.18712513492922242,
+      "n_categorias": 4
+    },
+    "Género": {
+      "cramer_v": 0.005574612945287914,
+      "n_categorias": 4
+    }
+  },
+  "edad_por_cluster": {
+    "0": {
+      "media": 37.05741476582534,
+      "mediana": 36.91,
+      "n": 37045
+    },
+    "1": {
+      "media": 52.010981811848424,
+      "mediana": 51.37,
+      "n": 40192
+    }
+  },
+  "perdida_de_informacion": {
+    "inercia_total_k1": 207260.5,
+    "inercia_intra_k": 174196.3002620828,
+    "perdida_pct": 84.0470327255231,
+    "definicion": "Cociente entre la inercia intra-cluster del k elegido y la inercia total con un solo prototipo; 100 − pérdida es la parte de la variabilidad mixta que la partición reproduce.",
+    "perdida_por_k": {
+      "2": 84.0470327255231,
+      "3": 76.49392963114687,
+      "4": 73.21806847893667,
+      "5": 70.89168133974897,
+      "6": 68.51124327608298,
+      "7": 67.1103385582901,
+      "8": 64.4669842895695,
+      "9": 63.991932347522976,
+      "10": 62.4615828830834
+    }
+  },
+  "los_clusters_no_son_una_variable": {
+    "ari_vs_categoria": 0.011524375784697425,
+    "ari_vs_gran_area": 0.03212826977304928,
+    "ari_vs_convocatoria": 0.000782804875885303,
+    "lectura": "Un ARI cercano a 1 indicaría que el cluster reproduce esa variable y no un perfil; cercano a 0, que la partición es independiente de ella."
+  },
+  "sensibilidad_gamma": {
+    "0.25": 0.43634152714478586,
+    "0.5": 1.0,
+    "1.0": 0.5029094138224934
+  },
+  "sensibilidad_edades_imposibles": {
+    "filas_excluidas": 23,
+    "ari_vs_principal": 0.3288548920262138
+  },
+  "nivel_persona": {
+    "filas": 30086,
+    "silhouette": 0.27663898384757857,
+    "tamanos": [
+      14443,
+      15643
+    ],
+    "nota": "La base de registros repite personas hasta 6 veces, así que las observaciones no son independientes. Se repite el ajuste con una fila por persona como comprobación."
+  },
+  "figuras": [
+    "f2_6_criterios_k.png",
+    "f2_6_perfiles_clusters.png",
+    "f2_6_prueba_estructura.png"
+  ],
+  "veredicto": {
+    "k_elegido_por_criterio": 2,
+    "hay_estructura_de_clusters": false,
+    "silhouette_del_k_elegido": 0.28250132186418836,
+    "umbral_silhouette": 0.25,
+    "p_frente_al_nulo": 0.7619047619047619,
+    "regla": "Se declara estructura solo si la silhouette supera 0,25 (Kaufman y Rousseeuw) Y el nulo la descarta (p < 0,05).",
+    "explicacion": "k = 2 maximiza la silhouette (0.2825), que SÍ supera el umbral de 0,25, pero la prueba frente al nulo da p = 0.762: permutando cada variable por separado se obtiene una partición igual de buena (silhouette nula 0.3549). El umbral de Kaufman y Rousseeuw no basta aquí; lo que descarta la estructura es el nulo. La partición existe porque k-prototypes siempre devuelve una, no porque haya grupos separables, y solo reproduce el 16.0 % de la variabilidad mixta.",
+    "respuesta_a_la_pregunta_de_k": "El mejor k es 1 en el sentido sustantivo: no hay estructura de clusters. Cualquier k > 1 produce una partición, pero ninguna representa grupos reales."
+  },
+  "validaciones": {
+    "sin_perdida_de_muestra": true,
+    "todas_las_filas_asignadas": true,
+    "clusters_no_vacios": true,
+    "perdida_creciente_con_k": true,
+    "nulo_generado": true,
+    "silhouette_en_rango": true,
+    "perdida_entre_0_y_100": true,
+    "sensibilidad_gamma_reportada": true
+  }
+}
