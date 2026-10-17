@@ -3,7 +3,7 @@
 extraer_repo_auditado.py
 ========================
 
-Copia VERBATIM el contenido del repositorio auditado a `datos_originales/`,
+Copia VERBATIM el contenido del repositorio auditado a `04_auditoria/`,
 para que este repositorio sea autocontenido y el proximo grupo no necesite
 clonar el original.
 
@@ -24,8 +24,8 @@ verificacion funcione en cualquier plataforma.
 
 Uso
 ---
-    python datos_originales/extraer_repo_auditado.py            # extrae
-    python datos_originales/extraer_repo_auditado.py --dry-run  # solo informa
+    python 04_auditoria/extraer_repo_auditado.py            # extrae
+    python 04_auditoria/extraer_repo_auditado.py --dry-run  # solo informa
 
 Requiere el clon local en `Observatorio_Ministerio_de_Ciencias_Grupo8/`.
 Sin el clon no hace falta ejecutarlo: el contenido ya esta en el repositorio.
@@ -44,8 +44,8 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[1]
 CLON = RAIZ / "Observatorio_Ministerio_de_Ciencias_Grupo8"
-DESTINO = RAIZ / "datos_originales" / "repo_auditado"
-MANIFIESTO = RAIZ / "datos_originales" / "manifiesto_sha256.csv"
+DESTINO = RAIZ / "04_auditoria" / "repo_original"
+MANIFIESTO = RAIZ / "04_auditoria" / "manifiesto_sha256.csv"
 
 
 def _git(*args: str) -> bytes:
@@ -102,7 +102,7 @@ def main() -> int:
         w.writerows(filas)
     print(f"  -> {escritos} archivos en {DESTINO.relative_to(RAIZ)}")
     print(f"  -> {MANIFIESTO.relative_to(RAIZ)} ({len(filas)} entradas)")
-    print("\nVerifica con:  python datos_originales/verificar_hashes.py")
+    print("\nVerifica con:  python 04_auditoria/verificar_hashes.py")
     return 0
 
 

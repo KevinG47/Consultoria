@@ -4,8 +4,8 @@
 **Insumos:** base versionada de 77 237 registros (30 086 personas), F2-2
 (`percapita_territorial.json`) y un GeoJSON de departamentos versionado con su
 `.procedencia.txt`.
-**Entregables:** `data/memoria/mapa_migracion.html` (5,39 MB, autocontenido),
-la pestaña 8 de `data/memoria/dashboard_fase2.html` (la misma figura) y tres
+**Entregables:** `02_dashboards/mapa_migracion.html` (5,39 MB, autocontenido),
+la pestaña 8 de `02_dashboards/dashboard_fase2.html` (la misma figura) y tres
 figuras estáticas en `data/memoria/graficas_flujos/`.
 
 ---
@@ -220,10 +220,10 @@ documentacion_auditoria/src/mapa_migracion.py             # la figura y la pági
 documentacion_auditoria/src/verificar_mapa.py             # 64 comprobaciones
 documentacion_auditoria/data/geo/colombia_departamentos.geojson
 documentacion_auditoria/data/geo/colombia_departamentos.procedencia.txt
-documentacion_auditoria/data/memoria/flujos_territoriales.json
-documentacion_auditoria/data/memoria/mapa_migracion.html  # 5,39 MB, sin red
+01_datos/resultados_json/flujos_territoriales.json
+02_dashboards/mapa_migracion.html  # 5,39 MB, sin red
 documentacion_auditoria/data/memoria/graficas_flujos/*.png
-documentacion_auditoria/data/memoria/dashboard_fase2.html # pestaña 8
+02_dashboards/dashboard_fase2.html # pestaña 8
 ```
 
 Para regenerar todo, en este orden:

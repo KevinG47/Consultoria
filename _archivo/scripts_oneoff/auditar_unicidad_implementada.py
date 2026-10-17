@@ -12,7 +12,8 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 
 df = pd.read_csv(FUENTE, dtype=str, keep_default_na=False, encoding="utf-8",
@@ -37,7 +38,7 @@ p["residuo"] = p["dif_edad"] - p["anios"]
 impl = p["dif_edad"] > 4.1                      # regla del auditado
 doc = (p["residuo"].abs() > 4.0) | (p["ga"] != p["gb"])   # regla documentada
 
-u = json.loads((MEM / "validacion_unicidad.json").read_text(encoding="utf-8"))
+u = json.loads((RESULTADOS / "validacion_unicidad.json").read_text(encoding="utf-8"))
 cc = u["contraste_con_la_implementacion"]
 print("=== regla implementada (dif_edad > 4,1) ===")
 print(f"  pares marcados: recalculado {int(impl.sum()):,} · "

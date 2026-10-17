@@ -13,7 +13,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-J = json.loads((DOC / "data" / "memoria" / "redes_nulos.json")
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "redes_nulos.json")
                .read_text(encoding="utf-8"))
 
 print("=== datos de contexto ===")
@@ -49,7 +49,7 @@ for p in sorted(glob.glob(str(DOC / "data" / "memoria" / "graficas_redes" / "*.p
     print(f"  {Path(p).name:44s} {sz[0]}x{sz[1]}  prohibidos={100*malos/tot:.4f}%")
 
 # ------- comprobación del documento contra el JSON -------
-TEXTO = (DOC / "analisis_redes.md").read_text(encoding="utf-8")
+TEXTO = (RAIZ / "03_informes" / "analisis_fase2" / "analisis_redes.md").read_text(encoding="utf-8")
 # El documento usa el signo menos tipográfico (U+2212) en las cifras negativas.
 TEXTO_N = TEXTO.replace("\u2212", "-")
 

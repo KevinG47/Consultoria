@@ -20,8 +20,8 @@ romperia los 236 hashes del manifiesto).
 
 Uso
 ---
-    python datos_originales/aplicar_arreglos.py --listar   # solo enumera
-    python datos_originales/aplicar_arreglos.py            # aplica
+    python 04_auditoria/aplicar_arreglos.py --listar   # solo enumera
+    python 04_auditoria/aplicar_arreglos.py            # aplica
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[1]
-REPO = RAIZ / "datos_originales" / "repo_mejorado"
+REPO = RAIZ / "04_auditoria" / "repo_mejorado"
 
 # ===========================================================================
 # ARREGLOS
@@ -764,9 +764,9 @@ python scripts/sprint5_produccion.py  # y entonces ya corre
 Reproducir esta carpeta (no se edito a mano):
 
 ```bash
-python datos_originales/construir_repo_mejorado.py
-python datos_originales/aplicar_arreglos.py
-python datos_originales/verificar_arreglos.py
+python 04_auditoria/construir_repo_mejorado.py
+python 04_auditoria/aplicar_arreglos.py
+python 04_auditoria/verificar_arreglos.py
 ```
 
 Cualquier edicion manual aqui **se pierde** al reconstruir: si quieres un cambio
@@ -961,7 +961,7 @@ def main() -> int:
         return 1
     rc_nb = parchear_manual_ipynb()
     print("todos los arreglos aplicados. Verifica con: "
-          "python datos_originales/verificar_arreglos.py")
+          "python 04_auditoria/verificar_arreglos.py")
     return rc_nb
 
 

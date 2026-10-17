@@ -56,7 +56,7 @@ Se define con una métrica explícita y comprobable:
   un *proxy* (se explica abajo), así que se usa para interpretar, no para decidir.
 
 Produce:
-    data/memoria/redes_nulos.json
+    01_datos/resultados_json/redes_nulos.json
     data/memoria/graficas_redes/*.png
 
 Uso:
@@ -83,10 +83,10 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-REPO = RAIZ / "datos_originales" / "repo_auditado"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+REPO = RAIZ / "04_auditoria" / "repo_original"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-SALIDA = DOC / "data" / "memoria" / "redes_nulos.json"
+SALIDA = RAIZ / "01_datos" / "resultados_json" / "redes_nulos.json"
 GRAF = DOC / "data" / "memoria" / "graficas_redes"
 
 # Importar los modulos del auditado exige su src/ en el path y NO debe dejar

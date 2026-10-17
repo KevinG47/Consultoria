@@ -24,7 +24,7 @@
   "insumo": {
     "usado_por_el_auditado": "datos/tarea_join/investigadores_consolidado.xlsx",
     "causa": "cargar_consolidado() prefiere datos/raw/investigadores_consolidado.csv, ausente y gitignored, y cae al XLSX de 3 convocatorias",
-    "usado_aqui": "datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+    "usado_aqui": "01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv",
     "columnas": {
       "n": 30,
       "identicas_al_consolidado_del_auditado": true,
@@ -241,7 +241,7 @@
       "2021": 0
     },
     "reproduce_la_evidencia": true,
-    "fuente_de_la_evidencia": "datos_originales/repo_auditado/evidencias/duckdb_resumen_modelo.txt"
+    "fuente_de_la_evidencia": "04_auditoria/repo_original/evidencias/duckdb_resumen_modelo.txt"
   },
   "transformacion_del_auditado": {
     "log": [

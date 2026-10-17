@@ -27,14 +27,14 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-REPO = RAIZ / "datos_originales" / "repo_auditado"
+REPO = RAIZ / "04_auditoria" / "repo_original"
 sys.path.insert(0, str(REPO / "src"))
 
 from analisis.diversidad import DANE_REFERENCIA, comparar_dane  # noqa: E402
 from Transformacion import (COLS_NUMERICAS, limpiar_texto,       # noqa: E402
                             tratar_faltantes)
 
-CSV = RAIZ / "datos_originales" / "datos_fuente" / \
+CSV = RAIZ / "01_datos" / "datos_fuente" / \
     "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 
 # Nuestro CSV fuente se lee como texto (dtype=str) para no perder IDs con ceros

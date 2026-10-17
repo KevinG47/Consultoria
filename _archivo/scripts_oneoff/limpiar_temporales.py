@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(RAIZ / "datos_originales"))
+sys.path.insert(0, str(RAIZ / "04_auditoria"))
 from fs_robusto import borrar_arbol  # noqa: E402
 
 DIRECTORIOS = [
@@ -18,9 +18,9 @@ DIRECTORIOS = [
     "_archivo/tmp_virtualenv_appdata",
     "_archivo/tmp_poetry_aud",
     "_archivo/wheelhouse",
-    "datos_originales/_stubs",
-    "datos_originales/_prueba_inventario",
-    "datos_originales/_prueba_ejecucion",
+    "04_auditoria/_stubs",
+    "04_auditoria/_prueba_inventario",
+    "04_auditoria/_prueba_ejecucion",
 ]
 
 ARCHIVOS = [

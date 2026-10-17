@@ -11,8 +11,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-TEXTO = (DOC / "analisis_clustering.md").read_text(encoding="utf-8")
-J = json.loads((DOC / "data" / "memoria" / "clustering.json")
+TEXTO = (RAIZ / "03_informes" / "analisis_fase2" / "analisis_clustering.md").read_text(encoding="utf-8")
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "clustering.json")
                .read_text(encoding="utf-8"))
 T = TEXTO.replace("\u2212", "-").replace("\u00a0", " ")
 

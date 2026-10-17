@@ -20,7 +20,7 @@ Qué hace
 5. Contrasta la regla DOCUMENTADA con la que el auditado implementó en R.
 
 Produce:
-    data/memoria/validacion_unicidad.json
+    01_datos/resultados_json/validacion_unicidad.json
     data/memoria/ids_no_unicos.csv
     data/memoria/graficas_unicidad/*.png
 
@@ -49,7 +49,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 REGLA = DOC / "data" / "validacion" / "regla_unicidad.yaml"
-SALIDA = DOC / "data" / "memoria" / "validacion_unicidad.json"
+SALIDA = RAIZ / "01_datos" / "resultados_json" / "validacion_unicidad.json"
 CSV = DOC / "data" / "memoria" / "ids_no_unicos.csv"
 GRAF = DOC / "data" / "memoria" / "graficas_unicidad"
 

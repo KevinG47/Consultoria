@@ -12,7 +12,7 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 
 for mod in ("sklearn", "scipy", "numpy"):

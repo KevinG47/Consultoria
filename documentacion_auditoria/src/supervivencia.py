@@ -59,7 +59,7 @@ Género: `Intersexual` (5 personas) y `No disponible` (4) no permiten estimar na
 se informan y se excluyen del modelo (9 personas, 0,03 %).
 
 Produce:
-    data/memoria/supervivencia.json
+    01_datos/resultados_json/supervivencia.json
     data/memoria/supervivencia_personas.csv
     data/memoria/graficas_supervivencia/*.png
 
@@ -87,9 +87,9 @@ sys.dont_write_bytecode = True
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-SALIDA = DOC / "data" / "memoria" / "supervivencia.json"
+SALIDA = RAIZ / "01_datos" / "resultados_json" / "supervivencia.json"
 CSV = DOC / "data" / "memoria" / "supervivencia_personas.csv"
 GRAF = DOC / "data" / "memoria" / "graficas_supervivencia"
 

@@ -10,8 +10,7 @@ from pathlib import Path
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-J = json.loads((RAIZ / "documentacion_auditoria" / "data" / "memoria"
-                / "validacion_unicidad.json").read_text(encoding="utf-8"))
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "validacion_unicidad.json").read_text(encoding="utf-8"))
 v = J["validacion_con_los_juicios_del_analista"]
 print(f"ids revisados por el analista: {v['ids_revisados_por_el_analista']}")
 print(f"diferencias que coinciden    : {v['la_diferencia_de_edad_coincide']}")

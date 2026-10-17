@@ -32,7 +32,7 @@ La etiqueta del registro para San Andrés es
 «San Andrés, Providencia y Santa Catalina». Se traduce cada etiqueta a su código
 DIVIPOLA y se publica el nombre del DANE: es la misma lección del hallazgo H6.
 
-Salida:  data/memoria/flujos_territoriales.json
+Salida:  01_datos/resultados_json/flujos_territoriales.json
 Uso:     python flujos_territoriales.py
 """
 
@@ -51,11 +51,12 @@ import pandas as pd
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 MEM = DOC / "data" / "memoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-DANE = (RAIZ / "datos_originales" / "datos_fuente"
+DANE = (RAIZ / "01_datos" / "datos_fuente"
         / "dane_cnpv2018_poblacion_departamental.csv")
-SALIDA = MEM / "flujos_territoriales.json"
+SALIDA = RESULTADOS / "flujos_territoriales.json"
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8",
                               errors="replace")

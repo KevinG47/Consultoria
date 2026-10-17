@@ -246,7 +246,7 @@ DESCRIPCION_TIPO = {
     "Autor": "autor de commits",
 }
 
-GRAFICO_HTML = config.MEMORIA / "grafo_interactivo.html"
+GRAFICO_HTML = config.DASHBOARDS / "grafo_interactivo.html"
 TIPOS_POR_DEFECTO_HTML = ["Criterio", "Documento"]
 
 _OPCIONES_INTERACTIVO = {

@@ -49,7 +49,7 @@ Denominadores (todos oficiales del DANE; ver *.procedencia.txt junto a cada CSV)
               por año para la convocatoria de 2021.
 
 Produce:
-    data/memoria/percapita_territorial.json
+    01_datos/resultados_json/percapita_territorial.json
     data/memoria/graficas_percapita/*.png
 
 Uso:
@@ -74,14 +74,14 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-FUENTE_DIR = RAIZ / "datos_originales" / "datos_fuente"
+FUENTE_DIR = RAIZ / "01_datos" / "datos_fuente"
 FUENTE = FUENTE_DIR / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 POB_CENSADA = FUENTE_DIR / "dane_cnpv2018_poblacion_departamental.csv"
 POB_PROYECTADA = FUENTE_DIR / "dane_proyecciones_poblacion_departamental.csv"
 MUESTRA = DOC / "data" / "memoria" / "muestra_ids.csv"
-AUDITADO = RAIZ / "datos_originales" / "repo_auditado" / "evidencias"
+AUDITADO = RAIZ / "04_auditoria" / "repo_original" / "evidencias"
 
-SALIDA = DOC / "data" / "memoria" / "percapita_territorial.json"
+SALIDA = RAIZ / "01_datos" / "resultados_json" / "percapita_territorial.json"
 GRAF = DOC / "data" / "memoria" / "graficas_percapita"
 
 CONV = {16: 2013, 17: 2014, 18: 2015, 19: 2017, 20: 2019, 21: 2021}

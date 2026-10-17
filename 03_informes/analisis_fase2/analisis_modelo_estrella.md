@@ -3,8 +3,8 @@
 **Objetivo que cierra:** OE4 del repositorio auditado — «diseñar y crear un modelo
 dimensional (esquema estrella)».
 **Artefactos:** `documentacion_auditoria/src/modelo_estrella_6.py` ·
-`data/memoria/modelo_estrella.json` · `data/memoria/graficas_estrella/` (2 figuras)
-· parches `K1`–`K4` en `datos_originales/aplicar_arreglos.py`.
+`01_datos/resultados_json/modelo_estrella.json` · `data/memoria/graficas_estrella/` (2 figuras)
+· parches `K1`–`K4` en `04_auditoria/aplicar_arreglos.py`.
 
 ## 1. El defecto
 
@@ -28,7 +28,7 @@ fuente completa de 6 convocatorias. La única adaptación necesaria está
 documentada y explicada en §5.
 
 La base DuckDB se escribe en un directorio de trabajo (`_archivo/tmp_estrella/`),
-**no** dentro de `datos_originales/repo_auditado/`: los 236 hashes del manifiesto
+**no** dentro de `04_auditoria/repo_original/`: los 236 hashes del manifiesto
 siguen intactos (verificado antes y después). Para que importar los módulos
 auditados no deje `__pycache__` dentro de esa copia verbatim, el script activa
 `sys.dont_write_bytecode` antes de importarlos.
@@ -137,8 +137,8 @@ python documentacion_auditoria/src/modelo_estrella_6.py
 ```
 
 Entradas: la fuente de 6 convocatorias versionada en
-`datos_originales/datos_fuente/` y los módulos del repositorio auditado. El script
-**no necesita red**. Salidas: `data/memoria/modelo_estrella.json`, las dos figuras
+`01_datos/datos_fuente/` y los módulos del repositorio auditado. El script
+**no necesita red**. Salidas: `01_datos/resultados_json/modelo_estrella.json`, las dos figuras
 de `data/memoria/graficas_estrella/` y las bases de trabajo en
 `_archivo/tmp_estrella/` (ignoradas por git).
 
@@ -150,9 +150,9 @@ de `data/memoria/graficas_estrella/` y las bases de trabajo en
 Para la corrección del enunciado:
 
 ```bash
-python datos_originales/construir_repo_mejorado.py   # copia limpia desde repo_auditado
-python datos_originales/aplicar_arreglos.py          # 34 parches, entre ellos K1–K4
-python datos_originales/verificar_arreglos.py
+python 04_auditoria/construir_repo_mejorado.py   # copia limpia desde repo_auditado
+python 04_auditoria/aplicar_arreglos.py          # 34 parches, entre ellos K1–K4
+python 04_auditoria/verificar_arreglos.py
 ```
 
 ## 8. Límites

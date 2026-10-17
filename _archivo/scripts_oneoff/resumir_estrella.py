@@ -10,8 +10,7 @@ from pathlib import Path
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-J = json.loads((RAIZ / "documentacion_auditoria" / "data" / "memoria"
-                / "modelo_estrella.json").read_text(encoding="utf-8"))
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "modelo_estrella.json").read_text(encoding="utf-8"))
 
 
 def n(x):

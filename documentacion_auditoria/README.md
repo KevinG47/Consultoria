@@ -22,7 +22,7 @@ documentacion_auditoria/
 │   │   ├── rag_indice*.json         #   índices TF-IDF y de embeddings (D007)
 │   │   ├── grafo*.json / *.png      #   memoria estructural y sus figuras
 │   │   ├── validacion_reglas.json   #   resultado de la última corrida de las 17 reglas
-│   │   └── herramienta_trayectorias.html  # visor interactivo del panel
+│   │   └── graficas_*/              #   figuras PNG de cada análisis (F2-2 … F2-11)
 │   ├── capas.yaml / objetivos.yaml / glosario.yaml
 │   └── ejecucion_resumen.csv        # EXIT y tiempo de los 16 scripts del auditado
 ├── src/
@@ -49,6 +49,14 @@ documentacion_auditoria/
 ├── zip_overleaf/                    # ZIPs listos para subir a Overleaf
 └── pdf/                             # PDFs compilados
 ```
+
+> **Los entregables de la Fase 2 ya no viven aquí.** Desde la reorganización de
+> octubre, los JSON de resultados están en `01_datos/resultados_json/`, los
+> dashboards en `02_dashboards/` y los informes en `03_informes/analisis_fase2/`.
+> `data/memoria/` conserva lo que el sistema de memoria necesita para las reglas
+> (índice RAG, grafo, decisiones, validación) y las figuras PNG de cada análisis.
+> El resto de esta carpeta —`src/`, `latex/`, `pdf/`— sigue exactamente donde
+> estaba.
 
 > **Los logs del pipeline auditado no están en `data/`** sino en
 > `_archivo/logs_pipeline_auditado/` (`ejecucion_log.txt`, `errores_ejecucion.txt`,
@@ -87,7 +95,7 @@ Mejoras de esta versión (todas verificadas con QA automático):
 
 ### Entrega 1 — Anteproyecto (2026-II)
 
-La **carpeta `ENTREGA_1/`** (raíz del repositorio) contiene **exactamente lo que
+La **carpeta `05_entregas/ENTREGA_1/`** (raíz del repositorio) contiene **exactamente lo que
 se califica**: `anteproyecto.pdf` (Documento D1–D5, 40 %), `diapositivas_anteproyecto.pdf`
 (Sustentación S1–S3, 60 %) y `guia_estudio.pdf` / `tarjetas_sustentacion.pdf` (apoyo).
 El README de la raíz es la guía de entrada para el docente. Validación final de
@@ -131,7 +139,7 @@ python -m memoria evidencia                  # informe legible de la última eje
   YAML/CSV **más datos vivos** del clon auditado (`git log`, `git ls-files`,
   commit `1528939`).
 - **Vista interactiva del grafo (para sustentación):** `python -m memoria dibujar-html`
-  genera `data/memoria/grafo_interactivo.html` con **PyVis**. En la vista
+  genera `02_dashboards/grafo_interactivo.html` con **PyVis**. En la vista
   `Criterio,Documento` son 19 nodos y 18 relaciones: los criterios (azul oscuro, arriba)
   generan sus documentos (azul claro, abajo), su versión LITE va en gris y el maestro de
   auditoría en dorado; cada flecha lleva su etiqueta (`GENERA`, `RESUME EN`,
@@ -156,13 +164,13 @@ python -m memoria evidencia                  # informe legible de la última eje
   Texto justificativo de §6.2: `data/memoria/texto_seccion_6_2.md`, ya integrado
   como `latex/anteproyecto/secciones/06b_memoria_agente.tex`.
 - **Repositorio autocontenido (sin el clon auditado).** El contenido versionado del
-  proyecto auditado está copiado byte a byte en `datos_originales/repo_auditado/`
+  proyecto auditado está copiado byte a byte en `04_auditoria/repo_original/`
   (236 archivos, commit `1528939`), verificado con `manifiesto_sha256.csv` y
-  `python datos_originales/verificar_hashes.py`. Los dos cachés de git
+  `python 04_auditoria/verificar_hashes.py`. Los dos cachés de git
   (`git_log_real.csv`, `git_ls_files_real.txt`) están **versionados**, así que R5,
   R6 y R9 se resuelven sin el clon; R7 usa el ancla
   `data/memoria/commit_auditado.txt` cuando el clon no está. `--refrescar-git` sí
-  requiere el clon. Detalle en `datos_originales/README.md`.
+  requiere el clon. Detalle en `04_auditoria/README.md`.
 - Los artefactos derivados del RAG (corpus, matriz TF-IDF y vectorizador) están en
   `.gitignore`: se regeneran en segundos con `python -m memoria indexar`, que es el
   primer paso al clonar el repositorio.

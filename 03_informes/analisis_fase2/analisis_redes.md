@@ -3,7 +3,7 @@
 **Pregunta que cierra:** Q5 del repositorio auditado — «¿qué redes de
 co-filiación institucional existen y qué universidades hacen de puente?».
 **Artefactos:** `documentacion_auditoria/src/redes_modelos_nulos.py` ·
-`data/memoria/redes_nulos.json` · `data/memoria/redes_nodos_2019.csv` (446 nodos) ·
+`01_datos/resultados_json/redes_nulos.json` · `data/memoria/redes_nodos_2019.csv` (446 nodos) ·
 `data/memoria/graficas_redes/` (3 figuras).
 
 ## 1. Qué es la red, y por qué solo hay una

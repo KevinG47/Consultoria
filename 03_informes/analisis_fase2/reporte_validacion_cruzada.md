@@ -4,7 +4,7 @@
 **Alcance:** los siete análisis de la Fase 2 (F2-2, F2-3, F2-4, F2-5, F2-6, F2-7,
 F2-10), sus JSON, sus documentos y los dos paneles HTML.
 **Método:** no se confió en ninguna cifra publicada. Cada número se recalculó desde
-`datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`
+`01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`
 (31,32 MB, versionado), desde los CSV del DANE versionados, o reimplementando la
 regla desde cero. Los scripts de auditoría están en `_archivo/scripts_oneoff/`
 (`auditar_*.py`) y no modifican ningún entregable.

@@ -18,8 +18,8 @@ for _f in (sys.stdout, sys.stderr):
         _f.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-HTML = RAIZ / "documentacion_auditoria" / "data" / "memoria" / "herramienta_trayectorias.html"
-CSV = RAIZ / "datos_originales" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
+HTML = RAIZ / "02_dashboards" / "herramienta_trayectorias.html"
+CSV = RAIZ / "01_datos" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 CONV_ORDEN = [16, 17, 18, 19, 20, 21]
 
 texto = HTML.read_text(encoding="utf-8")

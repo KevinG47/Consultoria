@@ -12,9 +12,10 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-POB = (RAIZ / "datos_originales" / "datos_fuente"
+POB = (RAIZ / "01_datos" / "datos_fuente"
        / "dane_cnpv2018_poblacion_departamental.csv")
 
 df = pd.read_csv(FUENTE, dtype=str, keep_default_na=False, encoding="utf-8",
@@ -37,7 +38,7 @@ ultA = ultA.assign(depto=ultA["prefijo"].map(mapa))
 # Definición B (F2-10 / EDA): última convocatoria observada, sin filtrar
 ultB = df.sort_values("conv").drop_duplicates("ID_PERSONA_PR", keep="last")
 
-p = json.loads((MEM / "percapita_territorial.json").read_text(encoding="utf-8"))
+p = json.loads((RESULTADOS / "percapita_territorial.json").read_text(encoding="utf-8"))
 print("=== stock de personas ===")
 print(f"  A (última con territorio colombiano): {len(ultA):,}".replace(",", " "))
 print(f"  B (última observada)               : {len(ultB):,}".replace(",", " "))

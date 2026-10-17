@@ -12,7 +12,8 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 
 df = pd.read_csv(FUENTE, dtype=str, keep_default_na=False, encoding="utf-8",
@@ -38,7 +39,7 @@ definiciones = {
     "documentada = edad O género": (p["residuo"].abs() > 4.0) | (p["ga"] != p["gb"]),
     "documentada = edad Y género (literal)": (p["residuo"].abs() > 4.0) & (p["ga"] != p["gb"]),
 }
-u = json.loads((MEM / "validacion_unicidad.json").read_text(encoding="utf-8"))
+u = json.loads((RESULTADOS / "validacion_unicidad.json").read_text(encoding="utf-8"))
 cc = u["contraste_con_la_implementacion"]
 print(f"publicado: documentada {cc['pares_marcados_documentada']} · "
       f"FP {cc['falsos_positivos_de_la_implementada']} · "

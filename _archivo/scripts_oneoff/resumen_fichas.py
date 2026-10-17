@@ -4,7 +4,7 @@ resumen_fichas.py
 =================
 
 Resume las 51 fichas de `documentacion_auditoria/data/analisis_codigo/` para
-planificar los arreglos de `datos_originales/repo_mejorado/`: qué archivos NO
+planificar los arreglos de `04_auditoria/repo_mejorado/`: qué archivos NO
 son ejecutables, por qué, y qué bugs declara cada ficha.
 
 Uso:  python _archivo/scripts_oneoff/resumen_fichas.py [--bugs]

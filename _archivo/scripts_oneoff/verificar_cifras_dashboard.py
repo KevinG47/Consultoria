@@ -17,7 +17,8 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-html = (MEM / "dashboard_eda.html").read_text(encoding="utf-8", errors="replace")
+DASH = RAIZ / "02_dashboards"
+html = (DASH / "dashboard_eda.html").read_text(encoding="utf-8", errors="replace")
 
 eda = json.loads((MEM / "eda_resultados.json").read_text(encoding="utf-8"))
 est = json.loads((MEM / "estimadores_resultados.json").read_text(encoding="utf-8"))

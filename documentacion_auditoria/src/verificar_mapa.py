@@ -3,7 +3,7 @@
 verificar_mapa.py
 =================
 
-Comprueba que el mapa de la F2-11 (`data/memoria/mapa_migracion.html`) y sus
+Comprueba que el mapa de la F2-11 (`02_dashboards/mapa_migracion.html`) y sus
 insumos cumplen lo que prometen:
 
   1. **Autocontenido y peso**: sin una sola referencia externa y por debajo de 6 MB.
@@ -38,14 +38,16 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 MEM = DOC / "data" / "memoria"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+DASH = RAIZ / "02_dashboards"
 GEO = DOC / "data" / "geo" / "colombia_departamentos.geojson"
 PROCEDENCIA = DOC / "data" / "geo" / "colombia_departamentos.procedencia.txt"
-DANE = (RAIZ / "datos_originales" / "datos_fuente"
+DANE = (RAIZ / "01_datos" / "datos_fuente"
         / "dane_cnpv2018_poblacion_departamental.csv")
-HTML = MEM / "mapa_migracion.html"
-PANEL = MEM / "dashboard_fase2.html"
-FLUJOS = MEM / "flujos_territoriales.json"
-PERCAPITA = MEM / "percapita_territorial.json"
+HTML = DASH / "mapa_migracion.html"
+PANEL = DASH / "dashboard_fase2.html"
+FLUJOS = RESULTADOS / "flujos_territoriales.json"
+PERCAPITA = RESULTADOS / "percapita_territorial.json"
 GRAFICAS = MEM / "graficas_flujos"
 LIMITE_BYTES = 6_000_000
 
@@ -109,7 +111,7 @@ def main() -> int:
     check(len(bundle) > 1_000_000,
           f"Plotly embebido en el archivo ({len(bundle) / 1024 / 1024:.2f} MiB)",
           "no se encontró el bundle de Plotly embebido")
-    check((MEM / "mapa_migracion.html").name in str(HTML) and
+    check((DASH / "mapa_migracion.html").name in str(HTML) and
           "open-street-map" not in texto and "mapbox" not in texto.lower(),
           "no hay teselas ni mapbox: el país lo dibujan los polígonos del GeoJSON",
           "el mapa menciona mapbox/OpenStreetMap: volvería a depender de la red")

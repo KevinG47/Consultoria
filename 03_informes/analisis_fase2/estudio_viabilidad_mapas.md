@@ -1,7 +1,7 @@
 # Estudio de viabilidad — Mapas interactivos y flujos territoriales (F2-11)
 
 **Estado:** aprobado y ejecutado. El mapa está construido: ver
-`analisis_flujos.md` y `data/memoria/mapa_migracion.html`. Este documento queda
+`analisis_flujos.md` y `02_dashboards/mapa_migracion.html`. Este documento queda
 como el registro de la decisión —qué se descartó, qué se rescató y por qué—, no
 como una propuesta abierta.
 **Alcance:** decidir qué se rescata de los dos Streamlit del repositorio auditado y
@@ -234,7 +234,7 @@ go.Figure
 
 | Capa | Fuente | Estado |
 |---|---|---|
-| Burbujas: investigadores y tasa per cápita | `data/memoria/percapita_territorial.json` (stock, 28.950 personas; tasa nacional 65,55) | **Ya existe** |
+| Burbujas: investigadores y tasa per cápita | `01_datos/resultados_json/percapita_territorial.json` (stock, 28.950 personas; tasa nacional 65,55) | **Ya existe** |
 | Polígonos | GeoJSON de departamentos **por descargar una vez** y versionar | **Falta** |
 | Centroides | Calculados del GeoJSON (media de vértices) o los 33 del auditado como contraste | Por decidir |
 | Flujos | Cálculo nuevo sobre la base de 77.237 registros | **Falta** |
@@ -388,12 +388,12 @@ Y un `verificar_mapa.py` en la misma línea que `verificar_dashboard_fase2.py`.
 
 ```
 documentacion_auditoria/src/flujos_territoriales.py       # el análisis (script)
-documentacion_auditoria/data/memoria/flujos_territoriales.json
+01_datos/resultados_json/flujos_territoriales.json
 documentacion_auditoria/data/geo/colombia_departamentos.geojson
 documentacion_auditoria/data/geo/colombia_departamentos.procedencia.txt
 documentacion_auditoria/data/memoria/graficas_flujos/     # 2-3 figuras
 documentacion_auditoria/data/memoria/mapa_flujos.html      # mapa autocontenido
-documentacion_auditoria/analisis_flujos.md                 # documento (1-2 págs)
+03_informes/analisis_fase2/analisis_flujos.md                 # documento (1-2 págs)
 documentacion_auditoria/src/verificar_mapa.py
 ```
 

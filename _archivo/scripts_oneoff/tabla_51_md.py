@@ -8,7 +8,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-BASE = Path("datos_originales")
+BASE = Path("04_auditoria")
 SALIDA = Path("_archivo/scripts_oneoff/tabla_51.md")
 
 CORTO = {

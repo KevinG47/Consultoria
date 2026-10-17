@@ -36,8 +36,8 @@ Codigos de salida del proyecto (contrato ya documentado)
   1 = error real con traza
 
 Uso:
-    python datos_originales/probar_inventario_completo.py
-    python datos_originales/probar_inventario_completo.py --sin-ejecutar
+    python 04_auditoria/probar_inventario_completo.py
+    python 04_auditoria/probar_inventario_completo.py --sin-ejecutar
 """
 
 from __future__ import annotations
@@ -58,13 +58,13 @@ from fs_robusto import borrar_arbol  # noqa: E402
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[1]
-MEJORADO = RAIZ / "datos_originales" / "repo_mejorado"
-PRUEBA = RAIZ / "datos_originales" / "_prueba_inventario"
+MEJORADO = RAIZ / "04_auditoria" / "repo_mejorado"
+PRUEBA = RAIZ / "04_auditoria" / "_prueba_inventario"
 CLON = RAIZ / "Observatorio_Ministerio_de_Ciencias_Grupo8"
 INVENTARIO = RAIZ / "documentacion_auditoria" / "data" / "inventario_codigo.csv"
 EXTRAS = RAIZ / "_archivo" / "deps_extra"
-INFORME_CSV = RAIZ / "datos_originales" / "reporte_ejecucion_51.csv"
-INFORME_JSON = RAIZ / "datos_originales" / "_reporte_ejecucion_51.json"
+INFORME_CSV = RAIZ / "04_auditoria" / "reporte_ejecucion_51.csv"
+INFORME_JSON = RAIZ / "04_auditoria" / "_reporte_ejecucion_51.json"
 
 TIEMPO_SCRIPT = 900
 TIEMPO_STREAMLIT = 60

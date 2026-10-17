@@ -39,7 +39,7 @@ es que el campo no se capturó. Contarlo como respuesta conocida convertiría un
 0 % de cobertura en un 100 % falso.
 
 Produce:
-    data/memoria/diversidad_inferencia.json
+    01_datos/resultados_json/diversidad_inferencia.json
     data/memoria/graficas_diversidad/*.png
 
 Uso:
@@ -64,11 +64,11 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 MUESTRA = DOC / "data" / "memoria" / "muestra_ids.csv"
-REPO = RAIZ / "datos_originales" / "repo_auditado" / "evidencias"
-SALIDA = DOC / "data" / "memoria" / "diversidad_inferencia.json"
+REPO = RAIZ / "04_auditoria" / "repo_original" / "evidencias"
+SALIDA = RAIZ / "01_datos" / "resultados_json" / "diversidad_inferencia.json"
 GRAF = DOC / "data" / "memoria" / "graficas_diversidad"
 
 CONV = {16: 2013, 17: 2014, 18: 2015, 19: 2017, 20: 2019, 21: 2021}

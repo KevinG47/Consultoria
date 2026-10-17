@@ -11,8 +11,8 @@
 # ── Clon local del repositorio auditado ─────────────────────────────────────
 # NO se versiona el clon (441 MB, de los que 383,8 son su .venv), pero tampoco
 # hace falta: su contenido versionado está copiado byte a byte en
-# datos_originales/repo_auditado/ y verificado con manifiesto SHA-256. El clon
-# solo se necesita para RE-extraer (datos_originales/extraer_repo_auditado.py).
+# 04_auditoria/repo_original/ y verificado con manifiesto SHA-256. El clon
+# solo se necesita para RE-extraer (04_auditoria/extraer_repo_auditado.py).
 Observatorio_Ministerio_de_Ciencias_Grupo8/
 
 # ── Entornos de ejecución y cachés de Python (se regeneran) ────────────────
@@ -44,7 +44,7 @@ documentacion_auditoria/latex/**/main.pdf
 # entorno (el venv dentro de OneDrive falla por longitud de ruta, MAX_PATH).
 !_archivo/**/*.log
 # OJO: los patrones de datos crudos van ANCLADOS a la raíz. Sin la barra
-# inicial, `datos/raw/` también ignoraría datos_originales/repo_auditado/datos/raw/
+# inicial, `datos/raw/` también ignoraría 04_auditoria/repo_original/datos/raw/
 # y perdería archivos de la copia verbatim sin avisar.
 /datos/raw/
 /datos/processed/
@@ -58,18 +58,18 @@ desktop.ini
 # ── Datos fuente ───────────────────────────────────────────────────────────
 # SE VERSIONA el CSV fuente (31,3 MB, bajo el límite de 100 MB de GitHub) para
 # que el repositorio sea usable al clonar:
-#   datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
+#   01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
 # Antes estaba ignorado y el análisis no era reproducible sin descargarlo.
 #
-# SE VERSIONA también datos_originales/repo_mejorado/ (37 MB) aunque sea
+# SE VERSIONA también 04_auditoria/repo_mejorado/ (37 MB) aunque sea
 # reproducible: el próximo grupo lo necesita al clonar. Se reconstruye con
 # construir_repo_mejorado.py + aplicar_arreglos.py.
 #
 # NO se versionan los artefactos de la verificación, que se regeneran solos:
-datos_originales/_stubs/
-datos_originales/_prueba_ejecucion/
-datos_originales/_prueba_inventario/
-datos_originales/_reporte_ejecucion_51*.json
+04_auditoria/_stubs/
+04_auditoria/_prueba_ejecucion/
+04_auditoria/_prueba_inventario/
+04_auditoria/_reporte_ejecucion_51*.json
 # Entorno de prueba de Poetry (venv + caché de artefactos) y las ruedas que se
 # rescatan de la caché de pip para poder probar sin red. Todo se regenera.
 _archivo/tmp_poetry_mej/
@@ -81,12 +81,12 @@ _archivo/deps_extra/
 # Cuadernos originales del DANE descargados para F2-2 (135 MB). NO se versionan:
 # pesan demasiado y se reobtienen con los scripts de _archivo/scripts_oneoff/.
 # Lo que SÍ se versiona es la tabla derivada y pequeña
-# (datos_originales/datos_fuente/dane_*.csv) junto con su .procedencia.txt, que
+# (01_datos/datos_fuente/dane_*.csv) junto con su .procedencia.txt, que
 # guarda la URL y el SHA-256 del cuaderno oficial de origen.
 _archivo/tmp_dane/
 # Bases DuckDB construidas por F2-3 en un directorio de TRABAJO. No se versionan
 # (se regeneran con src/modelo_estrella_6.py) y, sobre todo, NO se escriben dentro
-# de datos_originales/repo_auditado/: así los 236 hashes del manifiesto siguen
+# de 04_auditoria/repo_original/: así los 236 hashes del manifiesto siguen
 # intactos.
 _archivo/tmp_estrella/
 

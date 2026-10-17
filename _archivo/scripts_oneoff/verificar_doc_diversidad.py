@@ -4,7 +4,7 @@ verificar_doc_diversidad.py
 ===========================
 
 Comprueba, 1) que toda cifra de `analisis_diversidad.md` salga del JSON, y
-2) la estructura markdown de ese documento y de `datos_originales/ERRATA.md`.
+2) la estructura markdown de ese documento y de `04_auditoria/ERRATA.md`.
 """
 from __future__ import annotations
 
@@ -18,9 +18,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-TEXTO = (DOC / "analisis_diversidad.md").read_text(encoding="utf-8")
-ERRATA = (RAIZ / "datos_originales" / "ERRATA.md").read_text(encoding="utf-8")
-J = json.loads((DOC / "data" / "memoria" / "diversidad_inferencia.json")
+TEXTO = (RAIZ / "03_informes" / "analisis_fase2" / "analisis_diversidad.md").read_text(encoding="utf-8")
+ERRATA = (RAIZ / "04_auditoria" / "ERRATA.md").read_text(encoding="utf-8")
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "diversidad_inferencia.json")
                .read_text(encoding="utf-8"))
 
 

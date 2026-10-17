@@ -41,7 +41,7 @@ from genero_comun import (  # noqa: E402
     COL_GENERO, COL_GENERO_COL, agregar_genero_colapsado, resumen_colapso)
 
 RAIZ = Path(__file__).resolve().parents[2]
-CSV = RAIZ / "datos_originales" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
+CSV = RAIZ / "01_datos" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 DIR_SALIDA = RAIZ / "documentacion_auditoria" / "data" / "memoria"
 DIR_GRAFICAS = DIR_SALIDA / "graficas_longitudinal"
 

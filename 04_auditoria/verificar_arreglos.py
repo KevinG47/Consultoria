@@ -26,7 +26,7 @@ NIVEL 3 — NO VERIFICABLE AQUI (declarado)
   - `poetry.lock` no se puede regenerar: no hay poetry ni red.
   - La salida visual (PNG/Sankey) no se puede comprobar sin plotly+kaleido reales.
 
-Uso:  python datos_originales/verificar_arreglos.py
+Uso:  python 04_auditoria/verificar_arreglos.py
 """
 
 from __future__ import annotations
@@ -45,15 +45,15 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 sys.dont_write_bytecode = True     # importar el codigo NO debe dejar __pycache__
 
 RAIZ = Path(__file__).resolve().parents[1]
-AUDITADO = RAIZ / "datos_originales" / "repo_auditado"
-MEJORADO = RAIZ / "datos_originales" / "repo_mejorado"
-STUBS = RAIZ / "datos_originales" / "_stubs"
-PRUEBA = RAIZ / "datos_originales" / "_prueba_ejecucion"
+AUDITADO = RAIZ / "04_auditoria" / "repo_original"
+MEJORADO = RAIZ / "04_auditoria" / "repo_mejorado"
+STUBS = RAIZ / "04_auditoria" / "_stubs"
+PRUEBA = RAIZ / "04_auditoria" / "_prueba_ejecucion"
 
 # El conjunto de archivos que los arreglos DEBEN tocar se DERIVA del script de
 # arreglos, no se escribe a mano: asi esta comprobacion no puede quedarse
 # desactualizada cuando se anade un arreglo.
-sys.path.insert(0, str(RAIZ / "datos_originales"))
+sys.path.insert(0, str(RAIZ / "04_auditoria"))
 from aplicar_arreglos import ARREGLOS, REGENERADOS    # noqa: E402
 from construir_repo_mejorado import LEGACY           # noqa: E402
 from fs_robusto import borrar_arbol                  # noqa: E402
@@ -323,7 +323,7 @@ def n1_limpieza() -> None:
 
 def n1_auditado_intacto() -> None:
     titulo("NIVEL 1a — repo_auditado/ sigue siendo la prueba verbatim")
-    r = subprocess.run([sys.executable, str(RAIZ / "datos_originales" /
+    r = subprocess.run([sys.executable, str(RAIZ / "04_auditoria" /
                                            "verificar_hashes.py")],
                        capture_output=True, text=True, encoding="utf-8",
                        errors="replace")
@@ -546,7 +546,7 @@ def n1_diversidad() -> None:
     from analisis.diversidad import comparar_dane
     from Transformacion import COLS_NUMERICAS, limpiar_texto, tratar_faltantes
 
-    csv_fuente = (RAIZ / "datos_originales" / "datos_fuente" /
+    csv_fuente = (RAIZ / "01_datos" / "datos_fuente" /
                   "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
     df = pd.read_csv(csv_fuente, dtype=str, keep_default_na=False, encoding="utf-8")
     for col in COLS_NUMERICAS:
@@ -612,7 +612,7 @@ def n2_scripts() -> None:
               f"({', '.join(faltantes)}).")
         print("  Se prueba el FLUJO y los ARREGLOS, no el dibujo real.")
         print("  Para la prueba con librerias de verdad: "
-              "python datos_originales/probar_librerias_reales.py")
+              "python 04_auditoria/probar_librerias_reales.py")
     else:
         print("  Todas las dependencias estan instaladas: esta corrida usa las "
               "librerias REALES.")
@@ -725,17 +725,17 @@ def main() -> int:
         print(f"    - Se sustituyeron con DOBLES: {', '.join(FALTANTES)}.")
         print("      Por eso no se probaron el dibujo ni las consultas reales.")
         print("      Con las dependencias instaladas, la prueba fuerte es:")
-        print("        python datos_originales/probar_librerias_reales.py")
+        print("        python 04_auditoria/probar_librerias_reales.py")
     else:
         print("    - Todas las dependencias estan instaladas: NO se uso ningun doble")
         print("      (seaborn, plotly, kaleido, duckdb, openpyxl, nbformat).")
         print("      Para la prueba con foco en librerias reales y salidas:")
-        print("        python datos_originales/probar_librerias_reales.py")
+        print("        python 04_auditoria/probar_librerias_reales.py")
     print("    - PNG/Sankey: si kaleido no logra arrancar un navegador, el script")
     print("      avisa y continua; el HTML y los CSV si se generan.")
     print("    - docs/manual.ipynb: se valida sintaxis y coherencia con el")
     print("      generador, no su corrida (3 secciones exigen produccion).")
-    if (RAIZ / "datos_originales" / "repo_mejorado" / "poetry.lock").exists():
+    if (RAIZ / "04_auditoria" / "repo_mejorado" / "poetry.lock").exists():
         print("    - poetry.lock: presente y preservado por el constructor.")
     if not fallos:
         print("\n[OK] Todos los arreglos verificables pasan.")

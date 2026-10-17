@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-M = Path(__file__).resolve().parents[2] / "documentacion_auditoria" / "data" / "memoria"
+M = Path(__file__).resolve().parents[2] / "01_datos" / "resultados_json"
 p = json.loads((M / "percapita_territorial.json").read_text(encoding="utf-8"))
 
 bpa = p["bootstrap_personas"]["por_convocatoria_y_stock"]

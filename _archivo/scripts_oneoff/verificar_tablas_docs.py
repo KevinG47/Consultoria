@@ -11,12 +11,12 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 RAIZ = Path(__file__).resolve().parents[2]
 ARCHIVOS = [
     "README.md",
-    "datos_originales/ERRATA.md",
-    "datos_originales/README.md",
-    "documentacion_auditoria/evaluacion_cumplimiento.md",
-    "documentacion_auditoria/analisis_diversidad.md",
-    "documentacion_auditoria/analisis_modelo_estrella.md",
-    "documentacion_auditoria/analisis_percapita_territorial.md",
+    "04_auditoria/ERRATA.md",
+    "04_auditoria/README.md",
+    "03_informes/analisis_fase2/evaluacion_cumplimiento.md",
+    "03_informes/analisis_fase2/analisis_diversidad.md",
+    "03_informes/analisis_fase2/analisis_modelo_estrella.md",
+    "03_informes/analisis_fase2/analisis_percapita_territorial.md",
 ]
 
 fallos = 0

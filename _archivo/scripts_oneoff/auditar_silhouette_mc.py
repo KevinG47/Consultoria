@@ -49,8 +49,7 @@ print(f"  ¿cae 0,2825 dentro del rango de 8 semillas? "
 print(f"  margen frente al umbral 0,25: 0,2825 - 0,25 = 0,0325 "
       f"({0.0325 / np.std(vals, ddof=1):.1f} desviaciones del error de Monte Carlo)")
 
-cl = json.loads((RAIZ / "documentacion_auditoria" / "data" / "memoria"
-                 / "clustering.json").read_text(encoding="utf-8"))
+cl = json.loads((RAIZ / "01_datos" / "resultados_json" / "clustering.json").read_text(encoding="utf-8"))
 nulo = cl["prueba_de_estructura"]["nulo_silhouette"]
 print(f"\n  nulo publicado: media {np.mean(nulo):.6f} · "
       f"mínimo {min(nulo):.6f} · máximo {max(nulo):.6f}")

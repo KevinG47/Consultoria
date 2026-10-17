@@ -1,4 +1,4 @@
-# `datos_originales/` — datos y fuentes primarias
+# `04_auditoria/` — datos y fuentes primarias
 
 **Para qué existe.** Para que este repositorio sea **autocontenido**: el próximo
 grupo puede clonarlo, reproducir todo el análisis y verificar cualquier cita de la
@@ -20,17 +20,17 @@ tampoco sirve para trabajar: 6 de sus scripts fallan. La separación permite
 mantienen sincronizadas de forma reproducible:
 
 ```bash
-python datos_originales/construir_repo_mejorado.py   # repo_mejorado = repo_auditado + estructura
-python datos_originales/aplicar_arreglos.py          # aplica los 30 arreglos declarados
-python datos_originales/verificar_arreglos.py        # comprueba: 0 fallos
-python datos_originales/verificar_hashes.py          # repo_auditado sigue intacto
+python 04_auditoria/construir_repo_mejorado.py   # repo_mejorado = repo_auditado + estructura
+python 04_auditoria/aplicar_arreglos.py          # aplica los 30 arreglos declarados
+python 04_auditoria/verificar_arreglos.py        # comprueba: 0 fallos
+python 04_auditoria/verificar_hashes.py          # repo_auditado sigue intacto
 ```
 
 Para probar la ejecución de **todo** el código (no solo los 6 scripts arreglados):
 
 ```bash
-python datos_originales/probar_inventario_completo.py                 # versiones del sistema
-python datos_originales/probar_inventario_completo.py --etiqueta poetry   # versiones del lock
+python 04_auditoria/probar_inventario_completo.py                 # versiones del sistema
+python 04_auditoria/probar_inventario_completo.py --etiqueta poetry   # versiones del lock
 ```
 
 Escribe `reporte_ejecucion_51[_etiqueta].csv` con los 51 artefactos del inventario,
@@ -130,7 +130,7 @@ etapas del pipeline lo leen desde aquí.
 
 **Verificación:**
 ```bash
-python datos_originales/verificar_hashes.py
+python 04_auditoria/verificar_hashes.py
 # manifiesto: 236 archivos (repo_auditado@1528939)
 #   identicos : 236     faltantes : 0     distintos : 0
 ```
@@ -168,7 +168,7 @@ Comprobado empíricamente apuntando la ruta del clon a una carpeta inexistente:
 | Respaldo en R7 | `src/memoria/grafo.py::commit_auditado_real()` | Usa el clon si existe; si no, el ancla, y **avisa por consola**. Ya no se cae |
 | Constante de ruta | `src/memoria/config.py` (`COMMIT_ANCLADO`) | Documenta la decisión |
 | Cachés versionados | `.gitignore` | `git_log_real.csv` y `git_ls_files_real.txt` ahora **sí** se versionan: son lo que sostiene R5, R6 y R9 |
-| Ruta de datos | 4 scripts (`eda_longitudinal.py`, `estimadores_longitudinal.py`, `analisis_longitudinal.py`, `construir_herramienta.py`) + 5 de `_archivo/` | Leen `datos_originales/datos_fuente/` en vez de `Datos/` |
+| Ruta de datos | 4 scripts (`eda_longitudinal.py`, `estimadores_longitudinal.py`, `analisis_longitudinal.py`, `construir_herramienta.py`) + 5 de `_archivo/` | Leen `01_datos/datos_fuente/` en vez de `Datos/` |
 
 **Único caso en que hace falta el clon:** `python -m memoria grafo --refrescar-git`
 (regenera los cachés desde `git log` / `git ls-files`). Sin clon, se usan los
@@ -214,8 +214,8 @@ el commit `1528939`.
 ### 4. Re-extraer la copia (solo si cambia el commit auditado)
 
 ```bash
-python datos_originales/extraer_repo_auditado.py --dry-run   # informa
-python datos_originales/extraer_repo_auditado.py             # extrae + manifiesto
+python 04_auditoria/extraer_repo_auditado.py --dry-run   # informa
+python 04_auditoria/extraer_repo_auditado.py             # extrae + manifiesto
 # y actualizar a mano documentacion_auditoria/data/memoria/commit_auditado.txt
 ```
 Requiere el clon en `Observatorio_Ministerio_de_Ciencias_Grupo8/` (la raíz del

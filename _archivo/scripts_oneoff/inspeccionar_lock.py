@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
-lock = Path("datos_originales/repo_mejorado/poetry.lock")
+lock = Path("04_auditoria/repo_mejorado/poetry.lock")
 t = lock.read_text(encoding="utf-8")
 print(f"  bytes: {len(t)}   entradas 'name = ': {len(re.findall(r'^name = ', t, re.M))}")
 

@@ -30,7 +30,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 XLSX = RAIZ / "_archivo" / "tmp_dane" / "PPED-AreaDep-2018-2050_VP.xlsx"
-SALIDA = (RAIZ / "datos_originales" / "datos_fuente"
+SALIDA = (RAIZ / "01_datos" / "datos_fuente"
           / "dane_proyecciones_poblacion_departamental.csv")
 URL = ("https://www.dane.gov.co/files/censo2018/proyecciones-de-poblacion/"
        "Departamental/PPED-AreaDep-2018-2050_VP.xlsx")

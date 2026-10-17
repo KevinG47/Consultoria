@@ -3,7 +3,7 @@
 generar_dashboard_eda.py
 ========================
 
-Construye `data/memoria/dashboard_eda.html`: el analisis exploratorio completo
+Construye `02_dashboards/dashboard_eda.html`: el analisis exploratorio completo
 como panel interactivo de 4 pestanas, **autocontenido** (sin red, sin CDN) y con
 el mismo lenguaje visual que `herramienta_trayectorias.html`.
 
@@ -11,7 +11,7 @@ Fuentes (todas versionadas):
   - data/memoria/eda_resultados.json
   - data/memoria/diagnosticos_greg.json
   - data/memoria/estimadores_resultados.json
-  - datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
+  - 01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
 
 POR QUE HAY QUE RECALCULAR ALGO
 -------------------------------
@@ -61,10 +61,11 @@ from scipy import stats
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 MEM = DOC / "data" / "memoria"
+DASH = RAIZ / "02_dashboards"
 SRC = Path(__file__).resolve().parent
-CSV = RAIZ / "datos_originales" / "datos_fuente" / \
+CSV = RAIZ / "01_datos" / "datos_fuente" / \
     "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
-SALIDA = MEM / "dashboard_eda.html"
+SALIDA = DASH / "dashboard_eda.html"
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 

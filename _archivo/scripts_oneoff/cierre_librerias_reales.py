@@ -8,7 +8,7 @@ Cierre de la tarea de verificacion con librerias reales:
 1. Borra los scripts de parche mecanicos de `_archivo/scripts_oneoff/`: su efecto
    ya esta en los archivos definitivos y documentado en el CHANGELOG. Se conservan
    los de DIAGNOSTICO (kaleido, lock, fichas), que sirven para volver a mirar.
-2. Anade al README de `datos_originales/` los dos scripts nuevos de esta tarea.
+2. Anade al README de `04_auditoria/` los dos scripts nuevos de esta tarea.
 """
 
 import io
@@ -17,7 +17,7 @@ from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
-D = RAIZ / "datos_originales"
+D = RAIZ / "04_auditoria"
 ONE = RAIZ / "_archivo" / "scripts_oneoff"
 
 # 1. fuera los parches mecanicos (se conservan los diagnosticos)
@@ -46,4 +46,4 @@ if t.count(ancla) != 1:
     print(f"  [x] README: el ancla aparece {t.count(ancla)} veces")
 else:
     p.write_text(t.replace(ancla, nuevas, 1), encoding="utf-8")
-    print("  [ok] datos_originales/README.md: 2 filas anadidas")
+    print("  [ok] 04_auditoria/README.md: 2 filas anadidas")

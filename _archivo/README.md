@@ -95,7 +95,7 @@ python documentacion_auditoria/src/extraer_errores.py          # regenera errore
 
 La tabla curada vive en `documentacion_auditoria/data/ejecucion_resumen.csv` y
 coincide con el log en los 16 scripts. Las causas de los 6 fallos están explicadas
-en `datos_originales/ERRATA.md` §E5: ninguna es un error de lógica, todas son
+en `04_auditoria/ERRATA.md` §E5: ninguna es un error de lógica, todas son
 entradas ausentes o dependencias no declaradas.
 
 ---

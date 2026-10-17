@@ -14,7 +14,7 @@ en Windows y pasaria en Linux, que es justo lo contrario de lo util.
 
 Uso
 ---
-    python datos_originales/verificar_hashes.py
+    python 04_auditoria/verificar_hashes.py
 
 Salida: codigo 0 si todo coincide, 1 si hay diferencias o faltantes.
 """
@@ -29,7 +29,7 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[1]
-MANIFIESTO = RAIZ / "datos_originales" / "manifiesto_sha256.csv"
+MANIFIESTO = RAIZ / "04_auditoria" / "manifiesto_sha256.csv"
 
 
 def coincide(ruta: Path, esperado: str) -> bool:
@@ -60,7 +60,7 @@ def main() -> int:
 
     ok, faltan, distintos = 0, [], []
     for f in filas:
-        ruta = RAIZ / "datos_originales" / "repo_auditado" / f["ruta"]
+        ruta = RAIZ / "04_auditoria" / "repo_original" / f["ruta"]
         if not ruta.exists():
             faltan.append(f["ruta"])
             continue
@@ -74,7 +74,7 @@ def main() -> int:
     # __pycache__ generado al importar estos modulos desde un script de prueba)
     # se colaba sin que la verificacion dijera nada: se comprobaba que todo lo
     # esperado estuviera, no que no hubiera nada de mas.
-    base = RAIZ / "datos_originales" / "repo_auditado"
+    base = RAIZ / "04_auditoria" / "repo_original"
     esperados = {f["ruta"] for f in filas}
     en_disco = {p.relative_to(base).as_posix() for p in base.rglob("*") if p.is_file()}
     sobran = sorted(en_disco - esperados)

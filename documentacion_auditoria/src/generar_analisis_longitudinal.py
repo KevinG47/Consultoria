@@ -3,7 +3,7 @@
 generar_analisis_longitudinal.py
 ================================
 
-Genera `documentacion_auditoria/analisis_longitudinal.md` con la estructura
+Genera `03_informes/analisis_fase2/analisis_longitudinal.md` con la estructura
 acordada:
 
   - Secciones principales: cifras del UNIVERSO (censo). La base completa está
@@ -33,7 +33,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 DOC = Path(__file__).resolve().parents[1]
 MEM = DOC / "data" / "memoria"
-SALIDA = DOC / "analisis_longitudinal.md"
+SALIDA = RAIZ / "03_informes" / "analisis_fase2" / "analisis_longitudinal.md"
 
 D = json.loads((MEM / "longitudinal_resultados.json").read_text(encoding="utf-8"))
 E = json.loads((MEM / "eda_resultados.json").read_text(encoding="utf-8"))

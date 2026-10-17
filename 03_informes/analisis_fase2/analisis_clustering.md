@@ -3,7 +3,7 @@
 **Objetivo que cierra:** OE5 del repositorio auditado, en su parte de *clustering*
 (el multivariado y el clustering eran, hasta ahora, R legacy no reproducible).
 **Artefactos:** `documentacion_auditoria/src/clustering_formalizado.py` ·
-`data/memoria/clustering.json` · `data/memoria/clusters_registros.csv` (77 237
+`01_datos/resultados_json/clustering.json` · `data/memoria/clusters_registros.csv` (77 237
 filas) · `data/memoria/graficas_clusters/` (3 figuras).
 
 ## 1. Lo que hacía el auditado, y sus tres problemas

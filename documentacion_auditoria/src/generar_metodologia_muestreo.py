@@ -3,7 +3,7 @@
 generar_metodologia_muestreo.py
 ===============================
 
-Genera `documentacion_auditoria/metodologia_muestreo.md` a partir de las cifras
+Genera `03_informes/analisis_fase2/metodologia_muestreo.md` a partir de las cifras
 ya calculadas en:
 
   - data/memoria/eda_resultados.json          (Parte 1: EDA)
@@ -25,7 +25,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 DOC = Path(__file__).resolve().parents[1]
 MEM = DOC / "data" / "memoria"
-SALIDA = DOC / "metodologia_muestreo.md"
+SALIDA = RAIZ / "03_informes" / "analisis_fase2" / "metodologia_muestreo.md"
 
 E = json.loads((MEM / "eda_resultados.json").read_text(encoding="utf-8"))
 S = json.loads((MEM / "estimadores_resultados.json").read_text(encoding="utf-8"))

@@ -11,8 +11,8 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
 LOCKS = {
-    "auditado": RAIZ / "datos_originales" / "repo_auditado" / "poetry.lock",
-    "mejorado": RAIZ / "datos_originales" / "repo_mejorado" / "poetry.lock",
+    "auditado": RAIZ / "04_auditoria" / "repo_original" / "poetry.lock",
+    "mejorado": RAIZ / "04_auditoria" / "repo_mejorado" / "poetry.lock",
 }
 
 for etiqueta, ruta in LOCKS.items():

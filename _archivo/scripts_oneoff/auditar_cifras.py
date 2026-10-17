@@ -18,14 +18,22 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+DASH = RAIZ / "02_dashboards"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-POB = (RAIZ / "datos_originales" / "datos_fuente"
+POB = (RAIZ / "01_datos" / "datos_fuente"
        / "dane_cnpv2018_poblacion_departamental.csv")
 
 
+DE_RESULTADOS = {"percapita_territorial", "modelo_estrella", "redes_nulos",
+                 "diversidad_inferencia", "clustering", "validacion_unicidad",
+                 "supervivencia", "flujos_territoriales"}
+
+
 def L(n):
-    return json.loads((MEM / f"{n}.json").read_text(encoding="utf-8"))
+    base = RESULTADOS if n in DE_RESULTADOS else MEM
+    return json.loads((base / f"{n}.json").read_text(encoding="utf-8"))
 
 
 fallos = []
@@ -185,7 +193,7 @@ print()
 print("=" * 72)
 print("6. HRs del panel tal como aparecen escritos en el dashboard")
 print("=" * 72)
-html = (MEM / "dashboard_fase2.html").read_text(encoding="utf-8")
+html = (DASH / "dashboard_fase2.html").read_text(encoding="utf-8")
 for texto, valor in (("0,988", exp(gen["beta"])), ("0,105", None), ("0,376", None)):
     print(f"  '{texto}' aparece en el panel: {texto in html}")
 

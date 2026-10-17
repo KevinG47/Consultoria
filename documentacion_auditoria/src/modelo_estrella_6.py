@@ -30,7 +30,7 @@ y además corre el pipeline del auditado tal cual (con su propio
 Verifica integridad referencial de las 9 tablas, contrasta contra la evidencia
 versionada y escribe los resultados en JSON.
 
-NO escribe nada dentro de `datos_originales/repo_auditado/`: la base DuckDB va a
+NO escribe nada dentro de `04_auditoria/repo_original/`: la base DuckDB va a
 un directorio de trabajo (`_archivo/tmp_estrella/`), de modo que los 236 hashes
 del manifiesto del repo auditado siguen intactos.
 
@@ -44,7 +44,7 @@ una tabla de hechos». Lo construido son **9 tablas**: 7 dimensiones
 nueve cuenta tablas, no dimensiones. El JSON lo deja registrado.
 
 Produce:
-    data/memoria/modelo_estrella.json
+    01_datos/resultados_json/modelo_estrella.json
     data/memoria/graficas_estrella/*.png
 
 Uso:
@@ -69,11 +69,11 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-REPO = RAIZ / "datos_originales" / "repo_auditado"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+REPO = RAIZ / "04_auditoria" / "repo_original"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 TRABAJO = RAIZ / "_archivo" / "tmp_estrella"
-SALIDA = DOC / "data" / "memoria" / "modelo_estrella.json"
+SALIDA = RAIZ / "01_datos" / "resultados_json" / "modelo_estrella.json"
 GRAF = DOC / "data" / "memoria" / "graficas_estrella"
 EVIDENCIA_AUDITADA = REPO / "evidencias" / "duckdb_resumen_modelo.txt"
 

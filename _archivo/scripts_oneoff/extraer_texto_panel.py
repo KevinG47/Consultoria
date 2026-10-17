@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
-H = RAIZ / "documentacion_auditoria" / "data" / "memoria" / "dashboard_fase2.html"
+H = RAIZ / "02_dashboards" / "dashboard_fase2.html"
 SALIDA = RAIZ / "_archivo" / "scripts_oneoff" / "texto_panel_fase2.txt"
 
 t = H.read_text(encoding="utf-8")

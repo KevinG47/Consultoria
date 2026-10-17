@@ -19,8 +19,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-TEXTO = (DOC / "analisis_percapita_territorial.md").read_text(encoding="utf-8")
-J = json.loads((DOC / "data" / "memoria" / "percapita_territorial.json")
+TEXTO = (RAIZ / "03_informes" / "analisis_fase2" / "analisis_percapita_territorial.md").read_text(encoding="utf-8")
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "percapita_territorial.json")
                .read_text(encoding="utf-8"))
 
 # --- valores que el documento debe contener, calculados del JSON ------------
@@ -181,7 +181,7 @@ print(f"\n--- rutas citadas con extensión ({len(rutas)}) ---")
 faltan = []
 for r in sorted(set(rutas)):
     candidatos = [RAIZ / r, DOC / r, DOC / "data" / "memoria" / r,
-                  RAIZ / "datos_originales" / "datos_fuente" / r]
+                  RAIZ / "01_datos" / "datos_fuente" / r]
     if not any(c.exists() or c.parent.exists() for c in candidatos):
         faltan.append(r)
 for r in sorted(set(rutas)):

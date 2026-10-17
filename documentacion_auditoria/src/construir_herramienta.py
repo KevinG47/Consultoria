@@ -1,6 +1,6 @@
 """Construye la herramienta interactiva de trayectorias por investigador.
 
-Salida: documentacion_auditoria/data/memoria/herramienta_trayectorias.html
+Salida: 02_dashboards/herramienta_trayectorias.html
   - HTML autocontenido: CSS y JavaScript embebidos, datos embebidos.
   - Sin CDNs ni recursos externos: funciona con doble clic y sin internet.
 
@@ -33,9 +33,10 @@ for _f in (sys.stdout, sys.stderr):
         _f.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-CSV = RAIZ / "datos_originales" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
+CSV = RAIZ / "01_datos" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 DIR_MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-SALIDA = DIR_MEM / "herramienta_trayectorias.html"
+DASH = RAIZ / "02_dashboards"
+SALIDA = DASH / "herramienta_trayectorias.html"
 JSON_LONG = DIR_MEM / "longitudinal_resultados.json"
 CHUNK = 50_000
 
@@ -448,7 +449,7 @@ kbd{background:#EEF2F8;border:1px solid var(--borde);border-bottom-width:2px;
 
   <div class="pie">
     <strong>Fuente:</strong> <span id="pieFuente"></span>.
-    <strong>Herramienta:</strong> <code>data/memoria/herramienta_trayectorias.html</code>,
+    <strong>Herramienta:</strong> <code>02_dashboards/herramienta_trayectorias.html</code>,
     generada por <code>src/construir_herramienta.py</code>. Los valores que se muestran son
     los de <em>cada</em> convocatoria, no un resumen: los atributos pueden cambiar entre
     convocatorias (la categoría cambia en 8 755 personas, el nivel de formación en 3 844,

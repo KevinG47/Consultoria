@@ -21,7 +21,7 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RUTA = Path(sys.argv[1] if len(sys.argv) > 1 else
-            "documentacion_auditoria/data/memoria/dashboard_eda.html")
+            "02_dashboards/dashboard_eda.html")
 html = RUTA.read_text(encoding="utf-8", errors="replace")
 
 # Separar el bundle de Plotly: dentro de el hay miles de colores por defecto que

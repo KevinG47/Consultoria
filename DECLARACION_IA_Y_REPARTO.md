@@ -30,7 +30,7 @@ investigadores de MinCiencias (2013–2021) con datos abiertos — Observatorio 
 | Informes de validación | `data/validacion/*.md` (19 archivos) | **Generados por agentes de IA independientes** (ver §3) |
 | Verificación de referencias y fuentes | `data/memoria/fuentes_externas.yaml`, correcciones bibliográficas de este documento | **IA con búsqueda web**; decisión de qué corregir, del equipo |
 | Registros de trazabilidad | `data/memoria/decisiones.yaml` (D001–D009), `fuentes_externas.yaml` | **Estructura y contenido redactados por IA**; D007 es decisión del docente |
-| Empaquetado y publicación | `ENTREGA_1/`, `README.md`, `.gitignore`, 19 ZIP Overleaf, commits | **Ejecutado por IA** en el entorno del equipo |
+| Empaquetado y publicación | `05_entregas/ENTREGA_1/`, `README.md`, `.gitignore`, 19 ZIP Overleaf, commits | **Ejecutado por IA** en el entorno del equipo |
 
 ### 1.2 NO asistido por IA
 

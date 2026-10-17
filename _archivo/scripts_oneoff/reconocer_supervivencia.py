@@ -23,7 +23,7 @@ for mod in ("lifelines", "statsmodels", "scipy", "numpy", "sklearn"):
     except Exception as e:                                  # noqa: BLE001
         print(f"  {mod:14s} FALTA ({type(e).__name__})")
 
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 df = pd.read_csv(FUENTE, dtype=str, keep_default_na=False, encoding="utf-8",
                  usecols=["ID_CONVOCATORIA", "ID_PERSONA_PR", "ANO_CONVO",

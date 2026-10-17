@@ -3,7 +3,7 @@
 verificar_dashboard_fase2.py
 ============================
 
-Comprueba que `data/memoria/dashboard_fase2.html` cumple lo que promete:
+Comprueba que `02_dashboards/dashboard_fase2.html` cumple lo que promete:
 
   1. **Autocontenido**: ni una referencia externa (http, https, //cdn, @import).
   2. **Peso** por debajo de 6 MB, que es el tope que se fijó al añadir el mapa.
@@ -30,7 +30,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-HTML = MEM / "dashboard_fase2.html"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+DASH = RAIZ / "02_dashboards"
+HTML = DASH / "dashboard_fase2.html"
 LIMITE_BYTES = 6_000_000        # 6 MB decimales, el tope acordado para el panel
 
 fallos: list[str] = []
@@ -150,7 +152,7 @@ def main() -> int:
           f"rojo de alerta en {n_rojo} lugares: se está usando como decoración")
 
     print("\n== 4. Los gráficos llevan sus datos ==")
-    d = {k: json.loads((MEM / f"{k}.json").read_text(encoding="utf-8"))
+    d = {k: json.loads((RESULTADOS / f"{k}.json").read_text(encoding="utf-8"))
          for k in ("percapita_territorial", "modelo_estrella", "redes_nulos",
                    "diversidad_inferencia", "clustering", "validacion_unicidad",
                    "supervivencia", "flujos_territoriales")}
@@ -302,8 +304,8 @@ def main() -> int:
               f"el panel conserva la afirmación invertida: {mala}")
 
     print("\n== 5b. El panel y el documento dicen lo mismo sobre la dirección ==")
-    doc_div = (RAIZ / "documentacion_auditoria" / "analisis_diversidad.md").read_text(
-        encoding="utf-8").replace("\u202f", " ")
+    doc_div = (RAIZ / "03_informes" / "analisis_fase2" / "analisis_diversidad.md"
+               ).read_text(encoding="utf-8").replace("\u202f", " ")
     # La razón es %DANE / %investigadores: los cuatro grupos principales tienen
     # razón > 1, luego están SUBrepresentados. Los tres pequeños, razón < 1.
     principales = ["afro", "indigena", "discapacidad", "victima"]

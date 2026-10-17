@@ -106,7 +106,7 @@ def commit_auditado_real() -> str:
     auditado esté presente. Si el clon no existe o no es un repositorio git, se
     devuelve el commit ANCLADO en la transferencia
     (`data/memoria/commit_auditado.txt`), que es el mismo del que se extrajo el
-    contenido de `datos_originales/repo_auditado/`. Antes esta función lanzaba
+    contenido de `04_auditoria/repo_original/`. Antes esta función lanzaba
     RuntimeError y tumbaba la construcción del grafo, de modo que R7 no fallaba:
     el programa se caía entero.
     """
@@ -120,7 +120,7 @@ def commit_auditado_real() -> str:
                 f"el commit auditado") from exc
         ancla = config.COMMIT_ANCLADO.read_text(encoding="utf-8").strip()
         print(f"[memoria] clon del repo auditado no disponible; commit anclado "
-              f"= {ancla} (ver datos_originales/README.md)")
+              f"= {ancla} (ver 04_auditoria/README.md)")
         return ancla
 
 

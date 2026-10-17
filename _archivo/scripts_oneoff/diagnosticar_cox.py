@@ -25,7 +25,7 @@ sys.dont_write_bytecode = True
 
 from supervivencia import _grad_hess, cox_efron  # noqa: E402
 
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 DEPT_TOP = ["Bogotá  D. C.", "Antioquia", "Valle del Cauca", "Atlántico",
             "Santander"]

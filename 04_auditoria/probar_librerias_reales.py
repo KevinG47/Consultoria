@@ -29,7 +29,7 @@ Requisitos de datos
 - `datos/raw/produccion_grupos.csv` (~1,2 GB): **no existe** y no se puede
   descargar sin red. Los 3 scripts de produccion deben salir con codigo 3.
 
-Uso:  python datos_originales/probar_librerias_reales.py
+Uso:  python 04_auditoria/probar_librerias_reales.py
 """
 
 from __future__ import annotations
@@ -46,8 +46,8 @@ from fs_robusto import borrar_arbol  # noqa: E402
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[1]
-MEJORADO = RAIZ / "datos_originales" / "repo_mejorado"
-PRUEBA = RAIZ / "datos_originales" / "_prueba_ejecucion"
+MEJORADO = RAIZ / "04_auditoria" / "repo_mejorado"
+PRUEBA = RAIZ / "04_auditoria" / "_prueba_ejecucion"
 CLON = RAIZ / "Observatorio_Ministerio_de_Ciencias_Grupo8"
 
 SCRIPTS = [

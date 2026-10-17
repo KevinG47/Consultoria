@@ -3,7 +3,7 @@
 construir_repo_mejorado.py
 ==========================
 
-Construye `datos_originales/repo_mejorado/` a partir de `repo_auditado/`.
+Construye `04_auditoria/repo_mejorado/` a partir de `repo_auditado/`.
 
 Reparto de responsabilidades entre las dos carpetas
 ---------------------------------------------------
@@ -27,7 +27,7 @@ Que hace
 
 Uso
 ---
-    python datos_originales/construir_repo_mejorado.py [--dry-run]
+    python 04_auditoria/construir_repo_mejorado.py [--dry-run]
 """
 
 from __future__ import annotations
@@ -40,8 +40,8 @@ from pathlib import Path
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[1]
-ORIGEN = RAIZ / "datos_originales" / "repo_auditado"
-DESTINO = RAIZ / "datos_originales" / "repo_mejorado"
+ORIGEN = RAIZ / "04_auditoria" / "repo_original"
+DESTINO = RAIZ / "04_auditoria" / "repo_mejorado"
 
 # Rellenos sin contenido util: se sustituyen por un README que si explica algo.
 # Son TODOS los .gitkeep del repo auditado (se descubren en tiempo de ejecucion
@@ -181,7 +181,7 @@ def main() -> int:
                       if any(parte in BASURA for parte in p.parts)
                       or p.name in BASURA_ARCHIVOS)
     # La copia verbatim debe tener EXACTAMENTE el contenido versionado.
-    manifest = RAIZ / "datos_originales" / "manifiesto_sha256.csv"
+    manifest = RAIZ / "04_auditoria" / "manifiesto_sha256.csv"
     esperados = None
     if manifest.exists():
         import csv as _csv
@@ -194,7 +194,7 @@ def main() -> int:
                 print(f"      sobra   {x}")
             for x in sorted(esperados - reales)[:10]:
                 print(f"      falta   {x}")
-            print("    Corrige la copia (python datos_originales/verificar_hashes.py)")
+            print("    Corrige la copia (python 04_auditoria/verificar_hashes.py)")
             print("    antes de construir la version mejorada.")
             return 1
         print(f"          coincide con el manifiesto ({len(esperados)} archivos)")

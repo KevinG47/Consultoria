@@ -32,7 +32,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 RAIZ = Path(__file__).resolve().parents[2]
 XLSX = (RAIZ / "_archivo" / "tmp_dane"
         / "PERSONAS_DEMOGRAFICO_Cuadros_CNPV_2018.xlsx")
-SALIDA = (RAIZ / "datos_originales" / "datos_fuente"
+SALIDA = (RAIZ / "01_datos" / "datos_fuente"
           / "dane_cnpv2018_poblacion_departamental.csv")
 URL = ("https://www.dane.gov.co/files/censo2018/informacion-tecnica/"
        "PERSONAS_DEMOGRAFICO_Cuadros_CNPV_2018.xlsx")

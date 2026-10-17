@@ -11,7 +11,7 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-REPO = RAIZ / "datos_originales" / "repo_auditado"
+REPO = RAIZ / "04_auditoria" / "repo_original"
 
 print("=== dependencias ===")
 for mod in ("duckdb", "openpyxl", "numpy", "pandas", "matplotlib"):
@@ -22,7 +22,7 @@ for mod in ("duckdb", "openpyxl", "numpy", "pandas", "matplotlib"):
         print(f"   {mod:12s} FALTA  {type(e).__name__}: {e}")
 
 print("\n=== cabeceras ===")
-fuente = (RAIZ / "datos_originales" / "datos_fuente"
+fuente = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 consolidado = REPO / "datos" / "tarea_join" / "investigadores_consolidado.csv"
 

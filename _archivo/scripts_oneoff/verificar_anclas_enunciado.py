@@ -13,7 +13,7 @@ from pathlib import Path
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-F = RAIZ / "datos_originales" / "repo_mejorado" / "informe_final.md"
+F = RAIZ / "04_auditoria" / "repo_mejorado" / "informe_final.md"
 txt = F.read_text(encoding="utf-8")
 print(f"archivo: {F.relative_to(RAIZ)}  ({len(txt)} caracteres)")
 print(f"codificación: UTF-8 leído sin errores")

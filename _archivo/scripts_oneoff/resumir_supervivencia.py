@@ -13,7 +13,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-J = json.loads((DOC / "data" / "memoria" / "supervivencia.json")
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "supervivencia.json")
                .read_text(encoding="utf-8"))
 
 print("=== diseño ===")

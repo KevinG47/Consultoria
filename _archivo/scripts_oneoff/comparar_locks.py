@@ -14,8 +14,8 @@ import tomllib
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
-AUDITADO = RAIZ / "datos_originales" / "repo_auditado" / "poetry.lock"
-MEJORADO = RAIZ / "datos_originales" / "repo_mejorado" / "poetry.lock"
+AUDITADO = RAIZ / "04_auditoria" / "repo_original" / "poetry.lock"
+MEJORADO = RAIZ / "04_auditoria" / "repo_mejorado" / "poetry.lock"
 
 
 def cargar(ruta: Path) -> dict[str, str]:

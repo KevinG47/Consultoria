@@ -266,7 +266,7 @@ def main(argv: list[str] | None = None) -> int:
     dh.add_argument("--tipos", default="",
                     help="tipos de nodo separados por coma (por defecto: Criterio,Documento)")
     dh.add_argument("--salida", default="",
-                    help="ruta del HTML (por defecto: data/memoria/grafo_interactivo.html)")
+                    help="ruta del HTML (por defecto: 02_dashboards/grafo_interactivo.html)")
     dh.add_argument("--titulo", default="", help="título de la vista")
     dh.add_argument("--refrescar-git", action="store_true",
                     help="relee el clon auditado con git antes de dibujar")

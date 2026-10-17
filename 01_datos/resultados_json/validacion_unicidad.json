@@ -8,19 +8,19 @@
     "descripcion": "Un mismo ID_PERSONA_PR debe designar a la misma persona en todas las convocatorias. Como el padrón no trae nombre ni documento, la única forma de comprobarlo es que la trayectoria sea coherente consigo misma: la edad debe crecer tanto como haya pasado el tiempo, y los atributos estables no deben cambiar de valor.\n",
     "origen": {
       "documentada_en": {
-        "archivo": "datos_originales/repo_auditado/informe_final.md",
+        "archivo": "04_auditoria/repo_original/informe_final.md",
         "linea": 130,
         "cita": "«Se estableció la regla práctica: si la diferencia de edad entre dos registros coincide con el lapso temporal entre convocatorias (±4 año tolerancia para errores de digitación) y al menos una otra variable coincide (genero), se acepta unicidad del ID.»\n"
       },
       "implementada_en": {
-        "archivo": "datos_originales/repo_auditado/notebooks/tarea_tabla/arreglar_base_consultoria_7.R",
+        "archivo": "04_auditoria/repo_original/notebooks/tarea_tabla/arreglar_base_consultoria_7.R",
         "lineas": "96-101",
         "codigo": "duplicados_dif %>% filter(dif_edad > 4.1)"
       },
       "discrepancia": "La documentación describe un contraste CONTRA EL LAPSO ENTRE CONVOCATORIAS con tolerancia simétrica, y exige que coincida el género. El código implementa un umbral fijo de 4,1 años sobre la diferencia de edad, en UNA SOLA COLA (solo aumentos) y sin comprobar el género. Consecuencia verificada: la implementación marca 1 067 pares donde la documentada marca 18, y no detecta ninguno de los 6 pares en los que la edad retrocede. Esta formalización sigue la regla DOCUMENTADA, que es la correcta.\n"
     },
     "alcance": {
-      "fuente": "datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+      "fuente": "01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv",
       "granularidad": "persona x convocatoria",
       "comparacion": "pares_consecutivos",
       "nota": "Se comparan los pares consecutivos de cada ID, ordenados por la fecha real de la convocatoria. Es lo que hace el código del auditado (lag) y basta para detectar una trayectoria incoherente: si dos registros consecutivos se contradicen, el ID es dudoso.\n"

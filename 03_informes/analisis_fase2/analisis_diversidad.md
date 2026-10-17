@@ -3,8 +3,8 @@
 **Pregunta que cierra:** Q6 del repositorio auditado — «¿qué tan diversos son los
 investigadores reconocidos frente a la población colombiana?».
 **Artefactos:** `documentacion_auditoria/src/diversidad_inferencia.py` ·
-`data/memoria/diversidad_inferencia.json` · `data/memoria/graficas_diversidad/`
-(2 figuras) · entrada **E7** de `datos_originales/ERRATA.md`.
+`01_datos/resultados_json/diversidad_inferencia.json` · `data/memoria/graficas_diversidad/`
+(2 figuras) · entrada **E7** de `04_auditoria/ERRATA.md`.
 
 ## 1. Qué añade sobre lo que ya existía
 
@@ -157,7 +157,7 @@ precisa: están sobrerrepresentados en el registro, pero sobre 45, 11 y 6 person
 python documentacion_auditoria/src/diversidad_inferencia.py
 ```
 
-Entradas: el CSV fuente versionado en `datos_originales/datos_fuente/`, la muestra
+Entradas: el CSV fuente versionado en `01_datos/datos_fuente/`, la muestra
 `data/memoria/muestra_ids.csv` y las referencias DANE copiadas de
 `repo_mejorado/src/analisis/diversidad.py` (no se introducen cifras externas por
 otra vía). **No necesita red.** Salidas: el JSON, las dos figuras y la evidencia

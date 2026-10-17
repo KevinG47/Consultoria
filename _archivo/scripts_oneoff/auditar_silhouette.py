@@ -36,8 +36,7 @@ print(f"filas {len(cat):,} · categóricas {cat.shape[1]} · numérica 1".replac
 etq, coste = cf.kprototypes(cat, z, 2, 0.5, np.random.default_rng(cf.SEMILLA))
 sil = cf.silhouette_mixta(cat, z, etq, 0.5, np.random.default_rng(cf.SEMILLA))
 print(f"\nsilhouette(k=2) recalculada : {sil:.6f}")
-cl = json.loads((RAIZ / "documentacion_auditoria" / "data" / "memoria"
-                 / "clustering.json").read_text(encoding="utf-8"))
+cl = json.loads((RAIZ / "01_datos" / "resultados_json" / "clustering.json").read_text(encoding="utf-8"))
 pub = cl["criterios_k"]["silhouette"][0]
 print(f"publicada                  : {pub:.6f}")
 print(f"diferencia                 : {abs(sil - pub):.2e}")

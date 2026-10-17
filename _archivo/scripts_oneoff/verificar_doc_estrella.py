@@ -19,8 +19,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-TEXTO = (DOC / "analisis_modelo_estrella.md").read_text(encoding="utf-8")
-J = json.loads((DOC / "data" / "memoria" / "modelo_estrella.json")
+TEXTO = (RAIZ / "03_informes" / "analisis_fase2" / "analisis_modelo_estrella.md").read_text(encoding="utf-8")
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "modelo_estrella.json")
                .read_text(encoding="utf-8"))
 
 
@@ -70,8 +70,8 @@ for k in ("fact_clasificacion", "dim_convocatoria", "dim_investigador",
 
 # --- afirmaciones sobre los repositorios ---------------------------------
 print("\n--- afirmaciones verificables sobre los repositorios ---")
-aud = RAIZ / "datos_originales" / "repo_auditado" / "informe_final.md"
-mej = RAIZ / "datos_originales" / "repo_mejorado" / "informe_final.md"
+aud = RAIZ / "04_auditoria" / "repo_original" / "informe_final.md"
+mej = RAIZ / "04_auditoria" / "repo_mejorado" / "informe_final.md"
 ta, tm = aud.read_text(encoding="utf-8"), mej.read_text(encoding="utf-8")
 comprobaciones = {
     "repo_auditado conserva 'nueve dimensiones'": ta.count("nueve dimensiones") == 4,

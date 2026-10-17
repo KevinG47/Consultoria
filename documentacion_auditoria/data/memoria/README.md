@@ -5,16 +5,16 @@ Consulta individual del padrón de investigadores reconocidos de MinCiencias
 
 | | |
 |---|---|
-| **Archivo** | `herramienta_trayectorias.html` (2,58 MB) |
+| **Archivo** | `02_dashboards/herramienta_trayectorias.html` (2,58 MB) |
 | **Datos** | embebidos en el propio HTML |
 | **Generado por** | `documentacion_auditoria/src/construir_herramienta.py` |
 | **Cobertura** | 30 086 personas · 77 237 registros · toda la base |
 
 ## Cómo abrirla
 
-**Doble clic en `herramienta_trayectorias.html`.** Se abre en el navegador y
-funciona **sin conexión a internet**: no carga fuentes, scripts, hojas de estilo
-ni imágenes externas, y no necesita ningún servidor local.
+**Doble clic en `02_dashboards/herramienta_trayectorias.html`.** Se abre en el
+navegador y funciona **sin conexión a internet**: no carga fuentes, scripts, hojas
+de estilo ni imágenes externas, y no necesita ningún servidor local.
 
 Por qué los datos están dentro del HTML y no en un `personas.json` aparte: al
 abrir un archivo con doble clic el navegador usa el protocolo `file://`, y en ese
@@ -118,5 +118,5 @@ demográficos agregados que publica MinCiencias.
 python documentacion_auditoria/src/construir_herramienta.py
 ```
 
-Lee `datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`
+Lee `01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`
 (que no modifica) y reescribe el HTML. El proceso es determinista.

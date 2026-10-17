@@ -10,8 +10,7 @@ from pathlib import Path
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-J = json.loads((RAIZ / "documentacion_auditoria" / "data" / "memoria"
-                / "percapita_territorial.json").read_text(encoding="utf-8"))
+J = json.loads((RAIZ / "01_datos" / "resultados_json" / "percapita_territorial.json").read_text(encoding="utf-8"))
 
 
 def f(x, d=2):

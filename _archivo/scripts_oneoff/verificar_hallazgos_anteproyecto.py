@@ -32,14 +32,14 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 
 ANALISIS = {
-    "analisis_longitudinal.md": DOC / "analisis_longitudinal.md",
-    "analisis_percapita_territorial.md": DOC / "analisis_percapita_territorial.md",
-    "evaluacion_cumplimiento.md": DOC / "evaluacion_cumplimiento.md",
-    "dashboard_eda.html": DOC / "data" / "memoria" / "dashboard_eda.html",
+    "analisis_longitudinal.md": RAIZ / "03_informes" / "analisis_fase2" / "analisis_longitudinal.md",
+    "analisis_percapita_territorial.md": RAIZ / "03_informes" / "analisis_fase2" / "analisis_percapita_territorial.md",
+    "evaluacion_cumplimiento.md": RAIZ / "03_informes" / "analisis_fase2" / "evaluacion_cumplimiento.md",
+    "dashboard_eda.html": RAIZ / "02_dashboards" / "dashboard_eda.html",
 }
 
 # Patrones de los 4 hallazgos. Se excluye el bundle de Plotly del HTML, que

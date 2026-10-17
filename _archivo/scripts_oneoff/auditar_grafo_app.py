@@ -17,7 +17,7 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
 sys.dont_write_bytecode = True
-sys.path.insert(0, str(RAIZ / "datos_originales" / "repo_auditado" / "src"))
+sys.path.insert(0, str(RAIZ / "04_auditoria" / "repo_original" / "src"))
 
 real = sys.stdout
 sys.stdout = io.TextIOWrapper(open(os.devnull, "wb"), encoding="utf-8")
@@ -28,7 +28,7 @@ try:
 finally:
     sys.stdout = real
 
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 df = pd.read_csv(FUENTE, dtype=str, keep_default_na=False, encoding="utf-8",
                  usecols=["ID_CONVOCATORIA", "ID_PERSONA_PR", "INST_FILIA"])

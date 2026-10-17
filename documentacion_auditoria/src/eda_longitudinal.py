@@ -44,7 +44,7 @@ from genero_comun import (  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-CSV = RAIZ / "datos_originales" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
+CSV = RAIZ / "01_datos" / "datos_fuente" / "Investigadores_Reconocidos_por_convocatoria_20261006.csv"
 DIR_EDA = DOC / "data" / "memoria" / "eda"
 SALIDA = DOC / "data" / "memoria" / "eda_resultados.json"
 

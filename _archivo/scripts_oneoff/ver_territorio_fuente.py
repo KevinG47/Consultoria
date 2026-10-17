@@ -11,7 +11,7 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 RAIZ = Path(__file__).resolve().parents[2]
-CSV = (RAIZ / "datos_originales" / "datos_fuente"
+CSV = (RAIZ / "01_datos" / "datos_fuente"
        / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 
 cab = pd.read_csv(CSV, nrows=3, dtype=str, keep_default_na=False, encoding="utf-8")

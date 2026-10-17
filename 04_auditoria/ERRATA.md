@@ -67,7 +67,7 @@ las 77 237 de 6. Comprobado en este entorno:
 
 ```
 Observatorio_.../evidencias/calidad_resumen.json  (working tree)  -> n_total=50891, n_atipicos_edad=19
-datos_originales/repo_auditado/evidencias/calidad_resumen.json    -> n_total=77237, n_atipicos_edad=22
+04_auditoria/repo_original/evidencias/calidad_resumen.json    -> n_total=77237, n_atipicos_edad=22
 ```
 
 > ✅ **Corregido (este párrafo ya no describe un defecto abierto).** El párrafo de
@@ -84,7 +84,7 @@ datos_originales/repo_auditado/evidencias/calidad_resumen.json    -> n_total=772
 >
 > Verificado releyendo ambos artefactos, no copiando el texto anterior. R16 sigue en
 > PASA y el recuento global no cambia (15 PASA / 0 FALLA / 2 ADVERTENCIA). Si
-> comparas D010 con `datos_originales/repo_auditado/evidencias/calidad_resumen.json`
+> comparas D010 con `04_auditoria/repo_original/evidencias/calidad_resumen.json`
 > ahora coinciden: 22. El archivo transferido es idéntico al commit (hash verificado).
 
 ## E2 · El consolidado versionado cubre 3 de las 6 convocatorias
@@ -111,7 +111,7 @@ contiene solo `.gitkeep`; lo crudo está en `.gitignore` y no hay DVC).
 mojibake del CSV también se confirmó en bytes (`F\xc3\xadsica` en UTF-8/Latin-1)`.
 
 **No es reproducible sobre el archivo versionado.** Comprobado sobre
-`datos_originales/repo_auditado/datos/tarea_join/investigadores_consolidado.csv`:
+`04_auditoria/repo_original/datos/tarea_join/investigadores_consolidado.csv`:
 
 ```
 decodifica como UTF-8 estricto: SÍ (sin errores)
@@ -214,7 +214,7 @@ El comentario manda quitar la mayoría; el código solo quita los `NO DISPONIBLE
 ejecutando las funciones del repositorio sin tocarlas
 (`_archivo/scripts_oneoff/verificar_comparar_dane.py`) y, después, con la fuente
 completa de 6 convocatorias en F2-5
-(`documentacion_auditoria/data/memoria/diversidad_inferencia.json`).
+(`01_datos/resultados_json/diversidad_inferencia.json`).
 
 **Por qué el comentario está mal.** `DANE_REFERENCIA` son porcentajes de la
 población **total**, así que la base comparable es el total de **respuestas
@@ -234,7 +234,7 @@ el informe habría dicho que la población afro está **sobrerrepresentada 11 ve
 en lugar de subrepresentada 3 veces: el signo del hallazgo se invierte.
 
 **Corregido en `repo_mejorado/`** con el parche **E1** de
-`datos_originales/aplicar_arreglos.py`, que reescribe el comentario para que
+`04_auditoria/aplicar_arreglos.py`, que reescribe el comentario para que
 describa la base que el código realmente usa. `verificar_arreglos.py` comprueba
 que el comentario corregido esté presente y que `comparar_dane()` siga
 reproduciendo la evidencia fila por fila (afro 3,0×; indígena 7,9×; discapacidad

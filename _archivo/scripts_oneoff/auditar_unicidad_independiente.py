@@ -22,7 +22,8 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 TOL = 4.0
 
@@ -66,7 +67,7 @@ solo_gen = int(((por_id["fallos_edad"] == 0) & (por_id["fallos_genero"] > 0)).su
 solo_edad = int(((por_id["fallos_edad"] > 0) & (por_id["fallos_genero"] == 0)).sum())
 ambas = int(((por_id["fallos_edad"] > 0) & (por_id["fallos_genero"] > 0)).sum())
 
-u = json.loads((MEM / "validacion_unicidad.json").read_text(encoding="utf-8"))
+u = json.loads((RESULTADOS / "validacion_unicidad.json").read_text(encoding="utf-8"))
 i = u["ids_no_unicos"]
 print("\n=== comparación con lo publicado ===")
 print(f"  IDs evaluados  : recalculado {int(por_id.shape[0]):,} · "

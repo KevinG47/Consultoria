@@ -10,7 +10,7 @@ migración del periodo como líneas con el destino marcado.
 
 DOS SALIDAS CON LA MISMA FIGURA
 -------------------------------
-  1. `data/memoria/mapa_migracion.html` — página autocontenida (Plotly embebido,
+  1. `02_dashboards/mapa_migracion.html` — página autocontenida (Plotly embebido,
      GeoJSON embebido, cero referencias externas). Se abre sin internet.
   2. La **pestaña 8** de `dashboard_fase2.html`: este módulo expone la figura y
      los bloques HTML, y el panel los inserta. Es la misma figura, no una copia.
@@ -63,10 +63,12 @@ from paleta_fase2 import (BLANCO, CONFIG_PLOTLY, ESCALA_AZUL, NOMBRE_TEMPLATE,
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 MEM = DOC / "data" / "memoria"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+DASH = RAIZ / "02_dashboards"
 GEO = DOC / "data" / "geo" / "colombia_departamentos.geojson"
-PERCAPITA = MEM / "percapita_territorial.json"
-FLUJOS = MEM / "flujos_territoriales.json"
-SALIDA = MEM / "mapa_migracion.html"
+PERCAPITA = RESULTADOS / "percapita_territorial.json"
+FLUJOS = RESULTADOS / "flujos_territoriales.json"
+SALIDA = DASH / "mapa_migracion.html"
 GRAFICAS = MEM / "graficas_flujos"
 
 ZMAX = 140.0            # tope de la rampa de color: la tasa máxima es 137,69

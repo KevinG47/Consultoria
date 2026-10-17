@@ -17,7 +17,7 @@ const path = require("path");
 const vm = require("vm");
 
 const RUTA = path.join(__dirname, "..", "..",
-  "documentacion_auditoria", "data", "memoria", "dashboard_eda.html");
+  "02_dashboards", "dashboard_eda.html");
 const html = fs.readFileSync(RUTA, "utf8");
 
 let fallos = 0;

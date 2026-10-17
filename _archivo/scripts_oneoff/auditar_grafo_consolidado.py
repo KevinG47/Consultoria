@@ -11,7 +11,7 @@ import pandas as pd
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
-REPO = RAIZ / "datos_originales" / "repo_auditado"
+REPO = RAIZ / "04_auditoria" / "repo_original"
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(REPO / "src"))
 

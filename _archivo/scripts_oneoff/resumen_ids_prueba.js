@@ -2,8 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const RAIZ = path.resolve(__dirname, "..", "..");
-const HTML = path.join(RAIZ, "documentacion_auditoria", "data", "memoria",
-                       "herramienta_trayectorias.html");
+const HTML = path.join(RAIZ, "02_dashboards", "herramienta_trayectorias.html");
 const TMP = path.join(__dirname, "_app_resumen.js");
 const m = fs.readFileSync(HTML, "utf8").match(/<script id="app">([\s\S]*?)<\/script>/);
 fs.writeFileSync(TMP, m[1], "utf8");

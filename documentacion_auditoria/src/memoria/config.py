@@ -22,6 +22,21 @@ DATA = DOC / "data"
 LATEX = DOC / "latex"
 PDF = DOC / "pdf"
 MEMORIA = DATA / "memoria"                     # artefactos que produce este sistema
+
+# --- Estructura "clean" del repositorio (reorganización 2026-10) ---------
+# Los entregables de la Fase 2 salieron del almacén del sistema para que el
+# próximo grupo encuentre de un vistazo datos, paneles, informes, auditoría y
+# entregas. `MEMORIA` sigue siendo el almacén interno (índice RAG, grafo,
+# decisiones, reglas y figuras PNG de cada análisis).
+DATOS = RAIZ / "01_datos"
+DATOS_FUENTE = DATOS / "datos_fuente"
+RESULTADOS_JSON = DATOS / "resultados_json"
+DASHBOARDS = RAIZ / "02_dashboards"
+INFORMES = RAIZ / "03_informes" / "analisis_fase2"
+AUDITORIA = RAIZ / "04_auditoria"
+REPO_ORIGINAL = AUDITORIA / "repo_original"
+REPO_MEJORADO = AUDITORIA / "repo_mejorado"
+ENTREGAS = RAIZ / "05_entregas"
 CLON = RAIZ / "Observatorio_Ministerio_de_Ciencias_Grupo8"   # repo auditado (clon real)
 
 # --- Metadatos de entrada (fuente de verdad ya existente) -----------------
@@ -50,14 +65,14 @@ GIT_FILES_CACHE = MEMORIA / "git_ls_files_real.txt"
 
 # --- Ancla del commit auditado (repositorio autocontenido) ----------------
 # El repositorio ya NO necesita el clon del proyecto auditado: su contenido
-# versionado esta copiado byte a byte en datos_originales/repo_auditado/ (ver
-# datos_originales/README.md y el manifiesto SHA-256), y los dos cachés de git
+# versionado esta copiado byte a byte en 04_auditoria/repo_original/ (ver
+# 04_auditoria/README.md y el manifiesto SHA-256), y los dos cachés de git
 # estan versionados, de modo que R5, R6 y R9 se resuelven sin red ni clon.
 # R7 necesita el HEAD real: si el clon no esta disponible (o no es un
 # repositorio git), `grafo.commit_auditado_real()` cae a este ancla, que se fija
 # en la transferencia. Si algun dia se re-audita contra otro commit, hay que
 # actualizar el ancla Y volver a extraer el contenido con
-# `python datos_originales/extraer_repo_auditado.py`.
+# `python 04_auditoria/extraer_repo_auditado.py`.
 COMMIT_ANCLADO = MEMORIA / "commit_auditado.txt"
 
 # Artefactos del sistema

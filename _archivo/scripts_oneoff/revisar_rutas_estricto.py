@@ -33,8 +33,8 @@ print()
 arbol = re.findall(r"[├└]── ([\w./\-]+\.(?:py|csv|md|yaml))", texto)
 print(f"rutas citadas en el arbol: {len(arbol)}")
 for r in sorted(set(arbol)):
-    ok = (RAIZ / "datos_originales" / r).exists()
-    print(f"  {'OK ' if ok else 'NO '} datos_originales/{r}")
+    ok = (RAIZ / "04_auditoria" / r).exists()
+    print(f"  {'OK ' if ok else 'NO '} 04_auditoria/{r}")
     if not ok:
         malas.append(r)
 

@@ -1,94 +1,175 @@
 # Consultoría Estadística USTA · 2026-II
-## Auditoría estadística reproducible del sistema de reconocimiento de investigadores de MinCiencias (2013–2021)
+## Auditoría reproducible del Observatorio MinCiencias y análisis propio de los investigadores reconocidos (2013–2021)
 
-**Equipo:** Kevin Leonardo Chaparro Reyes · Valentina Muñoz Palma · Paula Margarita Triana Ancinez
-**Asignatura:** Consultoría Estadística — Universidad Santo Tomás · **Modalidad:** proyecto con datos abiertos
+**Equipo:** Kevin Leonardo Chaparro Reyes · Valentina Muñoz Palma ·
+Paula Margarita Triana Ancinez
+**Asignatura:** Consultoría Estadística — Universidad Santo Tomás ·
+**Modalidad:** proyecto con datos abiertos
 
 ---
 
-## ▶ Empieza aquí
+## Qué es este repositorio, en dos párrafos
 
-Este repositorio contiene **todo** lo necesario para reproducir y continuar el
-proyecto: los datos fuente, una copia verbatim del repositorio auditado, el
-pipeline de análisis, los documentos metodológicos y un sistema de validación
-automática de 17 reglas. **No necesitas clonar ni consultar el repositorio
-auditado original.**
+Primero **auditamos**: el repositorio público
+[`ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8`](https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8)
+(commit `1528939`) se copió byte a byte, se documentó archivo por archivo y se
+contrastó cada cifra que afirmaba. Después **analizamos nosotros**: sobre la base
+completa de investigadores reconocidos por MinCiencias (77 237 registros, 30 086
+personas, 6 convocatorias entre 2013 y 2021) hicimos los diez análisis que el
+repositorio auditado había dejado pendientes y uno nuevo de flujos territoriales,
+con inferencia (MAS + post-estratificación + GREG), modelos nulos, supervivencia y
+un mapa interactivo.
 
-| Carpeta / archivo | Qué es | Empieza por |
+Todo está versionado para que **el próximo grupo lo pueda reproducir sin el clon
+auditado y sin internet**: los datos fuente, una copia verbatim del proyecto
+auditado con manifiesto SHA-256, el pipeline completo, los paneles HTML
+autocontenidos y un sistema de validación automática de **17 reglas** que se corre
+antes de dar cualquier cifra por buena.
+
+---
+
+## Las cinco carpetas
+
+| Carpeta | Qué hay | Empieza por |
 |---|---|---|
-| `datos_originales/` | Los datos y **las dos copias** del repositorio auditado: el CSV fuente, la copia *verbatim* del commit `1528939` y `repo_mejorado/`, el mismo código con los 30 arreglos aplicados | `datos_originales/README.md` |
-| `documentacion_auditoria/` | El sistema de auditoría: pipeline, documentos LaTeX, PDFs, memoria del agente y las 17 reglas | `documentacion_auditoria/README.md` |
-| `documentacion_auditoria/metodologia_muestreo.md` | **Metodología estadística**: EDA, muestreo, post-estratificación, GREG, diagnósticos y supuestos | — |
-| `documentacion_auditoria/analisis_longitudinal.md` | **Análisis del panel**: retención, transiciones, validez de la muestra y de los estimadores | — |
-| `documentacion_auditoria/comparacion_tfidf_vs_embeddings.md` | **Comparación de los dos métodos de recuperación** del RAG (TF-IDF vs. embeddings Granite) | — |
-| `documentacion_auditoria/data/memoria/herramienta_trayectorias.html` | **Visor interactivo** del panel: consulta por ID, institución, área o categoría (se abre con doble clic) | — |
-| `entregables_2Corte/` | Entregas 1–5 del segundo corte (PDF) | — |
-| `ENTREGA_1/` | Anteproyecto, diapositivas, guía de estudio y tarjetas entregados | — |
-| `_archivo/` | Scripts de una sola vez y logs del pipeline auditado (evidencia de trabajo) | `_archivo/README.md` |
-| `DECLARACION_IA_Y_REPARTO.md` | Declaración de uso de IA y reparto del trabajo | — |
-| `informe_consultoria_observatorio_minciencias.md` | Diagnóstico técnico de la fase 2026-I (antecedente, **no** es entregable) | — |
+| **`01_datos/`** | **Datos.** `datos_fuente/` con la base de datos.gov.co (`Investigadores_Reconocidos_por_convocatoria_20261006.csv`, 31,3 MB) y las tablas del DANE (CNPV 2018 y proyecciones) con su `.procedencia.txt`; `resultados_json/` con los **8 JSON de resultados** de los análisis (F2-2 a F2-11) | `01_datos/resultados_json/` |
+| **`02_dashboards/`** | **Los paneles.** Cinco HTML que se abren con doble clic y funcionan **sin conexión**: el panel de la Fase 2, el EDA, el visor de trayectorias, el mapa de flujos y el grafo de la memoria | `02_dashboards/dashboard_fase2.html` |
+| **`03_informes/analisis_fase2/`** | **Los informes.** 14 documentos `.md`: los nueve análisis de la Fase 2, la metodología de muestreo, el estudio de viabilidad del mapa, la auditoría cruzada, la evaluación de cumplimiento y la comparación de métodos de recuperación | `03_informes/analisis_fase2/metodologia_muestreo.md` |
+| **`04_auditoria/`** | **La evidencia.** `repo_original/`: los **236 archivos** del commit auditado, byte a byte, con `manifiesto_sha256.csv`; `repo_mejorado/`: el mismo código con **30 arreglos** documentados en su `CHANGELOG.md`; los scripts de extracción y verificación; y `ERRATA.md` con las contradicciones conocidas del proyecto auditado | `04_auditoria/README.md` |
+| **`05_entregas/`** | **Lo entregado al docente.** `ENTREGA_1/` (anteproyecto, diapositivas, guía de estudio y tarjetas) y `entregables_2Corte/` (entregas 1–5 del segundo corte) | `05_entregas/ENTREGA_1/LEEME_ENTREGA_1.md` |
+
+Fuera de esas cinco: **`documentacion_auditoria/`** es el sistema de auditoría
+(pipeline `src/`, documentos LaTeX, PDFs, ZIP de Overleaf y la memoria del agente
+en `data/memoria/`), y **`_archivo/`** guarda los scripts de una sola vez y los
+logs que son evidencia de trabajo.
+
+> **Por qué `documentacion_auditoria/src/` y `data/` no se movieron:** sus scripts
+> resuelven las rutas con `Path(__file__)` y las 17 reglas leen la memoria del
+> agente (índice RAG, grafo, decisiones, validación) desde `data/memoria/`. Mover
+> esas carpetas rompería la validación. Lo que sí salieron de ahí son los
+> **entregables**: resultados, paneles e informes.
+
+---
+
+## El panel principal
+
+**`02_dashboards/dashboard_fase2.html`** (5,63 MB, autocontenido: Plotly viene
+embebido y no hay una sola petición a internet). Ocho pestañas y 18 gráficos:
+
+| Pestaña | Qué responde |
+|---|---|
+| 1 · Resumen ejecutivo | Qué se entregó y qué lo respalda (comprobaciones automáticas y figuras por análisis) |
+| 2 · Territorio y desigualdad (F2-2) | Tasas per cápita por departamento, Gini/Theil entre y dentro de regiones, HHI |
+| 3 · Diversidad y falencias (F2-5) | Razones de representación con IC de Wilson y la trampa del denominador |
+| 4 · Redes y clustering (F2-4, F2-6) | Co-filiación institucional frente a tres modelos nulos y el clustering formalizado |
+| 5 · Supervivencia y género (F2-10) | Kaplan-Meier, Cox y por qué el efecto del género es de composición |
+| 6 · Calidad y reproducibilidad (F2-3, F2-7) | Modelo estrella y la regla de unicidad de IDs: documentada frente a implementada |
+| 7 · Límites y falencias | Qué se cerró, qué no es evaluable y qué queda pendiente |
+| 8 · Flujos y migración (F2-11) | Mapa de los 33 departamentos con las 808 mudanzas de 2013–2021 y la migración acumulada por nacimiento |
+
+Cada gráfico explica **qué se hizo**, **por qué**, **qué teoría lo respalda** y
+**cómo se lee**; al final hay un índice de 32 conceptos con buscador.
+
+Los otros cuatro paneles, del mismo tamaño y también offline:
+
+| Archivo | Qué es |
+|---|---|
+| `02_dashboards/dashboard_eda.html` | EDA de la Fase 1: 17 gráficos en 4 pestañas (univariado, bivariado, varianza, supuestos) |
+| `02_dashboards/herramienta_trayectorias.html` | Visor individual del padrón: consulta por ID, institución, área o categoría (30 086 fichas) |
+| `02_dashboards/mapa_migracion.html` | El mapa de flujos de la F2-11 en su versión suelta (las dos definiciones de migración, conmutables) |
+| `02_dashboards/grafo_interactivo.html` | Grafo de la memoria del agente (criterios → documentos) |
+
+---
+
+## Cómo se ejecutan las validaciones
+
+Todo el sistema se valida con las **17 reglas** del agente antes de dar una cifra
+por buena. Se corre desde `documentacion_auditoria/src/`:
+
+```bash
+cd documentacion_auditoria/src
+python -m memoria indexar     # solo la primera vez: el índice RAG no se versiona
+python -m memoria validar     # 17 reglas · exit 1 si alguna FALLA
+python -m memoria evidencia   # informe legible de la última corrida
+```
+
+**Estado actual: 15 PASA · 0 FALLA · 2 ADVERTENCIA.** Las dos advertencias son
+declaradas y revisadas: **R12** (solapamiento entre documento completo y LITE) y
+**R15** (la técnica TF-IDF se conserva como respaldo declarado de la decisión
+D007). Las reglas cubren, entre otras cosas, que cada criterio tenga su par
+completo/LITE, que la línea de tiempo coincida con el `git log` real, que todo
+archivo de código auditado esté referenciado, que el índice RAG cubra el corpus,
+que no haya contradicciones numéricas entre documentos y que las cifras del
+sistema citadas en la documentación no se queden atrás.
+
+Además hay verificadores de los entregables, que también corren sin red:
+
+```bash
+python documentacion_auditoria/src/verificar_mapa.py            # mapa F2-11: 64 comprobaciones
+python documentacion_auditoria/src/verificar_dashboard_fase2.py # panel F2: 77 comprobaciones
+python documentacion_auditoria/src/verificar_consistencia.py    # cifras contra fuentes: 7/7
+python 04_auditoria/verificar_hashes.py                         # copia auditada: 236/236 idénticos
+```
+
+`verificar_dashboard_fase2.py` comprueba, entre otras cosas, que el panel no
+tenga referencias externas, que los datos de cada gráfico sean los del JSON de su
+análisis, que los 33 polígonos del mapa estén embebidos y unidos por código
+DIVIPOLA, que la pestaña 8 dibuje **exactamente** las mismas trazas que el mapa
+suelto y que el panel no pase de 6 MB.
 
 ---
 
 ## Reproducir el análisis
 
-Requiere **Python 3.11+** con `pandas`, `numpy`, `scipy`, `scikit-learn`,
-`matplotlib`, `networkx`, `PyYAML` (y `pyvis` para el grafo interactivo). No se
-necesita `statsmodels`: las pruebas estadísticas están implementadas en el
-proyecto.
+Requiere Python 3.11+ con `pandas`, `numpy`, `scipy`, `scikit-learn`,
+`matplotlib`, `networkx`, `plotly` y `PyYAML` (y `pyvis` para el grafo
+interactivo). Los análisis estadísticos no dependen de `statsmodels`.
 
 ```bash
-# ── Desde la RAÍZ del repositorio ───────────────────────────────────────────
-# 1. Análisis, en este orden (cada paso escribe sus cifras en data/memoria/)
-python documentacion_auditoria/src/analisis_longitudinal.py     # panel, retención, transiciones
-python documentacion_auditoria/src/eda_longitudinal.py          # EDA  (metodología, Parte 1)
-python documentacion_auditoria/src/estimadores_longitudinal.py  # PS y GREG (Partes 2-3)
-python documentacion_auditoria/src/diagnosticos_greg.py         # diagnósticos y g-weights (§7)
+# ── Desde la raíz del repositorio ───────────────────────────────────────────
+# 1. Análisis, en orden (escriben sus JSON en 01_datos/resultados_json/)
+python documentacion_auditoria/src/analisis_longitudinal.py
+python documentacion_auditoria/src/eda_longitudinal.py
+python documentacion_auditoria/src/estimadores_longitudinal.py
+python documentacion_auditoria/src/diagnosticos_greg.py
 
-# 2. Documentos metodológicos (se generan a partir de los JSON del paso 1)
-python documentacion_auditoria/src/generar_metodologia_muestreo.py
-python documentacion_auditoria/src/generar_analisis_longitudinal.py
+# 2. Análisis de la Fase 2 (cada uno escribe su JSON y sus figuras)
+python documentacion_auditoria/src/percapita_territorial.py     # F2-2
+python documentacion_auditoria/src/modelo_estrella_6.py         # F2-3
+python documentacion_auditoria/src/redes_modelos_nulos.py       # F2-4
+python documentacion_auditoria/src/diversidad_inferencia.py     # F2-5
+python documentacion_auditoria/src/clustering_formalizado.py    # F2-6
+python documentacion_auditoria/src/validar_unicidad.py          # F2-7
+python documentacion_auditoria/src/supervivencia.py             # F2-10
+python documentacion_auditoria/src/preparar_geojson.py          # F2-11 (una vez)
+python documentacion_auditoria/src/flujos_territoriales.py      # F2-11
 
-# 3. Visor interactivo del panel
+# 3. Paneles (escriben en 02_dashboards/)
+python documentacion_auditoria/src/generar_dashboard_eda.py
+python documentacion_auditoria/src/generar_dashboard_fase2.py
 python documentacion_auditoria/src/construir_herramienta.py
+python documentacion_auditoria/src/mapa_migracion.py
 
 # 4. PDFs (lleva la puerta de validación: aborta si alguna regla FALLA)
 python documentacion_auditoria/src/compilar.py
-
-# ── El CLI de memoria se ejecuta desde documentacion_auditoria/src/ ─────────
-cd documentacion_auditoria/src
-python -m memoria indexar     # OBLIGATORIO la primera vez: el índice no se versiona
-python -m memoria consultar "tema" -k 5
-python -m memoria antes-de-redactar "tema"    # RAG antes de escribir (queda en bitácora)
-python -m memoria grafo                       # memoria estructural (+ --refrescar-git con clon)
-python -m memoria validar                     # 17 reglas (exit 1 si alguna FALLA)
-python -m memoria evidencia                   # informe legible de la última corrida
 ```
 
-Las **dos copias del repositorio auditado** se verifican y se reconstruyen aparte:
+Las dos copias del repositorio auditado se verifican y se reconstruyen aparte:
 
 ```bash
-# ── Verificar la evidencia y reconstruir el código mejorado ────────────────
-python datos_originales/verificar_hashes.py            # repo_auditado: 236/236 hashes idénticos
-python datos_originales/construir_repo_mejorado.py     # repo_mejorado = repo_auditado + estructura
-python datos_originales/aplicar_arreglos.py            # aplica los 30 arreglos declarados
-python datos_originales/verificar_arreglos.py          # comprueba: 0 fallos
-python datos_originales/probar_librerias_reales.py     # los 6 scripts arreglados, con librerías reales
-python datos_originales/probar_inventario_completo.py  # los 51 artefactos del inventario
+python 04_auditoria/verificar_hashes.py            # repo_original: 236/236 idénticos
+python 04_auditoria/construir_repo_mejorado.py     # repo_mejorado = repo_original + estructura
+python 04_auditoria/aplicar_arreglos.py            # aplica los 30 arreglos declarados
+python 04_auditoria/verificar_arreglos.py          # comprueba que siguen cuadrando
+python 04_auditoria/probar_librerias_reales.py     # los scripts arreglados, con librerías reales
 ```
 
 > El orden importa: primero la integridad de la evidencia, luego construir, luego
 > aplicar y al final verificar. Los dos últimos **ejecutan** el código en una copia
 > desechable y reportan lo que ven; no modifican `repo_mejorado/`.
 
-> El paso 0 es la única preparación: `rag_corpus.jsonl`, `rag_matriz.npz` y
-> `rag_vectorizer.pkl` no se versionan porque se regeneran en segundos. Todo lo
-> demás —incluidos los cachés de git que sostienen las reglas R5, R6 y R9— **sí**
-> está versionado, de modo que el repositorio funciona sin el clon auditado.
-
-Los scripts escriben en `documentacion_auditoria/data/memoria/`; el CSV fuente se
-lee de `datos_originales/datos_fuente/` y **nunca se modifica** (el proyecto es de
-solo lectura sobre los datos).
+> El CSV fuente se lee de `01_datos/datos_fuente/` y **nunca se modifica**: el
+> proyecto es de solo lectura sobre los datos.
 
 ---
 
@@ -100,139 +181,52 @@ solo lectura sobre los datos).
 | Advertencias | **R12** (solapamiento completo/LITE) y **R15** (excepción declarada de la decisión D002) |
 | **Compilación** | `compilar.py` compila **sin `--forzar`**: la puerta de reglas no aborta |
 | Commit auditado | `1528939` |
-| Verificación de la copia | 236/236 archivos idénticos al commit (`datos_originales/verificar_hashes.py`) |
-| **Código mejorado** | `datos_originales/repo_mejorado/`: **30 arreglos** aplicados y verificados (`datos_originales/verificar_arreglos.py` → 0 fallos) |
-| **Lock de dependencias** | `poetry check --lock` → **exit 0**; `poetry install --dry-run` resuelve **153 paquetes** |
-| **Ejecución del código** | **51 artefactos** probados: con las versiones del lock **0 fallos**; con versiones modernas 3 fallos, los tres por dependencias ausentes del entorno y **0 por *breaking change*** |
+| Verificación de la copia | 236/236 archivos idénticos al commit (`04_auditoria/verificar_hashes.py`) |
+| **Código mejorado** | `04_auditoria/repo_mejorado/`: **30 arreglos** declarados en su `CHANGELOG.md` y verificables con `04_auditoria/verificar_arreglos.py` |
+| **Paneles** | 5 HTML autocontenidos; el principal, `02_dashboards/dashboard_fase2.html` (5,63 MB, 18 gráficos, 8 pestañas) |
 
-Las reglas R1–R17 cubren: par completo/LITE, conclusiones, veredictos, glosario,
-línea de tiempo contra `git log`, cobertura del código auditado, commit auditado,
-capas, fichas de análisis, integridad del grafo, cobertura del índice RAG,
-proporción LITE, frescura del índice, contradicciones numéricas, coherencia de
-decisiones, trazabilidad y cifras del sistema. Detalle en
-`documentacion_auditoria/README.md`.
-
-### Decisiones de diseño
-
-Están en **`documentacion_auditoria/data/memoria/decisiones.yaml`** (D001–D010),
-con justificación, alternativas descartadas, evidencia medida e implementación
-verificable. R15 comprueba que cada decisión vigente coincide con el código.
-
-| | Tema | Decisión |
-|---|---|---|
-| D001 | memoria semántica | Usar RAG para la memoria del corpus documental |
-| D002 | técnica de recuperación | TF-IDF en vez de embeddings *(superada; se conserva como respaldo declarado)* |
-| D003 | memoria estructural | Grafo en memoria con `networkx`, sin motor externo |
-| D004 | herramienta externa | Descartar Obsidian del pipeline automatizado |
-| D005 | fuente de verdad | Extender el grafo con datos en vivo del repositorio auditado |
-| D006 | validación | Validación como puerta previa a la compilación |
-| D007 | técnica de recuperación | Migrar el RAG a embeddings locales (Granite R2, 384 d) |
-| D008 | indexación del corpus | Corregir el indexador de markdown |
-| D009 | trazabilidad de cifras | Cerrar el ciclo de D008 y añadir la regla R17 |
-| D010 | cifras de edad | Conservar la cifra «22 registros con edad > 100» y aclararla oralmente |
-
-Fuentes externas consultadas: `documentacion_auditoria/data/memoria/fuentes_externas.yaml` (4, con URL verificada).
+Las decisiones de diseño están en
+**`documentacion_auditoria/data/memoria/decisiones.yaml`** (D001–D010), con
+justificación, alternativas descartadas y evidencia medida; R15 comprueba que
+cada decisión vigente coincide con el código. Las fuentes externas consultadas
+están en `documentacion_auditoria/data/memoria/fuentes_externas.yaml`.
 
 ---
 
-## ⚠️ PARA EL DOCENTE — qué se califica
+## Para el docente — qué se califica
 
-Todo lo calificable está en **`documentacion_auditoria/pdf/`**. Los demás archivos
-son fuente LaTeX, datos o material de fases previas.
-
-| Qué es | Archivo (PDF) | Bloque de la rúbrica |
+| Qué es | Archivo | Bloque de la rúbrica |
 |---|---|---|
-| **Documento (anteproyecto)** | `documentacion_auditoria/pdf/anteproyecto.pdf` | **Documento (D1–D5) · 40 %** — 8 págs. de cuerpo, APA 7, declaración de IA en §6 |
-| **Diapositivas de la sustentación** | `documentacion_auditoria/pdf/diapositivas_anteproyecto.pdf` | **Sustentación (S1–S3) · 60 %** (apoyo visual, 10 láminas / 10 min) |
-| Guía de estudio (apoyo) | `documentacion_auditoria/pdf/guia_estudio.pdf` | repaso: reparto, frases clave, banco de preguntas |
-| Tarjetas frase por frase (apoyo) | `documentacion_auditoria/pdf/tarjetas_sustentacion.pdf` | una página por integrante para ensayar |
+| **Documento (anteproyecto)** | `documentacion_auditoria/pdf/anteproyecto.pdf` | **Documento (D1–D5) · 40 %** |
+| **Diapositivas de la sustentación** | `documentacion_auditoria/pdf/diapositivas_anteproyecto.pdf` | **Sustentación (S1–S3) · 60 %** |
+| Guía de estudio (apoyo) | `documentacion_auditoria/pdf/guia_estudio.pdf` | repaso y banco de preguntas |
+| Tarjetas frase por frase (apoyo) | `documentacion_auditoria/pdf/tarjetas_sustentacion.pdf` | ensayo de la sustentación |
 
-> La **declaración de uso de IA** está en la **sección 6.2 del anteproyecto**, con
-> los informes de validación en `documentacion_auditoria/data/validacion/`.
-> **Declaración ampliada y verificable (S3):** [`DECLARACION_IA_Y_REPARTO.md`](DECLARACION_IA_Y_REPARTO.md).
+La **declaración de uso de IA** está en la sección 6.2 del anteproyecto, con los
+informes de validación en `documentacion_auditoria/data/validacion/`. La
+declaración ampliada y el reparto del trabajo están en
+[`DECLARACION_IA_Y_REPARTO.md`](DECLARACION_IA_Y_REPARTO.md).
 
 ---
 
-## El repositorio auditado y su versión mejorada
+## Nota sobre la reorganización (octubre de 2026)
 
-El proyecto audita el repositorio público
-[`ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8`](https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8)
-(commit `1528939`). Su contenido versionado —236 archivos— está copiado **byte a
-byte** en `datos_originales/repo_auditado/`, con manifiesto SHA-256 y verificación
-reproducible, junto con las **contradicciones conocidas** del proyecto auditado en
-`datos_originales/ERRATA.md` (siete entradas, E1–E7: la de «22 vs 19 vs 10 atípicos
-de edad», que arrastra un matiz importante de la decisión D010; el consolidado que
-cubre 3 de 6 convocatorias; el `poetry.lock` que no corresponde a su
-`pyproject.toml`; el comentario de `diversidad.py` que contradice a su propio
-código…).
+El repositorio se reordenó para el próximo grupo en cinco carpetas numeradas. Se
+movieron con `git mv` (el historial de cada archivo se conserva) y se
+reescribieron las rutas en todo el código y la documentación:
 
-### `datos_originales/` — qué hay y para qué sirve
+- **Sí se movieron:** los 8 JSON de resultados, los 5 paneles HTML, los 14
+  informes de la Fase 2, los datos fuente, las dos copias del proyecto auditado y
+  las dos carpetas de entregas.
+- **No se movieron:** `documentacion_auditoria/src/`, `data/`, `latex/`, `pdf/`,
+  `zip_overleaf/` y `data/validacion/`. Las reglas leen la memoria del agente y
+  las fuentes LaTeX desde esas rutas exactas; además, reescribir las fuentes que
+  vigila la regla R13 (frescura del índice) la habría degradado.
+- **Los snapshots no se reescriben:** `04_auditoria/repo_original/` y
+  `04_auditoria/repo_mejorado/` son copias exactas (la primera verificada con
+  manifiesto SHA-256) y conservan su contenido tal como se auditó o construyó.
+- **Los informes LaTeX ya entregados y `data/validacion/`** conservan las rutas
+  de la época: son registros fechados, no documentación viva.
 
-| Contenido | Qué es | Cómo se usa |
-|---|---|---|
-| `repo_auditado/` | **Evidencia.** Los 236 archivos del commit `1528939`, byte a byte | Se consulta y se cita; **no se edita nunca** |
-| `repo_mejorado/` | **Código de trabajo.** El mismo código con **30 arreglos** aplicados y 6 archivos nuevos | Se reconstruye con los scripts de abajo; **no se edita a mano** |
-| `datos_fuente/` | El CSV de datos.gov.co (77 237 registros) que alimenta nuestro análisis | Solo lectura |
-| `manifiesto_sha256.csv` | SHA-256 de los 236 archivos de `repo_auditado/` | Lo comprueba `verificar_hashes.py` |
-| `ERRATA.md` | Las **contradicciones conocidas** del proyecto auditado (E1–E7) | Leer antes de citar cualquier cifra del auditado |
-| `README.md` | Procedencia, hashes y el orden correcto de los scripts | — |
-
-### `datos_originales/repo_mejorado/` — el entregable de código
-
-Es el repositorio auditado **con los defectos corregidos**, listo para el próximo
-grupo. Cada arreglo está declarado y probado:
-
-- **`datos_originales/repo_mejorado/CHANGELOG.md`** documenta los **30 arreglos**
-  (bloques A–J), cada uno con su cita de la ficha del auditado, qué se cambió y cómo
-  se verificó. **Es el documento que hay que leer primero.**
-- `datos_originales/repo_mejorado/README.md` explica qué funciona ya y cómo
-  ejecutarlo.
-- **`datos_originales/repo_mejorado/poetry.lock`** fija las dependencias y **pasa
-  `poetry check --lock`**; el del auditado no, porque le faltaban 7 dependencias
-  declaradas (ERRATA **E6**).
-- No se edita a mano: `construir_repo_mejorado.py` + `aplicar_arreglos.py` lo
-  regeneran, y `verificar_arreglos.py` comprueba que sigue cuadrando (los tres, en
-  `datos_originales/`).
-
-El clon local **no se versiona**: pesa 441 MB, de los que 383,8 MB son su entorno
-virtual. Solo se necesita para **re-extraer** la copia
-(`datos_originales/extraer_repo_auditado.py`) o para refrescar los cachés de git
-(`python -m memoria grafo --refrescar-git`).
-
----
-
-## Estructura
-
-```
-consultoria/
-├── README.md                        ← este archivo
-├── datos_originales/                ← DATOS + las dos copias del repo auditado
-│   ├── README.md / ERRATA.md        ← procedencia, hashes y contradicciones (E1–E7)
-│   ├── manifiesto_sha256.csv        ← 236 hashes verificables
-│   ├── repo_auditado/               ← EVIDENCIA: 236 archivos del commit 1528939, verbatim
-│   ├── repo_mejorado/               ← CÓDIGO: los mismos 236 con 30 arreglos + CHANGELOG.md
-│   ├── datos_fuente/                ← CSV de datos.gov.co (77 237 registros)
-│   ├── construir_repo_mejorado.py · aplicar_arreglos.py · verificar_arreglos.py
-│   ├── verificar_hashes.py · extraer_repo_auditado.py · fs_robusto.py
-│   ├── probar_librerias_reales.py · probar_inventario_completo.py
-│   └── reporte_ejecucion_51_poetry.csv · reporte_ejecucion_51_moderno.csv
-├── documentacion_auditoria/         ← SISTEMA DE AUDITORÍA
-│   ├── README.md                    ← documentación interna y cómo reproducir
-│   ├── metodologia_muestreo.md      ← metodología estadística (EDA, PS, GREG, §7 diagnósticos)
-│   ├── analisis_longitudinal.md     ← análisis del panel y validación de la muestra
-│   ├── comparacion_tfidf_vs_embeddings.md
-│   ├── pdf/                         ← ★ TODOS LOS PDF ENTREGABLES (lo que se califica)
-│   ├── latex/                       ← fuentes LaTeX por proyecto (Overleaf-ready)
-│   ├── zip_overleaf/                ← ZIPs listos para subir a Overleaf
-│   ├── data/                        ← fichas, validaciones y memoria del agente
-│   │   ├── analisis_codigo/         ←   51 fichas de los archivos auditados
-│   │   ├── validacion/              ←   informes de los agentes validadores
-│   │   └── memoria/                 ←   RAG, grafo, 17 reglas, decisiones, visor HTML
-│   └── src/                         ← pipeline, generadores y sistema de memoria
-├── entregables_2Corte/              ← entregas 1–5 del segundo corte
-├── ENTREGA_1/                       ← PDFs entregados del anteproyecto
-├── _archivo/                        ← scripts de una sola vez y logs del pipeline
-├── DECLARACION_IA_Y_REPARTO.md
-├── informe_consultoria_observatorio_minciencias.md   (fase 2026-I, antecedente)
-└── Rúbrica — Entrega 1 · Anteproyecto.pdf
-```
+Antes de publicar el mapa y el panel de la Fase 2 se corrieron las 17 reglas y los
+verificadores; el estado quedó en 15/0/2 y en verde todo lo demás.

@@ -5,7 +5,7 @@ realizada — «supervivencia con censura vs transición» quedó como recomenda
 nuestro propio criterio 4 y la ruta de Markov se había quedado sin modelos de
 tiempo hasta la salida.
 **Artefactos:** `documentacion_auditoria/src/supervivencia.py` ·
-`data/memoria/supervivencia.json` · `data/memoria/supervivencia_personas.csv`
+`01_datos/resultados_json/supervivencia.json` · `data/memoria/supervivencia_personas.csv`
 (30 086 personas) · `data/memoria/supervivencia_cox.csv` ·
 `data/memoria/graficas_supervivencia/` (5 figuras).
 

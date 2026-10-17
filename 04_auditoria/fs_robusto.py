@@ -7,7 +7,7 @@ Borrado de arboles de directorios tolerante a Windows + OneDrive.
 
 Por que existe
 --------------
-Todos los scripts de `datos_originales/` borran carpetas grandes dentro de una
+Todos los scripts de `04_auditoria/` borran carpetas grandes dentro de una
 carpeta sincronizada con OneDrive, y ahi `shutil.rmtree` falla con frecuencia:
 
 1. **Reparse points de solo lectura.** OneDrive (Files On-Demand) deja los

@@ -12,9 +12,10 @@ import pandas as pd
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 RAIZ = Path(__file__).resolve().parents[2]
 MEM = RAIZ / "documentacion_auditoria" / "data" / "memoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-POB = (RAIZ / "datos_originales" / "datos_fuente"
+POB = (RAIZ / "01_datos" / "datos_fuente"
        / "dane_cnpv2018_poblacion_departamental.csv")
 
 print("=== 1. ¿Cuál archivo escribe «Bogotá» con doble espacio? ===")
@@ -29,7 +30,7 @@ for k in dane["departamento"]:
         print(f"  DANE CSV          : {k!r}  (len={len(k)})")
 
 print("\n=== 2. IC del stock que publica el documento (Bogotá 135,5–139,9) ===")
-p = json.loads((MEM / "percapita_territorial.json").read_text(encoding="utf-8"))
+p = json.loads((RESULTADOS / "percapita_territorial.json").read_text(encoding="utf-8"))
 bs = p["bootstrap_personas"]["por_convocatoria_y_stock"]["stock"]["tasa_ic95"]
 lo, hi = bs["lo"], bs["hi"]
 st = p["tasa_por_100000"]["stock_ultima_convocatoria"]

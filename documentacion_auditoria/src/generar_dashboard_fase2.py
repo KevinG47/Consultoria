@@ -3,7 +3,7 @@
 generar_dashboard_fase2.py
 ==========================
 
-Construye `data/memoria/dashboard_fase2.html`: el panel de la **Fase 2** completo,
+Construye `02_dashboards/dashboard_fase2.html`: el panel de la **Fase 2** completo,
 autocontenido (sin CDN ni red) y con el mismo lenguaje visual que
 `dashboard_eda.html` (misma hoja de estilo, mismo template de Plotly, misma
 estructura de pestañas).
@@ -20,16 +20,16 @@ El panel tiene dos usos y las dos se atienden en la misma pagina:
 
 FUENTES (todas versionadas, ninguna se recalcula aqui)
 ------------------------------------------------------
-  data/memoria/percapita_territorial.json    F2-2
-  data/memoria/modelo_estrella.json          F2-3
-  data/memoria/redes_nulos.json              F2-4
-  data/memoria/diversidad_inferencia.json    F2-5
-  data/memoria/clustering.json               F2-6
-  data/memoria/validacion_unicidad.json      F2-7
-  data/memoria/supervivencia.json            F2-10
-  data/memoria/flujos_territoriales.json     F2-11
+  01_datos/resultados_json/percapita_territorial.json    F2-2
+  01_datos/resultados_json/modelo_estrella.json          F2-3
+  01_datos/resultados_json/redes_nulos.json              F2-4
+  01_datos/resultados_json/diversidad_inferencia.json    F2-5
+  01_datos/resultados_json/clustering.json               F2-6
+  01_datos/resultados_json/validacion_unicidad.json      F2-7
+  01_datos/resultados_json/supervivencia.json            F2-10
+  01_datos/resultados_json/flujos_territoriales.json     F2-11
   data/geo/colombia_departamentos.geojson    F2-11 (poligonos del mapa)
-  datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
+  01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
 
 Las tres unicas cosas que se recalculan son:
   - la **red de 2019**, porque el JSON guarda sus estadisticos pero no la lista de
@@ -67,10 +67,12 @@ from plotly.subplots import make_subplots
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 MEM = DOC / "data" / "memoria"
-REPO_AUDITADO = RAIZ / "datos_originales" / "repo_auditado"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+RESULTADOS = RAIZ / "01_datos" / "resultados_json"
+DASH = RAIZ / "02_dashboards"
+REPO_AUDITADO = RAIZ / "04_auditoria" / "repo_original"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-SALIDA = MEM / "dashboard_fase2.html"
+SALIDA = DASH / "dashboard_fase2.html"
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -91,7 +93,7 @@ import mapa_migracion as mapa_mod
 # 1. Carga de fuentes
 # ============================================================================
 def carga(nombre: str) -> dict:
-    return json.loads((MEM / f"{nombre}.json").read_text(encoding="utf-8"))
+    return json.loads((RESULTADOS / f"{nombre}.json").read_text(encoding="utf-8"))
 
 
 def cargar_todo() -> dict:

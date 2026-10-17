@@ -4,7 +4,7 @@
 identificadores mediante reglas».
 **Artefactos:** `documentacion_auditoria/data/validacion/regla_unicidad.yaml` (la
 regla) · `documentacion_auditoria/src/validar_unicidad.py` (el validador) ·
-`data/memoria/validacion_unicidad.json` · `data/memoria/ids_no_unicos.csv` (56 IDs) ·
+`01_datos/resultados_json/validacion_unicidad.json` · `data/memoria/ids_no_unicos.csv` (56 IDs) ·
 `data/memoria/graficas_unicidad/` (2 figuras).
 
 ## 1. La regla: lo que el auditado documenta y lo que implementa

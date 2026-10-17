@@ -3,7 +3,7 @@
 **Pregunta que cierra:** Q3 del repositorio auditado — «¿cómo se compara la
 concentración territorial de los investigadores con la población departamental?».
 **Artefactos:** `documentacion_auditoria/src/percapita_territorial.py` ·
-`data/memoria/percapita_territorial.json` ·
+`01_datos/resultados_json/percapita_territorial.json` ·
 `data/memoria/graficas_percapita/` (4 figuras).
 
 ## 1. El problema con la medida que existía
@@ -24,7 +24,7 @@ repositorio auditado**: el único `*_dane.csv` que publica compara grupos
 
 | Elemento | Decisión |
 |---|---|
-| **Numerador** | Personas distintas reconocidas por departamento de residencia, en las 6 convocatorias (2013–2021). Base: `datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv` (77 237 registros · 30 086 personas). |
+| **Numerador** | Personas distintas reconocidas por departamento de residencia, en las 6 convocatorias (2013–2021). Base: `01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv` (77 237 registros · 30 086 personas). |
 | **Unión territorial** | Por **código DIVIPOLA** (prefijo de `COD_DANE_RES_PR`), no por nombre. El motivo es que las dos fuentes **nombran de forma distinta el mismo departamento** —el padrón escribe `'Archipiélago de San Andrés, Providencia y Santa Catalina'` y el CSV del DANE `'San Andrés, Providencia y Santa Catalina'`, 12 personas afectadas— y que la etiqueta del padrón es texto libre. El prefijo mapea los 33 departamentos sin ambigüedad. |
 | **Exclusiones** | 2 448 registros (3,17 %) sin departamento colombiano: 2 132 «Exterior» y 316 «No disponible». No tienen denominador poblacional, así que quedan fuera de las tasas. |
 | **Stock** | Cada persona contada en su **última convocatoria con territorio colombiano**: 28 950 personas. Las 194 personas cuya última observación es «Exterior» (173) o «No disponible» (21) se cuentan en su último departamento colombiano, porque salir del país no las saca del denominador departamental. Las tasas por convocatoria usan las personas presentes en cada una. |
@@ -169,9 +169,9 @@ python documentacion_auditoria/src/percapita_territorial.py
 ```
 
 Entradas: el CSV fuente de investigadores y los dos CSV del DANE versionados en
-`datos_originales/datos_fuente/` (cada uno con su `.procedencia.txt`, con URL y
+`01_datos/datos_fuente/` (cada uno con su `.procedencia.txt`, con URL y
 SHA-256 del cuaderno oficial). El script **no necesita red**. Salidas:
-`data/memoria/percapita_territorial.json` y las cuatro figuras de
+`01_datos/resultados_json/percapita_territorial.json` y las cuatro figuras de
 `data/memoria/graficas_percapita/`.
 
 | Figura | Contenido |

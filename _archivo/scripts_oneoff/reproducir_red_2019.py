@@ -16,8 +16,8 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 sys.dont_write_bytecode = True          # no dejar .pyc en repo_auditado/
 
 RAIZ = Path(__file__).resolve().parents[2]
-REPO = RAIZ / "datos_originales" / "repo_auditado"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+REPO = RAIZ / "04_auditoria" / "repo_original"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
 sys.path.insert(0, str(REPO / "src"))
 

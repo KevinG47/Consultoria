@@ -3,7 +3,7 @@
 generar_comparacion_tfidf_embeddings.py
 =======================================
 
-Genera `documentacion_auditoria/comparacion_tfidf_vs_embeddings.md` a partir de
+Genera `03_informes/analisis_fase2/comparacion_tfidf_vs_embeddings.md` a partir de
 las cifras ya calculadas en:
   - data/memoria/comparacion_rag.json            (comparación vigente)
   - data/memoria/comparacion_rag_minilm.json     (evidencia del primer intento)
@@ -31,7 +31,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 DOC = Path(__file__).resolve().parents[1]
 MEM = DOC / "data" / "memoria"
-SALIDA = DOC / "comparacion_tfidf_vs_embeddings.md"
+SALIDA = RAIZ / "03_informes" / "analisis_fase2" / "comparacion_tfidf_vs_embeddings.md"
 
 C = json.loads((MEM / "comparacion_rag.json").read_text(encoding="utf-8"))
 MIN = json.loads((MEM / "comparacion_rag_minilm.json").read_text(encoding="utf-8"))

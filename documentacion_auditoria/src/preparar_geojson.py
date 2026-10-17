@@ -42,7 +42,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
 GEO = DOC / "data" / "geo"
-DANE = (RAIZ / "datos_originales" / "datos_fuente"
+DANE = (RAIZ / "01_datos" / "datos_fuente"
         / "dane_cnpv2018_poblacion_departamental.csv")
 SALIDA = GEO / "colombia_departamentos.geojson"
 PROCEDENCIA = GEO / "colombia_departamentos.procedencia.txt"

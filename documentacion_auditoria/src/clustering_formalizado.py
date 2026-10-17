@@ -55,7 +55,7 @@ Criterio de k
    k es 1.
 
 Produce:
-    data/memoria/clustering.json
+    01_datos/resultados_json/clustering.json
     data/memoria/clusters_registros.csv
     data/memoria/graficas_clusters/*.png
 
@@ -84,9 +84,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 
 RAIZ = Path(__file__).resolve().parents[2]
 DOC = RAIZ / "documentacion_auditoria"
-FUENTE = (RAIZ / "datos_originales" / "datos_fuente"
+FUENTE = (RAIZ / "01_datos" / "datos_fuente"
           / "Investigadores_Reconocidos_por_convocatoria_20261006.csv")
-SALIDA = DOC / "data" / "memoria" / "clustering.json"
+SALIDA = RAIZ / "01_datos" / "resultados_json" / "clustering.json"
 CSV_CLUSTERS = DOC / "data" / "memoria" / "clusters_registros.csv"
 GRAF = DOC / "data" / "memoria" / "graficas_clusters"
 
