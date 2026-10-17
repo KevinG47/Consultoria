@@ -454,6 +454,18 @@ def n1_sintaxis() -> None:
     contiene(MEJORADO / "src" / "modelo" / "dimensional.py",
              "def resumen_modelo(con: duckdb.DuckDBPyConnection) -> str")
     contiene(MEJORADO / "pyproject.toml", 'PyYAML', 'kaleido', 'nbformat')
+
+    # --- F2-3: el enunciado del modelo estrella. Verificado sobre el esquema
+    # real, tiene 9 TABLAS = 7 dimensiones + 1 tabla de hechos + 1 tabla puente.
+    # El informe decia "nueve dimensiones"; eso es lo que corrigen los arreglos K.
+    informe = MEJORADO / "informe_final.md"
+    txt_informe = informe.read_text(encoding="utf-8", errors="replace")
+    if "nueve dimensiones" in txt_informe:
+        fallos.append("informe_final.md sigue diciendo 'nueve dimensiones'")
+        print("  [x] informe_final.md sigue diciendo 'nueve dimensiones'")
+    contiene(informe, "siete dimensiones", "tabla puente",
+             "(nueve tablas en total)")
+
     print("    (si no hay lineas [x] arriba, todos los arreglos estan "
           "presentes en su sitio)")
     print("  -> PRUEBA: sintaxis valida, defectos de codigo ausentes (via AST), "

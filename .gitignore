@@ -84,6 +84,11 @@ _archivo/deps_extra/
 # (datos_originales/datos_fuente/dane_*.csv) junto con su .procedencia.txt, que
 # guarda la URL y el SHA-256 del cuaderno oficial de origen.
 _archivo/tmp_dane/
+# Bases DuckDB construidas por F2-3 en un directorio de TRABAJO. No se versionan
+# (se regeneran con src/modelo_estrella_6.py) y, sobre todo, NO se escriben dentro
+# de datos_originales/repo_auditado/: así los 236 hashes del manifiesto siguen
+# intactos.
+_archivo/tmp_estrella/
 
 # ── Memoria del agente: SOLO artefactos derivados del RAG ──────────────────
 # Se versiona la evidencia legible y todo lo que las reglas necesitan sin red:

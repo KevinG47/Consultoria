@@ -8,7 +8,7 @@
 > | | `repo_auditado/` | `repo_mejorado/` (esta) |
 > |---|---|---|
 > | Naturaleza | **prueba**: copia verbatim, intocable | **trabajo**: codigo corregido |
-> | Archivos | 236 | 234 |
+> | Archivos | 236 | 236 |
 > | Para que | citar lineas exactas y comprobar la auditoria | partir de aqui para seguir |
 > | Se puede editar | **no** | si |
 >

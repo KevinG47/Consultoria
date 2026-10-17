@@ -703,7 +703,7 @@ ipython = "^8.0"       # celdas del manual generado (IPython.display.IFrame)''')
 > | | `repo_auditado/` | `repo_mejorado/` (esta) |
 > |---|---|---|
 > | Naturaleza | **prueba**: copia verbatim, intocable | **trabajo**: codigo corregido |
-> | Archivos | 236 | 234 |
+> | Archivos | 236 | 236 |
 > | Para que | citar lineas exactas y comprobar la auditoria | partir de aqui para seguir |
 > | Se puede editar | **no** | si |
 >
@@ -812,6 +812,51 @@ pyvis>=0.3
 sodapy>=2.2
 nbformat>=5.9
 ipython>=8.0'''),
+
+    # =====================================================================
+    # K. informes: el modelo estrella NO tiene nueve dimensiones
+    # =====================================================================
+    # Diagnostico verificado leyendo el esquema real de observatorio.duckdb y
+    # confirmado reconstruyendo el modelo con las 6 convocatorias
+    # (documentacion_auditoria/src/modelo_estrella_6.py): el esquema tiene
+    # 9 TABLAS = 7 dimensiones (dim_area, dim_categoria, dim_convocatoria,
+    # dim_formacion, dim_institucion, dim_investigador, dim_territorio)
+    # + fact_clasificacion + bridge_hecho_institucion. El propio docstring de
+    # sprint2_duckdb.py lista exactamente esas 9. El "nueve" del informe cuenta
+    # TABLAS, no dimensiones, y la enumeracion de la seccion de diseno lista en
+    # realidad nueve ATRIBUTOS que la implementacion consolido en siete
+    # dimensiones. El diseno es correcto: lo que enganya es el enunciado.
+    ("K1", "informe_final.md",
+     "Objetivo especifico 4: pide 'nueve dimensiones y una tabla de hechos'. "
+     "Verificado sobre el esquema real: son siete dimensiones, una tabla de "
+     "hechos y una tabla puente. Se corrige el enunciado para que no prometa "
+     "nueve dimensiones.",
+     '''Diseñar y crear un modelo dimensional (esquema estrella) con nueve dimensiones y una tabla de hechos.''',
+     '''Diseñar y crear un modelo dimensional (esquema estrella) con siete dimensiones, una tabla de hechos y una tabla puente (nueve tablas en total).'''),
+
+    ("K2", "informe_final.md",
+     "Descripcion del diseno: decia 'se construyeron nueve dimensiones' y "
+     "enumeraba nueve ATRIBUTOS (investigador, convocatoria, universidad, area, "
+     "nacimiento, genero, residencia, formacion, clasificacion). La "
+     "implementacion los consolido en SIETE dimensiones: nacimiento y genero "
+     "quedan dentro de dim_investigador, universidad en dim_institucion y "
+     "residencia en dim_territorio. Se conserva la enumeracion porque es la "
+     "trazabilidad del diseno, y se anade la correspondencia y la tabla puente.",
+     '''Diseño: se construyeron nueve dimensiones (por ejemplo: Dim-Investigador, Dim-Convocatoria, Dim-Universidad, Dim-Área, Dim-nacimiento, Dim-Género, Dim-residencia, Dim-formación, Dim-clasificación) y una tabla de hechos que centraliza métricas (p. ej. edad, victima de conflicto, grupo etnico y población discapacitada, además de los ID de las dimensiones). Normalización y llaves primarias/foráneas definidas.''',
+     '''Diseño: se construyeron **siete** dimensiones (convocatoria, investigador, categoría, área, territorio, formación e institución), una tabla de hechos que centraliza métricas (p. ej. edad, victima de conflicto, grupo etnico y población discapacitada, además de los ID de las dimensiones) y una tabla puente N:N para la relación entre el hecho y las instituciones de filiación. Los nueve atributos que la versión inicial de este informe enumeraba como dimensiones (persona, convocatoria, universidad, área, nacimiento, género, residencia, formación y clasificación) se consolidaron así: **nacimiento y género** quedan dentro de la dimensión de investigador, **universidad** en la de institución y **residencia** en la de territorio; los demás tienen su propia dimensión (convocatoria, área, formación y clasificación). Normalización y llaves primarias/foráneas definidas.'''),
+
+    ("K3", "informe_final.md",
+     "Seccion 5.3 'Modelo dimensional': 'se definieron nueve dimensiones'. "
+     "Mismo defecto que K1/K2, en el cuerpo del informe.",
+     '''Se definieron nueve dimensiones que describen atributos de los investigadores (persona, residencia, convocatoria, institucionales, formación, regionales, género, clasificación etc.) y una tabla de hechos''',
+     '''Se definieron siete dimensiones (convocatoria, investigador, categoría, área, territorio, formación e institución) que describen los atributos de los investigadores, una tabla de hechos y una tabla puente para la relación N:N con las instituciones de filiación'''),
+
+    ("K4", "informe_final.md",
+     "Conclusiones: el modelo se describe otra vez como 'nueve dimensiones + "
+     "tabla de hechos'. Se anade la tabla puente, que es la pieza que faltaba "
+     "en las tres descripciones.",
+     '''El modelo dimensional (nueve dimensiones + tabla de hechos) es adecuado para alimentar dashboards y reportes.''',
+     '''El modelo dimensional (siete dimensiones + tabla de hechos + tabla puente de instituciones) es adecuado para alimentar dashboards y reportes.'''),
 ]
 
 

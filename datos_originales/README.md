@@ -9,7 +9,7 @@ auditoría **sin clonar el repositorio auditado** ni descargar nada.
 | Carpeta | Qué es | Se puede editar | Para qué sirve |
 |---|---|---|---|
 | `repo_auditado/` | Copia **verbatim** del commit `1528939` (236 archivos) | **NO** | Es la **prueba**: aquí valen los números de línea que citan las 51 fichas y los `.tex` |
-| `repo_mejorado/` | El mismo código con **30 arreglos** aplicados (235 archivos) | sí | Es el **código de trabajo**: los 6 scripts que fallaban ya no fallan |
+| `repo_mejorado/` | El mismo código con **34 arreglos** aplicados (236 archivos) | sí | Es el **código de trabajo**: los 6 scripts que fallaban ya no fallan |
 | `datos_fuente/` | El CSV de datos.gov.co que alimenta el análisis | no | La **entrada** de todo el análisis longitudinal y muestral |
 
 **Por qué las dos copias del código y no una.** `repo_auditado/` es evidencia: sus
@@ -41,8 +41,8 @@ cómo se probó. `repo_mejorado/README.md` explica qué funciona ya y cómo usar
 
 | Contenido | Archivos | Peso | Qué es |
 |---|---:|---:|---|
-| `repo_auditado/` | 236 | 37,40 MB | Copia **verbatim** del contenido versionado del proyecto auditado |
-| `repo_mejorado/` | 235 | 37,43 MB | El mismo código con los arreglos aplicados |
+| `repo_auditado/` | 236 | 35,67 MB | Copia **verbatim** del contenido versionado del proyecto auditado |
+| `repo_mejorado/` | 236 | 35,81 MB | El mismo código con los arreglos aplicados |
 | `datos_fuente/` | 1 | 31,32 MB | El CSV que alimenta nuestro análisis longitudinal y muestral |
 | `manifiesto_sha256.csv` | 1 | 27 KB | SHA-256 de cada uno de los 236 archivos verbatim |
 | `extraer_repo_auditado.py` | 1 | — | Cómo se generó la copia verbatim (re-ejecutable si hay clon) |

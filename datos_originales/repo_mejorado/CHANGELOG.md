@@ -12,7 +12,7 @@ falte de verdad) y con `datos_originales/probar_librerias_reales.py`.
 
 | | |
 |---|---|
-| Arreglos aplicados | **30** (sobre 17 archivos) + 6 celdas de `docs/manual.ipynb` |
+| Arreglos aplicados | **34** (sobre 18 archivos) + 6 celdas de `docs/manual.ipynb` |
 | Módulo nuevo | `src/exportacion.py` |
 | Resultado con librerías reales | **3 completos · 3 con código 3 por datos ausentes · 0 errores reales** |
 | `repo_auditado/` | intacto: 236/236 hashes verificados, 0 sobrantes |
@@ -211,6 +211,47 @@ auditado (318 líneas) y la auditoría lo cita (`README.md:268, Atípicos de eda
 22 casos (no 10)`). Se conserva intacto debajo de la guía. En `repo_mejorado/` los
 números de línea **no** son los del commit (17 archivos cambiaron): las citas de la
 auditoría se verifican sobre `repo_auditado/`.
+
+## K · `informe_final.md`: el modelo estrella tiene nueve **tablas**, no nueve dimensiones
+
+**Qué.** Cuatro correcciones en `informe_final.md`, los parches `K1`–`K4`.
+
+**El defecto.** Las cuatro descripciones del modelo en el informe dicen que se
+construyó «con **nueve dimensiones** y una tabla de hechos» (el objetivo específico
+4, la descripción del diseño, la §5.3 y las conclusiones). El esquema real tiene
+**9 tablas**:
+
+| | |
+|---|---|
+| **7 dimensiones** | `dim_area`, `dim_categoria`, `dim_convocatoria`, `dim_formacion`, `dim_institucion`, `dim_investigador`, `dim_territorio` |
+| **1 tabla de hechos** | `fact_clasificacion` |
+| **1 tabla puente** | `bridge_hecho_institucion` (N:N con las instituciones, porque `INST_FILIA` admite dos separadas por ` \| `) |
+
+**De dónde salía el «nueve».** El docstring de `sprint2_duckdb.py` lista exactamente
+esas 9 tablas, así que el «nueve» **cuenta tablas, no dimensiones**. Y la
+enumeración de la sección de diseño explica el resto: enumeraba nueve **atributos**
+(investigador, convocatoria, universidad, área, nacimiento, género, residencia,
+formación, clasificación) que la implementación **consolidó en siete dimensiones**
+—nacimiento y género dentro de `dim_investigador`, universidad en
+`dim_institucion`, residencia en `dim_territorio`—.
+
+**Por qué se corrige el enunciado y no el código.** El diseño es correcto y la
+integridad referencial se cumple (0 huérfanos en las 7 dimensiones y en el puente,
+verificado en `documentacion_auditoria/data/memoria/modelo_estrella.json`). Lo que
+engañaba era la descripción: prometía nueve dimensiones. Por eso `K2` **conserva** la
+enumeración original de nueve atributos —es la trazabilidad del diseño— y añade la
+correspondencia con las siete dimensiones que existen.
+
+**Cómo se verificó.** `verificar_arreglos.py` ahora falla si `informe_final.md`
+sigue diciendo «nueve dimensiones» y comprueba positivamente que aparezcan «siete
+dimensiones», «tabla puente» y «(nueve tablas en total)». Las cuatro anclas se
+comprobaron únicas antes de aplicar los parches.
+
+**Hallazgo asociado (F2-3).** Con las 6 convocatorias el modelo se reconstruye
+completo: `dim_convocatoria` pasa de 3 a **6**, `fact_clasificacion` de 50 891 a
+**77 237** hechos y `dim_investigador` de 26 662 a **30 086** personas, y reproduce
+la evidencia versionada cifra a cifra (`duckdb_resumen_modelo.txt`). Detalle en
+`documentacion_auditoria/analisis_modelo_estrella.md`.
 
 ---
 

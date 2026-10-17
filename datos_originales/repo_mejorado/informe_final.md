@@ -35,7 +35,7 @@ Unir las tres bases en una única tabla maestra que contenga todas las convocato
 
 Verificar la unicidad de identificadores de investigador a través de reglas (comparación de edades y atributos).
 
-Diseñar y crear un modelo dimensional (esquema estrella) con nueve dimensiones y una tabla de hechos.
+Diseñar y crear un modelo dimensional (esquema estrella) con siete dimensiones, una tabla de hechos y una tabla puente (nueve tablas en total).
 
 Construir la “gran tabla” (sin IDs) y ejecutar análisis univariado, bivariado, multivariado y clustering para segmentar perfiles.
 
@@ -77,7 +77,7 @@ Resultado: aceptación de unicidad cuando la diferencia de edad y demás atribut
 
 Carpeta: tarea_dimensiones_y_hechos
 
-Diseño: se construyeron nueve dimensiones (por ejemplo: Dim-Investigador, Dim-Convocatoria, Dim-Universidad, Dim-Área, Dim-nacimiento, Dim-Género, Dim-residencia, Dim-formación, Dim-clasificación) y una tabla de hechos que centraliza métricas (p. ej. edad, victima de conflicto, grupo etnico y población discapacitada, además de los ID de las dimensiones). Normalización y llaves primarias/foráneas definidas.
+Diseño: se construyeron **siete** dimensiones (convocatoria, investigador, categoría, área, territorio, formación e institución), una tabla de hechos que centraliza métricas (p. ej. edad, victima de conflicto, grupo etnico y población discapacitada, además de los ID de las dimensiones) y una tabla puente N:N para la relación entre el hecho y las instituciones de filiación. Los nueve atributos que la versión inicial de este informe enumeraba como dimensiones (persona, convocatoria, universidad, área, nacimiento, género, residencia, formación y clasificación) se consolidaron así: **nacimiento y género** quedan dentro de la dimensión de investigador, **universidad** en la de institución y **residencia** en la de territorio; los demás tienen su propia dimensión (convocatoria, área, formación y clasificación). Normalización y llaves primarias/foráneas definidas.
 
 Se adjunta el link de las dimensiones y la tabla de hechos:
 
@@ -132,7 +132,7 @@ Se estableció la regla práctica: si la diferencia de edad entre dos registros 
 
 ### 5.3 Modelo dimensional (esquema estrella)
 
-Se definieron nueve dimensiones que describen atributos de los investigadores (persona, residencia, convocatoria, institucionales, formación, regionales, género, clasificación etc.) y una tabla de hechos
+Se definieron siete dimensiones (convocatoria, investigador, categoría, área, territorio, formación e institución) que describen los atributos de los investigadores, una tabla de hechos y una tabla puente para la relación N:N con las instituciones de filiación
 
 Interpretación: el esquema estrella es apropiado para el observatorio, ya que reduce la complejidad de consultas y es óptimo para reporting y dashboards.
 
@@ -156,7 +156,7 @@ La consolidación de convocatorias (2017, 2019, 2021) y la verificación de unic
 
 La heurística de verificación por edad (coherencia con lapsos entre convocatorias) es práctica, pero debe complementarse con revisiones manuales en casos dudosos. Si es posible, incorporar campos adicionales de verificación (correo institucional, documento nacional) mejorará la exactitud.
 
-El modelo dimensional (nueve dimensiones + tabla de hechos) es adecuado para alimentar dashboards y reportes. Recomiendo implementar una instancia ligera de un data mart o una base relacional para consultas recurrentes.
+El modelo dimensional (siete dimensiones + tabla de hechos + tabla puente de instituciones) es adecuado para alimentar dashboards y reportes. Recomiendo implementar una instancia ligera de un data mart o una base relacional para consultas recurrentes.
 
 Documentar las transformaciones (ETL) y guardar versiones de la gran tabla facilita reproducibilidad y auditoría.
 

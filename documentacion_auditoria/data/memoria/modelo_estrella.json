@@ -1,0 +1,284 @@
+{
+  "fecha": "2026-10-16T19:56:21",
+  "analisis": "F2-3 — Modelo estrella reproducible (objetivo específico 4)",
+  "nota": "Se usan las funciones del repositorio auditado sin reimplementarlas; la base se escribe en un directorio de trabajo para no alterar los 236 hashes del repo auditado.",
+  "composicion_del_modelo": {
+    "tablas_totales": 9,
+    "dimensiones": [
+      "dim_area",
+      "dim_categoria",
+      "dim_convocatoria",
+      "dim_formacion",
+      "dim_institucion",
+      "dim_investigador",
+      "dim_territorio"
+    ],
+    "n_dimensiones": 7,
+    "tabla_de_hechos": "fact_clasificacion",
+    "tablas_puente": [
+      "bridge_hecho_institucion"
+    ],
+    "enunciado_del_objetivo": "«modelo dimensional (esquema estrella) con nueve dimensiones y una tabla de hechos» (repo auditado, informe_final.md:38)",
+    "correccion": "Son 9 TABLAS: 7 dimensiones + 1 tabla de hechos + 1 tabla puente. El «nueve» cuenta tablas, no dimensiones: el docstring de sprint2_duckdb.py lista exactamente esas 9. El diseño es correcto; el enunciado no."
+  },
+  "insumo": {
+    "usado_por_el_auditado": "datos/tarea_join/investigadores_consolidado.xlsx",
+    "causa": "cargar_consolidado() prefiere datos/raw/investigadores_consolidado.csv, ausente y gitignored, y cae al XLSX de 3 convocatorias",
+    "usado_aqui": "datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+    "columnas": {
+      "n": 30,
+      "identicas_al_consolidado_del_auditado": true,
+      "verificado": "mismas 30 columnas y mismo orden que datos/tarea_join/investigadores_consolidado.csv"
+    },
+    "registros_fuente": 77237,
+    "adaptacion_necesaria": {
+      "columnas_convertidas": {
+        "EDAD_ANOS_PR": {
+          "valores_con_coma": 73854,
+          "faltantes": 1,
+          "dtype_antes": "str",
+          "dtype_despues": "float64"
+        }
+      },
+      "motivo": "El archivo fuente guarda la edad con COMA decimal, así que pandas la lee como texto y tratar_faltantes() del auditado lanza TypeError: Cannot perform reduction 'median' with string dtype. Se convierte la coma en punto antes de llamar al pipeline.",
+      "no_es_un_defecto_de_la_ruta_normal": "Verificado contra la API de Socrata: el dataset bqtm-4y2h devuelve edad_anos_pr como texto con PUNTO ('66.92'), así que el CSV que escribe src/ingesta/minciencias.py se lee como float y el pipeline corre sin tocarlo. El pipeline sí es sensible al separador decimal del insumo."
+    }
+  },
+  "modelo_3_convocatorias": {
+    "tablas": {
+      "bridge_hecho_institucion": 47187,
+      "dim_area": 215,
+      "dim_categoria": 4,
+      "dim_convocatoria": 3,
+      "dim_formacion": 11,
+      "dim_institucion": 2619,
+      "dim_investigador": 26662,
+      "dim_territorio": 227,
+      "fact_clasificacion": 50891
+    },
+    "por_convocatoria": {
+      "2017": {
+        "registros": 13001,
+        "investigadores": 13001
+      },
+      "2019": {
+        "registros": 16796,
+        "investigadores": 16796
+      },
+      "2021": {
+        "registros": 21094,
+        "investigadores": 21094
+      }
+    },
+    "total_hechos": 50891,
+    "n_convocatorias": 3
+  },
+  "modelo_6_convocatorias": {
+    "tablas": {
+      "bridge_hecho_institucion": 68480,
+      "dim_area": 216,
+      "dim_categoria": 4,
+      "dim_convocatoria": 6,
+      "dim_formacion": 11,
+      "dim_institucion": 2762,
+      "dim_investigador": 30086,
+      "dim_territorio": 249,
+      "fact_clasificacion": 77237
+    },
+    "por_convocatoria": {
+      "2013": {
+        "registros": 8016,
+        "investigadores": 8016
+      },
+      "2014": {
+        "registros": 8280,
+        "investigadores": 8280
+      },
+      "2015": {
+        "registros": 10050,
+        "investigadores": 10050
+      },
+      "2017": {
+        "registros": 13001,
+        "investigadores": 13001
+      },
+      "2019": {
+        "registros": 16796,
+        "investigadores": 16796
+      },
+      "2021": {
+        "registros": 21094,
+        "investigadores": 21094
+      }
+    },
+    "total_hechos": 77237,
+    "n_convocatorias": 6
+  },
+  "integridad_referencial": {
+    "claves_foraneas": {
+      "dim_convocatoria": {
+        "columna_hecho": "id_convocatoria",
+        "columna_dimension": "id_convocatoria",
+        "hechos_huerfanos": 0,
+        "integra": true
+      },
+      "dim_investigador": {
+        "columna_hecho": "id_persona_pr",
+        "columna_dimension": "id_persona_pr",
+        "hechos_huerfanos": 0,
+        "integra": true
+      },
+      "dim_categoria": {
+        "columna_hecho": "id_clas_pr",
+        "columna_dimension": "id_clas_pr",
+        "hechos_huerfanos": 0,
+        "integra": true
+      },
+      "dim_area": {
+        "columna_hecho": "id_area_con_pr",
+        "columna_dimension": "id_area_con_pr",
+        "hechos_huerfanos": 0,
+        "integra": true
+      },
+      "dim_formacion": {
+        "columna_hecho": "id_niv_formacion_pr",
+        "columna_dimension": "id_niv_formacion_pr",
+        "hechos_huerfanos": 0,
+        "integra": true
+      },
+      "dim_territorio": {
+        "columna_hecho": "sk_territorio",
+        "columna_dimension": "sk_territorio",
+        "hechos_huerfanos": 0,
+        "integra": true
+      },
+      "sk_territorio_no_nula": {
+        "hechos_sin_territorio": 0,
+        "integra": true
+      }
+    },
+    "puente": {
+      "hechos_huerfanos": 0,
+      "instituciones_huerfanas": 0,
+      "integra": true
+    },
+    "claves_primarias": {
+      "dim_area": {
+        "columna": "id_area_con_pr",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      },
+      "dim_categoria": {
+        "columna": "id_clas_pr",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      },
+      "dim_convocatoria": {
+        "columna": "id_convocatoria",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      },
+      "dim_formacion": {
+        "columna": "id_niv_formacion_pr",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      },
+      "dim_institucion": {
+        "columna": "sk_institucion",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      },
+      "dim_investigador": {
+        "columna": "id_persona_pr",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      },
+      "dim_territorio": {
+        "columna": "sk_territorio",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      },
+      "fact_clasificacion": {
+        "columna": "sk_hecho",
+        "duplicados": 0,
+        "nulos": 0,
+        "unica": true
+      }
+    }
+  },
+  "evidencia_versionada": {
+    "esperado_por_convocatoria": {
+      "2013": 8016,
+      "2014": 8280,
+      "2015": 10050,
+      "2017": 13001,
+      "2019": 16796,
+      "2021": 21094
+    },
+    "total_esperado": 77237,
+    "observado_por_convocatoria": {
+      "2013": 8016,
+      "2014": 8280,
+      "2015": 10050,
+      "2017": 13001,
+      "2019": 16796,
+      "2021": 21094
+    },
+    "observado_total": 77237,
+    "deltas": {
+      "2013": 0,
+      "2014": 0,
+      "2015": 0,
+      "2017": 0,
+      "2019": 0,
+      "2021": 0
+    },
+    "reproduce_la_evidencia": true,
+    "fuente_de_la_evidencia": "datos_originales/repo_auditado/evidencias/duckdb_resumen_modelo.txt"
+  },
+  "transformacion_del_auditado": {
+    "log": [
+      "Construyendo dimensiones...",
+      "Construyendo tabla de hechos...",
+      "Conectando a DuckDB: C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\_archivo\\tmp_estrella\\observatorio_6conv.duckdb",
+      "  OK dim_convocatoria                          6 filas",
+      "  OK dim_investigador                     30,086 filas",
+      "  OK dim_categoria                             4 filas",
+      "  OK dim_area                                216 filas",
+      "  OK dim_territorio                          249 filas",
+      "  OK dim_formacion                            11 filas",
+      "  OK dim_institucion                       2,762 filas",
+      "  OK fact_clasificacion                   77,237 filas",
+      "  OK bridge_hecho_institucion             68,480 filas",
+      "[transformacion] Pipeline completado. Shape final: (77237, 32)"
+    ],
+    "imputacion_de_edad": {
+      "faltantes_en_la_fuente": 1,
+      "valor_imputado": 43.29,
+      "nota": "tratar_faltantes() rellena TODOS los faltantes numéricos con la mediana, incluida EDAD_ANOS_PR. Es lógica del repositorio auditado, no nuestra: se conserva para que el modelo sea reproducible, y se registra aquí porque fabrica observaciones que la fuente no tiene."
+    }
+  },
+  "validaciones": {
+    "9_tablas_construidas": true,
+    "dim_convocatoria_tiene_6_filas": true,
+    "hechos_igualan_la_evidencia": true,
+    "total_reconstruido_77_237": true,
+    "integridad_referencial_completa": true,
+    "claves_primarias_unicas": true,
+    "el_defecto_3_convocatorias_se_reproduce": true,
+    "reproduce_la_evidencia_versionada": true,
+    "adaptacion_de_entrada_declarada": true,
+    "no_hay_valores_con_coma_sin_convertir": true
+  },
+  "figuras": [
+    "f2_3_registros_por_convocatoria.png",
+    "f2_3_tablas_del_modelo.png"
+  ]
+}
