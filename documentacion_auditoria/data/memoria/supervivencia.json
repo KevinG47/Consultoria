@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-17T02:31:39",
+  "fecha": "2026-10-17T02:51:34",
   "analisis": "F2-10 — Supervivencia: Kaplan-Meier y Cox (OE5 dinámica)",
   "autotest": {
     "km_sin_censura_correcto": true,
@@ -2058,7 +2058,7 @@
       "categoria": "Investigador Junior",
       "genero": "Masculino",
       "area": "Ciencias Agrícolas",
-      "departamento": "Bogotá  D. C."
+      "departamento": "Bogotá, D. C."
     },
     "coeficientes": [
       {

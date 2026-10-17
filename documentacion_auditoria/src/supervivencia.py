@@ -598,12 +598,14 @@ def main() -> int:
                & (per["categoria"] != "Investigador Emérito")].copy()
     base["cat3"] = base["categoria"]
     dummies = []
+    referencias = {}
     for col, niveles in (("cat3", ["Investigador Junior", "Investigador Asociado",
                                   "Investigador Sénior"]),
                          ("genero_col", ["Masculino", "Femenino"]),
                          ("area", sorted(base["area"].unique())),
                          ("depto_top", DEPT_TOP + ["Resto"])):
         ref = niveles[0]
+        referencias[col] = ref
         for lv in niveles[1:]:
             nombre = f"{col}={lv}"
             base[nombre] = (base[col] == lv).astype(float)
@@ -638,9 +640,15 @@ def main() -> int:
         "log_verosimilitud": float(cox["log_verosimilitud"]),
         "iteraciones": int(cox["iteraciones"]),
         "gradiente_final": float(cox["gradiente_final"]),
-        "referencias": {"categoria": "Investigador Junior",
-                        "genero": "Masculino", "area": "Ciencias Agrícolas",
-                        "departamento": "Bogotá  D. C."},
+        # Las CUATRO referencias se toman del bucle que construye los dummies, no
+        # de literales escritos a mano. Escribirlas a mano fue justamente el error
+        # que dejó el modelo sin referencia ('Bogotá  D. C.' con dos espacios
+        # frente al real 'Bogotá, D. C.' con coma): el JSON no puede publicar una
+        # etiqueta que no existe en la base.
+        "referencias": {"categoria": referencias["cat3"],
+                        "genero": referencias["genero_col"],
+                        "area": referencias["area"],
+                        "departamento": referencias["depto_top"]},
         "coeficientes": filas,
         "excluidos": {
             "Investigador Emérito": ("334 personas (1,1 %). Se excluye porque es "
