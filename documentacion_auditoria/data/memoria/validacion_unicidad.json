@@ -1,0 +1,883 @@
+{
+  "fecha": "2026-10-17T02:01:56",
+  "analisis": "F2-7 — Formalización y validación de la regla de unicidad (OE3)",
+  "regla": {
+    "version": 1,
+    "nombre": "unicidad_id_persona",
+    "clave": "ID_PERSONA_PR",
+    "descripcion": "Un mismo ID_PERSONA_PR debe designar a la misma persona en todas las convocatorias. Como el padrón no trae nombre ni documento, la única forma de comprobarlo es que la trayectoria sea coherente consigo misma: la edad debe crecer tanto como haya pasado el tiempo, y los atributos estables no deben cambiar de valor.\n",
+    "origen": {
+      "documentada_en": {
+        "archivo": "datos_originales/repo_auditado/informe_final.md",
+        "linea": 130,
+        "cita": "«Se estableció la regla práctica: si la diferencia de edad entre dos registros coincide con el lapso temporal entre convocatorias (±4 año tolerancia para errores de digitación) y al menos una otra variable coincide (genero), se acepta unicidad del ID.»\n"
+      },
+      "implementada_en": {
+        "archivo": "datos_originales/repo_auditado/notebooks/tarea_tabla/arreglar_base_consultoria_7.R",
+        "lineas": "96-101",
+        "codigo": "duplicados_dif %>% filter(dif_edad > 4.1)"
+      },
+      "discrepancia": "La documentación describe un contraste CONTRA EL LAPSO ENTRE CONVOCATORIAS con tolerancia simétrica, y exige que coincida el género. El código implementa un umbral fijo de 4,1 años sobre la diferencia de edad, en UNA SOLA COLA (solo aumentos) y sin comprobar el género. Consecuencia verificada: la implementación marca 1 067 pares donde la documentada marca 18, y no detecta ninguno de los 6 pares en los que la edad retrocede. Esta formalización sigue la regla DOCUMENTADA, que es la correcta.\n"
+    },
+    "alcance": {
+      "fuente": "datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+      "granularidad": "persona x convocatoria",
+      "comparacion": "pares_consecutivos",
+      "nota": "Se comparan los pares consecutivos de cada ID, ordenados por la fecha real de la convocatoria. Es lo que hace el código del auditado (lag) y basta para detectar una trayectoria incoherente: si dos registros consecutivos se contradicen, el ID es dudoso.\n"
+    }
+  },
+  "criterios": [
+    {
+      "nombre": "coherencia_de_edad",
+      "variable": "EDAD_ANOS_PR",
+      "referencia_temporal": "ANO_CONVO",
+      "formula": "residuo = (edad_b - edad_a) - (fecha_b - fecha_a expresado en años)\n",
+      "tolerancia_anios": 4.0,
+      "simetrica": true,
+      "justificacion_tolerancia": "Se conserva el ±4 años que el repositorio auditado declara, para que la formalización sea comparable con lo que el propio equipo quiso hacer. Es una tolerancia GENEROSA: el residuo observado tiene desviación típica de 0,90 años, así que ±4 son unas 4,4 desviaciones, y absorbe errores de redondeo de la edad decimal y de digitación. La sensibilidad a tolerancias más estrictas se reporta en el JSON y en el informe, porque un umbral distinto cambia el número de violaciones.\n",
+      "porque_simetrica": "Una resta debe evaluarse en valor absoluto: una edad que DECRECE 98 años es tan imposible como una que crece 98. El filtro `dif_edad > 4.1` del auditado solo mira los aumentos y deja pasar los descensos, que son los casos más graves.\n"
+    },
+    {
+      "nombre": "coherencia_de_genero",
+      "variable": "NME_GENERO_PR",
+      "exigir": "igualdad",
+      "justificacion": "La documentación exige que «al menos otra variable coincida (genero)». El género es el único atributo que el registro trata como estable, y de hecho cambia en 42 personas, así que un cambio es señal de que los dos registros pueden ser personas distintas o de un error de captura.\n"
+    }
+  ],
+  "ids_no_unicos": {
+    "n_ids_evaluados": 19215,
+    "n_ids_violadores": 56,
+    "pct_del_padron": 0.18613308515588645,
+    "por_estado": {
+      "violacion_genero": 41,
+      "violacion_edad": 14,
+      "violacion_ambas": 1
+    },
+    "interpretacion_por_rol": {
+      "violan_la_identidad_(edad)": 15,
+      "solo_atributo_inestable_(genero)": 41,
+      "lectura": "No son el mismo tipo de hallazgo. Un fallo de EDAD significa que la trayectoria es imposible y que el ID puede estar designando a dos personas. Un fallo solo de GÉNERO es la inestabilidad de atributo que el EDA ya documentó (42 personas cambian de género) y no prueba que el ID sea compartido."
+    },
+    "detalle": [
+      {
+        "id": "0000671819",
+        "estado": "violacion_edad",
+        "pares": 3,
+        "fallos_edad": 2,
+        "fallos_genero": 0,
+        "peor_convocatorias": "18→19",
+        "peor_edad_a": 115.51,
+        "peor_edad_b": 16.92,
+        "peor_anios_transcurridos": 1.5742642026009583,
+        "peor_residuo": -100.16426420260096
+      },
+      {
+        "id": "0000034380",
+        "estado": "violacion_edad",
+        "pares": 3,
+        "fallos_edad": 2,
+        "fallos_genero": 0,
+        "peor_convocatorias": "18→19",
+        "peor_edad_a": -1.13,
+        "peor_edad_b": 69.28,
+        "peor_anios_transcurridos": 1.5742642026009583,
+        "peor_residuo": 68.83573579739904
+      },
+      {
+        "id": "0000281670",
+        "estado": "violacion_edad",
+        "pares": 3,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "17→18",
+        "peor_edad_a": 0.57,
+        "peor_edad_b": 41.91,
+        "peor_anios_transcurridos": 0.999315537303217,
+        "peor_residuo": 40.34068446269678
+      },
+      {
+        "id": "0000217271",
+        "estado": "violacion_edad",
+        "pares": 1,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "18→19",
+        "peor_edad_a": 77.16,
+        "peor_edad_b": 50.59,
+        "peor_anios_transcurridos": 1.5742642026009583,
+        "peor_residuo": -28.14426420260095
+      },
+      {
+        "id": "0000671827",
+        "estado": "violacion_edad",
+        "pares": 2,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 16.92,
+        "peor_edad_b": 45.33,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": 25.841895961670087
+      },
+      {
+        "id": "0001430632",
+        "estado": "violacion_edad",
+        "pares": 2,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 35.08,
+        "peor_edad_b": 59.58,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": 21.93189596167009
+      },
+      {
+        "id": "0000908240",
+        "estado": "violacion_edad",
+        "pares": 4,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 36.93,
+        "peor_edad_b": 23.0,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": -16.49810403832991
+      },
+      {
+        "id": "0001378646",
+        "estado": "violacion_ambas",
+        "pares": 5,
+        "fallos_edad": 2,
+        "fallos_genero": 2,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 63.11,
+        "peor_edad_b": 51.08,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": -14.598104038329913
+      },
+      {
+        "id": "0001434533",
+        "estado": "violacion_edad",
+        "pares": 3,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 38.91,
+        "peor_edad_b": 54.0,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": 12.521895961670092
+      },
+      {
+        "id": "0001626437",
+        "estado": "violacion_edad",
+        "pares": 1,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 26.33,
+        "peor_edad_b": 38.33,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 10.77618069815195
+      },
+      {
+        "id": "0000549240",
+        "estado": "violacion_edad",
+        "pares": 4,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "16→18",
+        "peor_edad_a": 38.23,
+        "peor_edad_b": 31.7,
+        "peor_anios_transcurridos": 1.9548254620123204,
+        "peor_residuo": -8.484825462012317
+      },
+      {
+        "id": "0001499639",
+        "estado": "violacion_edad",
+        "pares": 2,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 46.05,
+        "peor_edad_b": 55.33,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": 6.7118959616700895
+      },
+      {
+        "id": "0001464090",
+        "estado": "violacion_edad",
+        "pares": 1,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 73.01,
+        "peor_edad_b": 70.08,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": -5.4981040383299185
+      },
+      {
+        "id": "0000071381",
+        "estado": "violacion_edad",
+        "pares": 1,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 41.5,
+        "peor_edad_b": 38.08,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": -4.643819301848051
+      },
+      {
+        "id": "0000444499",
+        "estado": "violacion_edad",
+        "pares": 1,
+        "fallos_edad": 1,
+        "fallos_genero": 0,
+        "peor_convocatorias": "16→21",
+        "peor_edad_a": 43.05,
+        "peor_edad_b": 46.0,
+        "peor_anios_transcurridos": 7.321013004791239,
+        "peor_residuo": -4.371013004791236
+      },
+      {
+        "id": "0000001674",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 58.91,
+        "peor_edad_b": 60.91,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000013056",
+        "estado": "violacion_genero",
+        "pares": 5,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 40.41,
+        "peor_edad_b": 42.41,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000022609",
+        "estado": "violacion_genero",
+        "pares": 3,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 60.0,
+        "peor_edad_b": 62.0,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000028070",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 47.16,
+        "peor_edad_b": 49.16,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000037351",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 36.25,
+        "peor_edad_b": 38.25,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000062556",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 35.83,
+        "peor_edad_b": 37.83,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000154547",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 54.16,
+        "peor_edad_b": 56.16,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000208892",
+        "estado": "violacion_genero",
+        "pares": 5,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 42.83,
+        "peor_edad_b": 44.83,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000273260",
+        "estado": "violacion_genero",
+        "pares": 3,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 60.75,
+        "peor_edad_b": 62.75,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000306797",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 60.5,
+        "peor_edad_b": 62.5,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000322318",
+        "estado": "violacion_genero",
+        "pares": 5,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 38.08,
+        "peor_edad_b": 40.08,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000405833",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 43.0,
+        "peor_edad_b": 45.0,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000425192",
+        "estado": "violacion_genero",
+        "pares": 3,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 38.66,
+        "peor_edad_b": 40.66,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000449768",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 37.58,
+        "peor_edad_b": 39.58,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000486302",
+        "estado": "violacion_genero",
+        "pares": 3,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 57.16,
+        "peor_edad_b": 59.16,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000545490",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 34.41,
+        "peor_edad_b": 36.41,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000556246",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 43.75,
+        "peor_edad_b": 45.75,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000678112",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 37.91,
+        "peor_edad_b": 39.91,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000811521",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 40.16,
+        "peor_edad_b": 42.16,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000873373",
+        "estado": "violacion_genero",
+        "pares": 5,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 41.25,
+        "peor_edad_b": 43.25,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000969486",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 50.08,
+        "peor_edad_b": 52.08,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001011545",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 36.58,
+        "peor_edad_b": 38.58,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001052322",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 34.33,
+        "peor_edad_b": 36.33,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001137409",
+        "estado": "violacion_genero",
+        "pares": 5,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 50.58,
+        "peor_edad_b": 52.58,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001185934",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 42.91,
+        "peor_edad_b": 44.91,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001328123",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 34.25,
+        "peor_edad_b": 36.25,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001376078",
+        "estado": "violacion_genero",
+        "pares": 5,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 42.91,
+        "peor_edad_b": 44.91,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001407081",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 48.83,
+        "peor_edad_b": 50.83,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001478283",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 36.5,
+        "peor_edad_b": 38.5,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001496613",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 38.83,
+        "peor_edad_b": 40.83,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001506130",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 33.66,
+        "peor_edad_b": 35.66,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0001546152",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "20→21",
+        "peor_edad_a": 36.33,
+        "peor_edad_b": 38.33,
+        "peor_anios_transcurridos": 1.2238193018480492,
+        "peor_residuo": 0.7761806981519508
+      },
+      {
+        "id": "0000311855",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "16→19",
+        "peor_edad_a": 62.48,
+        "peor_edad_b": 65.39,
+        "peor_anios_transcurridos": 3.5290896646132786,
+        "peor_residuo": -0.6190896646132749
+      },
+      {
+        "id": "0000098230",
+        "estado": "violacion_genero",
+        "pares": 4,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "19→20",
+        "peor_edad_a": 79.01,
+        "peor_edad_b": 81.08,
+        "peor_anios_transcurridos": 2.568104038329911,
+        "peor_residuo": -0.498104038329918
+      },
+      {
+        "id": "0001003542",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "16→17",
+        "peor_edad_a": 61.24,
+        "peor_edad_b": 61.74,
+        "peor_anios_transcurridos": 0.9555099247091033,
+        "peor_residuo": -0.45550992470910334
+      },
+      {
+        "id": "0000239020",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "16→18",
+        "peor_edad_a": 48.74,
+        "peor_edad_b": 50.24,
+        "peor_anios_transcurridos": 1.9548254620123204,
+        "peor_residuo": -0.45482546201232044
+      },
+      {
+        "id": "0001385093",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "16→21",
+        "peor_edad_a": 28.48,
+        "peor_edad_b": 35.41,
+        "peor_anios_transcurridos": 7.321013004791239,
+        "peor_residuo": -0.391013004791243
+      },
+      {
+        "id": "0000869503",
+        "estado": "violacion_genero",
+        "pares": 1,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "16→21",
+        "peor_edad_a": 44.48,
+        "peor_edad_b": 51.41,
+        "peor_anios_transcurridos": 7.321013004791239,
+        "peor_residuo": -0.39101300479123946
+      },
+      {
+        "id": "0001335738",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "19→21",
+        "peor_edad_a": 44.7,
+        "peor_edad_b": 48.75,
+        "peor_anios_transcurridos": 3.79192334017796,
+        "peor_residuo": 0.258076659822037
+      },
+      {
+        "id": "0001317792",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "19→21",
+        "peor_edad_a": 45.39,
+        "peor_edad_b": 49.41,
+        "peor_anios_transcurridos": 3.79192334017796,
+        "peor_residuo": 0.22807665982203584
+      },
+      {
+        "id": "0001449356",
+        "estado": "violacion_genero",
+        "pares": 2,
+        "fallos_edad": 0,
+        "fallos_genero": 1,
+        "peor_convocatorias": "18→21",
+        "peor_edad_a": 32.49,
+        "peor_edad_b": 37.91,
+        "peor_anios_transcurridos": 5.366187542778919,
+        "peor_residuo": 0.05381245722107586
+      }
+    ]
+  },
+  "contraste_con_la_implementacion": {
+    "regla_implementada": "dif_edad > 4.1 (una cola, sin lapso, sin género)",
+    "pares_marcados_implementada": 1067,
+    "pares_marcados_documentada": 18,
+    "falsos_positivos_de_la_implementada": 1058,
+    "falsos_negativos_de_la_implementada": 9,
+    "pares_con_edad_que_retrocede_mas_de_4": 6,
+    "lectura": "La implementación no depende del lapso entre convocatorias, así que marca a cualquiera cuya edad crezca más de 4,1 años entre dos registros consecutivos —lo normal cuando el hueco es de 6 o 7 años— y, al ser de una sola cola, no ve ninguna de las trayectorias en las que la edad retrocede."
+  },
+  "sensibilidad_tolerancia": {
+    "tolerancia_declarada": 4.0,
+    "pares_por_tolerancia": {
+      "0.5": 23283,
+      "1.0": 315,
+      "2.0": 23,
+      "2.5": 21,
+      "3.0": 18,
+      "4.0": 18,
+      "5.0": 16,
+      "7.5": 14,
+      "10.0": 13
+    },
+    "nota": "El ±4 declarado es generoso (unas 4,4 desviaciones del residuo). Con ±2 se marcarían más casos, pero el umbral es una decisión del equipo y no se cambia aquí: se reporta el efecto."
+  },
+  "impacto": {
+    "registros_afectados": 203,
+    "pct_registros": 0.26282740137498867,
+    "pares_consecutivos_afectados": 147,
+    "pct_pares": 0.31176433161544825,
+    "retencion_2013_2021_con": {
+      "base": 8016,
+      "retienen": 4503,
+      "pct": 56.1751497005988
+    },
+    "retencion_2013_2021_sin": {
+      "base": 7998,
+      "retienen": 4489,
+      "pct": 56.126531632908225
+    },
+    "delta_retencion_pp": -0.04861806769057608,
+    "edad_media_con": 44.838744885804545,
+    "edad_media_sin": 44.83797982682746,
+    "delta_edad": -0.0007650589770875627,
+    "nota": "El impacto es pequeño en las cifras agregadas, y eso es parte del resultado: 15 IDs sobre 30 086 no mueven la retención. Lo que sí implican es que esas 15 trayectorias individuales no son usables, y que la regla que el auditado implementó habría marcado a 1 067 personas que sí son válidas."
+  },
+  "validacion_con_los_juicios_del_analista": {
+    "fuente": "comentarios del script R del auditado (arreglar_base_consultoria_7.R:104-125)",
+    "ids_revisados_por_el_analista": 8,
+    "la_diferencia_de_edad_coincide": 7,
+    "detalle": [
+      {
+        "id": "0001626437",
+        "anotado_en_r": 12.0,
+        "dif_edad_calculada": 12.0,
+        "par_del_valor_reportado": "20→21",
+        "coincide_la_diferencia": true,
+        "veredicto_de_la_regla": "violacion"
+      },
+      {
+        "id": "0000154598",
+        "anotado_en_r": 4.98,
+        "dif_edad_calculada": 4.98,
+        "par_del_valor_reportado": "19→21",
+        "coincide_la_diferencia": true,
+        "veredicto_de_la_regla": "cumple"
+      },
+      {
+        "id": "0001125974",
+        "anotado_en_r": 5.03,
+        "dif_edad_calculada": 5.03,
+        "par_del_valor_reportado": "19→20",
+        "coincide_la_diferencia": true,
+        "veredicto_de_la_regla": "cumple"
+      },
+      {
+        "id": "0000671819",
+        "anotado_en_r": 40.3,
+        "dif_edad_calculada": -98.59,
+        "par_del_valor_reportado": "18→19",
+        "coincide_la_diferencia": false,
+        "veredicto_de_la_regla": "violacion",
+        "todas_las_diferencias_del_id": [
+          {
+            "par": "18→19",
+            "dif_edad": -98.59,
+            "residuo": -100.16
+          },
+          {
+            "par": "19→20",
+            "dif_edad": 40.33,
+            "residuo": 37.76
+          },
+          {
+            "par": "20→21",
+            "dif_edad": 2.0,
+            "residuo": 0.78
+          }
+        ]
+      },
+      {
+        "id": "0000671827",
+        "anotado_en_r": 28.4,
+        "dif_edad_calculada": 28.41,
+        "par_del_valor_reportado": "19→20",
+        "coincide_la_diferencia": true,
+        "veredicto_de_la_regla": "violacion"
+      },
+      {
+        "id": "0001430632",
+        "anotado_en_r": 24.5,
+        "dif_edad_calculada": 24.5,
+        "par_del_valor_reportado": "19→20",
+        "coincide_la_diferencia": true,
+        "veredicto_de_la_regla": "violacion"
+      },
+      {
+        "id": "0001434533",
+        "anotado_en_r": 15.1,
+        "dif_edad_calculada": 15.09,
+        "par_del_valor_reportado": "19→20",
+        "coincide_la_diferencia": true,
+        "veredicto_de_la_regla": "violacion"
+      },
+      {
+        "id": "0001499639",
+        "anotado_en_r": 9.28,
+        "dif_edad_calculada": 9.28,
+        "par_del_valor_reportado": "19→20",
+        "coincide_la_diferencia": true,
+        "veredicto_de_la_regla": "violacion"
+      }
+    ],
+    "nota": "El analista anotó la DIFERENCIA DE EDAD, no el residuo, así que son comparables directamente. Los dos casos que revisó y no marcó (4,98 y 5,03) son huecos de más de dos años, de modo que su residuo cae dentro de la tolerancia: la regla formalizada los acepta igual que él. Los seis que marcó superan la tolerancia en la regla formalizada."
+  },
+  "figuras": [
+    "f2_7_residuos_edad.png",
+    "f2_7_sensibilidad.png"
+  ],
+  "validaciones": {
+    "regla_leida_del_yaml": true,
+    "todos_los_ids_evaluados": true,
+    "residuo_centrado_en_cero": true,
+    "violaciones_minimas_pero_existentes": true,
+    "la_implementada_no_ve_los_descensos": true,
+    "impacto_calculado": true,
+    "csv_de_ids_escrito": true
+  }
+}

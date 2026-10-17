@@ -1,0 +1,96 @@
+# =============================================================================
+# Regla de unicidad del identificador de investigador
+# =============================================================================
+# F2-7 — Formalización de la heurística que el repositorio auditado aplicaba de
+# forma implícita. Este archivo es la FUENTE DE VERDAD: el validador
+# (documentacion_auditoria/src/validar_unicidad.py) lo lee y no tiene ninguna
+# regla escrita en el código.
+# =============================================================================
+
+version: 1
+nombre: unicidad_id_persona
+clave: ID_PERSONA_PR
+
+descripcion: >
+  Un mismo ID_PERSONA_PR debe designar a la misma persona en todas las
+  convocatorias. Como el padrón no trae nombre ni documento, la única forma de
+  comprobarlo es que la trayectoria sea coherente consigo misma: la edad debe
+  crecer tanto como haya pasado el tiempo, y los atributos estables no deben
+  cambiar de valor.
+
+origen:
+  documentada_en:
+    archivo: datos_originales/repo_auditado/informe_final.md
+    linea: 130
+    cita: >
+      «Se estableció la regla práctica: si la diferencia de edad entre dos
+      registros coincide con el lapso temporal entre convocatorias (±4 año
+      tolerancia para errores de digitación) y al menos una otra variable
+      coincide (genero), se acepta unicidad del ID.»
+  implementada_en:
+    archivo: datos_originales/repo_auditado/notebooks/tarea_tabla/arreglar_base_consultoria_7.R
+    lineas: "96-101"
+    codigo: "duplicados_dif %>% filter(dif_edad > 4.1)"
+  discrepancia: >
+    La documentación describe un contraste CONTRA EL LAPSO ENTRE CONVOCATORIAS con
+    tolerancia simétrica, y exige que coincida el género. El código implementa un
+    umbral fijo de 4,1 años sobre la diferencia de edad, en UNA SOLA COLA (solo
+    aumentos) y sin comprobar el género. Consecuencia verificada: la
+    implementación marca 1 067 pares donde la documentada marca 18, y no detecta
+    ninguno de los 6 pares en los que la edad retrocede. Esta formalización sigue
+    la regla DOCUMENTADA, que es la correcta.
+
+alcance:
+  fuente: datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
+  granularidad: persona x convocatoria
+  comparacion: pares_consecutivos
+  nota: >
+    Se comparan los pares consecutivos de cada ID, ordenados por la fecha real de
+    la convocatoria. Es lo que hace el código del auditado (lag) y basta para
+    detectar una trayectoria incoherente: si dos registros consecutivos se
+    contradicen, el ID es dudoso.
+
+criterios:
+  - nombre: coherencia_de_edad
+    variable: EDAD_ANOS_PR
+    referencia_temporal: ANO_CONVO
+    formula: >
+      residuo = (edad_b - edad_a) - (fecha_b - fecha_a expresado en años)
+    tolerancia_anios: 4.0
+    simetrica: true
+    justificacion_tolerancia: >
+      Se conserva el ±4 años que el repositorio auditado declara, para que la
+      formalización sea comparable con lo que el propio equipo quiso hacer. Es una
+      tolerancia GENEROSA: el residuo observado tiene desviación típica de 0,90
+      años, así que ±4 son unas 4,4 desviaciones, y absorbe errores de redondeo de
+      la edad decimal y de digitación. La sensibilidad a tolerancias más estrictas
+      se reporta en el JSON y en el informe, porque un umbral distinto cambia el
+      número de violaciones.
+    porque_simetrica: >
+      Una resta debe evaluarse en valor absoluto: una edad que DECRECE 98 años es
+      tan imposible como una que crece 98. El filtro `dif_edad > 4.1` del auditado
+      solo mira los aumentos y deja pasar los descensos, que son los casos más
+      graves.
+  - nombre: coherencia_de_genero
+    variable: NME_GENERO_PR
+    exigir: igualdad
+    justificacion: >
+      La documentación exige que «al menos otra variable coincida (genero)». El
+      género es el único atributo que el registro trata como estable, y de hecho
+      cambia en 42 personas, así que un cambio es señal de que los dos registros
+      pueden ser personas distintas o de un error de captura.
+
+estados:
+  cumple: la trayectoria del ID es coherente en todos sus pares consecutivos
+  violacion_edad: algún par incumple la coherencia de edad
+  violacion_genero: algún par incumple la coherencia de género
+  violacion_ambas: incumple las dos
+
+accion_recomendada:
+  violacion_ambas: "Marcar el ID como NO ÚNICO: probable colisión entre personas distintas"
+  violacion_edad: "Revisión manual del registro con la edad anómala antes de usarlo en series"
+  violacion_genero: "Revisión manual; el género no es estable en el registro"
+  nota: >
+    La regla NO elimina registros: emite un veredicto por ID. Qué hacer con los
+    IDs marcados es una decisión de análisis que debe declararse, y en este
+    proyecto se cuantifica su efecto en lugar de borrarlos en silencio.
