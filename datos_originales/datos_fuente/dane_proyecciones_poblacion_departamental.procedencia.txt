@@ -1,0 +1,24 @@
+Procedencia de dane_proyecciones_poblacion_departamental.csv
+===========================================================
+
+Fuente : DANE — Proyecciones de población departamentales, basadas en el
+         CNPV 2018 (serie actualizada, archivo «VP»).
+Archivo: PPED-AreaDep-2018-2050_VP.xlsx
+URL    : https://www.dane.gov.co/files/censo2018/proyecciones-de-poblacion/Departamental/PPED-AreaDep-2018-2050_VP.xlsx
+SHA-256: AFD5BEFE9DFC49FD83C5F7B592FBD8EEE9E4519736A82129DB876A052E9B91BF
+Tamaño : 1,034,528 bytes
+
+Qué se toma
+------------
+Hoja «PobDepartamentalxÁrea», filas con ÁREA GEOGRÁFICA = 'Total',
+para los años 2018 y 2021, columna TOTAL.
+
+Diferencia frente a la población censada
+---------------------------------------
+Estas proyecciones incorporan el AJUSTE POR OMISIÓN censal, de modo que
+son mayores que la población efectivamente censada del cuadro 1PD:
+Antioquia 6.407.149 (proyectada) frente a 5.974.788 (censada);
+Bogotá 7.391.056 frente a 7.181.469.
+La población censada es la base principal de F2-2 por ser la que publica
+directamente el cuadro oficial; la proyectada se usa como comprobación de
+robustez y, para 2021, como denominador emparejado por año.

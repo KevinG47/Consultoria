@@ -78,6 +78,12 @@ _archivo/tmp_poetry_cache/
 _archivo/tmp_virtualenv_appdata/
 _archivo/wheelhouse/
 _archivo/deps_extra/
+# Cuadernos originales del DANE descargados para F2-2 (135 MB). NO se versionan:
+# pesan demasiado y se reobtienen con los scripts de _archivo/scripts_oneoff/.
+# Lo que SÍ se versiona es la tabla derivada y pequeña
+# (datos_originales/datos_fuente/dane_*.csv) junto con su .procedencia.txt, que
+# guarda la URL y el SHA-256 del cuaderno oficial de origen.
+_archivo/tmp_dane/
 
 # ── Memoria del agente: SOLO artefactos derivados del RAG ──────────────────
 # Se versiona la evidencia legible y todo lo que las reglas necesitan sin red:

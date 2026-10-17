@@ -1,0 +1,29 @@
+Procedencia de dane_cnpv2018_poblacion_departamental.csv
+========================================================
+
+Fuente : DANE — Censo Nacional de Población y Vivienda 2018 (CNPV 2018)
+Cuadro : 1PD «Población total censada, por sexo e índices de masculinidad
+         y feminidad, según departamentos, áreas (Total, Cabecera y
+         Centros poblados y Rural disperso)»
+Archivo: PERSONAS_DEMOGRAFICO_Cuadros_CNPV_2018.xlsx
+URL    : https://www.dane.gov.co/files/censo2018/informacion-tecnica/PERSONAS_DEMOGRAFICO_Cuadros_CNPV_2018.xlsx
+SHA-256: 64F771770479A5BBA618ADA27C02B5BDE606039F1DCC8666A4AE2F124CC44462
+Tamaño : 140,535,605 bytes
+
+Qué se toma
+------------
+De cada bloque departamental se toma la fila con área = 'Total' y
+grupo de edad = 'Total', es decir la POBLACIÓN TOTAL CENSADA del
+departamento en 2018 (no la ajustada por omisión censal).
+Total Nacional del cuadro: 44,164,417
+Suma de los 33 departamentos: 44,164,417 (idéntica).
+
+Advertencia metodológica
+------------------------
+La población CENSADA subestima la población real porque el CNPV 2018
+tuvo omisión. La población oficial ajustada por omisión es superior
+(48.258.494 a nivel nacional). Se usa la cifra censada porque es la
+que publica directamente el cuadro oficial descargado y permite que
+el cálculo sea reproducible sin depender de un modelo de ajuste.
+El efecto sobre las tasas por 100.000 habitantes se discute en el
+informe de F2-2.

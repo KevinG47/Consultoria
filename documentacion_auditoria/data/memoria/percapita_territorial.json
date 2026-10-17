@@ -1,0 +1,2994 @@
+{
+  "fecha": "2026-10-16T19:21:19",
+  "analisis": "F2-2 — Concentración territorial per cápita (pregunta Q3)",
+  "semilla": 20260217,
+  "replicas_bootstrap": 2000,
+  "autotest_indices": {
+    "igualdad_perfecta": {
+      "gini": 0.0,
+      "theil_t": 0.0,
+      "theil_l": 0.0
+    },
+    "concentracion_total": {
+      "gini": 0.9696969696969697,
+      "gini_esperado": 0.9696969696969697,
+      "theil_t": 3.4965075614664802,
+      "theil_t_esperado": 3.4965075614664802
+    },
+    "descomposicion_cierra": {
+      "total": 0.20572200231391619,
+      "dentro_mas_entre": 0.20572200231391619,
+      "diferencia": 0.0
+    },
+    "invariancia_escala": {
+      "gini_original": 0.3467213252566104,
+      "gini_escalado": 0.3467213252566101,
+      "theil_original": 0.20572200231391619,
+      "theil_escalado": 0.20572200231391605
+    },
+    "todas_las_comprobaciones_ok": true
+  },
+  "fuente": {
+    "registros_totales": 77237,
+    "personas_distintas": 30086,
+    "registros_sin_codigo_dane": 2448,
+    "registros_sin_codigo_por_etiqueta": {
+      "Exterior": 2132,
+      "No disponible": 316
+    },
+    "personas_excluidas_de_tasa": 1502,
+    "duplicados_persona_en_misma_convocatoria": 0,
+    "convocatorias": {
+      "2013": 8016,
+      "2014": 8280,
+      "2015": 10050,
+      "2017": 13001,
+      "2019": 16796,
+      "2021": 21094
+    }
+  },
+  "poblacion": {
+    "censada_2018_total": 44164417,
+    "ajustada_2018_total": 48258494,
+    "proyectada_2021_total": 51115637,
+    "criterio": "Denominador principal = población censada 2018 (cuadro 1PD). Robustez con la ajustada por omisión y, para 2021, con la proyectada de ese año."
+  },
+  "universo": {
+    "registros_con_territorio_colombiano": 74789,
+    "registros_excluidos_de_tasa": 2448,
+    "personas_excluidas_de_tasa": 1502,
+    "criterio": "'Exterior' y 'No disponible' se excluyen de las tasas: no tienen población colombiana en el denominador. Sí se conservan al reproducir el HHI del auditado, que los cuenta como territorios."
+  },
+  "conteos": {
+    "stock_personas": 28950,
+    "departamentos_sin_investigadores_en_stock": 0,
+    "por_convocatoria": {
+      "2013": 7669,
+      "2014": 8038,
+      "2015": 9721,
+      "2017": 12710,
+      "2019": 16308,
+      "2021": 20343
+    }
+  },
+  "tasa_por_100000": {
+    "denominador": "población censada 2018",
+    "stock_ultima_convocatoria": {
+      "Antioquia": {
+        "investigadores": 5002,
+        "poblacion": 5974788,
+        "tasa_por_100000": 83.71845160029109
+      },
+      "Atlántico": {
+        "investigadores": 1894,
+        "poblacion": 2342265,
+        "tasa_por_100000": 80.86190076699263
+      },
+      "Bogotá, D. C.": {
+        "investigadores": 9888,
+        "poblacion": 7181469,
+        "tasa_por_100000": 137.68770706940322
+      },
+      "Bolívar": {
+        "investigadores": 768,
+        "poblacion": 1909460,
+        "tasa_por_100000": 40.22079540812586
+      },
+      "Boyacá": {
+        "investigadores": 790,
+        "poblacion": 1135698,
+        "tasa_por_100000": 69.56074590251986
+      },
+      "Caldas": {
+        "investigadores": 864,
+        "poblacion": 923472,
+        "tasa_por_100000": 93.55995633868704
+      },
+      "Caquetá": {
+        "investigadores": 107,
+        "poblacion": 359602,
+        "tasa_por_100000": 29.755118158408465
+      },
+      "Cauca": {
+        "investigadores": 452,
+        "poblacion": 1243503,
+        "tasa_por_100000": 36.3489271839312
+      },
+      "Cesar": {
+        "investigadores": 184,
+        "poblacion": 1098577,
+        "tasa_por_100000": 16.74893976480483
+      },
+      "Córdoba": {
+        "investigadores": 429,
+        "poblacion": 1555596,
+        "tasa_por_100000": 27.577854404356916
+      },
+      "Cundinamarca": {
+        "investigadores": 590,
+        "poblacion": 2792877,
+        "tasa_por_100000": 21.125169493679817
+      },
+      "Chocó": {
+        "investigadores": 74,
+        "poblacion": 457412,
+        "tasa_por_100000": 16.17797521709094
+      },
+      "Huila": {
+        "investigadores": 302,
+        "poblacion": 1009548,
+        "tasa_por_100000": 29.91437752340651
+      },
+      "La Guajira": {
+        "investigadores": 197,
+        "poblacion": 825364,
+        "tasa_por_100000": 23.868256914524984
+      },
+      "Magdalena": {
+        "investigadores": 374,
+        "poblacion": 1263788,
+        "tasa_por_100000": 29.593571073629434
+      },
+      "Meta": {
+        "investigadores": 236,
+        "poblacion": 919129,
+        "tasa_por_100000": 25.676482844083907
+      },
+      "Nariño": {
+        "investigadores": 433,
+        "poblacion": 1335521,
+        "tasa_por_100000": 32.42180392520971
+      },
+      "Norte de Santander": {
+        "investigadores": 665,
+        "poblacion": 1346806,
+        "tasa_por_100000": 49.376079405645655
+      },
+      "Quindío": {
+        "investigadores": 271,
+        "poblacion": 509640,
+        "tasa_por_100000": 53.17479004787693
+      },
+      "Risaralda": {
+        "investigadores": 571,
+        "poblacion": 839597,
+        "tasa_por_100000": 68.00881851650256
+      },
+      "Santander": {
+        "investigadores": 1572,
+        "poblacion": 2008841,
+        "tasa_por_100000": 78.25407784886907
+      },
+      "Sucre": {
+        "investigadores": 229,
+        "poblacion": 864036,
+        "tasa_por_100000": 26.503525316074796
+      },
+      "Tolima": {
+        "investigadores": 431,
+        "poblacion": 1228763,
+        "tasa_por_100000": 35.075925951546395
+      },
+      "Valle del Cauca": {
+        "investigadores": 2526,
+        "poblacion": 3789874,
+        "tasa_por_100000": 66.6512923648649
+      },
+      "Arauca": {
+        "investigadores": 9,
+        "poblacion": 239503,
+        "tasa_por_100000": 3.757781739685933
+      },
+      "Casanare": {
+        "investigadores": 31,
+        "poblacion": 379892,
+        "tasa_por_100000": 8.16021395554526
+      },
+      "Putumayo": {
+        "investigadores": 4,
+        "poblacion": 283197,
+        "tasa_por_100000": 1.4124443408651928
+      },
+      "San Andrés, Providencia y Santa Catalina": {
+        "investigadores": 12,
+        "poblacion": 48299,
+        "tasa_por_100000": 24.84523489099153
+      },
+      "Amazonas": {
+        "investigadores": 37,
+        "poblacion": 66056,
+        "tasa_por_100000": 56.0130798110694
+      },
+      "Guainía": {
+        "investigadores": 3,
+        "poblacion": 44431,
+        "tasa_por_100000": 6.7520424928540885
+      },
+      "Guaviare": {
+        "investigadores": 2,
+        "poblacion": 73081,
+        "tasa_por_100000": 2.7366894268003996
+      },
+      "Vaupés": {
+        "investigadores": 2,
+        "poblacion": 37690,
+        "tasa_por_100000": 5.306447333510215
+      },
+      "Vichada": {
+        "investigadores": 1,
+        "poblacion": 76642,
+        "tasa_por_100000": 1.30476762088672
+      }
+    },
+    "por_convocatoria": {
+      "2013": {
+        "total_investigadores": 7669,
+        "tasa_nacional_por_100000": 17.364658068507957,
+        "gini_tasas": 0.5239474818031216,
+        "theil_t_tasas": 0.4906430262072454,
+        "hhi_tasas": 0.061191355842380155,
+        "gini_conteos": 0.7806793979697878,
+        "theil_t_conteos": 1.3413924489445344,
+        "hhi_conteos": 0.2060723206336716,
+        "departamentos_sin_investigadores": 6,
+        "theil_tasas_dentro_regiones": 0.1015103720210025,
+        "theil_tasas_entre_regiones": 0.3891326541862429,
+        "detalle": {
+          "Antioquia": {
+            "investigadores": 1563,
+            "poblacion": 5974788,
+            "tasa_por_100000": 26.159924000650733
+          },
+          "Atlántico": {
+            "investigadores": 319,
+            "poblacion": 2342265,
+            "tasa_por_100000": 13.619295852518821
+          },
+          "Bogotá, D. C.": {
+            "investigadores": 2944,
+            "poblacion": 7181469,
+            "tasa_por_100000": 40.99439822131099
+          },
+          "Bolívar": {
+            "investigadores": 183,
+            "poblacion": 1909460,
+            "tasa_por_100000": 9.58386140584249
+          },
+          "Boyacá": {
+            "investigadores": 136,
+            "poblacion": 1135698,
+            "tasa_por_100000": 11.975014484484431
+          },
+          "Caldas": {
+            "investigadores": 256,
+            "poblacion": 923472,
+            "tasa_por_100000": 27.72146854479616
+          },
+          "Caquetá": {
+            "investigadores": 21,
+            "poblacion": 359602,
+            "tasa_por_100000": 5.839789545108203
+          },
+          "Cauca": {
+            "investigadores": 109,
+            "poblacion": 1243503,
+            "tasa_por_100000": 8.765559874001108
+          },
+          "Cesar": {
+            "investigadores": 22,
+            "poblacion": 1098577,
+            "tasa_por_100000": 2.002590624052752
+          },
+          "Córdoba": {
+            "investigadores": 84,
+            "poblacion": 1555596,
+            "tasa_por_100000": 5.399859603650305
+          },
+          "Cundinamarca": {
+            "investigadores": 131,
+            "poblacion": 2792877,
+            "tasa_por_100000": 4.690503735037383
+          },
+          "Chocó": {
+            "investigadores": 16,
+            "poblacion": 457412,
+            "tasa_por_100000": 3.497940587479122
+          },
+          "Huila": {
+            "investigadores": 55,
+            "poblacion": 1009548,
+            "tasa_por_100000": 5.447982661547544
+          },
+          "La Guajira": {
+            "investigadores": 25,
+            "poblacion": 825364,
+            "tasa_por_100000": 3.0289666135183992
+          },
+          "Magdalena": {
+            "investigadores": 81,
+            "poblacion": 1263788,
+            "tasa_por_100000": 6.40930282610691
+          },
+          "Meta": {
+            "investigadores": 54,
+            "poblacion": 919129,
+            "tasa_por_100000": 5.875127430425979
+          },
+          "Nariño": {
+            "investigadores": 92,
+            "poblacion": 1335521,
+            "tasa_por_100000": 6.888697369790516
+          },
+          "Norte de Santander": {
+            "investigadores": 106,
+            "poblacion": 1346806,
+            "tasa_por_100000": 7.87047280751645
+          },
+          "Quindío": {
+            "investigadores": 81,
+            "poblacion": 509640,
+            "tasa_por_100000": 15.89357193312927
+          },
+          "Risaralda": {
+            "investigadores": 146,
+            "poblacion": 839597,
+            "tasa_por_100000": 17.389295102293122
+          },
+          "Santander": {
+            "investigadores": 371,
+            "poblacion": 2008841,
+            "tasa_por_100000": 18.46836061191503
+          },
+          "Sucre": {
+            "investigadores": 21,
+            "poblacion": 864036,
+            "tasa_por_100000": 2.4304542866269463
+          },
+          "Tolima": {
+            "investigadores": 98,
+            "poblacion": 1228763,
+            "tasa_por_100000": 7.975500564388739
+          },
+          "Valle del Cauca": {
+            "investigadores": 738,
+            "poblacion": 3789874,
+            "tasa_por_100000": 19.472942899948652
+          },
+          "Arauca": {
+            "investigadores": 1,
+            "poblacion": 239503,
+            "tasa_por_100000": 0.4175313044095481
+          },
+          "Casanare": {
+            "investigadores": 0,
+            "poblacion": 379892,
+            "tasa_por_100000": 0.0
+          },
+          "Putumayo": {
+            "investigadores": 0,
+            "poblacion": 283197,
+            "tasa_por_100000": 0.0
+          },
+          "San Andrés, Providencia y Santa Catalina": {
+            "investigadores": 5,
+            "poblacion": 48299,
+            "tasa_por_100000": 10.352181204579805
+          },
+          "Amazonas": {
+            "investigadores": 11,
+            "poblacion": 66056,
+            "tasa_por_100000": 16.65253724112874
+          },
+          "Guainía": {
+            "investigadores": 0,
+            "poblacion": 44431,
+            "tasa_por_100000": 0.0
+          },
+          "Guaviare": {
+            "investigadores": 0,
+            "poblacion": 73081,
+            "tasa_por_100000": 0.0
+          },
+          "Vaupés": {
+            "investigadores": 0,
+            "poblacion": 37690,
+            "tasa_por_100000": 0.0
+          },
+          "Vichada": {
+            "investigadores": 0,
+            "poblacion": 76642,
+            "tasa_por_100000": 0.0
+          }
+        }
+      },
+      "2014": {
+        "total_investigadores": 8038,
+        "tasa_nacional_por_100000": 18.20017232424918,
+        "gini_tasas": 0.5142562724440513,
+        "theil_t_tasas": 0.4616073696540069,
+        "hhi_tasas": 0.05969688885821406,
+        "gini_conteos": 0.7770438900073138,
+        "theil_t_conteos": 1.3122749434286973,
+        "hhi_conteos": 0.19721061212042007,
+        "departamentos_sin_investigadores": 4,
+        "theil_tasas_dentro_regiones": 0.10929655340736373,
+        "theil_tasas_entre_regiones": 0.35231081624664323,
+        "detalle": {
+          "Antioquia": {
+            "investigadores": 1709,
+            "poblacion": 5974788,
+            "tasa_por_100000": 28.603525346840758
+          },
+          "Atlántico": {
+            "investigadores": 356,
+            "poblacion": 2342265,
+            "tasa_por_100000": 15.198963396541382
+          },
+          "Bogotá, D. C.": {
+            "investigadores": 2944,
+            "poblacion": 7181469,
+            "tasa_por_100000": 40.99439822131099
+          },
+          "Bolívar": {
+            "investigadores": 227,
+            "poblacion": 1909460,
+            "tasa_por_100000": 11.888177809433033
+          },
+          "Boyacá": {
+            "investigadores": 150,
+            "poblacion": 1135698,
+            "tasa_por_100000": 13.207736563769593
+          },
+          "Caldas": {
+            "investigadores": 289,
+            "poblacion": 923472,
+            "tasa_por_100000": 31.294939099398793
+          },
+          "Caquetá": {
+            "investigadores": 20,
+            "poblacion": 359602,
+            "tasa_por_100000": 5.5617043286744785
+          },
+          "Cauca": {
+            "investigadores": 89,
+            "poblacion": 1243503,
+            "tasa_por_100000": 7.157200264092649
+          },
+          "Cesar": {
+            "investigadores": 25,
+            "poblacion": 1098577,
+            "tasa_por_100000": 2.275671163696309
+          },
+          "Córdoba": {
+            "investigadores": 101,
+            "poblacion": 1555596,
+            "tasa_por_100000": 6.492688332960486
+          },
+          "Cundinamarca": {
+            "investigadores": 137,
+            "poblacion": 2792877,
+            "tasa_por_100000": 4.905335967176499
+          },
+          "Chocó": {
+            "investigadores": 17,
+            "poblacion": 457412,
+            "tasa_por_100000": 3.716561874196567
+          },
+          "Huila": {
+            "investigadores": 59,
+            "poblacion": 1009548,
+            "tasa_por_100000": 5.844199582387366
+          },
+          "La Guajira": {
+            "investigadores": 28,
+            "poblacion": 825364,
+            "tasa_por_100000": 3.392442607140607
+          },
+          "Magdalena": {
+            "investigadores": 84,
+            "poblacion": 1263788,
+            "tasa_por_100000": 6.6466844122590185
+          },
+          "Meta": {
+            "investigadores": 47,
+            "poblacion": 919129,
+            "tasa_por_100000": 5.113536837592982
+          },
+          "Nariño": {
+            "investigadores": 91,
+            "poblacion": 1335521,
+            "tasa_por_100000": 6.813820224466706
+          },
+          "Norte de Santander": {
+            "investigadores": 113,
+            "poblacion": 1346806,
+            "tasa_por_100000": 8.390221011786403
+          },
+          "Quindío": {
+            "investigadores": 82,
+            "poblacion": 509640,
+            "tasa_por_100000": 16.08978887057531
+          },
+          "Risaralda": {
+            "investigadores": 146,
+            "poblacion": 839597,
+            "tasa_por_100000": 17.389295102293122
+          },
+          "Santander": {
+            "investigadores": 380,
+            "poblacion": 2008841,
+            "tasa_por_100000": 18.916380141584128
+          },
+          "Sucre": {
+            "investigadores": 31,
+            "poblacion": 864036,
+            "tasa_por_100000": 3.5878134707350156
+          },
+          "Tolima": {
+            "investigadores": 108,
+            "poblacion": 1228763,
+            "tasa_por_100000": 8.789327152591673
+          },
+          "Valle del Cauca": {
+            "investigadores": 782,
+            "poblacion": 3789874,
+            "tasa_por_100000": 20.633931365528248
+          },
+          "Arauca": {
+            "investigadores": 1,
+            "poblacion": 239503,
+            "tasa_por_100000": 0.4175313044095481
+          },
+          "Casanare": {
+            "investigadores": 3,
+            "poblacion": 379892,
+            "tasa_por_100000": 0.7896981247301864
+          },
+          "Putumayo": {
+            "investigadores": 0,
+            "poblacion": 283197,
+            "tasa_por_100000": 0.0
+          },
+          "San Andrés, Providencia y Santa Catalina": {
+            "investigadores": 6,
+            "poblacion": 48299,
+            "tasa_por_100000": 12.422617445495765
+          },
+          "Amazonas": {
+            "investigadores": 12,
+            "poblacion": 66056,
+            "tasa_por_100000": 18.166404263049532
+          },
+          "Guainía": {
+            "investigadores": 0,
+            "poblacion": 44431,
+            "tasa_por_100000": 0.0
+          },
+          "Guaviare": {
+            "investigadores": 1,
+            "poblacion": 73081,
+            "tasa_por_100000": 1.3683447134001998
+          },
+          "Vaupés": {
+            "investigadores": 0,
+            "poblacion": 37690,
+            "tasa_por_100000": 0.0
+          },
+          "Vichada": {
+            "investigadores": 0,
+            "poblacion": 76642,
+            "tasa_por_100000": 0.0
+          }
+        }
+      },
+      "2015": {
+        "total_investigadores": 9721,
+        "tasa_nacional_por_100000": 22.010932466288416,
+        "gini_tasas": 0.491809080665424,
+        "theil_t_tasas": 0.42369921790540194,
+        "hhi_tasas": 0.0570820351931716,
+        "gini_conteos": 0.766338417608863,
+        "theil_t_conteos": 1.2617726534162135,
+        "hhi_conteos": 0.18827586759363107,
+        "departamentos_sin_investigadores": 4,
+        "theil_tasas_dentro_regiones": 0.09929983708696605,
+        "theil_tasas_entre_regiones": 0.32439938081843583,
+        "detalle": {
+          "Antioquia": {
+            "investigadores": 1947,
+            "poblacion": 5974788,
+            "tasa_por_100000": 32.586930281040935
+          },
+          "Atlántico": {
+            "investigadores": 516,
+            "poblacion": 2342265,
+            "tasa_por_100000": 22.0299581815038
+          },
+          "Bogotá, D. C.": {
+            "investigadores": 3500,
+            "poblacion": 7181469,
+            "tasa_por_100000": 48.73654679843358
+          },
+          "Bolívar": {
+            "investigadores": 274,
+            "poblacion": 1909460,
+            "tasa_por_100000": 14.349606695086567
+          },
+          "Boyacá": {
+            "investigadores": 202,
+            "poblacion": 1135698,
+            "tasa_por_100000": 17.786418572543052
+          },
+          "Caldas": {
+            "investigadores": 333,
+            "poblacion": 923472,
+            "tasa_por_100000": 36.05956650553563
+          },
+          "Caquetá": {
+            "investigadores": 28,
+            "poblacion": 359602,
+            "tasa_por_100000": 7.786386060144271
+          },
+          "Cauca": {
+            "investigadores": 116,
+            "poblacion": 1243503,
+            "tasa_por_100000": 9.32848573746907
+          },
+          "Cesar": {
+            "investigadores": 37,
+            "poblacion": 1098577,
+            "tasa_por_100000": 3.367993322270537
+          },
+          "Córdoba": {
+            "investigadores": 120,
+            "poblacion": 1555596,
+            "tasa_por_100000": 7.714085148071864
+          },
+          "Cundinamarca": {
+            "investigadores": 176,
+            "poblacion": 2792877,
+            "tasa_por_100000": 6.301745476080758
+          },
+          "Chocó": {
+            "investigadores": 15,
+            "poblacion": 457412,
+            "tasa_por_100000": 3.279319300761677
+          },
+          "Huila": {
+            "investigadores": 73,
+            "poblacion": 1009548,
+            "tasa_por_100000": 7.230958805326741
+          },
+          "La Guajira": {
+            "investigadores": 59,
+            "poblacion": 825364,
+            "tasa_por_100000": 7.148361207903422
+          },
+          "Magdalena": {
+            "investigadores": 111,
+            "poblacion": 1263788,
+            "tasa_por_100000": 8.783118687627988
+          },
+          "Meta": {
+            "investigadores": 62,
+            "poblacion": 919129,
+            "tasa_por_100000": 6.745516679377976
+          },
+          "Nariño": {
+            "investigadores": 139,
+            "poblacion": 1335521,
+            "tasa_por_100000": 10.407923200009584
+          },
+          "Norte de Santander": {
+            "investigadores": 141,
+            "poblacion": 1346806,
+            "tasa_por_100000": 10.469213828866222
+          },
+          "Quindío": {
+            "investigadores": 93,
+            "poblacion": 509640,
+            "tasa_por_100000": 18.248175182481752
+          },
+          "Risaralda": {
+            "investigadores": 174,
+            "poblacion": 839597,
+            "tasa_por_100000": 20.724228409582214
+          },
+          "Santander": {
+            "investigadores": 487,
+            "poblacion": 2008841,
+            "tasa_por_100000": 24.24283454987229
+          },
+          "Sucre": {
+            "investigadores": 50,
+            "poblacion": 864036,
+            "tasa_por_100000": 5.786795920540348
+          },
+          "Tolima": {
+            "investigadores": 128,
+            "poblacion": 1228763,
+            "tasa_por_100000": 10.416980328997536
+          },
+          "Valle del Cauca": {
+            "investigadores": 915,
+            "poblacion": 3789874,
+            "tasa_por_100000": 24.143282863757477
+          },
+          "Arauca": {
+            "investigadores": 0,
+            "poblacion": 239503,
+            "tasa_por_100000": 0.0
+          },
+          "Casanare": {
+            "investigadores": 5,
+            "poblacion": 379892,
+            "tasa_por_100000": 1.3161635412169774
+          },
+          "Putumayo": {
+            "investigadores": 0,
+            "poblacion": 283197,
+            "tasa_por_100000": 0.0
+          },
+          "San Andrés, Providencia y Santa Catalina": {
+            "investigadores": 4,
+            "poblacion": 48299,
+            "tasa_por_100000": 8.281744963663845
+          },
+          "Amazonas": {
+            "investigadores": 14,
+            "poblacion": 66056,
+            "tasa_por_100000": 21.194138306891123
+          },
+          "Guainía": {
+            "investigadores": 0,
+            "poblacion": 44431,
+            "tasa_por_100000": 0.0
+          },
+          "Guaviare": {
+            "investigadores": 0,
+            "poblacion": 73081,
+            "tasa_por_100000": 0.0
+          },
+          "Vaupés": {
+            "investigadores": 1,
+            "poblacion": 37690,
+            "tasa_por_100000": 2.6532236667551077
+          },
+          "Vichada": {
+            "investigadores": 1,
+            "poblacion": 76642,
+            "tasa_por_100000": 1.30476762088672
+          }
+        }
+      },
+      "2017": {
+        "total_investigadores": 12710,
+        "tasa_nacional_por_100000": 28.778824364419894,
+        "gini_tasas": 0.4649903543894387,
+        "theil_t_tasas": 0.37538683431394604,
+        "hhi_tasas": 0.05334913943889261,
+        "gini_conteos": 0.752316238704909,
+        "theil_t_conteos": 1.191752914501589,
+        "hhi_conteos": 0.1737312845223069,
+        "departamentos_sin_investigadores": 3,
+        "theil_tasas_dentro_regiones": 0.10643992473488548,
+        "theil_tasas_entre_regiones": 0.26894690957906064,
+        "detalle": {
+          "Antioquia": {
+            "investigadores": 2395,
+            "poblacion": 5974788,
+            "tasa_por_100000": 40.0851042748295
+          },
+          "Atlántico": {
+            "investigadores": 921,
+            "poblacion": 2342265,
+            "tasa_por_100000": 39.32091373093993
+          },
+          "Bogotá, D. C.": {
+            "investigadores": 4362,
+            "poblacion": 7181469,
+            "tasa_por_100000": 60.73966203850494
+          },
+          "Bolívar": {
+            "investigadores": 342,
+            "poblacion": 1909460,
+            "tasa_por_100000": 17.910822955181047
+          },
+          "Boyacá": {
+            "investigadores": 281,
+            "poblacion": 1135698,
+            "tasa_por_100000": 24.74249316279504
+          },
+          "Caldas": {
+            "investigadores": 419,
+            "poblacion": 923472,
+            "tasa_por_100000": 45.37224734480309
+          },
+          "Caquetá": {
+            "investigadores": 47,
+            "poblacion": 359602,
+            "tasa_por_100000": 13.070005172385025
+          },
+          "Cauca": {
+            "investigadores": 153,
+            "poblacion": 1243503,
+            "tasa_por_100000": 12.30395101579972
+          },
+          "Cesar": {
+            "investigadores": 55,
+            "poblacion": 1098577,
+            "tasa_por_100000": 5.00647656013188
+          },
+          "Córdoba": {
+            "investigadores": 179,
+            "poblacion": 1555596,
+            "tasa_por_100000": 11.506843679207199
+          },
+          "Cundinamarca": {
+            "investigadores": 259,
+            "poblacion": 2792877,
+            "tasa_por_100000": 9.273591354005207
+          },
+          "Chocó": {
+            "investigadores": 16,
+            "poblacion": 457412,
+            "tasa_por_100000": 3.497940587479122
+          },
+          "Huila": {
+            "investigadores": 98,
+            "poblacion": 1009548,
+            "tasa_por_100000": 9.707314560575623
+          },
+          "La Guajira": {
+            "investigadores": 92,
+            "poblacion": 825364,
+            "tasa_por_100000": 11.146597137747708
+          },
+          "Magdalena": {
+            "investigadores": 165,
+            "poblacion": 1263788,
+            "tasa_por_100000": 13.05598723836593
+          },
+          "Meta": {
+            "investigadores": 68,
+            "poblacion": 919129,
+            "tasa_por_100000": 7.398308616091973
+          },
+          "Nariño": {
+            "investigadores": 183,
+            "poblacion": 1335521,
+            "tasa_por_100000": 13.702517594257223
+          },
+          "Norte de Santander": {
+            "investigadores": 250,
+            "poblacion": 1346806,
+            "tasa_por_100000": 18.56243586678408
+          },
+          "Quindío": {
+            "investigadores": 130,
+            "poblacion": 509640,
+            "tasa_por_100000": 25.508201867985242
+          },
+          "Risaralda": {
+            "investigadores": 205,
+            "poblacion": 839597,
+            "tasa_por_100000": 24.41647599979514
+          },
+          "Santander": {
+            "investigadores": 652,
+            "poblacion": 2008841,
+            "tasa_por_100000": 32.45652592713908
+          },
+          "Sucre": {
+            "investigadores": 90,
+            "poblacion": 864036,
+            "tasa_por_100000": 10.416232656972626
+          },
+          "Tolima": {
+            "investigadores": 173,
+            "poblacion": 1228763,
+            "tasa_por_100000": 14.079199975910734
+          },
+          "Valle del Cauca": {
+            "investigadores": 1134,
+            "poblacion": 3789874,
+            "tasa_por_100000": 29.921839090165005
+          },
+          "Arauca": {
+            "investigadores": 1,
+            "poblacion": 239503,
+            "tasa_por_100000": 0.4175313044095481
+          },
+          "Casanare": {
+            "investigadores": 13,
+            "poblacion": 379892,
+            "tasa_por_100000": 3.4220252071641415
+          },
+          "Putumayo": {
+            "investigadores": 0,
+            "poblacion": 283197,
+            "tasa_por_100000": 0.0
+          },
+          "San Andrés, Providencia y Santa Catalina": {
+            "investigadores": 4,
+            "poblacion": 48299,
+            "tasa_por_100000": 8.281744963663845
+          },
+          "Amazonas": {
+            "investigadores": 18,
+            "poblacion": 66056,
+            "tasa_por_100000": 27.2496063945743
+          },
+          "Guainía": {
+            "investigadores": 4,
+            "poblacion": 44431,
+            "tasa_por_100000": 9.002723323805451
+          },
+          "Guaviare": {
+            "investigadores": 0,
+            "poblacion": 73081,
+            "tasa_por_100000": 0.0
+          },
+          "Vaupés": {
+            "investigadores": 1,
+            "poblacion": 37690,
+            "tasa_por_100000": 2.6532236667551077
+          },
+          "Vichada": {
+            "investigadores": 0,
+            "poblacion": 76642,
+            "tasa_por_100000": 0.0
+          }
+        }
+      },
+      "2019": {
+        "total_investigadores": 16308,
+        "tasa_nacional_por_100000": 36.92565442446574,
+        "gini_tasas": 0.4610413191645363,
+        "theil_t_tasas": 0.3701981113276624,
+        "hhi_tasas": 0.05200262897250551,
+        "gini_conteos": 0.7347462855189124,
+        "theil_t_conteos": 1.1225373518722073,
+        "hhi_conteos": 0.1615345231591352,
+        "departamentos_sin_investigadores": 3,
+        "theil_tasas_dentro_regiones": 0.09653710330645496,
+        "theil_tasas_entre_regiones": 0.2736610080212075,
+        "detalle": {
+          "Antioquia": {
+            "investigadores": 2919,
+            "poblacion": 5974788,
+            "tasa_por_100000": 48.85528992827863
+          },
+          "Atlántico": {
+            "investigadores": 1294,
+            "poblacion": 2342265,
+            "tasa_por_100000": 55.245670323383564
+          },
+          "Bogotá, D. C.": {
+            "investigadores": 5373,
+            "poblacion": 7181469,
+            "tasa_por_100000": 74.81756169942389
+          },
+          "Bolívar": {
+            "investigadores": 454,
+            "poblacion": 1909460,
+            "tasa_por_100000": 23.776355618866067
+          },
+          "Boyacá": {
+            "investigadores": 464,
+            "poblacion": 1135698,
+            "tasa_por_100000": 40.85593177059394
+          },
+          "Caldas": {
+            "investigadores": 508,
+            "poblacion": 923472,
+            "tasa_por_100000": 55.00978914357988
+          },
+          "Caquetá": {
+            "investigadores": 41,
+            "poblacion": 359602,
+            "tasa_por_100000": 11.401493873782682
+          },
+          "Cauca": {
+            "investigadores": 227,
+            "poblacion": 1243503,
+            "tasa_por_100000": 18.254881572461024
+          },
+          "Cesar": {
+            "investigadores": 90,
+            "poblacion": 1098577,
+            "tasa_por_100000": 8.192416189306712
+          },
+          "Córdoba": {
+            "investigadores": 251,
+            "poblacion": 1555596,
+            "tasa_por_100000": 16.135294768050315
+          },
+          "Cundinamarca": {
+            "investigadores": 301,
+            "poblacion": 2792877,
+            "tasa_por_100000": 10.777416978979025
+          },
+          "Chocó": {
+            "investigadores": 36,
+            "poblacion": 457412,
+            "tasa_por_100000": 7.870366321828024
+          },
+          "Huila": {
+            "investigadores": 131,
+            "poblacion": 1009548,
+            "tasa_por_100000": 12.97610415750415
+          },
+          "La Guajira": {
+            "investigadores": 141,
+            "poblacion": 825364,
+            "tasa_por_100000": 17.08337170024377
+          },
+          "Magdalena": {
+            "investigadores": 239,
+            "poblacion": 1263788,
+            "tasa_por_100000": 18.91139969678459
+          },
+          "Meta": {
+            "investigadores": 125,
+            "poblacion": 919129,
+            "tasa_por_100000": 13.599832014874952
+          },
+          "Nariño": {
+            "investigadores": 235,
+            "poblacion": 1335521,
+            "tasa_por_100000": 17.59612915109534
+          },
+          "Norte de Santander": {
+            "investigadores": 377,
+            "poblacion": 1346806,
+            "tasa_por_100000": 27.992153287110394
+          },
+          "Quindío": {
+            "investigadores": 158,
+            "poblacion": 509640,
+            "tasa_por_100000": 31.002276116474373
+          },
+          "Risaralda": {
+            "investigadores": 324,
+            "poblacion": 839597,
+            "tasa_por_100000": 38.58994255577378
+          },
+          "Santander": {
+            "investigadores": 868,
+            "poblacion": 2008841,
+            "tasa_por_100000": 43.20899463919743
+          },
+          "Sucre": {
+            "investigadores": 165,
+            "poblacion": 864036,
+            "tasa_por_100000": 19.09642653778315
+          },
+          "Tolima": {
+            "investigadores": 224,
+            "poblacion": 1228763,
+            "tasa_por_100000": 18.22971557574569
+          },
+          "Valle del Cauca": {
+            "investigadores": 1316,
+            "poblacion": 3789874,
+            "tasa_por_100000": 34.724109561426054
+          },
+          "Arauca": {
+            "investigadores": 5,
+            "poblacion": 239503,
+            "tasa_por_100000": 2.0876565220477405
+          },
+          "Casanare": {
+            "investigadores": 13,
+            "poblacion": 379892,
+            "tasa_por_100000": 3.4220252071641415
+          },
+          "Putumayo": {
+            "investigadores": 0,
+            "poblacion": 283197,
+            "tasa_por_100000": 0.0
+          },
+          "San Andrés, Providencia y Santa Catalina": {
+            "investigadores": 6,
+            "poblacion": 48299,
+            "tasa_por_100000": 12.422617445495765
+          },
+          "Amazonas": {
+            "investigadores": 21,
+            "poblacion": 66056,
+            "tasa_por_100000": 31.791207460336683
+          },
+          "Guainía": {
+            "investigadores": 1,
+            "poblacion": 44431,
+            "tasa_por_100000": 2.250680830951363
+          },
+          "Guaviare": {
+            "investigadores": 0,
+            "poblacion": 73081,
+            "tasa_por_100000": 0.0
+          },
+          "Vaupés": {
+            "investigadores": 0,
+            "poblacion": 37690,
+            "tasa_por_100000": 0.0
+          },
+          "Vichada": {
+            "investigadores": 1,
+            "poblacion": 76642,
+            "tasa_por_100000": 1.30476762088672
+          }
+        }
+      },
+      "2021": {
+        "total_investigadores": 20343,
+        "tasa_nacional_por_100000": 46.06196884700187,
+        "gini_tasas": 0.4361126599261872,
+        "theil_t_tasas": 0.3227513646792934,
+        "hhi_tasas": 0.04968219067952501,
+        "gini_conteos": 0.7253570955089905,
+        "theil_t_conteos": 1.0853242042999487,
+        "hhi_conteos": 0.15582148496112305,
+        "departamentos_sin_investigadores": 1,
+        "theil_tasas_dentro_regiones": 0.10232437943901351,
+        "theil_tasas_entre_regiones": 0.22042698524027973,
+        "detalle": {
+          "Antioquia": {
+            "investigadores": 3528,
+            "poblacion": 5974788,
+            "tasa_por_100000": 59.048120201084956
+          },
+          "Atlántico": {
+            "investigadores": 1486,
+            "poblacion": 2342265,
+            "tasa_por_100000": 63.44286406533846
+          },
+          "Bogotá, D. C.": {
+            "investigadores": 6582,
+            "poblacion": 7181469,
+            "tasa_por_100000": 91.65255743636851
+          },
+          "Bolívar": {
+            "investigadores": 567,
+            "poblacion": 1909460,
+            "tasa_por_100000": 29.694259109905417
+          },
+          "Boyacá": {
+            "investigadores": 584,
+            "poblacion": 1135698,
+            "tasa_por_100000": 51.42212102160962
+          },
+          "Caldas": {
+            "investigadores": 612,
+            "poblacion": 923472,
+            "tasa_por_100000": 66.27163573990333
+          },
+          "Caquetá": {
+            "investigadores": 67,
+            "poblacion": 359602,
+            "tasa_por_100000": 18.631709501059504
+          },
+          "Cauca": {
+            "investigadores": 330,
+            "poblacion": 1243503,
+            "tasa_por_100000": 26.537933563489595
+          },
+          "Cesar": {
+            "investigadores": 135,
+            "poblacion": 1098577,
+            "tasa_por_100000": 12.288624283960067
+          },
+          "Córdoba": {
+            "investigadores": 344,
+            "poblacion": 1555596,
+            "tasa_por_100000": 22.11371075780601
+          },
+          "Cundinamarca": {
+            "investigadores": 435,
+            "poblacion": 2792877,
+            "tasa_por_100000": 15.575336830085966
+          },
+          "Chocó": {
+            "investigadores": 49,
+            "poblacion": 457412,
+            "tasa_por_100000": 10.71244304915481
+          },
+          "Huila": {
+            "investigadores": 218,
+            "poblacion": 1009548,
+            "tasa_por_100000": 21.593822185770268
+          },
+          "La Guajira": {
+            "investigadores": 156,
+            "poblacion": 825364,
+            "tasa_por_100000": 18.90075166835481
+          },
+          "Magdalena": {
+            "investigadores": 278,
+            "poblacion": 1263788,
+            "tasa_por_100000": 21.99736031676199
+          },
+          "Meta": {
+            "investigadores": 174,
+            "poblacion": 919129,
+            "tasa_por_100000": 18.930966164705932
+          },
+          "Nariño": {
+            "investigadores": 280,
+            "poblacion": 1335521,
+            "tasa_por_100000": 20.965600690666786
+          },
+          "Norte de Santander": {
+            "investigadores": 523,
+            "poblacion": 1346806,
+            "tasa_por_100000": 38.832615833312296
+          },
+          "Quindío": {
+            "investigadores": 192,
+            "poblacion": 509640,
+            "tasa_por_100000": 37.673651989639744
+          },
+          "Risaralda": {
+            "investigadores": 413,
+            "poblacion": 839597,
+            "tasa_por_100000": 49.190266282514116
+          },
+          "Santander": {
+            "investigadores": 1170,
+            "poblacion": 2008841,
+            "tasa_por_100000": 58.242538856982705
+          },
+          "Sucre": {
+            "investigadores": 166,
+            "poblacion": 864036,
+            "tasa_por_100000": 19.212162456193955
+          },
+          "Tolima": {
+            "investigadores": 316,
+            "poblacion": 1228763,
+            "tasa_por_100000": 25.71692018721267
+          },
+          "Valle del Cauca": {
+            "investigadores": 1671,
+            "poblacion": 3789874,
+            "tasa_por_100000": 44.09117559053415
+          },
+          "Arauca": {
+            "investigadores": 8,
+            "poblacion": 239503,
+            "tasa_por_100000": 3.340250435276385
+          },
+          "Casanare": {
+            "investigadores": 22,
+            "poblacion": 379892,
+            "tasa_por_100000": 5.7911195813547005
+          },
+          "Putumayo": {
+            "investigadores": 4,
+            "poblacion": 283197,
+            "tasa_por_100000": 1.4124443408651928
+          },
+          "San Andrés, Providencia y Santa Catalina": {
+            "investigadores": 6,
+            "poblacion": 48299,
+            "tasa_por_100000": 12.422617445495765
+          },
+          "Amazonas": {
+            "investigadores": 22,
+            "poblacion": 66056,
+            "tasa_por_100000": 33.30507448225748
+          },
+          "Guainía": {
+            "investigadores": 2,
+            "poblacion": 44431,
+            "tasa_por_100000": 4.501361661902726
+          },
+          "Guaviare": {
+            "investigadores": 2,
+            "poblacion": 73081,
+            "tasa_por_100000": 2.7366894268003996
+          },
+          "Vaupés": {
+            "investigadores": 1,
+            "poblacion": 37690,
+            "tasa_por_100000": 2.6532236667551077
+          },
+          "Vichada": {
+            "investigadores": 0,
+            "poblacion": 76642,
+            "tasa_por_100000": 0.0
+          }
+        }
+      }
+    }
+  },
+  "indices_stock": {
+    "gini_tasas": 0.433279948615008,
+    "theil_t_tasas": 0.31950584733628273,
+    "theil_l_tasas": 0.4717873663571621,
+    "hhi_tasas": 0.049900295020814056,
+    "gini_conteos": 0.7338546082587534,
+    "theil_t_conteos": 1.1286632397346192,
+    "hhi_conteos": 0.1665367446105936,
+    "theil_descomposicion_tasas_regiones": {
+      "total": 0.31950584733628273,
+      "dentro": 0.10323288479374232,
+      "entre": 0.21627296254254033,
+      "suma_dentro_entre": 0.3195058473362826,
+      "grupos": {
+        "Eje Cafetero": {
+          "s_g": 0.23278222264971138,
+          "p_g": 0.12121212121212122,
+          "T_g": 0.02173271736203716,
+          "n": 4
+        },
+        "Caribe": {
+          "s_g": 0.21075522850090034,
+          "p_g": 0.24242424242424243,
+          "T_g": 0.12585846777270654,
+          "n": 8
+        },
+        "Distrito Capital": {
+          "s_g": 0.107388038379743,
+          "p_g": 0.030303030303030304,
+          "T_g": 0.0,
+          "n": 1
+        },
+        "Centro Oriente": {
+          "s_g": 0.1702732603202708,
+          "p_g": 0.12121212121212122,
+          "T_g": 0.09192869967294366,
+          "n": 4
+        },
+        "Centro Sur": {
+          "s_g": 0.11868408381611076,
+          "p_g": 0.15151515151515152,
+          "T_g": 0.2209663466187631,
+          "n": 5
+        },
+        "Pacífico": {
+          "s_g": 0.11823877980335845,
+          "p_g": 0.12121212121212122,
+          "T_g": 0.11394005594513287,
+          "n": 4
+        },
+        "Llano": {
+          "s_g": 0.04187838652990537,
+          "p_g": 0.21212121212121213,
+          "T_g": 0.38918030897646155,
+          "n": 7
+        }
+      }
+    },
+    "theil_descomposicion_conteos_regiones": {
+      "total": 1.1286632397346192,
+      "dentro": 0.30357472862084006,
+      "entre": 0.8250885111137789,
+      "suma_dentro_entre": 1.128663239734619,
+      "grupos": {
+        "Eje Cafetero": {
+          "s_g": 0.2317098445595855,
+          "p_g": 0.12121212121212122,
+          "T_g": 0.5641370239295316,
+          "n": 4
+        },
+        "Caribe": {
+          "s_g": 0.14117443868739205,
+          "p_g": 0.24242424242424243,
+          "T_g": 0.48908107146479984,
+          "n": 8
+        },
+        "Distrito Capital": {
+          "s_g": 0.3415544041450777,
+          "p_g": 0.030303030303030304,
+          "T_g": 0.0,
+          "n": 1
+        },
+        "Centro Oriente": {
+          "s_g": 0.12493955094991364,
+          "p_g": 0.12121212121212122,
+          "T_g": 0.08468847565941401,
+          "n": 4
+        },
+        "Centro Sur": {
+          "s_g": 0.030431778929188257,
+          "p_g": 0.15151515151515152,
+          "T_g": 0.478985702595158,
+          "n": 5
+        },
+        "Pacífico": {
+          "s_g": 0.12037996545768566,
+          "p_g": 0.12121212121212122,
+          "T_g": 0.5471986004957448,
+          "n": 4
+        },
+        "Llano": {
+          "s_g": 0.009810017271157167,
+          "p_g": 0.21212121212121213,
+          "T_g": 1.3031378690256346,
+          "n": 7
+        }
+      }
+    },
+    "tasa_nacional_por_100000": 65.55050868213658
+  },
+  "indicadores_clave": {
+    "tasa_nacional_por_100000": 65.55050868213658,
+    "departamento_mayor_tasa": {
+      "departamento": "Bogotá, D. C.",
+      "tasa": 137.68770706940322
+    },
+    "departamento_menor_tasa": {
+      "departamento": "Vichada",
+      "tasa": 1.30476762088672
+    },
+    "razon_mayor_menor": 105.52661245213201,
+    "sobrerrepresentacion_cuota_vs_poblacion": {
+      "Bogotá, D. C.": 2.1004826634842733,
+      "Caldas": 1.4272956567335293,
+      "Antioquia": 1.277159449764965,
+      "Atlántico": 1.2335815906342256,
+      "Santander": 1.193798178261802
+    },
+    "subrrepresentacion_cuota_vs_poblacion": {
+      "Vichada": 0.019904767287370992,
+      "Putumayo": 0.02154741998592764,
+      "Guaviare": 0.0417493240223502,
+      "Arauca": 0.05732650768444732,
+      "Vaupés": 0.08095203897260216
+    },
+    "cuota_bogota_investigadores": 0.3415544041450777,
+    "cuota_bogota_poblacion": 0.16260758066839193
+  },
+  "bootstrap_personas": {
+    "descripcion": "Remuestreo de los investigadores reconocidos. Mide la incertidumbre de superpoblación del indicador, tratando la base como una realización de un proceso.",
+    "por_convocatoria_y_stock": {
+      "2013": {
+        "tasa_ic95": {
+          "lo": [
+            24.98833431412127,
+            12.210403178120323,
+            39.82472109814858,
+            8.222219894629896,
+            9.861776634281297,
+            24.58114593620597,
+            3.6151078136384114,
+            7.237618244588071,
+            1.1833490051220805,
+            4.307030874340125,
+            3.938590922550474,
+            1.967591580457006,
+            4.160277668818124,
+            1.9385386326517755,
+            5.0641405045783,
+            4.351946244759985,
+            5.4660316086381275,
+            6.45972768164086,
+            12.557883996546582,
+            14.76601274182733,
+            16.676282493238638,
+            1.3888310209296835,
+            6.429230046803167,
+            18.153637825426387,
+            0.0,
+            0.0,
+            0.0,
+            2.0704362409159613,
+            7.569335109603973,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            27.381724673745747,
+            15.070882244323336,
+            42.23369898275687,
+            10.945502917055084,
+            14.088252334687565,
+            31.078365126392573,
+            8.620641709445442,
+            10.454337464404992,
+            2.8218322429834233,
+            6.621256418761684,
+            5.478221919547477,
+            5.246910881218683,
+            6.933796114696874,
+            4.240553258925758,
+            7.754465147635522,
+            7.507107272210973,
+            8.311363130942905,
+            9.429717420326313,
+            19.42547680715799,
+            20.247809365683775,
+            20.26043873059142,
+            3.4720775523242087,
+            9.603153740794603,
+            20.818634075961366,
+            1.2525939132286443,
+            0.0,
+            0.0,
+            20.70436240915961,
+            27.2496063945743,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 2.7232830224251874,
+        "gini_ic95": [
+          0.5137335094092971,
+          0.5461878768671662
+        ],
+        "gini_ee": 0.008174755174714662,
+        "theil_t_ic95": [
+          0.4736364277935846,
+          0.5321936423023427
+        ],
+        "theil_t_ee": 0.01446716522049289,
+        "hhi_tasas_ic95": [
+          0.05950500784305727,
+          0.06476229123754453
+        ],
+        "replicas": 2000
+      },
+      "2014": {
+        "tasa_ic95": {
+          "lo": [
+            27.398461669267594,
+            13.704683287330854,
+            39.79687164283519,
+            10.369423816157447,
+            11.180349001230962,
+            27.61318155829305,
+            3.3370225972046876,
+            5.7096766151750336,
+            1.3654026982177854,
+            5.271291517849107,
+            4.081812410643218,
+            1.967591580457006,
+            4.358386129238035,
+            2.3020146262739836,
+            5.3015220907304075,
+            3.6991543080459866,
+            5.539036825328842,
+            6.905226142443677,
+            12.557883996546582,
+            14.768990360851696,
+            17.074522075166726,
+            2.4304542866269463,
+            7.161673976185806,
+            19.234808333997382,
+            0.0,
+            0.0,
+            0.0,
+            4.140872481831923,
+            9.083202131524766,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            29.75837803784837,
+            16.77863094056394,
+            42.17800007213009,
+            13.40693180270862,
+            15.320974413972728,
+            34.86840965400142,
+            8.342556493011719,
+            8.604723913010263,
+            3.1859396291748325,
+            7.714085148071864,
+            5.764664895732967,
+            5.684153454653573,
+            7.42906726574665,
+            4.725187917088703,
+            8.070973929171664,
+            6.636718023258977,
+            8.311363130942905,
+            9.949465624596268,
+            19.621693744604034,
+            20.250786984708125,
+            20.80926265443606,
+            4.9766444916646995,
+            10.335597670177243,
+            22.006008643031404,
+            1.2525939132286443,
+            1.8426289577037684,
+            0.0,
+            22.77479865007557,
+            28.763473416495092,
+            0.0,
+            4.105034140200599,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 2.8950472978352293,
+        "gini_ic95": [
+          0.5006801856402447,
+          0.5369783361491519
+        ],
+        "gini_ee": 0.00935661011401654,
+        "theil_t_ic95": [
+          0.4386022336590096,
+          0.5087876624688158
+        ],
+        "theil_t_ee": 0.017847487490926146,
+        "hhi_tasas_ic95": [
+          0.05790314604170592,
+          0.06317574799074444
+        ],
+        "replicas": 2000
+      },
+      "2015": {
+        "tasa_ic95": {
+          "lo": [
+            31.297763200970476,
+            20.236822050451163,
+            47.483321309331004,
+            12.621369392393662,
+            15.409025991064526,
+            32.161234991423676,
+            5.005533895807031,
+            7.639708147065186,
+            2.275671163696309,
+            6.428404290059887,
+            5.406611175501105,
+            1.748970293739561,
+            5.646091121967455,
+            5.4521399043331185,
+            7.121447584563233,
+            5.113536837592982,
+            8.685748857561954,
+            8.761469729122087,
+            14.716270308453026,
+            17.746609385216956,
+            22.251636640231855,
+            4.16649306278905,
+            8.626561834951085,
+            22.639275078802093,
+            0.0,
+            0.2632327082433955,
+            0.0,
+            2.0704362409159613,
+            10.597069153445561,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            33.80914937902399,
+            23.865788029962452,
+            50.017621742849556,
+            16.025473170425148,
+            20.166012443448864,
+            39.84961103314448,
+            10.845323440915234,
+            11.017263327872952,
+            4.460315480844765,
+            9.12833409188504,
+            7.268490520706784,
+            5.028289594501237,
+            8.914880718895981,
+            8.965741176014461,
+            10.52391698607678,
+            8.377496521162971,
+            12.130097542457214,
+            12.32545741554463,
+            21.780080056510478,
+            23.820952194922086,
+            26.433152250476766,
+            7.407098778291646,
+            12.28878148186428,
+            25.620904547222416,
+            0.0,
+            2.632327082433955,
+            0.0,
+            16.56348992732769,
+            33.30507448225748,
+            0.0,
+            0.0,
+            7.959671000265323,
+            3.91430286266016
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 3.402469401513546,
+        "gini_ic95": [
+          0.47476530789053856,
+          0.5197926020030671
+        ],
+        "gini_ee": 0.011452788712056594,
+        "theil_t_ic95": [
+          0.3957423850205592,
+          0.4781337264404756
+        ],
+        "theil_t_ee": 0.021154036214930377,
+        "hhi_tasas_ic95": [
+          0.0550322867717009,
+          0.060215764288928234
+        ],
+        "replicas": 2000
+      },
+      "2017": {
+        "tasa_ic95": {
+          "lo": [
+            38.6289856644286,
+            36.97275927360909,
+            59.23579145158184,
+            16.130214825133805,
+            22.010692983522027,
+            41.257341857684914,
+            9.44794522833577,
+            10.454337464404992,
+            3.732100708461947,
+            9.899742606692227,
+            8.199430193309622,
+            1.967591580457006,
+            7.825284186586472,
+            8.965741176014461,
+            11.236061744533101,
+            5.76632877430698,
+            11.830588961161974,
+            16.260693819302855,
+            21.191429244172358,
+            21.200647453480656,
+            30.116868383311573,
+            8.217250207167295,
+            11.963250846583108,
+            28.33801334820102,
+            0.0,
+            1.8426289577037684,
+            0.0,
+            2.0704362409159613,
+            15.138670219207945,
+            2.250680830951363,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            41.4914303235529,
+            41.83984305789482,
+            62.160332377679275,
+            19.743801912582615,
+            27.472092052640754,
+            49.595439818424374,
+            16.96319820245716,
+            14.233982547689873,
+            6.371879258349665,
+            13.178228794622767,
+            10.419363258747163,
+            5.246910881218683,
+            11.492767060110054,
+            13.569770428562428,
+            15.113294318350862,
+            9.247885770114967,
+            15.64932337267628,
+            20.938427657732444,
+            29.82497449179813,
+            27.754386926108584,
+            34.845963418707605,
+            12.499479188367152,
+            16.27653176405865,
+            31.584163484063055,
+            1.2525939132286443,
+            5.5278868731113056,
+            0.0,
+            18.633926168243647,
+            39.360542569940655,
+            18.061713668384378,
+            0.0,
+            7.959671000265323,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 3.8187344115143063,
+        "gini_ic95": [
+          0.44868776894150597,
+          0.493015992857393
+        ],
+        "gini_ee": 0.01128572500586281,
+        "theil_t_ic95": [
+          0.35184259222770614,
+          0.42591848010774735
+        ],
+        "theil_t_ee": 0.01883470088779621,
+        "hhi_tasas_ic95": [
+          0.05157756790412982,
+          0.05610140086375327
+        ],
+        "replicas": 2000
+      },
+      "2019": {
+        "tasa_ic95": {
+          "lo": [
+            47.265275353702926,
+            52.42788497458657,
+            73.17409571774245,
+            21.576780869984184,
+            37.245817109830256,
+            50.350741549283576,
+            8.064471276577995,
+            16.00317811858918,
+            6.462906104897517,
+            14.14248943813175,
+            9.595839702213881,
+            5.465532167936128,
+            10.895965323095089,
+            14.414852113734062,
+            16.616711030647547,
+            11.315060236375961,
+            15.424691936704853,
+            25.170663035359212,
+            26.096852680323366,
+            34.42127592166242,
+            40.42131756570082,
+            16.203028577512974,
+            15.788235811136891,
+            33.009012964547104,
+            0.4175313044095481,
+            1.8426289577037684,
+            0.0,
+            4.140872481831923,
+            18.166404263049532,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            50.44530450285433,
+            58.27799160214578,
+            76.46067956291394,
+            25.92486881107747,
+            44.46604643135763,
+            59.88270353621983,
+            15.016601687421092,
+            20.747838967819135,
+            9.830899427168056,
+            18.06542315614079,
+            12.066410371813726,
+            10.493821762437365,
+            15.155297222123169,
+            19.991179649221436,
+            21.20806654280622,
+            15.993402449492944,
+            19.842443510809638,
+            30.81364353886157,
+            35.90769955262538,
+            42.87771395085976,
+            45.99667171269404,
+            21.992717896013577,
+            20.671195340354487,
+            36.54475056426678,
+            4.175313044095481,
+            5.5278868731113056,
+            0.0,
+            22.77479865007557,
+            45.416010657623836,
+            6.7520424928540885,
+            0.0,
+            0.0,
+            3.91430286266016
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 4.6783422131169825,
+        "gini_ic95": [
+          0.44799922201672554,
+          0.47945397767148595
+        ],
+        "gini_ee": 0.008075450020830838,
+        "theil_t_ic95": [
+          0.35047524542927727,
+          0.40673343162864584
+        ],
+        "theil_t_ee": 0.014411597582095679,
+        "hhi_tasas_ic95": [
+          0.050657523318511366,
+          0.05382879255260532
+        ],
+        "replicas": 2000
+      },
+      "2021": {
+        "tasa_ic95": {
+          "lo": [
+            57.156839707115964,
+            60.454303846917405,
+            89.939815934595,
+            27.232830224251884,
+            47.28369689829515,
+            61.07386038775404,
+            14.460431254553646,
+            23.803722226645213,
+            10.195006813359464,
+            19.86376925628505,
+            14.107316577135334,
+            7.870366321828024,
+            18.71877315392631,
+            15.992943719377148,
+            19.46529006447284,
+            16.319798417849942,
+            18.56953204030487,
+            35.639876864225435,
+            32.572011616042694,
+            44.5451806045043,
+            55.056622201558014,
+            16.31587109796351,
+            22.949909787322696,
+            42.05944577576985,
+            1.2525939132286443,
+            3.685257915407537,
+            0.3531110852162982,
+            4.140872481831923,
+            19.680271284970328,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            60.9561376905758,
+            66.68758658819561,
+            93.54632039767908,
+            32.15568799555896,
+            55.560545144924085,
+            71.58040525321827,
+            23.35915818043281,
+            29.432980861324822,
+            14.473268601108524,
+            24.42793630222757,
+            17.07916245505978,
+            13.773141063199041,
+            24.466394861858973,
+            21.92971828187321,
+            24.687684959819208,
+            21.868529879918924,
+            23.513295560309412,
+            42.02535480239916,
+            43.16772623812887,
+            54.192666243447746,
+            61.379920063359904,
+            22.10556041646413,
+            28.483930587102638,
+            46.12290540529843,
+            5.8454382617336735,
+            8.16021395554526,
+            2.8248886817303855,
+            22.77479865007557,
+            46.929877679544624,
+            11.253404154756813,
+            6.841723567000999,
+            7.959671000265323,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 5.747621707932662,
+        "gini_ic95": [
+          0.42154461236569163,
+          0.4544054413910822
+        ],
+        "gini_ee": 0.008620573932443195,
+        "theil_t_ic95": [
+          0.301635389575063,
+          0.36034039715805966
+        ],
+        "theil_t_ee": 0.015497780413036117,
+        "hhi_tasas_ic95": [
+          0.048436829687566504,
+          0.05136448047844759
+        ],
+        "replicas": 2000
+      },
+      "stock": {
+        "tasa_ic95": {
+          "lo": [
+            81.60917173965001,
+            77.27562850488737,
+            135.51544955495874,
+            37.49751238570067,
+            64.8059607395628,
+            87.27931112150667,
+            24.193413829733984,
+            33.05178998361886,
+            14.473268601108524,
+            25.07077673123356,
+            19.40651163656688,
+            12.46141334289437,
+            26.546533696268035,
+            20.47581430738438,
+            26.744992039804142,
+            22.52132181663292,
+            29.426718112257312,
+            45.81209171922311,
+            47.09206498704968,
+            62.64910427264509,
+            74.37124192507022,
+            23.031447763750585,
+            31.818585032264153,
+            64.19672527371623,
+            1.6701252176381924,
+            5.5278868731113056,
+            0.3531110852162982,
+            12.422617445495765,
+            39.360542569940655,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            85.92773500917522,
+            84.321159219815,
+            139.9020868850092,
+            43.048820085259706,
+            74.22747948838511,
+            99.51844777102065,
+            35.59490770351667,
+            39.80690034523439,
+            19.206664621596847,
+            30.08493207748027,
+            22.737306369023766,
+            19.894537091287507,
+            33.4803298109649,
+            27.503016850747063,
+            32.6004044982228,
+            29.049241183772896,
+            35.56664402880973,
+            53.088566579002475,
+            59.64994898359626,
+            73.36853276036003,
+            81.98757392944489,
+            30.091338786809807,
+            38.575380280819,
+            69.13224555750402,
+            6.68050087055277,
+            11.319006454466006,
+            2.8248886817303855,
+            39.33828857740326,
+            75.69335109603972,
+            15.75476581665954,
+            6.841723567000999,
+            13.266118333775536,
+            3.91430286266016
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 6.841723567000999,
+        "gini_ic95": [
+          0.42067857955622096,
+          0.44967655929956707
+        ],
+        "gini_ee": 0.007553429510593343,
+        "theil_t_ic95": [
+          0.299724786194838,
+          0.3517159352071758
+        ],
+        "theil_t_ee": 0.01355759393872204,
+        "hhi_tasas_ic95": [
+          0.0488229006212275,
+          0.05133931069749536
+        ],
+        "replicas": 2000
+      }
+    }
+  },
+  "bootstrap_diseno_mas_ps": {
+    "descripcion": "Bootstrap dentro de post-estratos por categoría sobre la muestra MAS (n = 2 224). Cuantifica qué podría afirmarse por departamento contando solo con la muestra.",
+    "por_convocatoria": {
+      "2013": {
+        "n_poblacion": 7669,
+        "n_muestra": 590,
+        "fraccion_muestreo": 0.07693310731516495,
+        "post_estratos": [
+          "Investigador Asociado",
+          "Investigador Junior",
+          "Investigador Sénior"
+        ],
+        "n_h": [
+          126,
+          421,
+          43
+        ],
+        "post_estratos_sin_muestra": 0,
+        "tasa_ic95": {
+          "departamentos": [
+            "Antioquia",
+            "Atlántico",
+            "Bogotá, D. C.",
+            "Bolívar",
+            "Boyacá",
+            "Caldas",
+            "Caquetá",
+            "Cauca",
+            "Cesar",
+            "Córdoba",
+            "Cundinamarca",
+            "Chocó",
+            "Huila",
+            "La Guajira",
+            "Magdalena",
+            "Meta",
+            "Nariño",
+            "Norte de Santander",
+            "Quindío",
+            "Risaralda",
+            "Santander",
+            "Sucre",
+            "Tolima",
+            "Valle del Cauca",
+            "Arauca",
+            "Casanare",
+            "Putumayo",
+            "San Andrés, Providencia y Santa Catalina",
+            "Amazonas",
+            "Guainía",
+            "Guaviare",
+            "Vaupés",
+            "Vichada"
+          ],
+          "lo": [
+            24.382561362313297,
+            8.665179976390693,
+            35.17861349048945,
+            4.575045815766197,
+            4.395467800857985,
+            12.646412503205616,
+            0.0,
+            5.285483365496938,
+            0.0,
+            1.8183200706169396,
+            4.140690195788913,
+            0.0,
+            1.2361779703636708,
+            0.0,
+            2.1065769827775047,
+            0.0,
+            2.9278818599895624,
+            3.706490757019803,
+            9.795000373790936,
+            8.918428705376769,
+            11.347015080485697,
+            0.0,
+            4.062560469756017,
+            12.69668021432931,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            32.84479319590893,
+            19.076116850461915,
+            43.5448667766445,
+            13.50703525384094,
+            17.068739956409708,
+            34.12764366147931,
+            10.41135197488921,
+            17.935685885356683,
+            5.6799887382709775,
+            10.590545759291274,
+            11.6293243759696,
+            8.185056344989002,
+            12.361779703636708,
+            4.536111331332732,
+            12.968992968585042,
+            9.50450587825313,
+            13.704956754742831,
+            14.146301989813356,
+            38.37099946156523,
+            29.03399824143417,
+            24.124707974443428,
+            4.333086807579903,
+            15.775974562234207,
+            21.96971554126108,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            64.23121507292514,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 8.931989438074742,
+        "tasa_nacional_de_la_convocatoria": 17.364658068507957,
+        "departamentos_estimados_en_cero": 8,
+        "departamentos_que_no_difieren_del_promedio": 8,
+        "gini_tasas_mediana": 0.588135501738993,
+        "gini_tasas_ic95": [
+          0.5406315338702145,
+          0.6396987497687971
+        ]
+      },
+      "2014": {
+        "n_poblacion": 8038,
+        "n_muestra": 614,
+        "fraccion_muestreo": 0.07638716098531974,
+        "post_estratos": [
+          "Investigador Asociado",
+          "Investigador Junior",
+          "Investigador Sénior"
+        ],
+        "n_h": [
+          164,
+          384,
+          66
+        ],
+        "post_estratos_sin_muestra": 0,
+        "tasa_ic95": {
+          "departamentos": [
+            "Antioquia",
+            "Atlántico",
+            "Bogotá, D. C.",
+            "Bolívar",
+            "Boyacá",
+            "Caldas",
+            "Caquetá",
+            "Cauca",
+            "Cesar",
+            "Córdoba",
+            "Cundinamarca",
+            "Chocó",
+            "Huila",
+            "La Guajira",
+            "Magdalena",
+            "Meta",
+            "Nariño",
+            "Norte de Santander",
+            "Quindío",
+            "Risaralda",
+            "Santander",
+            "Sucre",
+            "Tolima",
+            "Valle del Cauca",
+            "Arauca",
+            "Casanare",
+            "Putumayo",
+            "San Andrés, Providencia y Santa Catalina",
+            "Amazonas",
+            "Guainía",
+            "Guaviare",
+            "Vaupés",
+            "Vichada"
+          ],
+          "lo": [
+            26.332627631331178,
+            7.658890613472098,
+            36.398210544513155,
+            5.972855604091532,
+            3.3781962919347603,
+            16.73210958907189,
+            0.0,
+            1.0425018409016034,
+            0.0,
+            1.666697737287402,
+            5.6023533806429695,
+            0.0,
+            1.2840936405863481,
+            0.0,
+            0.0,
+            0.0,
+            4.814090610099772,
+            5.775237859053197,
+            5.087332888574942,
+            4.569586089942822,
+            15.154391347352426,
+            0.0,
+            3.1650224656829677,
+            14.241578036565963,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            34.969339925296865,
+            18.129877334181376,
+            45.1507997066562,
+            16.10158783452079,
+            15.795705744629492,
+            41.12343231587056,
+            17.88263246278415,
+            10.656938916651846,
+            8.260212226058497,
+            10.690204266836671,
+            13.846493388294187,
+            8.50231847874564,
+            12.582457022000275,
+            0.0,
+            4.921325566568089,
+            7.052079559379949,
+            17.35429081015811,
+            19.784934501283008,
+            32.450148734033846,
+            21.305472730742252,
+            29.869340881478944,
+            10.502431804539007,
+            12.660089862731871,
+            24.255379260622945,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            56.493086427776,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 9.02350652954927,
+        "tasa_nacional_de_la_convocatoria": 18.20017232424918,
+        "departamentos_estimados_en_cero": 9,
+        "departamentos_que_no_difieren_del_promedio": 7,
+        "gini_tasas_mediana": 0.5993033441151316,
+        "gini_tasas_ic95": [
+          0.5548069164470175,
+          0.6449971490617301
+        ]
+      },
+      "2015": {
+        "n_poblacion": 9721,
+        "n_muestra": 723,
+        "fraccion_muestreo": 0.07437506429379694,
+        "post_estratos": [
+          "Investigador Asociado",
+          "Investigador Emérito",
+          "Investigador Junior",
+          "Investigador Sénior"
+        ],
+        "n_h": [
+          222,
+          1,
+          421,
+          79
+        ],
+        "post_estratos_sin_muestra": 0,
+        "tasa_ic95": {
+          "departamentos": [
+            "Antioquia",
+            "Atlántico",
+            "Bogotá, D. C.",
+            "Bolívar",
+            "Boyacá",
+            "Caldas",
+            "Caquetá",
+            "Cauca",
+            "Cesar",
+            "Córdoba",
+            "Cundinamarca",
+            "Chocó",
+            "Huila",
+            "La Guajira",
+            "Magdalena",
+            "Meta",
+            "Nariño",
+            "Norte de Santander",
+            "Quindío",
+            "Risaralda",
+            "Santander",
+            "Sucre",
+            "Tolima",
+            "Valle del Cauca",
+            "Arauca",
+            "Casanare",
+            "Putumayo",
+            "San Andrés, Providencia y Santa Catalina",
+            "Amazonas",
+            "Guainía",
+            "Guaviare",
+            "Vaupés",
+            "Vichada"
+          ],
+          "lo": [
+            28.823874270910405,
+            14.881536998592644,
+            42.60894318711976,
+            7.696680978761725,
+            9.301945080207602,
+            22.262628723715654,
+            0.0,
+            5.375525618529198,
+            0.0,
+            3.346769154729882,
+            5.610370793985722,
+            0.0,
+            2.578490923671378,
+            0.0,
+            2.909528359999483,
+            0.0,
+            6.992420746679338,
+            7.8438917139525755,
+            4.809966547663746,
+            4.91725204224559,
+            18.216489343762202,
+            1.59418667663722,
+            5.604964827777679,
+            18.782007258970864,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            38.61957009696334,
+            26.91045823420006,
+            52.08987171212743,
+            19.482908371489657,
+            26.42572988985755,
+            49.51183812909685,
+            25.12501804969787,
+            19.450109469398157,
+            8.77684746298568,
+            12.72912735054552,
+            13.893794592834114,
+            0.0,
+            14.657382616347292,
+            10.578955143898899,
+            13.849660393522257,
+            10.490412940234089,
+            21.667747577488488,
+            22.38785246937493,
+            28.53925409710211,
+            22.611278361477968,
+            34.094066644715035,
+            12.75349341309776,
+            19.05688041444411,
+            29.578777719101176,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            55.66529954927678,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 10.796770460130311,
+        "tasa_nacional_de_la_convocatoria": 22.010932466288416,
+        "departamentos_estimados_en_cero": 9,
+        "departamentos_que_no_difieren_del_promedio": 9,
+        "gini_tasas_mediana": 0.5589535886041699,
+        "gini_tasas_ic95": [
+          0.5150165183337045,
+          0.6041102680633227
+        ]
+      },
+      "2017": {
+        "n_poblacion": 12710,
+        "n_muestra": 953,
+        "fraccion_muestreo": 0.07498033044846578,
+        "post_estratos": [
+          "Investigador Asociado",
+          "Investigador Emérito",
+          "Investigador Junior",
+          "Investigador Sénior"
+        ],
+        "n_h": [
+          266,
+          7,
+          560,
+          120
+        ],
+        "post_estratos_sin_muestra": 0,
+        "tasa_ic95": {
+          "departamentos": [
+            "Antioquia",
+            "Atlántico",
+            "Bogotá, D. C.",
+            "Bolívar",
+            "Boyacá",
+            "Caldas",
+            "Caquetá",
+            "Cauca",
+            "Cesar",
+            "Córdoba",
+            "Cundinamarca",
+            "Chocó",
+            "Huila",
+            "La Guajira",
+            "Magdalena",
+            "Meta",
+            "Nariño",
+            "Norte de Santander",
+            "Quindío",
+            "Risaralda",
+            "Santander",
+            "Sucre",
+            "Tolima",
+            "Valle del Cauca",
+            "Arauca",
+            "Casanare",
+            "Putumayo",
+            "San Andrés, Providencia y Santa Catalina",
+            "Amazonas",
+            "Guainía",
+            "Guaviare",
+            "Vaupés",
+            "Vichada"
+          ],
+          "lo": [
+            36.76368403393633,
+            23.304989433117687,
+            51.80059059313851,
+            10.46619561371614,
+            15.091502404463478,
+            43.065649721050555,
+            3.6543376923853117,
+            7.487511072512899,
+            2.392380584805877,
+            5.172354106333515,
+            7.602254889473245,
+            0.0,
+            3.905036143473543,
+            6.402540808333443,
+            8.423913880383939,
+            0.0,
+            8.918585815285974,
+            12.816553813848866,
+            7.735502371421845,
+            6.26065668580113,
+            28.37588200445145,
+            6.083575882750917,
+            4.27782133041813,
+            23.849609294679755,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            47.47267462321118,
+            38.64939569236549,
+            62.3449958165808,
+            23.729917321754836,
+            35.34699981475184,
+            78.01185655248398,
+            36.54337692385311,
+            23.536784981590237,
+            14.35492065398532,
+            17.940938879305573,
+            17.073073522715912,
+            0.0,
+            18.289597117201154,
+            24.187619311678134,
+            24.096320725820796,
+            8.700231782857319,
+            24.38442130069449,
+            29.602631095207503,
+            33.960006709734074,
+            23.83649327667207,
+            47.66992047992701,
+            23.007832850322966,
+            17.156856551113428,
+            35.75586955306201,
+            0.0,
+            24.435219380514088,
+            0.0,
+            0.0,
+            59.68150400525961,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 13.263721708038696,
+        "tasa_nacional_de_la_convocatoria": 28.778824364419894,
+        "departamentos_estimados_en_cero": 8,
+        "departamentos_que_no_difieren_del_promedio": 8,
+        "gini_tasas_mediana": 0.5251705742957102,
+        "gini_tasas_ic95": [
+          0.4856968098482826,
+          0.5674751644613647
+        ]
+      },
+      "2019": {
+        "n_poblacion": 16308,
+        "n_muestra": 1220,
+        "fraccion_muestreo": 0.07480990924699533,
+        "post_estratos": [
+          "Investigador Asociado",
+          "Investigador Emérito",
+          "Investigador Junior",
+          "Investigador Sénior"
+        ],
+        "n_h": [
+          321,
+          2,
+          727,
+          170
+        ],
+        "post_estratos_sin_muestra": 0,
+        "tasa_ic95": {
+          "departamentos": [
+            "Antioquia",
+            "Atlántico",
+            "Bogotá, D. C.",
+            "Bolívar",
+            "Boyacá",
+            "Caldas",
+            "Caquetá",
+            "Cauca",
+            "Cesar",
+            "Córdoba",
+            "Cundinamarca",
+            "Chocó",
+            "Huila",
+            "La Guajira",
+            "Magdalena",
+            "Meta",
+            "Nariño",
+            "Norte de Santander",
+            "Quindío",
+            "Risaralda",
+            "Santander",
+            "Sucre",
+            "Tolima",
+            "Valle del Cauca",
+            "Arauca",
+            "Casanare",
+            "Putumayo",
+            "San Andrés, Providencia y Santa Catalina",
+            "Amazonas",
+            "Guainía",
+            "Guaviare",
+            "Vaupés",
+            "Vichada"
+          ],
+          "lo": [
+            41.40806804503481,
+            39.80571516128042,
+            67.42535118939395,
+            16.063139979113053,
+            26.955289408055307,
+            50.91542933549263,
+            3.6480037264490033,
+            10.749782930986608,
+            1.1941169677123356,
+            9.508510290298702,
+            7.674174446460922,
+            0.0,
+            14.402472849667259,
+            9.70425905992826,
+            7.441005186428035,
+            2.854505593966711,
+            11.871125235724868,
+            18.713087756485724,
+            13.033874679120727,
+            14.425551538096608,
+            42.10241229521731,
+            10.757641887314813,
+            10.72166582744135,
+            27.35789213851344,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            52.99373880246516,
+            60.53123754033276,
+            79.72070801318009,
+            32.05286220706116,
+            53.331538564590545,
+            88.72665581432634,
+            36.48003726449003,
+            28.185333234964798,
+            12.21957029129095,
+            23.34371441273141,
+            17.227078150773924,
+            8.787758450203098,
+            36.384525904575746,
+            33.58282487119172,
+            23.120891770881894,
+            15.821835248264389,
+            28.94431711321078,
+            39.561145508817496,
+            46.934650002782966,
+            41.22381550963051,
+            64.24380152790214,
+            32.56086904076786,
+            27.871766242838774,
+            39.98184729343145,
+            16.78319757257445,
+            17.48729912791353,
+            0.0,
+            0.0,
+            59.57805964810984,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 16.78319757257445,
+        "tasa_nacional_de_la_convocatoria": 36.92565442446574,
+        "departamentos_estimados_en_cero": 6,
+        "departamentos_que_no_difieren_del_promedio": 6,
+        "gini_tasas_mediana": 0.5033699918237975,
+        "gini_tasas_ic95": [
+          0.4629990089531955,
+          0.5451611305186546
+        ]
+      },
+      "2021": {
+        "n_poblacion": 20343,
+        "n_muestra": 1503,
+        "fraccion_muestreo": 0.07388290812564519,
+        "post_estratos": [
+          "Investigador Asociado",
+          "Investigador Emérito",
+          "Investigador Junior",
+          "Investigador Sénior"
+        ],
+        "n_h": [
+          373,
+          3,
+          914,
+          213
+        ],
+        "post_estratos_sin_muestra": 0,
+        "tasa_ic95": {
+          "departamentos": [
+            "Antioquia",
+            "Atlántico",
+            "Bogotá, D. C.",
+            "Bolívar",
+            "Boyacá",
+            "Caldas",
+            "Caquetá",
+            "Cauca",
+            "Cesar",
+            "Córdoba",
+            "Cundinamarca",
+            "Chocó",
+            "Huila",
+            "La Guajira",
+            "Magdalena",
+            "Meta",
+            "Nariño",
+            "Norte de Santander",
+            "Quindío",
+            "Risaralda",
+            "Santander",
+            "Sucre",
+            "Tolima",
+            "Valle del Cauca",
+            "Arauca",
+            "Casanare",
+            "Putumayo",
+            "San Andrés, Providencia y Santa Catalina",
+            "Amazonas",
+            "Guainía",
+            "Guaviare",
+            "Vaupés",
+            "Vichada"
+          ],
+          "lo": [
+            52.494324675834086,
+            44.52788128428821,
+            80.05823405130677,
+            22.919050668314696,
+            40.062391397138924,
+            50.26374662616287,
+            7.776650035061252,
+            21.57834042482525,
+            7.44600298364867,
+            14.299813947094343,
+            11.11308015151027,
+            0.0,
+            21.97652886585343,
+            13.328197987053121,
+            15.854598358999633,
+            5.474988636601845,
+            9.145107741543478,
+            30.419952960303515,
+            16.07826967137997,
+            21.95884995943062,
+            55.88331334751504,
+            10.469729142875115,
+            18.280651693075864,
+            37.06867616801318,
+            0.0,
+            3.1926669493113167,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "hi": [
+            65.21075537931111,
+            65.82562204422578,
+            93.48272844143483,
+            41.12054093922451,
+            70.9326884548621,
+            87.04146088071373,
+            50.548225227898136,
+            45.045508222634574,
+            23.68016322500156,
+            31.360505949384006,
+            22.36257799925362,
+            20.587532749874924,
+            49.10686129297734,
+            38.51509852313714,
+            35.46093641211951,
+            21.815732300455632,
+            25.613405624839235,
+            56.353590313052045,
+            53.152830209747584,
+            51.25835124988664,
+            81.12763375492267,
+            32.05284401323388,
+            39.13302654234976,
+            51.92589744446418,
+            15.192318668757071,
+            28.95721627037714,
+            0.0,
+            0.0,
+            139.75420415919095,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "ancho_ic_mediano_por_100000": 19.606338053119877,
+        "tasa_nacional_de_la_convocatoria": 46.06196884700187,
+        "departamentos_estimados_en_cero": 6,
+        "departamentos_que_no_difieren_del_promedio": 9,
+        "gini_tasas_mediana": 0.46557216164816967,
+        "gini_tasas_ic95": [
+          0.43012426584389163,
+          0.5067120143377256
+        ]
+      }
+    }
+  },
+  "robustez_denominador": {
+    "invariancia_de_escala": {
+      "constante_comun": 137.0,
+      "gini_original": 0.433279948615008,
+      "gini_escalado": 0.43327994861500785,
+      "theil_original": 0.31950584733628273,
+      "theil_escalado": 0.31950584733628273,
+      "nota": "Gini y Theil son invariantes de escala. Por eso una corrección de omisión UNIFORME (mismo factor para todos los departamentos) NO alteraría la desigualdad medida, solo el nivel de las tasas."
+    },
+    "stock_con_poblacion_ajustada_2018": {
+      "gini_tasas": 0.4420472460738893,
+      "theil_t_tasas": 0.33316443404690255,
+      "delta_gini_vs_censada": 0.008767297458881274,
+      "delta_theil_vs_censada": 0.013658586710619813,
+      "nota": "La omisión del CNPV 2018 es DIFERENCIAL por departamento (mayor en la periferia), así que este cambio no es un factor común y sí mueve la desigualdad. Es la cota de sensibilidad al denominador."
+    },
+    "convocatoria_2021": {
+      "tasa_nacional_censada_2018": 46.06196884700187,
+      "tasa_nacional_proyectada_2021": 39.79799762644061,
+      "gini_censada_2018": 0.4361126599261872,
+      "gini_proyectada_2021": 0.44660586510058287,
+      "theil_censada_2018": 0.3227513646792934,
+      "theil_proyectada_2021": 0.3380622962552339,
+      "nota": "Denominador emparejado por año para la última convocatoria: 2018 queda anacrónico para 2021."
+    },
+    "invariancia_gini_verificada": true,
+    "invariancia_theil_verificada": true
+  },
+  "comparacion_auditado": {
+    "hhi_auditado": {
+      "2013": 0.190278,
+      "2014": 0.186678,
+      "2015": 0.177184,
+      "2017": 0.166525,
+      "2019": 0.152837,
+      "2021": 0.145744
+    },
+    "hhi_reproducido_con_exterior": {
+      "2013": 0.19027818863271465,
+      "2014": 0.1866777521062335,
+      "2015": 0.1771840102967749,
+      "2017": 0.16652517857296997,
+      "2019": 0.1528374748838747,
+      "2021": 0.1457436244445068
+    },
+    "hhi_sin_exterior": {
+      "2013": 0.20607232063367162,
+      "2014": 0.19721061212042007,
+      "2015": 0.18827586759363107,
+      "2017": 0.17373128452230688,
+      "2019": 0.16153452315913513,
+      "2021": 0.155821484961123
+    },
+    "n_territorios_auditado": {
+      "2013": 29,
+      "2014": 31,
+      "2015": 31,
+      "2017": 32,
+      "2019": 32,
+      "2021": 34
+    },
+    "n_territorios_reproducido": {
+      "2013": 29,
+      "2014": 31,
+      "2015": 31,
+      "2017": 32,
+      "2019": 32,
+      "2021": 34
+    },
+    "maxima_diferencia_reproduccion": 4.748838746959638e-07,
+    "efecto_exterior_media_pp": -1.0566644008868875,
+    "nota": "El auditado llama «territorio» a 'Exterior' (2 132 registros) y a 'No disponible' (316). Sus 29-34 «territorios» incluyen categorías que no son departamentos de Colombia.",
+    "tolerancia_reproduccion": "El HHI publicado está redondeado a 6 decimales, así que coincidir dentro de 1e-6 es coincidir exactamente. La diferencia medida es la de ese redondeo."
+  },
+  "validaciones": {
+    "suma_stock_igual_personas_con_territorio": true,
+    "suma_conteos_igual_registros_con_territorio": true,
+    "poblacion_censada_suma_44_164_417": true,
+    "poblacion_ajustada_suma_48_258_494": true,
+    "hhi_auditado_reproducido": true,
+    "invariancia_escala_gini_theil": true,
+    "todos_los_departamentos_con_poblacion": true,
+    "descomposicion_theil_cierra": true
+  },
+  "figuras": [
+    "f2_2_cuota_vs_poblacion.png",
+    "f2_2_evolucion_concentracion.png",
+    "f2_2_tasa_por_100000.png",
+    "f2_2_theil_descomposicion.png"
+  ]
+}
