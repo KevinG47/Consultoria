@@ -78,6 +78,17 @@ sus integrantes siguen en el sistema al cerrar la ventana. Solo cuatro la alcanz
 (Junior 5,14; Emérito 3,53; Humanidades 6,10; «No registra» 0,00). Se reporta como
 «no alcanzada», no se fuerza un número.
 
+> **Nota sobre los tamaños de Bogotá y del stock (H4 de la auditoría cruzada).** En
+> este análisis la unidad es la **persona en su última observación, sin filtrar**:
+> 30 086 personas, y Bogotá tiene **9 813**. F2-2 usa otra definición —cada persona en
+> su última convocatoria **con territorio colombiano**— y obtiene un stock de **28 950**
+> con **9 888** en Bogotá. La diferencia son 194 personas cuya última observación es
+> `Exterior` (173) o `No disponible` (21): F2-2 las sigue contando en su último
+> departamento colombiano porque su salida del país no las saca del denominador
+> departamental. **No hay un error de 75 personas: son dos universos distintos**, y cada
+> documento debe citarse con el suyo. Con la definición de F2-2 el cociente de Bogotá
+> sería 2,1005 y con esta 2,0986: las dos redondean a 2,10×.
+
 > **Límite del intervalo de la mediana.** Con solo 11 tiempos de evento distintos,
 > la mediana es una función escalonada y su IC degenera (los extremos caen en el
 > mismo escalón) o no es informativo. Se reporta el **valor puntual**; el intervalo
@@ -122,9 +133,22 @@ Bogotá.
 
 El log-rank daba **p = 0,0021** para el género. Al ajustar por categoría, área y
 departamento, el hazard ratio queda en **0,988 [0,946; 1,031] con p = 0,575**: la
-diferencia cruda **no es un efecto del género sino de su composición**. Las mujeres
-de este padrón están más concentradas en áreas y categorías con mayor permanencia,
-y una vez que se compara dentro de esas categorías la diferencia se anula.
+diferencia cruda **no es un efecto del género sino de su composición**.
+
+**El mecanismo, con las cifras.** Una proporción mayor de mujeres que de hombres se
+ubica en la categoría **Junior** —**72,4 %** de ellas frente al **66,4 %** de ellos— y
+una menor en **Sénior** (8,0 % frente al 12,8 %). Y Junior es justamente la categoría
+de **menor** permanencia: S final **0,430** frente a **0,917** de Sénior. Por eso la
+curva cruda de las mujeres sale algo peor (0,559 frente a 0,583 a los 6,10 años) sin
+que el género tenga nada que ver: están más concentradas en el grupo que más sale. Al
+comparar **dentro de la misma categoría y la misma área**, la diferencia se anula, y
+eso es lo que dice el HR ajustado de 0,988 con un intervalo que contiene el 1.
+
+> **Corrección (auditoría cruzada, H2).** Una versión anterior de este párrafo decía
+> que las mujeres están «más concentradas en áreas y categorías con **mayor**
+> permanencia». Era al revés: están en la de **menor**. El razonamiento se sostiene
+> igual —la diferencia cruda es de composición— pero la dirección del mecanismo es la
+> que se describe arriba.
 
 Esto es coherente con lo que ya habíamos encontrado por otras tres vías: el género
 explica el **0,11 %** de la varianza de la retención (EDA), **no aporta nada** a la
@@ -142,7 +166,7 @@ más probable seguir siendo reconocido.
 
 Los **334 eméritos (1,1 %)** se grafican pero **no entran en el modelo**, y no solo
 por tamaño: **Emérito es una categoría terminal por selección** —solo se llega a
-ella habiendo sobrevivido, y la evidencia longitudinal mostró **0 retornos de 251**—,
+ella habiendo sobrevivido, y **251 de sus 334 personas no vuelven a aparecer**—,
 así que su hazard ratio mediría tiempo inmortal, no riesgo.
 
 Se comprobó que excluirlos no sesga el resto: agrupándolos con Sénior (que es lo que
@@ -188,8 +212,14 @@ ruta de Markov que ya existía. Ahora está hecho y dice tres cosas:
 
 1. **La permanencia es larga y no se puede medir completa**: con 7,3 años de ventana
    y 70 % de censura, más de la mitad de casi todos los grupos sigue dentro al
-   cerrarse el registro. La única mediana estimable con sentido es la de los
-   **Junior (5,14 años)**, coherente con que son el grupo de mayor rotación.
+   cerrarse el registro. Se alcanzan cuatro medianas (§3), pero **la única
+   interpretable como permanencia típica es la de los Junior (5,14 años)**, coherente
+   con que son el grupo de mayor rotación. Las otras tres no lo son por motivos
+   distintos: la de **Emérito (3,53)** describe una categoría terminal por selección,
+   la de **Humanidades (6,10)** cae en el borde mismo de la ventana y se apoya en el
+   último tramo de la curva, y la de **«No registra» (0,00 años)** es degenerada
+   —significa que más de la mitad del grupo sale en su primera convocatoria—, no una
+   permanencia de cero.
 2. **La categoría es el eje que estructura la permanencia** (Sénior 0,105 frente a
    Junior; log-rank χ² = 2 940), seguida del área y, muy detrás, del departamento.
 3. **El género no estructura nada en este registro**, y ahora con una prueba que

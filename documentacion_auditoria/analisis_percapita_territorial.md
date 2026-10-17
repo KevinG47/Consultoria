@@ -25,9 +25,9 @@ repositorio auditado**: el único `*_dane.csv` que publica compara grupos
 | Elemento | Decisión |
 |---|---|
 | **Numerador** | Personas distintas reconocidas por departamento de residencia, en las 6 convocatorias (2013–2021). Base: `datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv` (77 237 registros · 30 086 personas). |
-| **Unión territorial** | Por **código DIVIPOLA** (prefijo de `COD_DANE_RES_PR`), no por nombre: la fuente escribe `'Bogotá  D. C.'` con doble espacio y `'Archipiélago de San Andrés  Providencia y Santa Catalina'`, que no son claves fiables. El prefijo mapea los 33 departamentos sin ambigüedad. |
+| **Unión territorial** | Por **código DIVIPOLA** (prefijo de `COD_DANE_RES_PR`), no por nombre. El motivo es que las dos fuentes **nombran de forma distinta el mismo departamento** —el padrón escribe `'Archipiélago de San Andrés, Providencia y Santa Catalina'` y el CSV del DANE `'San Andrés, Providencia y Santa Catalina'`, 12 personas afectadas— y que la etiqueta del padrón es texto libre. El prefijo mapea los 33 departamentos sin ambigüedad. |
 | **Exclusiones** | 2 448 registros (3,17 %) sin departamento colombiano: 2 132 «Exterior» y 316 «No disponible». No tienen denominador poblacional, así que quedan fuera de las tasas. |
-| **Stock** | Cada persona contada en su **última** convocatoria: 28 950 personas. Las tasas por convocatoria usan las personas presentes en cada una. |
+| **Stock** | Cada persona contada en su **última convocatoria con territorio colombiano**: 28 950 personas. Las 194 personas cuya última observación es «Exterior» (173) o «No disponible» (21) se cuentan en su último departamento colombiano, porque salir del país no las saca del denominador departamental. Las tasas por convocatoria usan las personas presentes en cada una. |
 | **Denominador principal** | Población **censada** del CNPV 2018, cuadro oficial 1PD: 33 unidades, **44 164 417**. |
 | **Robustez** | Población **ajustada por omisión** 2018 (**48 258 494**) y proyectada **2021** (**51 115 637**), de las proyecciones departamentales del DANE. |
 | **Incertidumbre** | Bootstrap al 95 %, B = 2 000, semilla 20260217, en dos niveles: (i) remuestreo de los investigadores reconocidos; (ii) remuestreo dentro de post-estratos por categoría sobre la muestra MAS (n = 2 224). |
@@ -59,6 +59,17 @@ La razón entre el mayor y el menor es **105,5×**. Bogotá aporta el **34,16 %*
 de los investigadores y el **16,26 %** de la población: **2,10 veces** lo que le
 correspondería por tamaño. En el extremo opuesto, Vichada y Putumayo aportan
 0,02 veces su peso poblacional.
+
+> **Nota sobre las dos definiciones de «última convocatoria» (H4 de la auditoría
+> cruzada).** Aquí Bogotá tiene **9 888** personas sobre un stock de **28 950**; el
+> análisis de supervivencia (F2-10) publica **9 813** para Bogotá. **No hay
+> discrepancia: hay dos universos.** F2-10 usa la persona en su última observación
+> *sin filtrar* (30 086 personas) y este análisis la cuenta en su última convocatoria
+> *con territorio colombiano*, de modo que las 194 personas cuya última observación es
+> «Exterior» o «No disponible» siguen en su último departamento (75 de ellas en
+> Bogotá). Con la definición de F2-10 el cociente de Bogotá sería **2,0986** en lugar
+> de 2,1005 y la razón entre extremos **104,7** en lugar de 105,5: las dos redondean a
+> 2,10× y a 105×, así que ninguna conclusión cambia.
 
 ### 3.2 La brecha se cierra, pero no donde se creía
 

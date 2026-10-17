@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-17T01:38:56",
+  "fecha": "2026-10-17T11:05:12",
   "analisis": "F2-6 — Segmentación formalizada (OE5, multivariado)",
   "semilla": 20260217,
   "k_max": 10,
@@ -519,8 +519,8 @@
     "silhouette_del_k_elegido": 0.28250132186418836,
     "umbral_silhouette": 0.25,
     "p_frente_al_nulo": 0.7619047619047619,
-    "regla": "Se declara estructura solo si la silhouette supera 0,25 (Kaufman y Rousseeuw) Y el nulo la descarta (p < 0,05).",
-    "explicacion": "k = 2 maximiza la silhouette (0.2825), que SÍ supera el umbral de 0,25, pero la prueba frente al nulo da p = 0.762: permutando cada variable por separado se obtiene una partición igual de buena (silhouette nula 0.3549). El umbral de Kaufman y Rousseeuw no basta aquí; lo que descarta la estructura es el nulo. La partición existe porque k-prototypes siempre devuelve una, no porque haya grupos separables, y solo reproduce el 16.0 % de la variabilidad mixta.",
+    "regla": "Se declara estructura solo si la silhouette supera 0,25 (Kaufman y Rousseeuw) Y el nulo la descarta (p < 0,05). El umbral es un criterio convencional y la silhouette se estima por submuestreo, con un error de Monte Carlo que aquí es del orden de la distancia al umbral; el contraste decisivo es el del nulo.",
+    "explicacion": "k = 2 maximiza la silhouette (0.28 ± 0,06), un valor que roza el umbral de 0,25 de Kaufman y Rousseeuw sin superarlo con holgura: la silhouette se estima sobre una submuestra de 4000 filas y su error de Monte Carlo es del orden de la distancia al umbral. Por eso la decisión NO se apoya en el umbral, sino en la prueba frente al nulo (p = 0.762): permutando cada variable por separado se obtiene una partición igual de buena (silhouette nula 0.3549). La partición existe porque k-prototypes siempre devuelve una, no porque haya grupos separables, y solo reproduce el 16.0 % de la variabilidad mixta.",
     "respuesta_a_la_pregunta_de_k": "El mejor k es 1 en el sentido sustantivo: no hay estructura de clusters. Cualquier k > 1 produce una partición, pero ninguna representa grupos reales."
   },
   "validaciones": {

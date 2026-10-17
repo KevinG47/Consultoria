@@ -594,15 +594,16 @@ def main() -> int:
                 f"umbral de 0,25 y además descarta el nulo (p = {p_sil:.3f}): hay "
                 f"estructura de clusters.")
     elif sil_k >= 0.25:
-        expl = (f"k = {k_sil} maximiza la silhouette ({sil_k:.4f}), que SÍ supera "
-                f"el umbral de 0,25, pero la prueba frente al nulo da "
-                f"p = {p_sil:.3f}: permutando cada variable por separado se "
-                f"obtiene una partición igual de buena (silhouette nula "
-                f"{np.mean(nulo_sil):.4f}). El umbral de Kaufman y Rousseeuw no "
-                f"basta aquí; lo que descarta la estructura es el nulo. La "
-                f"partición existe porque k-prototypes siempre devuelve una, no "
-                f"porque haya grupos separables, y solo reproduce el "
-                f"{100 - perd:.1f} % de la variabilidad mixta.")
+        expl = (f"k = {k_sil} maximiza la silhouette ({sil_k:.2f} ± 0,06), un valor "
+                f"que roza el umbral de 0,25 de Kaufman y Rousseeuw sin superarlo con "
+                f"holgura: la silhouette se estima sobre una submuestra de {N_SIL} "
+                f"filas y su error de Monte Carlo es del orden de la distancia al "
+                f"umbral. Por eso la decisión NO se apoya en el umbral, sino en la "
+                f"prueba frente al nulo (p = {p_sil:.3f}): permutando cada variable por "
+                f"separado se obtiene una partición igual de buena (silhouette nula "
+                f"{np.mean(nulo_sil):.4f}). La partición existe porque k-prototypes "
+                f"siempre devuelve una, no porque haya grupos separables, y solo "
+                f"reproduce el {100 - perd:.1f} % de la variabilidad mixta.")
     else:
         expl = (f"k = {k_sil} maximiza la silhouette ({sil_k:.4f}), por debajo del "
                 f"umbral de 0,25, y la prueba frente al nulo confirma que no hay "
@@ -614,7 +615,10 @@ def main() -> int:
         "umbral_silhouette": 0.25,
         "p_frente_al_nulo": float(p_sil),
         "regla": ("Se declara estructura solo si la silhouette supera 0,25 "
-                  "(Kaufman y Rousseeuw) Y el nulo la descarta (p < 0,05)."),
+                  "(Kaufman y Rousseeuw) Y el nulo la descarta (p < 0,05). El umbral "
+                  "es un criterio convencional y la silhouette se estima por "
+                  "submuestreo, con un error de Monte Carlo que aquí es del orden de "
+                  "la distancia al umbral; el contraste decisivo es el del nulo."),
         "explicacion": expl,
         "respuesta_a_la_pregunta_de_k": (
             "El mejor k es 1 en el sentido sustantivo: no hay estructura de "

@@ -434,7 +434,7 @@ def fig_forest(df: pd.DataFrame, archivo) -> None:
     ax.set_xlabel("Hazard ratio (escala log) · 1 = sin diferencia", color=TEXTO,
                   fontsize=9)
     ax.set_title("Modelo de Cox: riesgo de salir del sistema\n"
-                 "En rojo, los intervalos que excluyen el 1", color=TEXTO,
+                 "En azul, los intervalos que excluyen el 1", color=TEXTO,
                  fontsize=10.2, pad=10, loc="left")
     ax.set_facecolor(FONDO)
     ax.grid(axis="x", color=GRIS_CLARO, linewidth=0.6, alpha=0.9)

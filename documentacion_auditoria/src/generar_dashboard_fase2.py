@@ -509,7 +509,10 @@ def pestana_territorio(d: dict) -> tuple[list, str, str]:
          f"Denominador: población censada de 2018 ({miles(p['poblacion']['censada_2018_total'])} "
          f"habitantes, cuadro 1PD del CNPV). Se excluyen «Exterior» (2 132 registros) y "
          f"«No disponible» (316): no tienen población colombiana en el denominador. La "
-         f"línea dorada es la tasa nacional.",
+         f"línea dorada es la tasa nacional. <b>Stock:</b> cada persona contada en su última "
+         f"convocatoria <i>con territorio colombiano</i> ({miles(p['conteos']['stock_personas'])} "
+         f"personas): las 194 cuya última observación es «Exterior» o «No disponible» siguen "
+         f"contadas en su último departamento colombiano.",
          div(fig_tasas(p), "t2")),
         ("t3", "Convergencia: Gini y descomposición del Theil",
          f"El Gini cae un 16,8 % y el Theil un 34,2 %, pero el gráfico derecho muestra "
@@ -543,7 +546,20 @@ def pestana_territorio(d: dict) -> tuple[list, str, str]:
         f"<td>{pct(100 * p['indices_stock']['theil_descomposicion_tasas_regiones']['entre'] / p['indices_stock']['theil_descomposicion_tasas_regiones']['total'], 1)} del total</td></tr>"
         f"<tr><td>Theil dentro de las regiones</td><td class='num'>{num(p['indices_stock']['theil_descomposicion_tasas_regiones']['dentro'], 4)}</td>"
         "<td>la parte que NO se mueve en el período</td></tr>"
-        "</tbody></table>")
+        "</tbody></table>"
+        "<p class='nota-tabla'><b>Dos definiciones de «última convocatoria», y las dos son "
+        "correctas.</b> Aquí el stock cuenta a cada persona en su última convocatoria "
+        "<i>con territorio colombiano</i>: "
+        f"{miles(p['conteos']['stock_personas'])} personas, de las cuales "
+        f"{miles(p['tasa_por_100000']['stock_ultima_convocatoria']['Bogotá, D. C.']['investigadores'])} "
+        "son de Bogotá. La pestaña 5 (supervivencia) usa la última observación "
+        "<i>sin filtrar</i>: 30 086 personas, y por eso allí Bogotá son 9 813. La diferencia "
+        "son 194 personas cuya última observación es «Exterior» (173) o «No disponible» "
+        "(21): aquí siguen contadas en su último departamento colombiano porque su salida "
+        "del país no las saca del denominador departamental, y 75 de ellas estaban en "
+        "Bogotá. Con la definición alternativa el cociente de Bogotá sería 2,0986 en lugar "
+        "de 2,1005 y la razón entre extremos 104,7 en lugar de 105,5: ninguna conclusión "
+        "cambia.</p>")
 
     conclusion = (
         "<b>La convergencia es real, pero es interregional.</b> El Gini de las tasas "
@@ -575,11 +591,15 @@ def pestana_territorio(d: dict) -> tuple[list, str, str]:
 # ============================================================================
 def fig_razones(dv: dict) -> go.Figure:
     """
-    Cociente de representacion con sus dos intervalos.
+    cociente: se dibuja el cociente como punto y el intervalo como barra de error
+    horizontal: ubicar en el eje x la AMPLITUD del intervalo, como haria un grafico
+    de barras, pondria el punto en un sitio que no es el del cociente.
 
-    Se dibuja el cociente como punto y el intervalo como barra de error horizontal:
-    ubicar en el eje x la AMPLITUD del intervalo, como haria un grafico de barras,
-    pondria el punto en un sitio que no es el del cociente.
+    OJO CON LA DIRECCION: el cociente que publica el analisis es
+    % en la poblacion / % entre los investigadores (es el campo
+    `razon_subrepresentacion` de la evidencia del auditado). Por tanto
+    MAYOR QUE 1 = SUBrepresentado. Invertirlo hace decir al panel lo contrario
+    de lo que dicen los datos y de lo que dice analisis_diversidad.md.
     """
     orden = ["afro", "indigena", "discapacidad", "victima", "raizal",
              "palenquero", "rrom"]
@@ -615,6 +635,9 @@ def fig_razones(dv: dict) -> go.Figure:
                            "IC de Wilson [%{customdata[0]:.2f}; %{customdata[1]:.2f}]<br>"
                            "n en la muestra: %{customdata[2]}<extra></extra>")))
     fig.add_vline(x=1, line=dict(color=PALETA["dorado"], width=2, dash="dash"))
+    fig.add_annotation(x=1, y=1.02, yref="paper", text="1 = misma proporción",
+                       showarrow=False, xanchor="left", yanchor="bottom",
+                       font=dict(size=10, color=PALETA["dorado"]))
     for clave in orden:
         g = dv["grupos"][clave]
         if not g["razon_ic_diseno"]:
@@ -622,10 +645,11 @@ def fig_razones(dv: dict) -> go.Figure:
                                showarrow=False, xshift=14,
                                font=dict(size=9, color=PALETA["gris_medio"]),
                                xanchor="left")
-    fig.update_xaxes(title="Cociente: proporción entre investigadores / proporción en la población",
-                     type="log", range=[-0.75, 2.0])
+    fig.update_xaxes(
+        title="Cociente: proporción en la población / proporción entre investigadores",
+        type="log", range=[-0.75, 2.0])
     fig.update_layout(title=dict(
-        text=("Cociente de representación con sus dos intervalos (escala logarítmica) · "
+        text=("Cociente de subrepresentación con sus dos intervalos (escala logarítmica) · "
               "el intervalo largo es el del bootstrap de diseño; el corto y con topes, "
               "el de Wilson"),
         x=0.01, xanchor="left", font=dict(size=15)))
@@ -664,9 +688,9 @@ def pestana_diversidad(d: dict) -> tuple[list, str, str]:
     cob21 = dv["cobertura_por_convocatoria"]["2021"]
 
     filas = ""
-    for clave, nota in (("afro", "sobrerrepresentado"), ("indigena", "sobrerrepresentado"),
-                        ("discapacidad", "sobrerrepresentado"),
-                        ("victima", "sobrerrepresentado")):
+    for clave, nota in (("afro", "subrepresentado"), ("indigena", "subrepresentado"),
+                        ("discapacidad", "subrepresentado"),
+                        ("victima", "subrepresentado")):
         x = g[clave]
         w, dis = x["razon_ic_wilson"], x["razon_ic_diseno"]
         filas += (
@@ -691,12 +715,12 @@ def pestana_diversidad(d: dict) -> tuple[list, str, str]:
         f"resultado y no un fallo del cálculo.</p>")
 
     graficos = [
-        ("t5", "Cocientes de representación con su incertidumbre",
+        ("t5", "Cocientes de subrepresentación con su incertidumbre",
          f"Sobre las {miles(den['respuestas_conocidas'])} respuestas conocidas de 2021. "
-         f"El cociente es «proporción entre investigadores reconocidos» dividida por "
-         f"«proporción en la población del país» (DANE 2018; RUV 2021 para víctimas). "
-         f"Un valor por encima de 1 significa que el grupo está <i>más</i> representado "
-         f"entre los investigadores que en el país.",
+         f"El cociente es «proporción en la población del país» dividida por «proporción "
+         f"entre investigadores reconocidos» (DANE 2018; RUV 2021 para víctimas). "
+         f"Un valor por encima de 1 significa que el grupo pesa <i>menos</i> entre los "
+         f"investigadores que en el país, es decir que está <b>subrepresentado</b>.",
          div(fig_razones(dv), "t5")),
         ("t6", "Cobertura de las variables de diversidad",
          "Qué proporción de los registros de cada convocatoria trae el dato. Las tres "
@@ -717,15 +741,19 @@ def pestana_diversidad(d: dict) -> tuple[list, str, str]:
         f"está por encima de 1) y que la <b>magnitud</b> es cualquier cosa entre 5 y 32 "
         f"veces. Reportar el 7,88 a secas, como hacía el repositorio auditado, es "
         f"publicar la parte más frágil del dato."
-        f"<br><br><b>El hallazgo que sobrevive es la dirección, y va en el sentido "
-        f"contrario al esperado:</b> los cuatro grupos principales están "
-        f"<i>sobrerrepresentados</i> entre los investigadores reconocidos respecto de su "
-        f"peso en la población (afro {num(g['afro']['razon'], 2)}×, indígena "
+        f"<br><br><b>El hallazgo que sobrevive es la dirección:</b> los cuatro grupos "
+        f"principales están <i>subrepresentados</i> entre los investigadores reconocidos "
+        f"respecto de su peso en la población (afro {num(g['afro']['razon'], 2)}×, indígena "
         f"{num(g['indigena']['razon'], 2)}×, discapacidad {num(g['discapacidad']['razon'], 2)}×, "
-        f"víctima {num(g['victima']['razon'], 2)}×). Raizal, palenquero y rrom van en el "
-        f"sentido opuesto ({num(g['raizal']['razon'], 2)}×, {num(g['palenquero']['razon'], 2)}×, "
+        f"víctima {num(g['victima']['razon'], 2)}×). Raizal, palenquero y rrom tienen razón "
+        f"<b>menor que 1</b>, es decir están <i>sobrerrepresentados</i> "
+        f"({num(g['raizal']['razon'], 2)}×, {num(g['palenquero']['razon'], 2)}×, "
         f"{num(g['rrom']['razon'], 2)}×) pero con bases de 45, 11 y 6 personas: no admiten "
         f"conclusión."
+        f"<br><br><b>Aviso de nomenclatura.</b> La columna del auditado se llama "
+        f"<code>razon_subrepresentacion</code> y para los tres grupos pequeños vale menos "
+        f"de 1, es decir describe lo contrario: conviene leerla siempre como «cociente "
+        f"DANE/MinCiencias»."
         f"<br><br><b>No hay serie temporal.</b> Las tres variables están vacías en 2013, "
         f"2014, 2015, 2017 y 2019 (0 % de cobertura) y aparecen en 2021 con "
         f"{num(cob21['TXT_GRUPO_ETNICO']['pct_cobertura'], 2)} %. Comparar con el DANE es "
@@ -871,7 +899,7 @@ def fig_clustering(cl: dict) -> go.Figure:
                   line=dict(color=PALETA["dorado"], width=2, dash="dash"),
                   row=1, col=2)
     fig.add_annotation(x=pe["silhouette_observada"], y=1, yref="y2 domain",
-                       text=f"observada {num(pe['silhouette_observada'], 3)}",
+                       text=f"observada en la submuestra {num(pe['silhouette_observada'], 3)}",
                        showarrow=False, font=dict(size=10, color=PALETA["primario"]),
                        xanchor="right", yanchor="top", row=1, col=2)
     fig.update_xaxes(title="Número de clusters (k)", row=1, col=1)
@@ -879,8 +907,8 @@ def fig_clustering(cl: dict) -> go.Figure:
     fig.update_xaxes(title="Silhouette de la partición nula", row=1, col=2)
     fig.update_yaxes(title="Réplicas", row=1, col=2)
     fig.update_layout(title=dict(
-        text=(f"k = 2 maximiza la silhouette ({num(ck['silhouette'][0], 4)}), pero el "
-              f"nulo la supera casi siempre (p = {num(pe['silhouette_p'], 3)})"),
+        text=(f"k = 2 maximiza la silhouette ({num(ck['silhouette'][0], 2)} ± 0,06), pero "
+              f"el nulo la supera casi siempre (p = {num(pe['silhouette_p'], 3)})"),
         x=0.01, xanchor="left", font=dict(size=15)))
     return estilo(fig, alto=480, leyenda=True)
 
@@ -935,16 +963,18 @@ def pestana_redes(d: dict, G, nx) -> tuple[list, str, str]:
     ]
     conclusion = (
         f"<b>«Hay 3 clusters» no se sostiene.</b> El criterio habitual (silhouette) elige "
-        f"k = 2 con {num(v['silhouette_del_k_elegido'], 4)}, que supera el umbral de 0,25 "
-        f"de Kaufman y Rousseeuw — y aun así la conclusión es la contraria, porque "
-        f"permutando cada variable por separado se obtiene una partición <i>igual de "
-        f"buena</i>: silhouette nula media {num(cl['prueba_de_estructura']['silhouette_nulo_medio'], 4)} "
-        f"(p = {num(cl['prueba_de_estructura']['silhouette_p'], 3)}). El umbral no basta; "
-        f"lo que descarta la estructura es el nulo. Además la partición solo reproduce el "
-        f"{num(100 - cl['perdida_de_informacion']['perdida_pct'], 1)} % de la variabilidad "
-        f"mixta, y sus dos grupos son un <b>gradiente de edad y formación</b> (37,1 años con "
-        f"37,4 % de doctorado frente a 52,0 años con 63,9 %), no categorías naturales. "
-        f"<b>El mejor k es 1.</b>"
+        f"k = 2 con {num(v['silhouette_del_k_elegido'], 2)} ± 0,06, un valor que roza el "
+        f"umbral de 0,25 de Kaufman y Rousseeuw sin superarlo con holgura: la silhouette se "
+        f"estima sobre una submuestra de 4 000 de las 77 237 filas y con ocho réplicas de "
+        f"esa submuestra el valor cae entre 0,14 y 0,30. <b>Por eso la conclusión no se "
+        f"apoya en el umbral, sino en el nulo:</b> permutando cada variable por separado se "
+        f"obtiene una partición <i>igual de buena</i> (silhouette nula media "
+        f"{num(cl['prueba_de_estructura']['silhouette_nulo_medio'], 3)}, "
+        f"p = {num(cl['prueba_de_estructura']['silhouette_p'], 3)}). Además la partición "
+        f"solo reproduce el {num(100 - cl['perdida_de_informacion']['perdida_pct'], 1)} % de "
+        f"la variabilidad mixta, y sus dos grupos son un <b>gradiente de edad y formación</b> "
+        f"(37,1 años con 37,4 % de doctorado frente a 52,0 años con 63,9 %), no categorías "
+        f"naturales. <b>El mejor k es 1.</b>"
         f"<br><br><b>Lo mismo con las universidades puente.</b> Como propiedad global, el "
         f"corretaje sí está concentrado (Gini de la betweenness 0,9143 frente a 0,9023 del "
         f"nulo con grados, p = 0,004). Pero al preguntar <i>quién</i> ejerce ese corretaje "
@@ -1147,7 +1177,10 @@ def pestana_supervivencia(d: dict, comp: pd.DataFrame) -> tuple[list, str, str]:
          f"Kaplan-Meier sobre las {miles(di['n_personas'])} personas. El evento es dejar "
          f"de aparecer: la última convocatoria observada no es 2021. La mediana solo se "
          f"alcanza en dos de las cuatro categorías, y eso es un resultado, no un vacío: "
-         f"no se fuerza un número cuando la curva no baja de 0,5.",
+         f"no se fuerza un número cuando la curva no baja de 0,5. <b>Aquí la unidad es la "
+         f"persona en su última observación sin filtrar</b> ({miles(di['n_personas'])}), no "
+         f"el stock con territorio colombiano de la pestaña 2: por eso Bogotá son 9 813 y "
+         f"allí 9 888 (ver la nota de esa pestaña).",
          div(fig_km_categoria(sv), "t10")),
         ("t11", "Supervivencia por género",
          f"El log-rank en crudo encuentra una diferencia ({pval(lr['genero']['p'], 4)}). "
@@ -1555,11 +1588,11 @@ NARRATIVAS: dict[str, dict[str, str]] = {
     },
     # ----------------------------------------------------------- 3. Diversidad
     "t5": {
-        "hizo": "Se calculó, para cada grupo, la proporción entre investigadores "
-                "reconocidos y su peso en la población del país, y se le puso un intervalo "
-                "de confianza al 95 % con dos métodos: Wilson (tratando la base como una "
-                "muestra) y un bootstrap del diseño real (MAS de 2 224 personas más "
-                "post-estratificación).",
+        "hizo": "Se calculó, para cada grupo, el cociente entre su peso en la población "
+                "del país y su peso entre los investigadores reconocidos, y se le puso un "
+                "intervalo de confianza al 95 % con dos métodos: Wilson (tratando la base "
+                "como una muestra) y un bootstrap del diseño real (MAS de 2 224 personas "
+                "más post-estratificación).",
         "por": "El repositorio auditado publicaba cocientes puntuales sin incertidumbre. "
                "Con 114 personas indígenas en 20 423 respuestas, un número sin intervalo "
                "sugiere una precisión que el dato no tiene.",
@@ -1570,10 +1603,12 @@ NARRATIVAS: dict[str, dict[str, str]] = {
                   "post-estratificación por categoría), así que el intervalo refleja la "
                   "incertidumbre real del estudio y no la de una muestra ideal.",
         "lee": "Escala logarítmica: 1 es «misma proporción que en el país». Si todo el "
-                "intervalo queda a la derecha de 1, la sobrerrepresentación es sólida; si "
-                "cruza el 1, no hay nada que afirmar. El intervalo más largo es el del "
-                "bootstrap de diseño; el corto y con topes, el de Wilson. Donde no hay "
-                "intervalo largo, el cociente no quedó acotado y así se marca.",
+                "intervalo queda a la derecha de 1, la <b>sub</b>representación es sólida; "
+                "si cruza el 1, no hay nada que afirmar. Ojo: un cociente mayor que 1 "
+                "significa que el grupo pesa menos entre los investigadores. El intervalo "
+                "más largo es el del bootstrap de diseño; el corto y con topes, el de "
+                "Wilson. Donde no hay intervalo largo, el cociente no quedó acotado y así "
+                "se marca.",
     },
     "t6": {
         "hizo": "Se calculó, para cada convocatoria, qué porcentaje de sus registros trae "
@@ -1637,14 +1672,17 @@ NARRATIVAS: dict[str, dict[str, str]] = {
                "azar?».",
         "teoria": "<b>Silhouette</b>: cuánto más cerca está cada punto de su cluster que "
                   "del vecino, de −1 a 1; el umbral 0,25 de Kaufman y Rousseeuw es el "
-                  "mínimo habitual para hablar de estructura. <b>Nulo por permutación "
-                  "independiente</b>: se baraja cada variable por separado, conservando sus "
-                  "marginales y rompiendo la asociación entre ellas. Si la partición "
-                  "observada no le gana, lo que se agrupó fue ruido.",
-        "lee": "Panel izquierdo: la curva de la silhouette con el umbral dorado. Panel "
-                "derecho, el que decide: el histograma son las particiones nulas y la línea "
-                "azul, la observada. Si la línea azul cae dentro del histograma, no hay "
-                "estructura.",
+                  "mínimo habitual para hablar de estructura, pero es un umbral "
+                  "convencional y aquí la cifra se estima por submuestreo, con su propio "
+                  "error. <b>Nulo por permutación independiente</b>: se baraja cada "
+                  "variable por separado, conservando sus marginales y rompiendo la "
+                  "asociación entre ellas. Si la partición observada no le gana, lo que se "
+                  "agrupó fue ruido. Ese contraste es el que decide, no el umbral.",
+        "lee": "Panel izquierdo: la curva de la silhouette con el umbral dorado; el valor "
+                "de k = 2 es 0,28 ± 0,06, así que la distancia al umbral es menor que el "
+                "error de la estimación. Panel derecho, el que decide: el histograma son las "
+                "particiones nulas y la línea azul, la observada en la submuestra del "
+                "contraste. Si la línea azul cae dentro del histograma, no hay estructura.",
     },
     # -------------------------------------------------------- 5. Supervivencia
     "t10": {
@@ -1795,9 +1833,13 @@ CONCEPTOS = [
     ("Intervalo de Wilson", "Intervalo de confianza para una proporción que funciona bien "
                             "con cuentas pequeñas o cerca de 0, donde el intervalo normal "
                             "clásico da límites imposibles.", "3"),
-    ("Cociente de representación", "Proporción de un grupo entre los investigadores "
-                                   "dividida por su proporción en la población. 1 = "
-                                   "equivalencia; mayor que 1 = sobrerrepresentación.", "3"),
+    ("Cociente de subrepresentación", "Proporción de un grupo en la población dividida "
+                                      "por su proporción entre los investigadores. 1 = "
+                                      "equivalencia; mayor que 1 = subrepresentación; "
+                                      "menor que 1 = sobrerrepresentación. Es el campo "
+                                      "`razon_subrepresentacion` del auditado, cuyo nombre "
+                                      "induce a error en los grupos con razón menor que 1.",
+     "3"),
     ("Error de denominador", "Dividir por el subconjunto en vez de por el total. Si se "
                              "excluye «ningún grupo étnico», el porcentaje afro pasa de "
                              "2,22 % a 72,02 %: no es un dato, es un error de base.", "3"),

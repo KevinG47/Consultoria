@@ -118,10 +118,19 @@ apenas fuera del ±4.
 
 | | Pares |
 |---|---:|
-| Marca la regla **documentada** | **18** |
+| Marca la regla **documentada, criterio de edad** (±4 con lapso) | **18** |
 | Marca la regla **implementada** (`dif_edad > 4.1`) | **1 067** |
 | Falsos positivos de la implementada | **1 058** |
 | Falsos negativos de la implementada | **9** |
+
+> **La comparación es del criterio de EDAD, y solo de él** (auditoría cruzada, H5).
+> Es el único criterio que el código del auditado intentaba implementar, así que es la
+> comparación justa para juzgar ese código. La regla documentada tiene **dos**
+> criterios —la edad contra el lapso **y** que coincida el género—, de modo que si se
+> aplica entera marca **59** pares: entonces los falsos positivos de la implementada
+> bajan a **1 054** y los falsos negativos suben a **46** (falla también en los pares
+> donde el género cambia). Las dos lecturas sostienen la misma conclusión: la
+> implementación marca un orden de magnitud de más y no ve los descensos de edad.
 
 **Por qué 1 058 falsos positivos.** El filtro no mira el lapso: marca a cualquiera
 cuya edad crezca más de 4,1 años entre dos registros consecutivos. Si una persona

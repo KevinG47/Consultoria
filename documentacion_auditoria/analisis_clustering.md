@@ -49,24 +49,34 @@ cualquier implementación de k-prototypes.
 
 | k | Silhouette | Calinski–Harabasz | Davies–Bouldin | Pérdida de información |
 |---:|---:|---:|---:|---:|
-| **2** | **0,2825** | **6 938,2** | 3,1751 | 84,05 % |
-| 3 | 0,1768 | 5 487,8 | 3,2833 | 76,49 % |
-| 4 | 0,1243 | 4 502,4 | 3,3139 | 73,22 % |
-| 5 | 0,1058 | 3 839,5 | 3,5721 | 70,89 % |
-| 6 | 0,1135 | 3 600,3 | 3,0564 | 68,51 % |
-| 7 | 0,0223 | 3 317,0 | 3,0434 | 67,11 % |
-| 8 | 0,1093 | 3 247,0 | 2,9184 | 64,47 % |
-| 9 | 0,1118 | 3 016,5 | 2,8840 | 63,99 % |
-| 10 | 0,0109 | 2 837,7 | **2,8043** | 62,46 % |
+| **2** | **0,28 ± 0,06** | **6 938,2** | 3,1751 | 84,05 % |
+| 3 | 0,18 | 5 487,8 | 3,2833 | 76,49 % |
+| 4 | 0,12 | 4 502,4 | 3,3139 | 73,22 % |
+| 5 | 0,11 | 3 839,5 | 3,5721 | 70,89 % |
+| 6 | 0,11 | 3 600,3 | 3,0564 | 68,51 % |
+| 7 | 0,02 | 3 317,0 | 3,0434 | 67,11 % |
+| 8 | 0,11 | 3 247,0 | 2,9184 | 64,47 % |
+| 9 | 0,11 | 3 016,5 | 2,8840 | 63,99 % |
+| 10 | 0,01 | 2 837,7 | **2,8043** | 62,46 % |
 
 Silhouette y Calinski–Harabasz eligen **k = 2**; Davies–Bouldin prefiere **k = 10**.
 Que los tres no coincidan es la primera señal de que no hay una estructura clara que
 perseguir. La silhouette cae en picado de 0,28 a 0,18 al pasar de 2 a 3 y luego se
 queda entre 0,01 y 0,11 con un perfil de sierra: no hay un óptimo interno.
 
-**Y ojo con el umbral:** 0,2825 **supera** el 0,25 que Kaufman y Rousseeuw fijan
-como mínimo para hablar de estructura. Si el análisis se detuviera aquí, la
-conclusión sería «hay dos clusters». No lo es.
+> **Por qué la silhouette va con ± 0,06 (y no con cuatro decimales).** La silhouette
+> se estima sobre una **submuestra estratificada de 4 000 de las 77 237 filas** —la
+> matriz de distancias completa no cabe en memoria—, elegida al azar. Con la **misma
+> partición** (tamaños 40 192 / 37 045 e inercia intra 174 196,3, ambas deterministas
+> y exactas) y ocho réplicas de esa submuestra, el valor cae entre **0,14 y 0,30**
+> (media 0,26 · desviación **0,061**). Publicar 0,2825 como si fuera exacto sería
+> prometer una precisión que la estimación no tiene; por eso se reporta 0,28 ± 0,06.
+
+**Y ojo con el umbral:** 0,25 es el mínimo que Kaufman y Rousseeuw proponen para
+hablar de estructura, y 0,28 está **a media desviación** de él. En dos de las ocho
+réplicas de la submuestra la estimación cae **por debajo** de 0,25. Por tanto el
+umbral **no decide nada aquí**; el que decide es el contraste de la sección
+siguiente.
 
 ## 4. La prueba que decide: el nulo
 
@@ -78,6 +88,13 @@ ellas) y se repite todo el procedimiento, con k = 2, sobre 10 000 filas:
 |---|---:|---:|---|---:|
 | Silhouette | 0,3520 | **0,3549** | [0,2657; 0,3923] | **0,762** |
 | Calinski–Harabasz | 878,0 | **877,9** | — | **0,524** |
+
+> **Dos «silhouette observada» que no son la misma, y conviene no confundirlas.**
+> La de la sección 3 es **0,28 ± 0,06** y se estima sobre las 77 237 filas. La de esta
+> tabla es **0,3520** y se estima sobre la **submuestra de 10 000 filas** con la que se
+> corre el contraste, para que observado y nulo se midan exactamente igual. Son dos
+> estimaciones del mismo hecho con dos tamaños de muestra distintos; la comparación
+> válida es la de esta tabla, siempre dentro de la submuestra.
 
 **La partición observada es indistinguible de la que produce un conjunto de
 variables independientes.** Es más: la silhouette observada es ligeramente *menor*
@@ -138,10 +155,15 @@ retención (F2-2 y el EDA).
 | **Pérdida** | **84,05 %** |
 
 La partición solo reproduce el **15,95 %** de la variabilidad mixta; el otro 84 %
-queda dentro de los grupos. Para comparar: en los datos del EDA, la categoría por sí
-sola explica el 7,08 % de la varianza de la retención. Es decir, dos clusters apenas
-capturan más información que una sola variable categórica bien elegida — otro indicio
-de que la segmentación no aporta.
+queda dentro de los grupos. Es una cifra muy alta para una segmentación que se
+pretenda útil: los dos clusters comparten casi toda la variabilidad de las siete
+variables, y lo que los separa es un corte en la edad y el nivel de formación.
+
+> **Nota de la auditoría cruzada (H8).** Una versión anterior comparaba este 15,95 %
+> con el **7,08 %** de la varianza de la **retención** que explicaba la categoría en
+> el EDA. La comparación no es válida: son cantidades con denominador y variable
+> respuesta distintos (variabilidad mixta de siete variables frente a varianza de una
+> tasa de retención). Se elimina; el argumento no la necesita.
 
 ## 7. Tres comprobaciones de estabilidad, todas negativas
 
@@ -156,12 +178,14 @@ gráfica de que los límites entre clusters no son reales.
 
 ## 8. Veredicto: el mejor k es 1
 
-**No hay estructura de clusters.** El k que maximiza la silhouette es 2 (0,2825) y
-supera el umbral convencional, pero **la prueba frente al nulo lo descarta**
-(p = 0,762; Calinski p = 0,524), la pérdida de información es del 84 %, los criterios
-no coinciden entre sí y la partición se rompe ante cambios mínimos. Cualquier
-`k > 1` devuelve una partición porque el algoritmo siempre la devuelve; ninguna
-representa grupos reales.
+**No hay estructura de clusters.** El k que maximiza la silhouette es 2, con
+**0,28 ± 0,06**: un valor que roza el umbral convencional de 0,25 sin superarlo con
+holgura, así que **la decisión no se apoya en el umbral**. Se apoya en el contraste
+frente al nulo, que es el que descarta la estructura (silhouette p = **0,762**;
+Calinski p = 0,524), en que la pérdida de información es del 84 %, en que los tres
+criterios no coinciden entre sí y en que la partición se rompe ante cambios mínimos.
+Cualquier `k > 1` devuelve una partición porque el algoritmo siempre la devuelve;
+ninguna representa grupos reales.
 
 **Lo que sí puede decirse**, y es útil:
 
@@ -194,6 +218,17 @@ la población** sin inventar fronteras que los datos no sostienen.
   se reporta su efecto, que resultó ser grande (ARI 0,329).
 - **Davies–Bouldin sobre one-hot es poco fiable**: trata las dicotómicas como
   continuas. Por eso no se usó como criterio único.
+- **La silhouette es una estimación por submuestreo, no un valor exacto.** Se calcula
+  sobre 4 000 de las 77 237 filas (la matriz de distancias completa no cabe en
+  memoria) y su error de Monte Carlo es de **±0,06** (ocho réplicas: 0,14–0,30). Por
+  eso se reporta 0,28 ± 0,06, no se usa el umbral de 0,25 como criterio de decisión y
+  la conclusión se apoya en el contraste frente al nulo. Además, al depender del
+  generador aleatorio del llamador, **la cifra solo se reproduce corriendo el script
+  completo**, no llamando a la función con una semilla nueva.
+- **Sospecha declarada y no verificada:** la inestabilidad es compatible con que el
+  término numérico de la distancia mixta (la edad estandarizada al cuadrado) domine
+  sobre el término categórico cuando hay edades extremas. Confirmarlo exigiría
+  reformular la distancia, cosa que este análisis no hace.
 
 ## 10. Reproducir
 

@@ -95,7 +95,7 @@ reporta como **no acotado** en vez de inventar un número.
 
 **No es un fallo del análisis.** Con 114 indígenas y 6 rrom sobre 20 423
 respuestas, la precisión está limitada por el tamaño del grupo, no por la técnica.
-El intervalo de diseño es entre **3 y 9 veces más ancho** que el de Wilson:
+El intervalo de diseño es entre **2,8 y 9,1 veces más ancho** que el de Wilson:
 
 | Grupo | Anchura IC Wilson | Anchura IC diseño | Veces |
 |---|---:|---:|---:|

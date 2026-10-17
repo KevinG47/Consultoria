@@ -198,11 +198,50 @@ def main() -> int:
     print("\n== 5. Cifras clave en el texto ==")
     claves = ["137,7", "1,3", "105,5", "0,4361", "0,5239", "0,2204", "0,1023",
               "2,22", "7,88", "5,39", "31,70", "72,02", "503", "446", "0,9143",
-              "1 058", "56", "0,988", "0,575", "2 940,2", "0,2825", "0,762",
-              "56,18", "15 · 0 · 2", "77 237", "20 423", "1 067"]
+              "1 058", "56", "0,988", "0,575", "2 940,2", "0,762",
+              "56,18", "15 · 0 · 2", "77 237", "20 423", "1 067",
+              # Correcciones de la auditoría cruzada (H1, H3, H4).
+              "subrepresentado", "0,28 ± 0,06", "9 813", "28 950"]
     faltan = [c for c in claves if c not in texto]
     check(not faltan, f"{len(claves)} cifras clave presentes en el panel",
           f"faltan cifras clave: {faltan}")
+    # H1: la dirección de la razón no puede volver a invertirse. Se comprueban las
+    # cadenas exactas del error, no la palabra «sobrerrepresentado», que sigue siendo
+    # correcta para raizal, palenquero y rrom.
+    for mala in ("más</i> representado entre los investigadores",
+                 "proporción entre investigadores / proporción en la población",
+                 "mayor que 1 = sobrerrepresentación",
+                 "grupos principales están <i>sobrerrepresentados</i>"):
+        check(mala not in texto, f"el panel no invierte la dirección ({mala[:40]}…)",
+              f"el panel conserva la afirmación invertida: {mala}")
+
+    print("\n== 5b. El panel y el documento dicen lo mismo sobre la dirección ==")
+    doc_div = (RAIZ / "documentacion_auditoria" / "analisis_diversidad.md").read_text(
+        encoding="utf-8").replace("\u202f", " ")
+    # La razón es %DANE / %investigadores: los cuatro grupos principales tienen
+    # razón > 1, luego están SUBrepresentados. Los tres pequeños, razón < 1.
+    principales = ["afro", "indigena", "discapacidad", "victima"]
+    todos_mayores = all(d["diversidad_inferencia"]["grupos"][k]["razon"] > 1
+                        for k in principales)
+    todos_menores = all(d["diversidad_inferencia"]["grupos"][k]["razon"] < 1
+                        for k in ("raizal", "palenquero", "rrom"))
+    check(todos_mayores and todos_menores,
+          "los cuatro grupos principales tienen razón > 1 y los tres pequeños < 1",
+          "el reparto de razones cambió: revisa la dirección antes de publicar")
+    for fuente, etiqueta in ((texto, "el panel"),
+                             (doc_div, "analisis_diversidad.md")):
+        bajo = fuente.lower()
+        check("subrepresentad" in bajo and "sobrerrepresentad" in bajo,
+              f"{etiqueta} nombra las dos direcciones",
+              f"{etiqueta} no nombra las dos direcciones")
+        # La frase que describe los cuatro grupos principales debe decir sub-.
+        i = bajo.find("cuatro grupos")
+        j = bajo.find("subrepresentad", i) if i >= 0 else -1
+        k2 = bajo.find("sobrerrepresentad", i) if i >= 0 else -1
+        ok = i >= 0 and j >= 0 and (k2 < 0 or j < k2)
+        check(ok, f"{etiqueta} dice que los cuatro grupos principales están "
+                  f"subrepresentados",
+              f"{etiqueta}: la frase de los cuatro grupos no dice subrepresentados")
 
     print("\n== 6. Página viva: JS y anidamiento ==")
     # Chrome headless no arranca en este entorno (el sandbox bloquea los named

@@ -581,4 +581,38 @@ un cambio de conclusión.
 
 *Auditoría realizada leyendo los archivos, no la memoria: 7 JSON, 7 documentos, 2
 paneles, 8 scripts y 3 CSV. Scripts de comprobación reproducibles en
-`_archivo/scripts_oneoff/auditar_*.py`. Ningún entregable fue modificado.*
+`_archivo/scripts_oneoff/auditar_*.py`. Ningún entregable fue modificado durante la
+auditoría.*
+
+---
+
+## 14. Cierre: las ocho correcciones, aplicadas
+
+Las ocho se aplicaron el 2026-10-17, después de este informe, y **ninguna tocó un
+cálculo**: siete son de redacción o de declaración de límites y la tercera añade una
+estimación, no cambia ninguna conclusión.
+
+| # | Corrección aplicada | Dónde |
+|---|---|---|
+| **H1** | Razón invertida en 5 lugares (eje, columna «Lectura», subtítulo, conclusión e índice de conceptos), más la narrativa «Cómo se lee» y el «Qué se hizo». Se añadió el aviso de nomenclatura sobre `razon_subrepresentacion`. | `src/generar_dashboard_fase2.py` → `dashboard_fase2.html` |
+| **H2** | Mecanismo del género: 72,4 % de las mujeres en Junior frente al 66,4 % de los hombres, y Junior es la categoría de menor permanencia (S 0,430 frente a 0,917). Con nota de corrección. | `analisis_supervivencia.md` §5 |
+| **H3** | Silhouette como **0,28 ± 0,06**, con el error de Monte Carlo explicado; la decisión se apoya en el nulo (p = 0,762) y no en el umbral de 0,25. Corregido también el texto del JSON y la regla de decisión. | `analisis_clustering.md` §3 y §8-9 · `src/clustering_formalizado.py` · `clustering.json` · panel |
+| **H4** | Nota de las dos definiciones de «última convocatoria» con la reconciliación 9 888 / 9 813 y el efecto nulo sobre el cociente. | `analisis_percapita_territorial.md` §2 y §3.1 · `analisis_supervivencia.md` §3 · panel (pestañas 2 y 5) |
+| **H5** | El «18» se rotula como **criterio de edad**; con el criterio de género la regla documentada marca **59** (FP 1 054 / FN 46). | `analisis_unicidad.md` §5 |
+| **H6** | Justificación del join por DIVIPOLA reescrita: las fuentes nombran distinto San Andrés (12 personas), no hay dobles espacios en ninguna. | `analisis_percapita_territorial.md` §2 |
+| **H7** | «En azul, los intervalos que excluyen el 1» y figura regenerada. | `src/supervivencia.py` · `f2_10_cox_forest.png` |
+| **H8** | Reconciliadas las dos «silhouette observada» (0,28 sobre 77 237 filas frente a 0,3520 sobre la submuestra del contraste); eliminada la comparación no válida 15,95 % vs 7,08 %; justificadas las cuatro medianas de F2-10 y reclasificadas en §7; «entre 3 y 9» → «entre 2,8 y 9,1»; «0 retornos de 251» → «251 de sus 334 personas no vuelven». | `analisis_clustering.md` §4, §6, §9 · `analisis_supervivencia.md` §3, §5, §7 · `analisis_diversidad.md` §4 |
+
+**Verificación posterior:** 17 reglas en **15 PASA · 0 FALLA · 2 ADVERTENCIA**;
+`verificar_dashboard_fase2.py` sin fallos, incluida una comprobación nueva que impide
+que la dirección de la razón vuelva a invertirse y que el panel y
+`analisis_diversidad.md` digan lo mismo; los cinco verificadores de documentación
+(0 cifras no encontradas, tablas consistentes); y el repositorio auditado intacto en
+sus 236 archivos.
+
+**Lo que sigue abierto de este informe:** nada de H1–H8. Queda en pie la
+recomendación de fondo de H3 —subir `N_SIL` y promediar varias submuestras— que exige
+recalcular el análisis y no se hizo aquí por alcance, y las verificaciones que este
+informe ya declaró imposibles en su momento (nulos de red, bootstrap de diseño y
+permutaciones re-ejecutadas).
+
