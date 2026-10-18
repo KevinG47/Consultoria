@@ -10,21 +10,26 @@ NIVEL 1 — REAL (sin sustitutos)
   - `repo_auditado/` sigue con los 236 hashes intactos y sin archivos de mas.
   - Sintaxis: `ast.parse` sobre todos los `.py` de repo_mejorado y sobre cada
     celda de codigo de `docs/manual.ipynb`.
-  - `src/exportacion.py`: se prueba el guardia de kaleido con objetos de prueba
-    que lanzan los errores reales de plotly y con uno que funciona.
+  - `src/exportacion.py`: se prueba el guardia del motor de imagen
+    (`plotly-mirage`) con objetos de prueba que lanzan los errores reales y con
+    una figura Plotly de verdad, que debe producir un PNG valido.
   - `src/analisis/diversidad.py`: se importa y se ejecuta `comparar_dane()`
     sobre los datos reales de 2021 y se contrasta con la evidencia versionada.
   - `src/ingesta.aviso_produccion_ausente()`: se llama de verdad.
 
 NIVEL 2 — CON DOBLES DE PRUEBA (declarado)
-  Este entorno NO tiene seaborn, plotly, kaleido, duckdb, openpyxl, nbformat ni
-  red para instalarlos (pip se cuelga). Para poder EJECUTAR los scripts que los
+  Este entorno NO tiene seaborn, duckdb, openpyxl, nbformat ni red para
+  instalarlos (pip se cuelga). Para poder EJECUTAR los scripts que los
   importan se usan dobles minimos en `_stubs/`, fuera de repo_mejorado. Prueban
   el flujo de control y los arreglos, NO el dibujo ni las consultas reales.
 
 NIVEL 3 — NO VERIFICABLE AQUI (declarado)
-  - `poetry.lock` no se puede regenerar: no hay poetry ni red.
-  - La salida visual (PNG/Sankey) no se puede comprobar sin plotly+kaleido reales.
+  - `poetry.lock` SI se regenero al migrar a plotly-mirage, con deriva NULA de
+    versiones: solo salieron kaleido/choreographer/logistro/simplejson y
+    entraron plotly-mirage/quickjs/resvg-py. Ver CHANGELOG, seccion L.
+  - La salida visual (PNG/Sankey) ya se produce sin navegador con mirage. Lo que
+    sigue sin comprobarse es el ASPECTO del PNG (aqui no hay visor): se verifica
+    que sea un PNG valido por su cabecera y por su tamano.
 
 Uso:  python 04_auditoria/verificar_arreglos.py
 """
@@ -147,10 +152,10 @@ class Figure:
         return None
 
     def write_image(self, path, **k):
-        # Reproduce el fallo REAL de plotly cuando falta kaleido.
+        # Reproduce como falla Plotly cuando no hay motor de imagen instalado.
         raise RuntimeError(
-            "Image export requires the Kaleido package, v1.0.0 or greater, "
-            "which can be installed using pip:  $ pip install --upgrade \\"kaleido>=1\\"")
+            "Image export requires a rendering engine (plotly-mirage), "
+            "which can be installed using pip:  $ pip install \\"plotly-mirage>=0.2\\"")
 
 
 from pathlib import Path  # noqa: E402  (para el doble, no para el codigo real)
@@ -453,7 +458,14 @@ def n1_sintaxis() -> None:
              "respuestas CONOCIDAS")
     contiene(MEJORADO / "src" / "modelo" / "dimensional.py",
              "def resumen_modelo(con: duckdb.DuckDBPyConnection) -> str")
-    contiene(MEJORADO / "pyproject.toml", 'PyYAML', 'kaleido', 'nbformat')
+    contiene(MEJORADO / "pyproject.toml", 'PyYAML', 'plotly-mirage', 'nbformat')
+    # Desde la migracion a plotly-mirage (seccion L del CHANGELOG) kaleido NO debe
+    # seguir DECLARADO como dependencia. Se busca la CLAVE de dependencia, no la
+    # palabra suelta: el comentario que explica el cambio la menciona a proposito.
+    pyproject_txt = (MEJORADO / "pyproject.toml").read_text(encoding="utf-8")
+    if [l for l in pyproject_txt.splitlines() if l.split("=")[0].strip() == "kaleido"]:
+        fallos.append("pyproject.toml sigue declarando kaleido")
+        print("  [x] pyproject.toml sigue declarando kaleido")
 
     # --- F2-3: el enunciado del modelo estrella. Verificado sobre el esquema
     # real, tiene 9 TABLAS = 7 dimensiones + 1 tabla de hechos + 1 tabla puente.
@@ -473,69 +485,106 @@ def n1_sintaxis() -> None:
 
 
 def n1_exportacion() -> None:
-    titulo("NIVEL 1c — Guardia de kaleido (src/exportacion.py), prueba REAL")
+    titulo("NIVEL 1c \u2014 Exportacion a PNG con mirage (src/exportacion.py), prueba REAL")
+    sys.dont_write_bytecode = True          # no contaminar repo_mejorado
     sys.path.insert(0, str(MEJORADO / "src"))
+    import exportacion  # noqa: E402
     from exportacion import exportar_png  # noqa: E402
 
-    class FigSinKaleido:
-        def write_image(self, ruta, **k):
-            raise RuntimeError("Image export requires the Kaleido package, "
-                               'v1.0.0 or greater, which can be installed '
-                               'using pip:  $ pip install --upgrade "kaleido>=1"')
+    hay_motor = exportacion.mirage is not None
+    print(f"  motor: plotly-mirage {'instalado' if hay_motor else 'AUSENTE'}"
+          f"{'' if hay_motor else ' -> los casos que lo necesitan se saltan'}")
 
-    class FigOk:
-        def write_image(self, ruta, **k):
-            Path(ruta).write_text("png de prueba", encoding="utf-8")
-
-    class FigOtroError:
-        def write_image(self, ruta, **k):
-            raise ValueError("alguna otra cosa salio mal")
-
-    # Caso REAL de kaleido 1.x: esta instalado pero el navegador no arranca. La
-    # excepcion viene de choreographer y su mensaje NO menciona "kaleido", asi que
-    # la primera version del guardia (que miraba el texto) la dejaba escapar y el
-    # script moria igual. Esta prueba es la regresion de ese hallazgo.
-    class BrowserFailedError(RuntimeError):
-        pass
-    BrowserFailedError.__module__ = "choreographer.browsers._errors"
-
-    class FigSinNavegador:
-        def write_image(self, ruta, **k):
-            raise BrowserFailedError(
-                "The browser seemed to close immediately after starting.")
-
-    print("  caso 1: falta kaleido -> debe devolver False y NO lanzar")
-    r1 = exportar_png(FigSinKaleido(), STUBS / "x.png", width=100)
+    print("  caso 1: motor ausente -> debe devolver False y NO lanzar")
+    guardado = exportacion.mirage
+    exportacion.mirage = None
+    try:
+        r1 = exportar_png(object(), STUBS / "x.png", width=100)
+    finally:
+        exportacion.mirage = guardado
     print(f"          devolvio {r1}")
     if r1 is not False:
-        fallos.append("exportar_png no devolvio False sin kaleido")
+        fallos.append("exportar_png no devolvio False sin motor de imagen")
     else:
-        print("  -> PRUEBA: el script ya no aborta por falta de kaleido")
+        print("  -> PRUEBA: el script no aborta cuando falta plotly-mirage")
 
-    print("  caso 1b: kaleido presente pero el NAVEGADOR no arranca "
-          "(BrowserFailedError de choreographer) -> debe devolver False")
-    r1b = exportar_png(FigSinNavegador(), STUBS / "x2.png", width=100)
-    print(f"          devolvio {r1b}")
-    if r1b is not False:
-        fallos.append("exportar_png no reconoce el fallo del navegador "
-                      "(BrowserFailedError de choreographer)")
+    # Regresion heredada de la version anterior de este modulo: el guardia solo
+    # miraba el TEXTO del error y por eso se le escapaba el fallo real de kaleido
+    # 1.x (BrowserFailedError de choreographer, que no menciona "kaleido"). Con
+    # mirage el caso equivalente es JSException de _quickjs, cuyo mensaje habla de
+    # "Plotly render failed": tampoco nombra al motor. Se reconoce por MODULO.
+    if not hay_motor:
+        print("  caso 1b: (se salta) el motor no esta instalado")
+        print("  caso 2: (se salta) el motor no esta instalado")
     else:
-        print("  -> PRUEBA: reconoce el fallo por el MODULO de la excepcion, "
-              "no por el texto del mensaje")
+        class JSException(Exception):
+            pass
+        JSException.__module__ = "_quickjs"
 
-    print("  caso 2: kaleido presente -> debe escribir y devolver True")
-    r2 = exportar_png(FigOk(), STUBS / "y.png", width=100)
-    if r2 is not True or not (STUBS / "y.png").exists():
-        fallos.append("exportar_png no exporto con motor presente")
+        original = exportacion.mirage.write_image
+
+        def falla(fig, ruta, **k):
+            raise JSException(
+                "Error: Plotly render failed: out-of-bound numeric index")
+
+        print("  caso 1b: fallo del MOTOR (_quickjs.JSException) -> debe dar False")
+        exportacion.mirage.write_image = falla
+        try:
+            r1b = exportar_png(object(), STUBS / "x2.png", width=100)
+        finally:
+            exportacion.mirage.write_image = original
+        print(f"          devolvio {r1b}")
+        if r1b is not False:
+            fallos.append("exportar_png no reconoce el fallo de render de mirage")
+        else:
+            print("  -> PRUEBA: reconoce el fallo por el MODULO de la excepcion, "
+                  "no por el texto del mensaje")
+
+        print("  caso 2: figura REAL (sankey) -> debe escribir un PNG valido")
+        try:
+            import plotly.graph_objects as go
+            fig = go.Figure(go.Sankey(
+                node=dict(label=["a", "b", "c", "d"]),
+                link=dict(source=[0, 1], target=[2, 3], value=[10, 5])))
+        except ImportError:
+            fig = None
+        if fig is None:
+            print("          (se salta) plotly no esta instalado")
+        else:
+            destino = STUBS / "y.png"
+            if destino.exists():
+                destino.unlink()
+            r2 = exportar_png(fig, destino, width=700, height=400)
+            cabecera = destino.read_bytes()[:8] if destino.exists() else b""
+            if r2 is not True or cabecera != b"\x89PNG\r\n\x1a\n":
+                fallos.append("exportar_png no escribio un PNG valido con el motor "
+                              "presente")
+                print(f"          [x] devolvio {r2}, cabecera {cabecera!r}")
+            else:
+                print(f"          devolvio {r2} y escribio {destino.stat().st_size} "
+                      f"bytes con cabecera PNG valida")
+
+    print("  caso 3: error NO relacionado con el motor -> debe propagarse")
+    if not hay_motor:
+        print("          (se salta) el motor no esta instalado")
     else:
-        print(f"          devolvio {r2} y creo el archivo")
+        class OtroError(Exception):
+            pass
+        OtroError.__module__ = "mi.modulo"
 
-    print("  caso 3: error NO relacionado con kaleido -> debe propagarse")
-    try:
-        exportar_png(FigOtroError(), STUBS / "z.png")
-        fallos.append("exportar_png se trago un error ajeno a kaleido")
-    except ValueError:
-        print("  -> PRUEBA: solo absorbe los fallos de kaleido; el resto se ve")
+        original = exportacion.mirage.write_image
+
+        def revienta(fig, ruta, **k):
+            raise OtroError("alguna otra cosa salio mal")
+
+        exportacion.mirage.write_image = revienta
+        try:
+            exportar_png(object(), STUBS / "z.png")
+            fallos.append("exportar_png se trago un error ajeno al motor")
+        except OtroError:
+            print("  -> PRUEBA: solo absorbe los fallos del motor; el resto se ve")
+        finally:
+            exportacion.mirage.write_image = original
 
 
 def n1_diversidad() -> None:
@@ -627,9 +676,9 @@ def n2_scripts() -> None:
         "scripts/sprint6_geografia_institucional.py":
             ({0}, "ya no muere con UnicodeEncodeError al imprimir la flecha"),
         "scripts/sprint6_sankey_territorial.py":
-            ({0}, "ya no aborta sin kaleido: genera el HTML y avisa del PNG"),
+            ({0}, "PNG sin navegador (mirage) y HTML; avisa si el motor falla"),
         "scripts/sprint6_sankey_categoria.py":
-            ({0}, "guardia de kaleido y recorrido de todos los pares de la entrada"),
+            ({0}, "guardia del motor de imagen y recorrido de todos los pares"),
         "scripts/sprint5_produccion.py":
             ({3}, "avisa de datos faltantes y sale con codigo 3, sin traceback"),
         "scripts/sprint6_ocde_composicion.py":
@@ -680,11 +729,14 @@ def n2_scripts() -> None:
             else:
                 print("      -> sin traceback")
             if script.endswith("sprint6_sankey_territorial.py"):
-                if "kaleido" in salida:
-                    print("      -> avisa de kaleido y continua")
+                if "aviso" in salida.lower():
+                    print("      -> avisa del motor de imagen y continua (no aborta)")
                 html = (PRUEBA / "artifacts" / "sprint6_sankey" /
                         "sankey_territorial.html")
+                png = (PRUEBA / "artifacts" / "sprint6_sankey" /
+                       "sankey_territorial.png")
                 print(f"      -> HTML generado: {html.exists()}")
+                print(f"      -> PNG generado sin navegador: {png.exists()}")
             if script.endswith("sprint6_sankey_categoria.py"):
                 htmls = list(carpeta_sankey.glob("sankey_20*.html"))
                 regenerados = [p for p in htmls
@@ -728,11 +780,12 @@ def main() -> int:
         print("        python 04_auditoria/probar_librerias_reales.py")
     else:
         print("    - Todas las dependencias estan instaladas: NO se uso ningun doble")
-        print("      (seaborn, plotly, kaleido, duckdb, openpyxl, nbformat).")
+        print("      (seaborn, plotly, duckdb, openpyxl, nbformat).")
         print("      Para la prueba con foco en librerias reales y salidas:")
         print("        python 04_auditoria/probar_librerias_reales.py")
-    print("    - PNG/Sankey: si kaleido no logra arrancar un navegador, el script")
-    print("      avisa y continua; el HTML y los CSV si se generan.")
+    print("    - PNG/Sankey: el PNG lo dibuja plotly-mirage en el propio proceso,")
+    print("      sin navegador. Si el motor no sabe dibujar esa figura, el script")
+    print("      avisa y continua; el HTML y los CSV se generan igual.")
     print("    - docs/manual.ipynb: se valida sintaxis y coherencia con el")
     print("      generador, no su corrida (3 secciones exigen produccion).")
     if (RAIZ / "04_auditoria" / "repo_mejorado" / "poetry.lock").exists():

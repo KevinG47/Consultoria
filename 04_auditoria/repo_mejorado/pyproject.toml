@@ -23,7 +23,7 @@ pyvis = "^0.3"
 # Anadidas en la version mejorada: el codigo las importa y no estaban declaradas.
 openpyxl = "^3.1"      # pandas.read_excel: cargar_consolidado() cae al XLSX
 PyYAML = "^6.0"        # src/ingesta/minciencias.py:19 y src/ingesta/produccion.py:24
-kaleido = "^1.0"       # plotly: fig.write_image() en scripts/sprint6_sankey_*.py
+plotly-mirage = "^0.2.0"  # PNG sin navegador (sustituye a kaleido): src/exportacion.py
 nbformat = "^5.9"      # scripts/generar_manual.py:16
 ipython = "^8.0"       # celdas del manual generado (IPython.display.IFrame)
 

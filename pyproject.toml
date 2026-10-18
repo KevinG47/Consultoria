@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "consultoria-observatorio-minciencias"
+version = "1.0.0"
+description = "Consultoria estadistica USTA 2026-II: auditoria del Observatorio de investigadores MinCiencias, analisis de fase 2 y sistema de memoria documental con reglas R1-R17."
+authors = ["Universidad Santo Tomas <ustadistica@usantotomas.edu.co>"]
+readme = "README.md"
+# Proyecto de analisis, no una libreria: no se instala a si mismo. El codigo se
+# ejecuta desde el arbol (p. ej. `python -m memoria validar` con cwd
+# documentacion_auditoria/src), no desde site-packages.
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^2.4"
+pandas = "^3.0"
+scipy = "^1.17"
+scikit-learn = "^1.9"
+networkx = "^3.6"
+plotly = "^7.1"
+PyYAML = "^6.0"
+matplotlib = "^3.11"
+# Motor de exportacion a PNG sin navegador (sustituye a kaleido, que exigia
+# Chrome). Lo usa 04_auditoria/repo_mejorado/src/exportacion.py.
+plotly-mirage = "^0.2.0"
+
+# Grupo OPCIONAL: solo hace falta para RECONSTRUIR artefactos, no para validar
+# las reglas ni para servir los dashboards (que ya estan como HTML estatico).
+#   - torch y sentence-transformers: reindexar el RAG (150 fragmentos).
+#   - pyvis: regenerar el grafo interactivo.
+# Por eso quedan fuera de la imagen Docker por defecto:
+#   poetry install --with ml          (local, si se va a reindexar)
+#   poetry export --only main         (imagen Docker)
+[tool.poetry.group.ml]
+optional = true
+
+[tool.poetry.group.ml.dependencies]
+torch = ">=2.2"
+sentence-transformers = ">=2.7"
+pyvis = "^0.3"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

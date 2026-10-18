@@ -1,0 +1,30 @@
+# docker-compose.yml — desarrollo local.
+#
+#   docker compose run --rm observatorio              # valida las 17 reglas
+#   docker compose run --rm observatorio python -m memoria estado
+#   docker compose run --rm observatorio bash         # consola dentro
+#
+# Monta el directorio actual en /app para editar en Windows y ejecutar en Linux
+# sin reconstruir la imagen. Ojo: el montaje TAPA el codigo copiado en la imagen;
+# las dependencias siguen viniendo de la imagen (site-packages), asi que no hay
+# que reinstalar nada al cambiar el codigo.
+#
+# En Windows con Docker Desktop el montaje funciona tal cual. `validar` escribe
+# su estado en data/memoria/ y en data/validacion/ del propio arbol montado, asi
+# que esos dos directorios tienen que poder escribirse desde el contenedor.
+
+services:
+  observatorio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: observatorio:local
+    container_name: observatorio-local
+    working_dir: /app/documentacion_auditoria/src
+    volumes:
+      - ./:/app
+    # Sin red: la validacion lee solo archivos del arbol. Si algun dia se
+    # reindexa el RAG, hay que quitar esta linea (sentence-transformers descarga
+    # el modelo la primera vez).
+    network_mode: none
+    command: ["python", "-m", "memoria", "validar"]

@@ -119,6 +119,43 @@ suelto y que el panel no pase de 6 MB.
 
 ---
 
+## Validar sin instalar nada (Docker)
+
+La imagen instala solo lo que el gate necesita: ni Chrome, ni `torch`, ni
+`sentence-transformers` (esos quedan en el grupo opcional `ml` del
+`pyproject.toml`).
+
+```bash
+docker build -t observatorio .      # construye
+docker run --rm observatorio        # 17 reglas · exit 1 si alguna FALLA
+```
+
+Salida esperada, la misma que en local:
+
+```
+[memoria] reglas: 15 PASA, 0 FALLA, 2 ADVERTENCIA
+```
+
+Para desarrollo, `docker-compose.yml` monta el directorio actual:
+
+```bash
+docker compose run --rm observatorio          # valida
+docker compose run --rm observatorio bash     # consola dentro de la imagen
+```
+
+Dos detalles que explican el diseño: `python -m memoria validar` exige que el
+directorio de trabajo sea `documentacion_auditoria/src`, y el `.dockerignore`
+deja fuera 3,1 GB de los 3,2 GB del árbol (el historial de git y un clon antiguo
+del repositorio del grupo). El motor de exportación de imágenes es
+**`plotly-mirage`**, no `kaleido`: no hay navegador ni descarga de Chrome dentro
+del contenedor.
+
+*(El `Dockerfile` se entrega sin construir: el entorno donde se preparó esta
+entrega no tiene daemon de Docker. Los comandos de arriba son los que hay que
+correr; el detalle de lo verificado y lo no verificado está en el informe.)*
+
+---
+
 ## Reproducir el análisis
 
 Requiere Python 3.11+ con `pandas`, `numpy`, `scipy`, `scikit-learn`,

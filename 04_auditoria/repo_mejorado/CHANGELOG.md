@@ -14,6 +14,7 @@ falte de verdad) y con `datos_originales/probar_librerias_reales.py`.
 |---|---|
 | Arreglos aplicados | **34** (sobre 18 archivos) + 6 celdas de `docs/manual.ipynb` |
 | Módulo nuevo | `src/exportacion.py` |
+| Modernización L | motor de imagen **kaleido → `plotly-mirage`**, sin navegador |
 | Resultado con librerías reales | **3 completos · 3 con código 3 por datos ausentes · 0 errores reales** |
 | `repo_auditado/` | intacto: 236/236 hashes verificados, 0 sobrantes |
 
@@ -252,6 +253,79 @@ completo: `dim_convocatoria` pasa de 3 a **6**, `fact_clasificacion` de 50 891 a
 **77 237** hechos y `dim_investigador` de 26 662 a **30 086** personas, y reproduce
 la evidencia versionada cifra a cifra (`duckdb_resumen_modelo.txt`). Detalle en
 `documentacion_auditoria/analisis_modelo_estrella.md`.
+
+---
+
+## L · Motor de imagen: de `kaleido` a `plotly-mirage` (sin navegador)
+
+**Qué.** `src/exportacion.py` ya no usa `kaleido`: exporta el PNG con
+**`plotly-mirage`** (se importa como `mirage`), que rasteriza el SVG de Plotly
+dentro del propio proceso con `quickjs` + `resvg`. En `pyproject.toml` y en
+`requirements.txt` sale `kaleido` y entra `plotly-mirage`; `poetry.lock` se
+regeneró. El módulo expone además `activar_mirage()`, que parchea
+`fig.write_image()` / `plotly.io.write_image()` para que los atienda mirage, de
+modo que un script que llame a `write_image()` directamente tampoco necesita
+Chrome.
+
+**Por qué.** Kaleido 1.x no dibuja: maneja un Chromium real por medio de
+`choreographer`. Por eso la exportación dependía de que arrancara un navegador y
+fallaba con `BrowserFailedError` («The browser seemed to close immediately after
+starting») en cuanto el entorno no permitía procesos hijos o tuberías nombradas:
+contenedores sin Chrome, equipos con el navegador bloqueado por política, sesiones
+de CI. Con mirage no hay navegador que arrancar: solo hacen falta Python y dos
+ruedas (`quickjs`, `resvg-py`).
+
+**Qué se midió aquí, con las librerías reales (no con dobles).**
+
+| Motor | Llamada | Resultado en este entorno |
+|---|---|---|
+| kaleido 1.5.0 | `fig.write_image()` | ❌ `choreographer.browsers._errors.BrowserFailedError` |
+| mirage 0.2.0 + plotly 7.1.0 | `mirage.write_image()` | ✅ PNG válido (cabecera `\x89PNG\r\n\x1a\n`) de un `sankey` |
+
+El `sankey` es justamente el gráfico que exportan `scripts/sprint6_sankey_*.py`.
+
+**Dos defectos que solo aparecen con la librería de verdad.** Los dobles de
+prueba no los habrían enseñado:
+
+1. **`mirage.write_image()` no acepta `pathlib.Path`.** Con un `Path` revienta
+   dentro de su `raster.py` con `AttributeError: 'WindowsPath' object has no
+   attribute 'write'`; funciona con `str` o con un archivo abierto. Como los dos
+   scripts pasan `ARTIFACTS / "sankey.png"` (un `Path`), `exportar_png()`
+   normaliza la ruta a `str` antes de llamar al motor. Ese `AttributeError` no
+   lleva la firma del motor, así que sin la normalización se habría propagado y
+   habría tumbado el script: exactamente el fallo que el guardia debía evitar.
+2. **El render aborta en `scatter` con ejes continuos.** Falla con
+   `JSException: Plotly render failed: out-of-bound numeric index`, de forma
+   intermitente y no ligada al tamaño: con 3 puntos aleatorios dibujó y con 5
+   falló; con ejes enteros no falló hasta 2.000 puntos. Tampoco soporta trazas
+   WebGL (`scattergl`). Sí dibuja `sankey`, `bar` con eje categórico, `heatmap`,
+   `pie`, `treemap` y `choropleth`.
+
+**Límite declarado, y por qué no invalida el arreglo.** El PNG sigue siendo
+*best-effort*: si el motor no está o no sabe dibujar esa figura, `exportar_png()`
+lo explica en la consola y devuelve `False`; el HTML y los CSV se generan igual.
+Los **dos únicos PNG de este repositorio son sankey**, así que se producen. El
+resto de gráficos se entrega como HTML, que es como se ha entregado siempre.
+
+**Cómo se verificó.** `verificar_arreglos.py`, NIVEL 1c: prueba el guardia con
+objetos que lanzan los errores reales y con una **figura Plotly de verdad**, que
+debe producir un PNG con cabecera válida; y comprueba que `pyproject.toml` declare
+`plotly-mirage` y que ya **no** declare la clave `kaleido`.
+
+**`poetry.lock` regenerado, sin deriva.** `poetry lock` (Poetry 2.5.1) conservó
+todas las versiones fijadas salvo los cuatro paquetes del navegador:
+
+| Salieron | Entraron |
+|---|---|
+| `kaleido 1.5.0`, `choreographer 1.4.0`, `logistro 2.0.1`, `simplejson` | `plotly-mirage 0.2.0`, `quickjs 1.19.4`, `resvg-py 0.5.0` |
+
+`plotly` sigue en 5.24.1 y `pillow` en 12.1.1. Total: **157 paquetes y 398 461
+bytes** (antes 158 y 407 370). Validado con `poetry check --lock`.
+
+**Nota sobre la numeración.** Este archivo numera sus arreglos con letras (A–K) y
+declara **34** parches de `aplicar_arreglos.py`. Esta sección **no** es uno de
+esos parches: es una modernización manual posterior, con su propio alcance. La
+tabla de arriba sigue diciendo 34 porque describe lo que aplica el script.
 
 ---
 

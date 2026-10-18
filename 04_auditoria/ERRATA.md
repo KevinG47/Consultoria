@@ -258,3 +258,33 @@ solo se ve leyendo. Es el motivo de que las 51 fichas de
 - **`datos/raw/` y `datos/processed/` solo contienen `.gitkeep`.** Es intencional
   (los datos pesados van en `.gitignore`), pero explica los fallos de E5.
 - **`models/.gitkeep`** también está vacío: no hay modelos entrenados versionados.
+
+---
+
+## Nota: en `repo_mejorado/` el motor de imagen es `plotly-mirage`, no `kaleido`
+
+Esta nota no describe un error del repositorio auditado: aclara el alcance de lo
+que **sí** se cambió en `repo_mejorado/`.
+
+Además de los **34 arreglos de código** que aplica `aplicar_arreglos.py`, se
+modernizó la librería de exportación de imágenes: **de `kaleido` a
+`plotly-mirage`** (se importa como `mirage`). El objetivo es eliminar la
+dependencia de Chrome y garantizar la reproducibilidad en Docker: kaleido 1.x
+maneja un Chromium real mediante `choreographer`, de modo que sin navegador
+cualquier exportación a PNG muere con `BrowserFailedError`. Mirage rasteriza el
+SVG dentro del propio proceso, con `quickjs` + `resvg`.
+
+- **Efecto en `repo_auditado/`:** ninguno. Sus 236 archivos siguen idénticos
+  (`verificar_hashes.py`: 236/236, 0 sobrantes). El auditado conserva `kaleido`
+  porque es la prueba histórica; la errata sigue siendo una capa de lectura.
+- **Archivos que cambian en `repo_mejorado/`:** `src/exportacion.py`,
+  `pyproject.toml`, `requirements.txt` y `poetry.lock` (regenerado **sin deriva
+  de versiones**: solo salieron los cuatro paquetes del navegador y entraron los
+  tres del motor nuevo).
+- **Dónde está el detalle:** `repo_mejorado/CHANGELOG.md`, sección **L**, que
+  incluye los dos defectos que solo aparecieron al probar con la librería de
+  verdad —no acepta `pathlib.Path`— y el límite medido del motor en `scatter` con
+  ejes continuos.
+- **Un cambio de comportamiento que conviene saber:** el PNG del `sankey` ahora
+  se genera de verdad en lugar de omitirse con un aviso. Es la mejora pedida,
+  pero cambia lo que el próximo grupo verá en `artifacts/`.

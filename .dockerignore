@@ -1,0 +1,49 @@
+# .dockerignore — que NO viaja al contexto de construccion de la imagen.
+#
+# El arbol completo pesa ~3.234 MB y el contexto util para `python -m memoria
+# validar` son ~130 MB. Lo que sobra son, sobre todo, el historial de git y un
+# clon antiguo del repositorio del grupo.
+
+# --- control de versiones y entornos virtuales -------------------------------
+.git
+.gitignore
+.gitattributes
+.venv
+venv
+env
+
+# --- bytecode y caches de Python --------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- dependencias de JavaScript (los dashboards se entregan como HTML) ------
+node_modules/
+
+# --- el clon antiguo del repositorio del grupo: 441,5 MB --------------------
+# De esos, 383,8 MB son su .venv. No lo usa nada de este proyecto: los datos y
+# los resultados ya estan en 01_datos/ y en documentacion_auditoria/.
+Observatorio_Ministerio_de_Ciencias_Grupo8/
+
+# --- material de trabajo historico: 145,1 MB --------------------------------
+# Scripts de una sola vez y copias de pasadas anteriores.
+_archivo/
+
+# --- temporales, volcados y basura del sistema ------------------------------
+_prueba_ejecucion/
+_stubs/
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*.log
+*.swp
+*~
+Thumbs.db
+desktop.ini
+.DS_Store
