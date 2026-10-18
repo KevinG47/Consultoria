@@ -108,6 +108,7 @@ Además hay verificadores de los entregables, que también corren sin red:
 python documentacion_auditoria/src/verificar_mapa.py            # mapa F2-11: 64 comprobaciones
 python documentacion_auditoria/src/verificar_dashboard_fase2.py # panel F2: 77 comprobaciones
 python documentacion_auditoria/src/verificar_consistencia.py    # cifras contra fuentes: 7/7
+python probar_consistencia_linux.py                            # portabilidad LF/CRLF/BOM: 7/7
 python 04_auditoria/verificar_hashes.py                         # copia auditada: 236/236 idénticos
 ```
 
