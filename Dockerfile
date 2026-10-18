@@ -80,8 +80,18 @@ RUN useradd --create-home --shell /usr/sbin/nologin --uid 10001 appuser
 WORKDIR /app
 
 # El .dockerignore deja fuera .git, .venv, __pycache__, node_modules, el clon
-# antiguo del repositorio (441 MB) y _archivo/ (145 MB).
+# antiguo del repositorio (441 MB), _archivo/ (145 MB), 04_auditoria/, y el CSV
+# de 31 MB que se monta por volumen.
 COPY --chown=appuser:appuser . /app
+
+# GUARDIA DEL CONTEXTO. Si a la imagen le falta -o le llega vacio- algun archivo
+# que las reglas leen, el BUILD falla aqui, diciendo cual. Sin este paso el build
+# "funcionaba" y la imagen arrancaba dando 13 PASA / 2 FALLA (R14 y R17) sin
+# explicar por que: paso con documentacion_auditoria/data/ejecucion_resumen.csv,
+# que llego vacio porque en Windows era un archivo en la nube de OneDrive y
+# Docker Desktop no lo pudo leer. R14 compara la cifra de scripts de los .tex
+# contra ese archivo; sin el, una de sus siete comprobaciones falla (6/7).
+RUN python /app/verificar_contexto_imagen.py
 
 USER appuser
 

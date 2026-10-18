@@ -1,12 +1,26 @@
 # .dockerignore — que NO viaja al contexto de construccion de la imagen.
 #
 # El arbol completo pesa ~3.234 MB (2.495 de ellos son el historial de git). Con
-# este archivo el contexto queda en ~28 MB y la imagen sigue corriendo el gate
-# completo. Comprobado copiando SOLO estos archivos a un directorio aparte y
-# ejecutando ahi `python -m memoria validar`, sin .git, sin el CSV y sin las
-# copias auditadas:
+# este archivo el contexto queda en ~27,4 MB (400 archivos) y la imagen corre el
+# gate completo. Comprobado copiando SOLO estos archivos a un directorio aparte y
+# ejecutando ahi `python -m memoria validar`, sin .git, sin el CSV grande, sin las
+# copias auditadas y sin el binario `git` en el PATH:
 #
 #     15 PASA . 0 FALLA . 2 ADVERTENCIA
+#
+# DOS TRAMPAS QUE YA COSTARON UNA CORRIDA (13 PASA / 2 FALLA). Las dos estan
+# vistas y reproducidas, y las dos se cazan solas ahora:
+#
+#   1. Excluir los `.md` en bloque. Los `.md` NO son decorativos para las reglas:
+#      R13 y R17 leen `data/validacion/*.md`, `documentacion_auditoria/README.md`,
+#      `documentacion_auditoria/guia_defensa_sistema_memoria.md` y
+#      `data/memoria/texto_seccion_6_2.md`. Sin ellos el grafo pierde documentos
+#      (255 -> 244 nodos, 498 -> 468 aristas) y R17 falla porque las cifras de los
+#      .tex dejan de coincidir. Aqui abajo hay excepciones `!` para conservarlos.
+#   2. Que un archivo de `documentacion_auditoria/data/` llegue vacio o no llegue.
+#      Paso con `ejecucion_resumen.csv` (era un marcador de OneDrive): R14 se queda
+#      en 6/7 y arrastra a R17. `verificar_contexto_imagen.py` lo detecta y el
+#      Dockerfile lo ejecuta en el build, asi que ese caso ya falla el BUILD.
 #
 # El objetivo de <5 MB NO es alcanzable: las reglas necesitan el contenido de
 # documentacion_auditoria/ (data, latex y pdf). Se probo a excluir
@@ -43,31 +57,35 @@ _archivo/
 # --- entregas ya cerradas: 1,8 MB (viven en Git, no hacen falta para validar)
 05_entregas/
 
-# --- copias auditadas: 71,8 MB ----------------------------------------------
-# `python -m memoria validar` NO las lee. Las reglas que hablan de commits y de
-# archivos reales usan los CACHES versionados en
+# --- la auditoria entera: 71,8 MB -------------------------------------------
+# `python -m memoria validar` NO lee nada de aqui. Las reglas que hablan de
+# commits y de archivos reales usan los CACHES versionados en
 # documentacion_auditoria/data/memoria/ (git_log_real.csv y
 # git_ls_files_real.txt) y las 51 fichas de data/analisis_codigo/: por eso el
 # contenedor no necesita ni .git ni el binario `git` (que tampoco esta en
-# python:3.11-slim).
+# python:3.11-slim). Verificado: con esta linea el gate sigue en 15/0/2.
 # Consecuencia declarada: dentro de la imagen NO se puede correr
 # `python 04_auditoria/verificar_hashes.py`; para eso hay que montar el arbol
 # (es lo que hace docker-compose.yml).
-04_auditoria/repo_original/
-04_auditoria/repo_mejorado/
+04_auditoria/
 
 # --- el CSV de 31,32 MB (datos.gov.co) --------------------------------------
 # No lo necesita `validar`. Se monta en tiempo de ejecucion con el volumen de
 # docker-compose.yml, asi los scripts de Fase 2 lo ven como si estuviera dentro.
-# En este equipo, ademas, el archivo es un "placeholder" de OneDrive (atributo
-# ReparsePoint) y Docker Desktop falla al leerlo a traves de Windows: excluirlo
-# es lo que desbloquea el build.
+# En este equipo, ademas, el archivo es un marcador de OneDrive (archivo en la
+# nube) y Docker Desktop falla al leerlo a traves de Windows: excluirlo es lo que
+# desbloquea el build.
 01_datos/datos_fuente/*.csv
 
 # --- dashboards entregados: 19,9 MB -----------------------------------------
 # HTML estatico ya entregado; el contenedor solo valida reglas. Verificado: sin
 # este directorio el gate sigue en 15 PASA / 0 FALLA / 2 ADVERTENCIA.
 02_dashboards/
+
+# --- informes de analisis de fase 2: 0,3 MB --------------------------------
+# Son entregables nuestros; ninguna regla los lee. Verificado: sin este
+# directorio el gate sigue en 15/0/2.
+03_informes/
 
 # --- empaquetado de LaTeX y diapositivas: 1,4 MB ----------------------------
 # Ninguna regla los lee; el .zip de Overleaf y las diapositivas se entregan
@@ -89,3 +107,21 @@ _stubs/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# --- Markdown: fuera el ruido, DENTRO lo que leen las reglas ---------------
+# (Los .md de 03_informes/ y de 04_auditoria/ ya quedan fuera por sus carpetas.)
+*.md
+# Lo que R13 y R17 SI necesitan: sin estas excepciones el gate baja a 14 PASA
+# y 1 FALLA (R17), con el grafo en 244 nodos en vez de 255.
+!documentacion_auditoria/**/*.md
+!documentacion_auditoria/*.md
+
+# --- BLINDAJE de lo que las reglas leen ------------------------------------
+# Si en el futuro alguien anade una exclusion generica (*.csv, *.json, *.yaml,
+# *.tex), estas reglas la revierten para el contenido que R5, R9, R10, R13, R14
+# y R17 consultan. Van al final a proposito: en .dockerignore gana el ultimo
+# patron que coincide.
+!documentacion_auditoria/data/**
+!documentacion_auditoria/latex/**
+!documentacion_auditoria/pdf/**
+!documentacion_auditoria/src/**

@@ -154,11 +154,28 @@ Tres detalles más que explican el diseño: `python -m memoria validar` exige qu
 directorio de trabajo sea `documentacion_auditoria/src`; el motor de exportación
 de imágenes es **`plotly-mirage`**, no `kaleido` (no hay navegador ni descarga de
 Chrome dentro del contenedor); y el `.dockerignore` deja fuera 3,21 GB de los
-3,23 GB del árbol —historial de git, el clon antiguo del repositorio, las copias
-auditadas, los dashboards entregados y ese CSV—, con lo que el contexto de build
-queda en **27,9 MB**. El suelo no se puede bajar más: `documentacion_auditoria/`
+3,23 GB del árbol —historial de git, el clon antiguo del repositorio, la carpeta
+`04_auditoria/`, los dashboards entregados y ese CSV—, con lo que el contexto de
+build queda en **28,1 MB**. El suelo no se puede bajar más: `documentacion_auditoria/`
 (`data`, `latex` y `pdf`) lo necesitan las propias reglas — sin `pdf/`, R10 y R17
 pasan a FALLA.
+
+**Dos trampas que ya costaron una corrida.** Excluir los `.md` en bloque bajó el
+gate a 14 PASA y 1 FALLA: las reglas **no** leen `.md` de adorno — R13 y R17 leen
+`data/validacion/*.md`, el `README.md` de la documentación y
+`data/memoria/texto_seccion_6_2.md`, y sin ellos el grafo pasa de **255 a 244
+nodos** y las cifras de los `.tex` dejan de coincidir. Y `data/ejecucion_resumen.csv`
+llegó **vacío** a la imagen (en Windows era un archivo en la nube de OneDrive, y
+Docker Desktop no lo pudo leer): R14 se quedó en 6/7 y arrastró a R17, dejando
+**13 PASA · 2 FALLA**. Para que nada de eso vuelva a pasar en silencio, el
+`Dockerfile` ejecuta `verificar_contexto_imagen.py` durante el build: si falta o
+está vacío algún archivo que las reglas consultan, **falla el build** diciendo
+cuál, en lugar de producir una imagen que verifica peor sin explicar por qué.
+En local, ese mismo script hidrata los archivos de OneDrive al leerlos:
+
+```bash
+python verificar_contexto_imagen.py      # antes de construir: valida e hidrata
+```
 
 *(El `Dockerfile` se entrega sin construir: el entorno donde se preparó esta
 entrega no tiene daemon de Docker. Los comandos de arriba son los que hay que
