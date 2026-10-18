@@ -1,8 +1,17 @@
 # .dockerignore — que NO viaja al contexto de construccion de la imagen.
 #
-# El arbol completo pesa ~3.234 MB y el contexto util para `python -m memoria
-# validar` son ~130 MB. Lo que sobra son, sobre todo, el historial de git y un
-# clon antiguo del repositorio del grupo.
+# El arbol completo pesa ~3.234 MB (2.495 de ellos son el historial de git). Con
+# este archivo el contexto queda en ~28 MB y la imagen sigue corriendo el gate
+# completo. Comprobado copiando SOLO estos archivos a un directorio aparte y
+# ejecutando ahi `python -m memoria validar`, sin .git, sin el CSV y sin las
+# copias auditadas:
+#
+#     15 PASA . 0 FALLA . 2 ADVERTENCIA
+#
+# El objetivo de <5 MB NO es alcanzable: las reglas necesitan el contenido de
+# documentacion_auditoria/ (data, latex y pdf). Se probo a excluir
+# documentacion_auditoria/pdf/ (5,9 MB) y el gate cae a 13 PASA y 2 FALLA
+# (R10 y R17), asi que ese directorio se queda.
 
 # --- control de versiones y entornos virtuales -------------------------------
 .git
@@ -25,15 +34,48 @@ __pycache__/
 node_modules/
 
 # --- el clon antiguo del repositorio del grupo: 441,5 MB --------------------
-# De esos, 383,8 MB son su .venv. No lo usa nada de este proyecto: los datos y
-# los resultados ya estan en 01_datos/ y en documentacion_auditoria/.
+# De esos, 383,8 MB son su .venv. No lo usa nada de este proyecto.
 Observatorio_Ministerio_de_Ciencias_Grupo8/
 
 # --- material de trabajo historico: 145,1 MB --------------------------------
-# Scripts de una sola vez y copias de pasadas anteriores.
 _archivo/
 
-# --- temporales, volcados y basura del sistema ------------------------------
+# --- entregas ya cerradas: 1,8 MB (viven en Git, no hacen falta para validar)
+05_entregas/
+
+# --- copias auditadas: 71,8 MB ----------------------------------------------
+# `python -m memoria validar` NO las lee. Las reglas que hablan de commits y de
+# archivos reales usan los CACHES versionados en
+# documentacion_auditoria/data/memoria/ (git_log_real.csv y
+# git_ls_files_real.txt) y las 51 fichas de data/analisis_codigo/: por eso el
+# contenedor no necesita ni .git ni el binario `git` (que tampoco esta en
+# python:3.11-slim).
+# Consecuencia declarada: dentro de la imagen NO se puede correr
+# `python 04_auditoria/verificar_hashes.py`; para eso hay que montar el arbol
+# (es lo que hace docker-compose.yml).
+04_auditoria/repo_original/
+04_auditoria/repo_mejorado/
+
+# --- el CSV de 31,32 MB (datos.gov.co) --------------------------------------
+# No lo necesita `validar`. Se monta en tiempo de ejecucion con el volumen de
+# docker-compose.yml, asi los scripts de Fase 2 lo ven como si estuviera dentro.
+# En este equipo, ademas, el archivo es un "placeholder" de OneDrive (atributo
+# ReparsePoint) y Docker Desktop falla al leerlo a traves de Windows: excluirlo
+# es lo que desbloquea el build.
+01_datos/datos_fuente/*.csv
+
+# --- dashboards entregados: 19,9 MB -----------------------------------------
+# HTML estatico ya entregado; el contenedor solo valida reglas. Verificado: sin
+# este directorio el gate sigue en 15 PASA / 0 FALLA / 2 ADVERTENCIA.
+02_dashboards/
+
+# --- empaquetado de LaTeX y diapositivas: 1,4 MB ----------------------------
+# Ninguna regla los lee; el .zip de Overleaf y las diapositivas se entregan
+# desde Git. (documentacion_auditoria/pdf/ NO se excluye: R10 y R17 lo exigen.)
+documentacion_auditoria/zip_overleaf/
+documentacion_auditoria/slides_nada_sin_fuente/
+
+# --- temporales, copias de trabajo y basura del sistema ---------------------
 _prueba_ejecucion/
 _stubs/
 *.tmp

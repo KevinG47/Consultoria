@@ -143,12 +143,22 @@ docker compose run --rm observatorio          # valida
 docker compose run --rm observatorio bash     # consola dentro de la imagen
 ```
 
-Dos detalles que explican el diseño: `python -m memoria validar` exige que el
-directorio de trabajo sea `documentacion_auditoria/src`, y el `.dockerignore`
-deja fuera 3,1 GB de los 3,2 GB del árbol (el historial de git y un clon antiguo
-del repositorio del grupo). El motor de exportación de imágenes es
-**`plotly-mirage`**, no `kaleido`: no hay navegador ni descarga de Chrome dentro
-del contenedor.
+**Sobre el CSV.** El repositorio de Git contiene el CSV completo de datos.gov.co
+(`01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`,
+31,3 MB). La imagen de Docker es ligera y **no** lo incluye, pero el
+`docker-compose.yml` monta la carpeta local (`./01_datos:/app/01_datos`) para que
+los análisis de Fase 2 puedan reproducirse sin problemas: dentro del contenedor
+el archivo aparece en su ruta habitual, como si estuviera dentro.
+
+Tres detalles más que explican el diseño: `python -m memoria validar` exige que el
+directorio de trabajo sea `documentacion_auditoria/src`; el motor de exportación
+de imágenes es **`plotly-mirage`**, no `kaleido` (no hay navegador ni descarga de
+Chrome dentro del contenedor); y el `.dockerignore` deja fuera 3,21 GB de los
+3,23 GB del árbol —historial de git, el clon antiguo del repositorio, las copias
+auditadas, los dashboards entregados y ese CSV—, con lo que el contexto de build
+queda en **27,9 MB**. El suelo no se puede bajar más: `documentacion_auditoria/`
+(`data`, `latex` y `pdf`) lo necesitan las propias reglas — sin `pdf/`, R10 y R17
+pasan a FALLA.
 
 *(El `Dockerfile` se entrega sin construir: el entorno donde se preparó esta
 entrega no tiene daemon de Docker. Los comandos de arriba son los que hay que

@@ -22,7 +22,17 @@ services:
     container_name: observatorio-local
     working_dir: /app/documentacion_auditoria/src
     volumes:
+      # 1) El arbol completo (codigo y datos en caliente).
       - ./:/app
+      # 2) El CSV de 31,32 MB, montado a proposito.
+      #    La imagen NO lo incluye (.dockerignore lo excluye) y `validar` no lo
+      #    necesita, pero los scripts de Fase 2 si: con este montaje el
+      #    contenedor lo ve en /app/01_datos/datos_fuente/ como si estuviera
+      #    dentro, y el CSV sigue versionado en Git.
+      #    Con el montaje (1) ya seria visible; se declara aparte por dos razones:
+      #    deja escrito de donde sale el dato y sobrevive si algun dia se quita
+      #    el montaje general.
+      - ./01_datos:/app/01_datos
     # Sin red: la validacion lee solo archivos del arbol. Si algun dia se
     # reindexa el RAG, hay que quitar esta linea (sentence-transformers descarga
     # el modelo la primera vez).
