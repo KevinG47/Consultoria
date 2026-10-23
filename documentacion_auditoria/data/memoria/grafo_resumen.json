@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-17T22:11:55",
+  "fecha": "2026-10-22T20:16:16",
   "nodos_por_tipo": {
     "Criterio": 6,
     "Documento": 13,
@@ -14,13 +14,13 @@
     "tiene_documento": 12,
     "consolidado_en": 6,
     "verificado_por": 30,
-    "usa_termino": 82,
+    "usa_termino": 84,
     "documenta": 184,
     "pertenece_a": 51,
     "tiene_autor": 133
   },
   "total_nodos": 255,
-  "total_aristas": 498,
+  "total_aristas": 500,
   "commit_auditado": "1528939",
   "commits_reales": 133,
   "commits_documentados": 133,

@@ -1,9 +1,9 @@
 {
-  "fecha": "2026-10-17T22:11:55",
+  "fecha": "2026-10-22T20:16:17",
   "commit_auditado": "1528939",
   "grafo": {
     "nodos": 255,
-    "aristas": 498,
+    "aristas": 500,
     "nodos_por_tipo": {
       "Criterio": 6,
       "Documento": 13,
@@ -18,24 +18,24 @@
       "tiene_documento": 12,
       "consolidado_en": 6,
       "verificado_por": 30,
-      "usa_termino": 82,
+      "usa_termino": 84,
       "documenta": 184,
       "pertenece_a": 51,
       "tiene_autor": 133
     }
   },
   "rag": {
-    "fecha_construccion": "2026-10-13T16:40:36",
-    "n_fragmentos": 150,
+    "fecha_construccion": "2026-10-22T20:10:03",
+    "n_fragmentos": 151,
     "n_documentos": 25,
     "por_coleccion": {
-      "criterio_completo": 24,
+      "criterio_completo": 25,
       "criterio_lite": 24,
       "maestro": 8,
       "anteproyecto": 8,
       "validacion": 86
     },
-    "palabras_totales": 116312,
+    "palabras_totales": 123505,
     "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
     "metodo": "tfidf",
     "corpus": [
@@ -65,8 +65,8 @@
       "validacion_sota_cobertura.md",
       "validacion_sota_referencias.md"
     ],
-    "hash_corpus": "1a77a04a06e88312",
-    "n_terminos_vocabulario": 45819
+    "hash_corpus": "f3d66ededfab9e9e",
+    "n_terminos_vocabulario": 49749
   },
   "reglas": [
     {
@@ -229,7 +229,7 @@
       "id": "R10",
       "descripcion": "Integridad referencial del grafo (PDF, documentos y aristas)",
       "estado": "PASA",
-      "detalle": "255 nodos y 498 aristas revisados; 0 problema(s).",
+      "detalle": "255 nodos y 500 aristas revisados; 0 problema(s).",
       "evidencia": {
         "problemas": []
       }
@@ -245,17 +245,17 @@
           {
             "documento": "objetivo_2_lite",
             "seccion": "02_contexto",
-            "puntaje": 0.1116
+            "puntaje": 0.1118
           },
           {
             "documento": "objetivo_1_lite",
             "seccion": "02_contexto",
-            "puntaje": 0.1101
+            "puntaje": 0.1103
           },
           {
             "documento": "objetivo_1",
             "seccion": "02_contexto",
-            "puntaje": 0.1078
+            "puntaje": 0.108
           }
         ]
       }
@@ -273,9 +273,9 @@
             "principal_lite": 63,
             "principal_pct": 34.1,
             "cumple_40_principal": true,
-            "total_completo": 594,
+            "total_completo": 7787,
             "total_lite": 507,
-            "total_pct": 85.4
+            "total_pct": 6.5
           },
           {
             "criterio": 2,
@@ -340,11 +340,11 @@
       "id": "R13",
       "descripcion": "El índice RAG está actualizado respecto a las fuentes",
       "estado": "PASA",
-      "detalle": "Índice al día: posterior al documento fuente más reciente por 0.1 min.",
+      "detalle": "Índice al día: posterior al documento fuente más reciente por 0.4 min.",
       "evidencia": {
-        "documento_fuente_mas_reciente": "2026-10-13T16:40:32",
-        "indice": "2026-10-13T16:40:36",
-        "desfase_min": 0.1,
+        "documento_fuente_mas_reciente": "2026-10-22T20:09:40",
+        "indice": "2026-10-22T20:10:03",
+        "desfase_min": 0.4,
         "desactualizado": false
       }
     },
@@ -419,11 +419,11 @@
       "detalle": "5 documento(s) revisado(s); 50 cita(s) de cifras del sistema, todas coincidentes con las fuentes de verdad.",
       "evidencia": {
         "esperado": {
-          "fragmentos": 150,
-          "palabras": 116312,
-          "terminos": 45819,
+          "fragmentos": 151,
+          "palabras": 123505,
+          "terminos": 49749,
           "nodos": 255,
-          "aristas": 498,
+          "aristas": 500,
           "reglas": 17,
           "decisiones": 10
         },

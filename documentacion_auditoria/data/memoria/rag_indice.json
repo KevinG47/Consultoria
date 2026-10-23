@@ -1,15 +1,15 @@
 {
-  "fecha_construccion": "2026-10-13T16:40:36",
-  "n_fragmentos": 150,
+  "fecha_construccion": "2026-10-22T20:10:03",
+  "n_fragmentos": 151,
   "n_documentos": 25,
   "por_coleccion": {
-    "criterio_completo": 24,
+    "criterio_completo": 25,
     "criterio_lite": 24,
     "maestro": 8,
     "anteproyecto": 8,
     "validacion": 86
   },
-  "palabras_totales": 116312,
+  "palabras_totales": 123505,
   "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
   "metodo": "tfidf",
   "corpus": [
@@ -39,6 +39,6 @@
     "validacion_sota_cobertura.md",
     "validacion_sota_referencias.md"
   ],
-  "hash_corpus": "1a77a04a06e88312",
-  "n_terminos_vocabulario": 45819
+  "hash_corpus": "f3d66ededfab9e9e",
+  "n_terminos_vocabulario": 49749
 }
