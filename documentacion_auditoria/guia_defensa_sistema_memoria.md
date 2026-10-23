@@ -32,9 +32,9 @@ Se usa coseno y no distancia normal porque los textos tienen largos distintos y 
 favorecemos a los fragmentos largos.
 
 ### Los 4 pasos reales del sistema
-1. **Indexar** (`python -m memoria indexar`): parte el corpus en **150 fragmentos**
+1. **Indexar** (`python -m memoria indexar`): parte el corpus en **151 fragmentos**
    (25 documentos: 6 criterios + sus LITE + maestro + 11 informes de validación + el
-   anteproyecto), limpia el LaTeX, construye el vocabulario (**45 819 términos**) y
+   anteproyecto), limpia el LaTeX, construye el vocabulario (**49 749 términos**) y
    calcula la matriz de pesos TF-IDF.
 2. **Consultar**: la pregunta se limpia y se pesa **igual** que el corpus.
 3. **Comparar**: se calcula el coseno contra **todos** los fragmentos y se ordenan.
@@ -42,7 +42,7 @@ favorecemos a los fragmentos largos.
    consulta queda en la bitácora `data/memoria/consultas_rag.jsonl` (auditable).
 
 ### Por qué TF-IDF y no embeddings (responde la pregunta obvia)
-Con 150 fragmentos y vocabulario técnico estable, TF-IDF resuelve sin proveedor externo,
+Con 151 fragmentos y vocabulario técnico estable, TF-IDF resuelve sin proveedor externo,
 sin red, sin costo, y es **determinista y explicable** (puedo mostrar qué términos
 pesaron). **Pero el docente decidió migrar a embeddings** (decisión D007) por
 transferibilidad; esa migración está **pendiente de implementación** y el sistema lo
@@ -62,7 +62,7 @@ Cosas reales del proyecto, contadas: **255 nodos**
 - **133** Commit y **11** Autor (del `git log` real)
 - **11** DocumentoValidacion (informes de los agentes)
 
-### Qué son las relaciones (**498 aristas**)
+### Qué son las relaciones (**500 aristas**)
 - `Criterio → Documento` (con la variante completo/LITE)
 - `Documento → TérminoGlosario` (qué términos usa de verdad)
 - `ArchivoCodigo → Capa` (según las reglas de `capas.yaml`)
@@ -155,7 +155,7 @@ python -m memoria consultar "el consolidado versionado solo tiene 3 de 6 convoca
 ```
 **Debe verse** (salida real):
 ```
-[RAG] consulta: 'el consolidado versionado solo tiene 3 de 6 convocatorias'  (índice: 150 fragmentos)
+[RAG] consulta: 'el consolidado versionado solo tiene 3 de 6 convocatorias'  (índice: 151 fragmentos)
 [RAG] términos que pesan: [('tiene convocatorias', 0.4687), ('versionado solo', 0.4274), ...]
   1. cos=0.3057  objetivo_2_lite::03_datos  [criterio_lite, 69 palabras]
      ...Veredicto: Datos correctos y suficientes en origen ... pero el consolidado
@@ -168,7 +168,7 @@ puntaje y su ruta: así evito contradecirme entre documentos."*
 ```powershell
 python -m memoria grafo
 ```
-**Debe verse:** `255 nodos / 498 aristas`, el desglose por tipo (Commit 133,
+**Debe verse:** `255 nodos / 500 aristas`, el desglose por tipo (Commit 133,
 ArchivoCodigo 51…), `commits: reales=133 documentados=133`,
 `archivos de código: reales=51 documentados=51`.
 
@@ -181,7 +181,7 @@ python -m memoria validar
 ```powershell
 python -m memoria dibujar --tipos Criterio,Documento
 ```
-**Debe verse:** `[dibujar] dibujados 19 nodos / 18 aristas de 255 nodos / 498 aristas
+**Debe verse:** `[dibujar] dibujados 19 nodos / 18 aristas de 255 nodos / 500 aristas
 totales` y se genera `data/memoria/grafo_visual.png` (≈179 KB), legible para proyectar.
 
 ```powershell

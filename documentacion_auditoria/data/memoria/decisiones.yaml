@@ -85,7 +85,7 @@ decisiones:
     tema: "memoria_estructural"
     decision: "Usar un grafo en memoria (networkx), no un motor externo"
     justificacion: >
-      Escala real del proyecto (255 nodos / 498 aristas); un motor como Neo4j o
+      Escala real del proyecto (255 nodos / 500 aristas); un motor como Neo4j o
       Memgraph exigiría infraestructura y operación desproporcionadas para este
       volumen, sin aportar consultas que el proyecto necesite.
     alternativas_descartadas: ["Neo4j", "Memgraph"]

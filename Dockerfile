@@ -12,7 +12,7 @@
 #
 # Lo que NO se instala a proposito: torch, sentence-transformers y pyvis. Estan
 # en el grupo opcional `ml` de pyproject.toml y solo hacen falta para
-# RECONSTRUIR el RAG o el grafo; el indice (150 fragmentos) y los dashboards ya
+# RECONSTRUIR el RAG o el grafo; el indice (151 fragmentos) y los dashboards ya
 # estan versionados como HTML estatico. `--only main` es lo que los deja fuera.
 
 # ---------------------------------------------------------------------------

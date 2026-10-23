@@ -86,7 +86,7 @@ BANCO: list[dict] = [
     {"id": 7, "grupo": "A", "pregunta": "¿Cuántas filas tiene el dataset de producción?",
      "esperado": "3 166 629", "claves": ["3166629"]},
     {"id": 8, "grupo": "A", "pregunta": "¿Cuántos fragmentos indexa el RAG?",
-     "esperado": "150", "claves": ["150 fragmentos"]},
+     "esperado": "151", "claves": ["151 fragmentos"]},
     {"id": 9, "grupo": "A", "pregunta": "¿Cuántos nodos tiene el grafo?",
      "esperado": "255", "claves": ["255 nodos"]},
     {"id": 10, "grupo": "A", "pregunta": "¿Cuántas reglas de validación hay?",

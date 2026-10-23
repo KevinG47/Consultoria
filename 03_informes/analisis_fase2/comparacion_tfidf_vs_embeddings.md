@@ -229,14 +229,14 @@ python -m memoria indexar --metodo embeddings  # Granite
 
 D007 está en estado `vigente` desde la implementación anterior, con la redacción corregida (embeddings **locales**, no «vía API key») y el resultado de la evaluación en su justificación. Esta ronda no la modificó: cambiar el modelo es una mejora de implementación dentro de la misma decisión, no una decisión nueva.
 
-Se mantiene un efecto colateral conocido en las reglas: **R15 sigue fallando**. R15 comprueba en dos sentidos: (a) que la decisión vigente esté implementada en el código —eso ya se cumple, `embedding` aparece en `rag.py`— y (b) que una decisión **superada** no siga implementada. La segunda sigue disparando porque D002 está marcada como `superada` y su marcador `TfidfVectorizer` continúa en el código, cosa inevitable mientras TF-IDF se conserve como respaldo. La regla supone que una técnica sucede y elimina a la anterior, y aquí lo decidido es «sucede como método principal, se conserva como respaldo». Las opciones son las mismas de la ronda anterior: enmendar R15 para admitir una excepción declarada en decisiones superadas, cambiar el estado de D002 (que R16 limita a `vigente|superada|propuesta|pendiente_implementacion` y exigiría ajustar además el tema de D007), o dejarlo documentado como limitación conocida. Ninguna se aplicó sin consultar.
+Desde la ronda anterior el estado de esta regla cambió y conviene registrarlo: **R15 ya no falla, advierte**. La primera de las tres opciones que se barajaban se aplicó en el commit `b0cafbf` («R15 simétrica: aceptar una decisión superada conservada como respaldo declarado»): la regla admite que una decisión **superada** siga implementada si declara `implementacion.respaldo_declarado` (o `excepto_si`), y en ese caso el desfase se registra como ADVERTENCIA en lugar de FALLA. D002 declara ese respaldo —con motivo, qué se conserva y quién lo autoriza—, de modo que el sistema queda en **15 PASA, 0 FALLA, 2 ADVERTENCIA**, y las dos advertencias son R12 y R15. Lo que la regla sigue comprobando es real: (a) que la decisión vigente esté implementada —`embedding` aparece en `rag.py`— y (b) que una decisión superada no siga en el código, cosa que aquí se cumple **declarando** la excepción. Para llegar a PASA haría falta que `TfidfVectorizer` desapareciera de `rag.py` —lo que contradice D007, que lo mantiene como método por defecto— o que la regla considerase cumplido el respaldo declarado; cambiar D002 a `vigente` chocaría además con la comprobación de que no haya dos decisiones actuales del mismo tema. El aviso es hoy el registro deliberado de una excepción declarada, no un defecto pendiente.
 
 ## Anexo: trazabilidad y reproducibilidad
 
 | Artefacto | Contenido |
 |---|---|
 | `src/memoria/rag.py` | Los dos métodos (`metodo="tfidf"` por defecto) |
-| `data/memoria/rag_indice.json` | Índice TF-IDF (metadatos), sin cambios: 150 fragmentos |
+| `data/memoria/rag_indice.json` | Índice TF-IDF (metadatos): 150 fragmentos cuando se hizo esta comparación; hoy 151, tras añadir la sección de muestreo al criterio 1 |
 | `data/memoria/rag_indice_embeddings.json` | Índice de embeddings con Granite: 150 fragmentos, 384 dimensiones, cobertura 79,6 % |
 | `data/memoria/rag_embeddings.npy` | Matriz de vectores (150 × 384) |
 | `scripts/banco_preguntas.py` | Banco de 20 preguntas, con `--metodo` y `--salida` |
