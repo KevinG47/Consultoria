@@ -97,11 +97,9 @@ poetry run python -m memoria validar
 cd ../..                    # volver a la raíz
 ```
 
-**(NO VERIFICADO en esta fase).** En el entorno donde se redactó este documento la
-creación del entorno virtual de Poetry se bloqueó por permisos
-(`[WinError 5] Acceso denegado: …\pypoetry\Cache\virtualenvs`), así que la forma
-comprobada es la de arriba, con el Python del sistema ya provisto de dependencias. En un
-equipo normal `poetry install` crea ese entorno y la forma con `poetry run` funciona.
+**Salida esperada:** la misma de arriba —`[memoria] reglas: 15 PASA, 0 FALLA, 2
+ADVERTENCIA`, código de salida `0`— comprobada en el equipo de referencia con el entorno
+virtual de Poetry ya creado por `poetry install`.
 
 **Si falla →**
 
@@ -165,7 +163,8 @@ y la ruta del archivo de origen.
 
 - `ModuleNotFoundError: memoria` → falta el `cd documentacion_auditoria/src`.
 - Si eliges el método alternativo de indexación, hace falta el grupo opcional de
-  aprendizaje automático: `poetry install --with ml` *(no verificado aquí)*.
+  aprendizaje automático: `poetry install --with ml` (grupo opcional, no validado en el
+  build Docker: la imagen usa `poetry export --only main` y lo deja fuera a propósito).
 - Si `indexar` cambia el número de fragmentos, la regla R17 fallará hasta que se
   actualicen las cifras citadas en los documentos. Es un aviso real, no un fallo del
   comando.
@@ -206,24 +205,33 @@ avisa.
 
 ---
 
-## Docker **(NO VERIFICADO en esta fase — el daemon estaba caído)**
+## Docker
 
-**(NO VERIFICADO en esta fase: `docker images` respondió `failed to connect to the docker
-API at npipe:////./pipe/dockerDesktopLinuxEngine`. No construí ni ejecuté la imagen.)**
-`docker --version` sí responde: `Docker version 29.2.1, build a5c7197`.
+`docker --version` → `Docker version 29.2.1, build a5c7197`.
 
 ```bash
 docker info                                  # ¿está el daemon vivo?
-docker build -t observatorio .               # construye (varios minutos la primera vez)
+docker build -t observatorio .               # construye la imagen (≈167 s la primera vez)
 docker run --rm observatorio                 # ejecuta la validación dentro del contenedor
 docker compose run --rm observatorio         # variante con el árbol montado
 ```
 
-**Salida esperada** de `docker run`:
+**Salida esperada del build** (medida en el equipo de referencia):
 
 ```
+[+] Building 166.7s (19/19) FINISHED
+ ...
+ => => naming to docker.io/library/observatorio:latest
+```
+
+**Salida esperada** de `docker run --rm observatorio`:
+
+```
+[memoria] clon del repo auditado no disponible; commit anclado = 1528939
 [memoria] reglas: 15 PASA, 0 FALLA, 2 ADVERTENCIA
 ```
+
+código de salida `0`.
 
 **Si falla →**
 
@@ -233,6 +241,8 @@ docker compose run --rm observatorio         # variante con el árbol montado
   `python verificar_contexto_imagen.py`.
 - Ojo con el CSV: **no va dentro de la imagen** (está excluido); `docker-compose.yml` monta
   `01_datos/` por volumen para que los análisis lo vean igual.
+
+> Dentro del contenedor verás `clon del repo auditado no disponible`; es normal: el contenedor usa el commit anclado 1528939 (ver `04_auditoria/README.md`).
 
 ---
 
