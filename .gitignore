@@ -109,3 +109,9 @@ documentacion_auditoria/data/memoria/rag_vectorizer.pkl
 guion_sustentacion_nada_sin_fuente.md
 docs/guion_sustentacion_nada_sin_fuente.md
 documentacion_auditoria/slides_nada_sin_fuente/
+
+# ── Plantillas del docente usadas como referencia de diseño (NO se versionan)
+#    Son mazos de la Universidad El Bosque (tema "elbosque", verde #012820 y
+#    naranja #FF6600) que sirvieron para el shell 02_dashboards/presentacion.html.
+#    Pesan 4,8 MB y son material de un tercero: se quedan en disco, no en git.
+02_dashboards/_referencia/
