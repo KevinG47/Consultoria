@@ -70,10 +70,10 @@ haces, los análisis fallan con `invalid file request` o `Acceso denegado`.
 | **`documentacion_auditoria/`** | El sistema de auditoría: `src/` (código), `data/` (resultados internos y metadatos), `latex/` y `pdf/` (los documentos), `scripts/` y el ZIP de Overleaf |
 | **`_archivo/`** | Scripts de una sola vez y registros de trabajo. No se usa en la ejecución normal, pero es evidencia |
 
-> **`datos_originales/` ya no existe.** Esa carpeta se renombró a `01_datos/` y
-> `04_auditoria/` en el commit `4399ff7`, cuando el repositorio se reorganizó para
-> dejarlo listo para el próximo grupo. Si encuentras esa ruta en algún documento
-> antiguo, esta es la traducción.
+> **La antigua carpeta de datos originales ya no existe.** Se renombró a `01_datos/` y
+> `04_auditoria/` en el commit `4399ff7`, cuando el repositorio se reorganizó para dejarlo
+> listo para el próximo grupo. Si encuentras esa ruta en algún documento antiguo, esta es
+> la traducción.
 
 ## Qué NO tocar (y por qué)
 

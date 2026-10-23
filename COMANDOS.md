@@ -74,8 +74,10 @@ Es el comando más importante: comprueba las 17 reglas de una sola vez. **Hay qu
 en `documentacion_auditoria/src`**, porque el paquete vive ahí.
 
 ```bash
+# desde la raíz del repositorio:
 cd documentacion_auditoria/src
 python -m memoria validar
+cd ../..                    # volver a la raíz
 ```
 
 **Salida esperada** (última línea y código de salida):
@@ -89,7 +91,10 @@ código de salida `0`.
 Con Poetry (después de `poetry install`, que crea su propio entorno virtual):
 
 ```bash
+# desde la raíz del repositorio:
+cd documentacion_auditoria/src
 poetry run python -m memoria validar
+cd ../..                    # volver a la raíz
 ```
 
 **(NO VERIFICADO en esta fase).** En el entorno donde se redactó este documento la
@@ -102,7 +107,7 @@ equipo normal `poetry install` crea ese entorno y la forma con `poetry run` func
 
 - Aparece `[FALLA] Rx: …` → esa regla concreta está rota; el detalle dice qué documento y
   qué cifra no coincide. El comando devuelve código `1`.
-- Necesitas el detalle en un formato legible:
+- Necesitas el detalle en un formato legible, **en esa misma carpeta**:
   `python -m memoria validar --json`.
 - `ModuleNotFoundError: memoria` → te falta el `cd documentacion_auditoria/src`.
 - Tras validar, `git status` muestra dos JSON modificados (solo el campo `fecha`). Es
@@ -136,7 +141,8 @@ los ejecuté porque reescriben el índice, la evidencia o los registros de consu
 están versionados.)**
 
 ```bash
-# Situarse en documentacion_auditoria/src
+# desde la raíz del repositorio:
+cd documentacion_auditoria/src
 python -m memoria --help          # lista los ocho subcomandos y sus opciones
 
 python -m memoria indexar            # construye el índice de búsqueda
@@ -146,6 +152,8 @@ python -m memoria evidencia          # escribe el informe de la última validaci
 python -m memoria grafo              # [--refrescar-git]
 python -m memoria dibujar            # PNG del grafo
 python -m memoria dibujar-html       # grafo interactivo en HTML
+
+cd ../..                          # volver a la raíz
 ```
 
 **Salida esperada:** `indexar` termina con la frase
@@ -252,7 +260,8 @@ compilar.py objetivo_1 --sin-validar   # se salta la puerta de validación
 
 - Código de salida **2** con `[memoria] COMPILACIÓN ABORTADA: hay reglas de validación en
   FALLA` → no es un fallo de LaTeX: alguna regla está en rojo. Ejecuta
-  `python -m memoria validar` y corrige lo que indique, o usa `--forzar` si es consciente.
+  `cd documentacion_auditoria/src && python -m memoria validar` y corrige lo que indique,
+  o usa `--forzar` si es consciente.
 - `latexmk: command not found` → instala TinyTeX o TeX Live.
 - Faltan paquetes de LaTeX → `tlmgr install <paquete>` (Overleaf no los necesita: compila
   con su propia instalación completa).
