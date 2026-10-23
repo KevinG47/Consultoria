@@ -1,297 +1,125 @@
-# Consultoría Estadística USTA · 2026-II
-## Auditoría reproducible del Observatorio MinCiencias y análisis propio de los investigadores reconocidos (2013–2021)
+# Observatorio MinCiencias — Auditoría estadística
 
-**Equipo:** Kevin Leonardo Chaparro Reyes · Valentina Muñoz Palma ·
-Paula Margarita Triana Ancinez
-**Asignatura:** Consultoría Estadística — Universidad Santo Tomás ·
-**Modalidad:** proyecto con datos abiertos
+Este repositorio reúne el trabajo de consultoría estadística sobre el **Observatorio de
+investigadores reconocidos por MinCiencias**, el proyecto que realizó otro grupo de la
+asignatura. Aquí está la auditoría de su repositorio —qué afirma, qué puede demostrar y
+qué no—, los nueve análisis propios que hicimos sobre los mismos datos, los paneles que
+los muestran y el sistema que verifica automáticamente que las cifras sigan cuadrando.
 
----
+Está pensado para que lo puedas usar sin conocer el proyecto de antes: hay datos en
+bruto, resultados en JSON, informes en Markdown, PDFs, seis paneles interactivos y una
+bitácora que explica las decisiones. Todo son archivos de texto y datos abiertos; no hace
+falta ninguna cuenta, ningún servicio en la nube y, salvo para instalar dependencias,
+tampoco conexión a internet.
 
-## Qué es este repositorio, en dos párrafos
+## Antes de empezar — qué necesitas
 
-Primero **auditamos**: el repositorio público
-[`ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8`](https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo8)
-(commit `1528939`) se copió byte a byte, se documentó archivo por archivo y se
-contrastó cada cifra que afirmaba. Después **analizamos nosotros**: sobre la base
-completa de investigadores reconocidos por MinCiencias (77 237 registros, 30 086
-personas, 6 convocatorias entre 2013 y 2021) hicimos los diez análisis que el
-repositorio auditado había dejado pendientes y uno nuevo de flujos territoriales,
-con inferencia (MAS + post-estratificación + GREG), modelos nulos, supervivencia y
-un mapa interactivo.
-
-Todo está versionado para que **el próximo grupo lo pueda reproducir sin el clon
-auditado y sin internet**: los datos fuente, una copia verbatim del proyecto
-auditado con manifiesto SHA-256, el pipeline completo, los paneles HTML
-autocontenidos y un sistema de validación automática de **17 reglas** que se corre
-antes de dar cualquier cifra por buena.
-
----
-
-## Las cinco carpetas
-
-| Carpeta | Qué hay | Empieza por |
+| Necesitas | Versión | ¿Para qué? |
 |---|---|---|
-| **`01_datos/`** | **Datos.** `datos_fuente/` con la base de datos.gov.co (`Investigadores_Reconocidos_por_convocatoria_20261006.csv`, 31,3 MB) y las tablas del DANE (CNPV 2018 y proyecciones) con su `.procedencia.txt`; `resultados_json/` con los **8 JSON de resultados** de los análisis (F2-2 a F2-11) | `01_datos/resultados_json/` |
-| **`02_dashboards/`** | **Los paneles.** Cinco HTML que se abren con doble clic y funcionan **sin conexión**: el panel de la Fase 2, el EDA, el visor de trayectorias, el mapa de flujos y el grafo de la memoria | `02_dashboards/dashboard_fase2.html` |
-| **`03_informes/analisis_fase2/`** | **Los informes.** 14 documentos `.md`: los nueve análisis de la Fase 2, la metodología de muestreo, el estudio de viabilidad del mapa, la auditoría cruzada, la evaluación de cumplimiento y la comparación de métodos de recuperación | `03_informes/analisis_fase2/metodologia_muestreo.md` |
-| **`04_auditoria/`** | **La evidencia.** `repo_original/`: los **236 archivos** del commit auditado, byte a byte, con `manifiesto_sha256.csv`; `repo_mejorado/`: el mismo código con **30 arreglos** documentados en su `CHANGELOG.md`; los scripts de extracción y verificación; y `ERRATA.md` con las contradicciones conocidas del proyecto auditado | `04_auditoria/README.md` |
-| **`05_entregas/`** | **Lo entregado al docente.** `ENTREGA_1/` (anteproyecto, diapositivas, guía de estudio y tarjetas) y `entregables_2Corte/` (entregas 1–5 del segundo corte) | `05_entregas/ENTREGA_1/LEEME_ENTREGA_1.md` |
+| **Python** | 3.11 o superior (verificado aquí: **3.11.9**) | Todo el sistema de análisis y validación |
+| **Poetry** | 2.x (verificado aquí: **2.5.1**) | Instalar las dependencias declaradas en `pyproject.toml` |
+| **Git** | cualquiera reciente | Clonar y versionar |
+| **Docker** | opcional | Validar el sistema sin instalar Python ni nada más |
+| **LaTeX / TinyTeX** | opcional | Solo si quieres recompilar los PDFs (`latexmk`) |
+| **Espacio en disco** | unos **4 GB** libres | Medido: árbol de trabajo 728 MB + dependencias ≈ 400 MB + historial de Git 2,5 GB ≈ 3,6 GB |
 
-Fuera de esas cinco: **`documentacion_auditoria/`** es el sistema de auditoría
-(pipeline `src/`, documentos LaTeX, PDFs, ZIP de Overleaf y la memoria del agente
-en `data/memoria/`), y **`_archivo/`** guarda los scripts de una sola vez y los
-logs que son evidencia de trabajo.
+## Clonar en 3 pasos
 
-> **Por qué `documentacion_auditoria/src/` y `data/` no se movieron:** sus scripts
-> resuelven las rutas con `Path(__file__)` y las 17 reglas leen la memoria del
-> agente (índice RAG, grafo, decisiones, validación) desde `data/memoria/`. Mover
-> esas carpetas rompería la validación. Lo que sí salieron de ahí son los
-> **entregables**: resultados, paneles e informes.
+```bash
+git clone https://github.com/KevinG47/Consultoria.git
+cd Consultoria
+poetry install          # instala las 25 dependencias del grupo principal
+```
 
----
+Si no usas Poetry, basta con instalar los mismos paquetes con `pip`:
 
-## El panel principal
+```bash
+pip install numpy pandas scipy scikit-learn networkx plotly pyyaml matplotlib plotly-mirage
+```
 
-**`02_dashboards/dashboard_fase2.html`** (5,63 MB, autocontenido: Plotly viene
-embebido y no hay una sola petición a internet). Ocho pestañas y 18 gráficos:
+⚠️ **AVISO, el paso que hace fallar a todo el mundo.** El archivo
+`01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`
+(**32.836.667 bytes**) es un marcador de OneDrive: existe en el repositorio, pero su
+contenido no está descargado en el disco. Antes de usarlo, clic derecho sobre el archivo
+→ **«Siempre disponible en este dispositivo»** (o ábrelo una vez y espera). Si no lo
+haces, los análisis fallan con `invalid file request` o `Acceso denegado`.
 
-| Pestaña | Qué responde |
+## ¿Qué quieres hacer? — elige tu ruta
+
+| Quiero… | Comando / acción | Dónde se explica |
+|---|---|---|
+| **Ver los paneles** | doble clic en `02_dashboards/servir_presentacion.bat` | `06_bitacora_ia/00_LEEME.md` |
+| **Verificar que todo cuadra** | `python -m memoria validar` (desde `documentacion_auditoria/src`) | § Estado del sistema, más abajo |
+| **Usar Docker** | `docker build -t observatorio .` y `docker run --rm observatorio` | `COMANDOS.md` § Docker |
+| **Leer los informes** | abrir `03_informes/analisis_fase2/` | `06_bitacora_ia/00_LEEME.md` |
+| **Abrir la bitácora** | Obsidian → *Open folder as vault* → `06_bitacora_ia/` | `06_bitacora_ia/00_LEEME.md` |
+| **Entender los datos** | `01_datos/` | `06_bitacora_ia/04_mapa_carpetas.md` |
+| **Recompilar los PDFs** | `python documentacion_auditoria/src/compilar.py objetivo_1` | `COMANDOS.md` § Compilar PDFs |
+| **Trabajar con el repositorio auditado** | `04_auditoria/repo_original/` | § Qué NO tocar, más abajo |
+
+## Qué hay en el repositorio — mapa de carpetas
+
+| Carpeta | Qué contiene |
 |---|---|
-| 1 · Resumen ejecutivo | Qué se entregó y qué lo respalda (comprobaciones automáticas y figuras por análisis) |
-| 2 · Territorio y desigualdad (F2-2) | Tasas per cápita por departamento, Gini/Theil entre y dentro de regiones, HHI |
-| 3 · Diversidad y falencias (F2-5) | Razones de representación con IC de Wilson y la trampa del denominador |
-| 4 · Redes y clustering (F2-4, F2-6) | Co-filiación institucional frente a tres modelos nulos y el clustering formalizado |
-| 5 · Supervivencia y género (F2-10) | Kaplan-Meier, Cox y por qué el efecto del género es de composición |
-| 6 · Calidad y reproducibilidad (F2-3, F2-7) | Modelo estrella y la regla de unicidad de IDs: documentada frente a implementada |
-| 7 · Límites y falencias | Qué se cerró, qué no es evaluable y qué queda pendiente |
-| 8 · Flujos y migración (F2-11) | Mapa de los 33 departamentos con las 808 mudanzas de 2013–2021 y la migración acumulada por nacimiento |
+| **`01_datos/`** | `datos_fuente/` con el padrón de MinCiencias (32.836.667 bytes) y las tablas del DANE con su procedencia; `resultados_json/` con los **8 JSON** de resultados de los análisis |
+| **`02_dashboards/`** | **6 paneles HTML** (5 de ellos autocontenidos, sin conexión) y el lanzador `servir_presentacion.bat`: el panel de la Fase 2, el exploratorio, el visor de trayectorias, el mapa de flujos, el grafo y la portada de navegación |
+| **`03_informes/`** | `analisis_fase2/` con **14 informes** en Markdown: los nueve análisis, la metodología de muestreo, el estudio de viabilidad del mapa, la auditoría cruzada, la evaluación de cumplimiento y la comparación de métodos |
+| **`04_auditoria/`** | La evidencia: `repo_original/` (los **236 archivos** del commit auditado, byte a byte, con su manifiesto de hashes), `repo_mejorado/` (el mismo código con **34 arreglos** documentados), los scripts de verificación y `ERRATA.md` |
+| **`05_entregas/`** | Lo entregado al docente: `ENTREGA_1/` (anteproyecto, diapositivas, guía y tarjetas) y `entregables_2Corte/` (las cinco entregas del segundo corte) |
+| **`06_bitacora_ia/`** | **8 notas** en Markdown que explican el proyecto por dentro: decisiones, arquitectura, reglas, mapa de carpetas, qué no tocar y Docker. Pensadas para leerse en Obsidian |
+| **`documentacion_auditoria/`** | El sistema de auditoría: `src/` (código), `data/` (resultados internos y metadatos), `latex/` y `pdf/` (los documentos), `scripts/` y el ZIP de Overleaf |
+| **`_archivo/`** | Scripts de una sola vez y registros de trabajo. No se usa en la ejecución normal, pero es evidencia |
 
-Cada gráfico explica **qué se hizo**, **por qué**, **qué teoría lo respalda** y
-**cómo se lee**; al final hay un índice de 32 conceptos con buscador.
+> **`datos_originales/` ya no existe.** Esa carpeta se renombró a `01_datos/` y
+> `04_auditoria/` en el commit `4399ff7`, cuando el repositorio se reorganizó para
+> dejarlo listo para el próximo grupo. Si encuentras esa ruta en algún documento
+> antiguo, esta es la traducción.
 
-Los otros cuatro paneles, del mismo tamaño y también offline:
+## Qué NO tocar (y por qué)
 
-| Archivo | Qué es |
-|---|---|
-| `02_dashboards/dashboard_eda.html` | EDA de la Fase 1: 17 gráficos en 4 pestañas (univariado, bivariado, varianza, supuestos) |
-| `02_dashboards/herramienta_trayectorias.html` | Visor individual del padrón: consulta por ID, institución, área o categoría (30 086 fichas) |
-| `02_dashboards/mapa_migracion.html` | El mapa de flujos de la F2-11 en su versión suelta (las dos definiciones de migración, conmutables) |
-| `02_dashboards/grafo_interactivo.html` | Grafo de la memoria del agente (criterios → documentos) |
+- **`documentacion_auditoria/src/`, `data/` y `latex/`.** El código calcula sus rutas
+  relativas desde su propia ubicación y las 17 reglas de validación leen los metadatos de
+  `documentacion_auditoria/data/memoria/`. Si mueves esas carpetas, el sistema deja de
+  encontrar sus archivos y la validación falla en cascada.
+- **`04_auditoria/repo_original/`.** Es la prueba: los 236 archivos del repositorio
+  auditado, idénticos al commit `1528939`, con su hash en
+  `04_auditoria/manifiesto_sha256.csv`. Si se edita un solo archivo, la auditoría deja de
+  ser verificable.
+- **`04_auditoria/repo_mejorado/`.** Es la copia con los arreglos aplicados, y se
+  reconstruye desde cero con `04_auditoria/construir_repo_mejorado.py`. Se puede leer y
+  ejecutar, pero conviene no editarla a mano: se perdería al reconstruirla.
 
----
-
-## Cómo se ejecutan las validaciones
-
-Todo el sistema se valida con las **17 reglas** del agente antes de dar una cifra
-por buena. Se corre desde `documentacion_auditoria/src/`:
-
-```bash
-cd documentacion_auditoria/src
-python -m memoria indexar     # solo la primera vez: el índice RAG no se versiona
-python -m memoria validar     # 17 reglas · exit 1 si alguna FALLA
-python -m memoria evidencia   # informe legible de la última corrida
-```
-
-**Estado actual: 15 PASA · 0 FALLA · 2 ADVERTENCIA.** Las dos advertencias son
-declaradas y revisadas: **R12** (solapamiento entre documento completo y LITE) y
-**R15** (la técnica TF-IDF se conserva como respaldo declarado de la decisión
-D007). Las reglas cubren, entre otras cosas, que cada criterio tenga su par
-completo/LITE, que la línea de tiempo coincida con el `git log` real, que todo
-archivo de código auditado esté referenciado, que el índice RAG cubra el corpus,
-que no haya contradicciones numéricas entre documentos y que las cifras del
-sistema citadas en la documentación no se queden atrás.
-
-Además hay verificadores de los entregables, que también corren sin red:
-
-```bash
-python documentacion_auditoria/src/verificar_mapa.py            # mapa F2-11: 64 comprobaciones
-python documentacion_auditoria/src/verificar_dashboard_fase2.py # panel F2: 77 comprobaciones
-python documentacion_auditoria/src/verificar_consistencia.py    # cifras contra fuentes: 7/7
-python probar_consistencia_linux.py                            # portabilidad LF/CRLF/BOM: 7/7
-python 04_auditoria/verificar_hashes.py                         # copia auditada: 236/236 idénticos
-```
-
-`verificar_dashboard_fase2.py` comprueba, entre otras cosas, que el panel no
-tenga referencias externas, que los datos de cada gráfico sean los del JSON de su
-análisis, que los 33 polígonos del mapa estén embebidos y unidos por código
-DIVIPOLA, que la pestaña 8 dibuje **exactamente** las mismas trazas que el mapa
-suelto y que el panel no pase de 6 MB.
-
----
-
-## Validar sin instalar nada (Docker)
-
-La imagen instala solo lo que el gate necesita: ni Chrome, ni `torch`, ni
-`sentence-transformers` (esos quedan en el grupo opcional `ml` del
-`pyproject.toml`).
-
-```bash
-docker build -t observatorio .      # construye
-docker run --rm observatorio        # 17 reglas · exit 1 si alguna FALLA
-```
-
-Salida esperada, la misma que en local:
-
-```
-[memoria] reglas: 15 PASA, 0 FALLA, 2 ADVERTENCIA
-```
-
-Para desarrollo, `docker-compose.yml` monta el directorio actual:
-
-```bash
-docker compose run --rm observatorio          # valida
-docker compose run --rm observatorio bash     # consola dentro de la imagen
-```
-
-**Sobre el CSV.** El repositorio de Git contiene el CSV completo de datos.gov.co
-(`01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv`,
-31,3 MB). La imagen de Docker es ligera y **no** lo incluye, pero el
-`docker-compose.yml` monta la carpeta local (`./01_datos:/app/01_datos`) para que
-los análisis de Fase 2 puedan reproducirse sin problemas: dentro del contenedor
-el archivo aparece en su ruta habitual, como si estuviera dentro.
-
-Tres detalles más que explican el diseño: `python -m memoria validar` exige que el
-directorio de trabajo sea `documentacion_auditoria/src`; el motor de exportación
-de imágenes es **`plotly-mirage`**, no `kaleido` (no hay navegador ni descarga de
-Chrome dentro del contenedor); y el `.dockerignore` deja fuera 3,21 GB de los
-3,23 GB del árbol —historial de git, el clon antiguo del repositorio, la carpeta
-`04_auditoria/`, los dashboards entregados y ese CSV—, con lo que el contexto de
-build queda en **28,1 MB**. El suelo no se puede bajar más: `documentacion_auditoria/`
-(`data`, `latex` y `pdf`) lo necesitan las propias reglas — sin `pdf/`, R10 y R17
-pasan a FALLA.
-
-**Dos trampas que ya costaron una corrida.** Excluir los `.md` en bloque bajó el
-gate a 14 PASA y 1 FALLA: las reglas **no** leen `.md` de adorno — R13 y R17 leen
-`data/validacion/*.md`, el `README.md` de la documentación y
-`data/memoria/texto_seccion_6_2.md`, y sin ellos el grafo pasa de **255 a 244
-nodos** y las cifras de los `.tex` dejan de coincidir. Y `data/ejecucion_resumen.csv`
-llegó **vacío** a la imagen (en Windows era un archivo en la nube de OneDrive, y
-Docker Desktop no lo pudo leer): R14 se quedó en 6/7 y arrastró a R17, dejando
-**13 PASA · 2 FALLA**. Para que nada de eso vuelva a pasar en silencio, el
-`Dockerfile` ejecuta `verificar_contexto_imagen.py` durante el build: si falta o
-está vacío algún archivo que las reglas consultan, **falla el build** diciendo
-cuál, en lugar de producir una imagen que verifica peor sin explicar por qué.
-En local, ese mismo script hidrata los archivos de OneDrive al leerlos:
-
-```bash
-python verificar_contexto_imagen.py      # antes de construir: valida e hidrata
-```
-
-*(El `Dockerfile` se entrega sin construir: el entorno donde se preparó esta
-entrega no tiene daemon de Docker. Los comandos de arriba son los que hay que
-correr; el detalle de lo verificado y lo no verificado está en el informe.)*
-
----
-
-## Reproducir el análisis
-
-Requiere Python 3.11+ con `pandas`, `numpy`, `scipy`, `scikit-learn`,
-`matplotlib`, `networkx`, `plotly` y `PyYAML` (y `pyvis` para el grafo
-interactivo). Los análisis estadísticos no dependen de `statsmodels`.
-
-```bash
-# ── Desde la raíz del repositorio ───────────────────────────────────────────
-# 1. Análisis, en orden (escriben sus JSON en 01_datos/resultados_json/)
-python documentacion_auditoria/src/analisis_longitudinal.py
-python documentacion_auditoria/src/eda_longitudinal.py
-python documentacion_auditoria/src/estimadores_longitudinal.py
-python documentacion_auditoria/src/diagnosticos_greg.py
-
-# 2. Análisis de la Fase 2 (cada uno escribe su JSON y sus figuras)
-python documentacion_auditoria/src/percapita_territorial.py     # F2-2
-python documentacion_auditoria/src/modelo_estrella_6.py         # F2-3
-python documentacion_auditoria/src/redes_modelos_nulos.py       # F2-4
-python documentacion_auditoria/src/diversidad_inferencia.py     # F2-5
-python documentacion_auditoria/src/clustering_formalizado.py    # F2-6
-python documentacion_auditoria/src/validar_unicidad.py          # F2-7
-python documentacion_auditoria/src/supervivencia.py             # F2-10
-python documentacion_auditoria/src/preparar_geojson.py          # F2-11 (una vez)
-python documentacion_auditoria/src/flujos_territoriales.py      # F2-11
-
-# 3. Paneles (escriben en 02_dashboards/)
-python documentacion_auditoria/src/generar_dashboard_eda.py
-python documentacion_auditoria/src/generar_dashboard_fase2.py
-python documentacion_auditoria/src/construir_herramienta.py
-python documentacion_auditoria/src/mapa_migracion.py
-
-# 4. PDFs (lleva la puerta de validación: aborta si alguna regla FALLA)
-python documentacion_auditoria/src/compilar.py
-```
-
-Las dos copias del repositorio auditado se verifican y se reconstruyen aparte:
-
-```bash
-python 04_auditoria/verificar_hashes.py            # repo_original: 236/236 idénticos
-python 04_auditoria/construir_repo_mejorado.py     # repo_mejorado = repo_original + estructura
-python 04_auditoria/aplicar_arreglos.py            # aplica los 30 arreglos declarados
-python 04_auditoria/verificar_arreglos.py          # comprueba que siguen cuadrando
-python 04_auditoria/probar_librerias_reales.py     # los scripts arreglados, con librerías reales
-```
-
-> El orden importa: primero la integridad de la evidencia, luego construir, luego
-> aplicar y al final verificar. Los dos últimos **ejecutan** el código en una copia
-> desechable y reportan lo que ven; no modifican `repo_mejorado/`.
-
-> El CSV fuente se lee de `01_datos/datos_fuente/` y **nunca se modifica**: el
-> proyecto es de solo lectura sobre los datos.
-
----
-
-## Estado del sistema
+## Estado del sistema (resumen)
 
 | | |
 |---|---|
-| **Reglas de validación** | **15 PASA · 0 FALLA · 2 ADVERTENCIA** (17 reglas) |
-| Advertencias | **R12** (solapamiento completo/LITE) y **R15** (excepción declarada de la decisión D002) |
-| **Compilación** | `compilar.py` compila **sin `--forzar`**: la puerta de reglas no aborta |
-| Commit auditado | `1528939` |
-| Verificación de la copia | 236/236 archivos idénticos al commit (`04_auditoria/verificar_hashes.py`) |
-| **Código mejorado** | `04_auditoria/repo_mejorado/`: **30 arreglos** declarados en su `CHANGELOG.md` y verificables con `04_auditoria/verificar_arreglos.py` |
-| **Paneles** | 5 HTML autocontenidos; el principal, `02_dashboards/dashboard_fase2.html` (5,63 MB, 18 gráficos, 8 pestañas) |
+| Reglas de validación | **15 PASA · 0 FALLA · 2 ADVERTENCIA** (17 reglas) |
+| Grafo de relaciones | **255 nodos / 500 aristas** |
+| Sistema de búsqueda | **151 fragmentos** indexados de **25 documentos** |
+| Paneles | **6 HTML** (5 autocontenidos) + `servir_presentacion.bat` |
+| Bitácora | **8 notas** en `06_bitacora_ia/` |
+| Archivos versionados | **1.115** |
 
-Las decisiones de diseño están en
-**`documentacion_auditoria/data/memoria/decisiones.yaml`** (D001–D010), con
-justificación, alternativas descartadas y evidencia medida; R15 comprueba que
-cada decisión vigente coincide con el código. Las fuentes externas consultadas
-están en `documentacion_auditoria/data/memoria/fuentes_externas.yaml`.
+Las dos advertencias no son errores: son excepciones **declaradas y revisadas**. Una
+detecta una sección resumida que quedó copiada igual que la del documento completo; la
+otra registra que la técnica anterior de búsqueda se conserva a propósito, guardada como
+respaldo. El sistema las muestra en lugar de esconderlas, y no bloquea la compilación.
 
----
+## Problemas conocidos
 
-## Para el docente — qué se califica
-
-| Qué es | Archivo | Bloque de la rúbrica |
+| Síntoma | Causa | Solución |
 |---|---|---|
-| **Documento (anteproyecto)** | `documentacion_auditoria/pdf/anteproyecto.pdf` | **Documento (D1–D5) · 40 %** |
-| **Diapositivas de la sustentación** | `documentacion_auditoria/pdf/diapositivas_anteproyecto.pdf` | **Sustentación (S1–S3) · 60 %** |
-| Guía de estudio (apoyo) | `documentacion_auditoria/pdf/guia_estudio.pdf` | repaso y banco de preguntas |
-| Tarjetas frase por frase (apoyo) | `documentacion_auditoria/pdf/tarjetas_sustentacion.pdf` | ensayo de la sustentación |
+| `invalid file request` / `Acceso denegado` al leer el CSV | Marcador de OneDrive sin descargar | Clic derecho → «Siempre disponible en este dispositivo» |
+| Los paneles salen en blanco dentro de la portada | Abriste los HTML con doble clic (`file://`): el navegador bloquea incrustar páginas locales | Usa `02_dashboards/servir_presentacion.bat` |
+| `failed to connect to the docker API` | Docker Desktop no está en marcha | Abre Docker Desktop y espera a que diga «running» |
+| Se generan 12 PDFs de golpe | `compilar.py` sin nombre de proyecto compila **todos** | Pasa siempre el proyecto: `compilar.py objetivo_1` |
+| Aparecen dos JSON modificados tras validar | `memoria validar` reescribe su propio estado (solo el campo `fecha`) | `git checkout -- documentacion_auditoria/data/memoria/grafo_resumen.json documentacion_auditoria/data/memoria/validacion_reglas.json` |
 
-La **declaración de uso de IA** está en la sección 6.2 del anteproyecto, con los
-informes de validación en `documentacion_auditoria/data/validacion/`. La
-declaración ampliada y el reparto del trabajo están en
-[`DECLARACION_IA_Y_REPARTO.md`](DECLARACION_IA_Y_REPARTO.md).
+## Dónde seguir leyendo
 
----
-
-## Nota sobre la reorganización (octubre de 2026)
-
-El repositorio se reordenó para el próximo grupo en cinco carpetas numeradas. Se
-movieron con `git mv` (el historial de cada archivo se conserva) y se
-reescribieron las rutas en todo el código y la documentación:
-
-- **Sí se movieron:** los 8 JSON de resultados, los 5 paneles HTML, los 14
-  informes de la Fase 2, los datos fuente, las dos copias del proyecto auditado y
-  las dos carpetas de entregas.
-- **No se movieron:** `documentacion_auditoria/src/`, `data/`, `latex/`, `pdf/`,
-  `zip_overleaf/` y `data/validacion/`. Las reglas leen la memoria del agente y
-  las fuentes LaTeX desde esas rutas exactas; además, reescribir las fuentes que
-  vigila la regla R13 (frescura del índice) la habría degradado.
-- **Los snapshots no se reescriben:** `04_auditoria/repo_original/` y
-  `04_auditoria/repo_mejorado/` son copias exactas (la primera verificada con
-  manifiesto SHA-256) y conservan su contenido tal como se auditó o construyó.
-- **Los informes LaTeX ya entregados y `data/validacion/`** conservan las rutas
-  de la época: son registros fechados, no documentación viva.
-
-Antes de publicar el mapa y el panel de la Fase 2 se corrieron las 17 reglas y los
-verificadores; el estado quedó en 15/0/2 y en verde todo lo demás.
+- **`COMANDOS.md`** — la chuleta de copiar y pegar: cada comando con su salida esperada y
+  qué hacer si falla.
+- **`06_bitacora_ia/00_LEEME.md`** — la puerta de entrada al proyecto: cómo abrirlo en
+  Obsidian, por dónde empezar y qué no tocar.
+- **`DECLARACION_IA_Y_REPARTO.md`** — qué herramientas de asistencia se usaron, para qué,
+  y cómo se repartió el trabajo.
