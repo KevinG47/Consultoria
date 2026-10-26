@@ -59,8 +59,9 @@ Todos los paneles son **autocontenidos** (sin CDN, funcionan sin internet):
 | Dashboard EDA | `02_dashboards/dashboard_eda.html` | Análisis exploratorio del padrón (4 pestañas) |
 | Dashboard Fase 2 | `02_dashboards/dashboard_fase2.html` | 8 paneles de los análisis de Fase 2 |
 | Trayectorias | `02_dashboards/herramienta_trayectorias.html` | Consulta la trayectoria de una persona por ID |
+| Dashboard modelo | `02_dashboards/dashboard_modelo.html` | Modelo de ML (XGBoost con máscaras, F1 baja 0.4234) |
 | Mapa de migración | dentro de Fase 2 / archivo propio | Evolución territorial por departamento |
-| Presentación | `02_dashboards/presentacion.html` | Shell con barra lateral que navega a los tres anteriores |
+| Presentación | `02_dashboards/presentacion.html` | Shell con barra lateral que navega a los cuatro anteriores |
 
 ### Importante: no abrir `presentacion.html` con doble clic
 

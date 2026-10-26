@@ -62,7 +62,7 @@ haces, los análisis fallan con `invalid file request` o `Acceso denegado`.
 | Carpeta | Qué contiene |
 |---|---|
 | **`01_datos/`** | `datos_fuente/` con el padrón de MinCiencias (32.836.667 bytes) y las tablas del DANE con su procedencia; `resultados_json/` con los **8 JSON** de resultados de los análisis |
-| **`02_dashboards/`** | **6 paneles HTML** (5 de ellos autocontenidos, sin conexión) y el lanzador `servir_presentacion.bat`: el panel de la Fase 2, el exploratorio, el visor de trayectorias, el mapa de flujos, el grafo y la portada de navegación |
+| **`02_dashboards/`** | **7 paneles HTML** (6 de ellos autocontenidos, sin conexión) y el lanzador `servir_presentacion.bat`: el panel de la Fase 2, el exploratorio, el visor de trayectorias, el panel del modelo de ML, el mapa de flujos, el grafo y la portada de navegación |
 | **`03_informes/`** | `analisis_fase2/` con **14 informes** en Markdown: los nueve análisis, la metodología de muestreo, el estudio de viabilidad del mapa, la auditoría cruzada, la evaluación de cumplimiento y la comparación de métodos |
 | **`04_auditoria/`** | La evidencia: `repo_original/` (los **236 archivos** del commit auditado, byte a byte, con su manifiesto de hashes), `repo_mejorado/` (el mismo código con **34 arreglos** documentados), los scripts de verificación y `ERRATA.md` |
 | **`05_entregas/`** | Lo entregado al docente: `ENTREGA_1/` (anteproyecto, diapositivas, guía y tarjetas) y `entregables_2Corte/` (las cinco entregas del segundo corte) |
@@ -115,6 +115,10 @@ respaldo. El sistema las muestra en lugar de esconderlas, y no bloquea la compil
 | Se generan 12 PDFs de golpe | `compilar.py` sin nombre de proyecto compila **todos** | Pasa siempre el proyecto: `compilar.py objetivo_1` |
 | Aparecen dos JSON modificados tras validar | `memoria validar` reescribe su propio estado (solo el campo `fecha`) | `git checkout -- documentacion_auditoria/data/memoria/grafo_resumen.json documentacion_auditoria/data/memoria/validacion_reglas.json` |
 | El panel dice «el CSV de 1,2 GB **con las revistas**» y debería decir «con los productos publicados, con la revista de cada uno» | Texto literal en `documentacion_auditoria/src/generar_dashboard_fase2.py`, compilado dentro de `02_dashboards/dashboard_fase2.html` (4 apariciones). **No corregible sin recompilar** el panel (5,6 MB, 8 pestañas): no hay edición segura del HTML sin pasar `verificar_dashboard_fase2.py` | Editar el literal en el generador, recompilar con `python documentacion_auditoria/src/generar_dashboard_fase2.py` y validar con `verificar_dashboard_fase2.py` |
+
+**Panel adicional:** `02_dashboards/dashboard_modelo.html` — dashboard del modelo de ML
+(XGBoost con máscaras, F1 baja 0.4234, 26-oct-2026). Se abre desde el panel «04 · Modelo de
+ML» de la portada (`servir_presentacion.bat`).
 
 ## Dónde seguir leyendo
 
