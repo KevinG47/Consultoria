@@ -64,7 +64,7 @@ body{
   font-size:13px;font-weight:700;letter-spacing:.22em;
   text-transform:uppercase;color:var(--gold);
 }
-.asignatura{font-size:17px;color:rgba(255,255,255,.78);margin-top:8px;font-weight:500;line-height:1.3}
+.asignatura{font-size:18px;color:rgba(255,255,255,.82);margin-top:8px;font-weight:500;line-height:1.3}
 .chip{
   display:inline-block;margin-top:14px;padding:5px 12px;border-radius:999px;
   font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
@@ -79,20 +79,20 @@ body{
 }
 .item-seccion{
   display:flex;align-items:flex-start;gap:12px;width:100%;
-  cursor:pointer;margin-bottom:4px;padding:12px 14px;border:0;border-radius:12px;
-  background:transparent;color:rgba(255,255,255,.86);
-  font-family:inherit;font-size:15px;font-weight:600;text-align:left;
+  cursor:pointer;margin-bottom:4px;padding:14px 14px;border:0;border-radius:12px;
+  background:transparent;color:rgba(255,255,255,.90);
+  font-family:inherit;font-size:17px;font-weight:600;text-align:left;
   text-decoration:none;line-height:1.25;
   transition:background .16s ease,color .16s ease,transform .16s ease;
 }
 .item-seccion .num{
-  font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;
-  color:rgba(255,255,255,.58);padding-top:2px;min-width:18px;
+  font-variant-numeric:tabular-nums;font-size:13px;font-weight:800;
+  color:rgba(255,255,255,.62);padding-top:3px;min-width:20px;
 }
 .item-seccion .txt{display:block}
 .item-seccion .sub{
-  display:block;font-weight:400;font-size:12px;margin-top:3px;
-  color:rgba(255,255,255,.55);
+  display:block;font-weight:400;font-size:13.5px;margin-top:4px;
+  color:rgba(255,255,255,.68);line-height:1.35;
 }
 .item-seccion:hover{background:rgba(255,255,255,.1);color:#fff;transform:translateX(2px)}
 .item-seccion:hover .sub{color:rgba(255,255,255,.72)}
@@ -114,14 +114,7 @@ body{
 .item-seccion.activo .sub{color:rgba(255,255,255,.85)}
 
 #barra .pie-barra{padding:16px 24px 0;border-top:1px solid rgba(255,255,255,.1)}
-#barra .firma{text-align:right;font-size:12.5px;color:rgba(255,255,255,.62);line-height:1.5}
-#barra .pista{
-  font-size:11.5px;color:rgba(255,255,255,.60);margin:14px 0 16px;line-height:1.5;
-}
-#barra .pista kbd{
-  font-family:inherit;font-size:11px;font-weight:700;color:rgba(255,255,255,.75);
-  border:1px solid rgba(255,255,255,.28);border-radius:5px;padding:1px 5px;
-}
+#barra .firma{text-align:right;font-size:13.5px;color:rgba(255,255,255,.70);line-height:1.5;letter-spacing:.02em}
 .barra-grad{height:6px;background:var(--grad);margin:0 -24px}
 
 /* ---------- escenario ------------------------------------------------ */
@@ -132,7 +125,7 @@ body{
   box-shadow:0 1px 3px rgba(15,23,42,.04);z-index:2;
 }
 #rotulo{
-  font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
   color:var(--secondary-texto);flex:1;min-width:0;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
@@ -165,26 +158,23 @@ body{
   color:var(--gold);
 }
 #portada h1{
-  margin:18px 0 14px;font-size:clamp(32px,4.6vw,62px);line-height:1.06;
-  font-weight:800;letter-spacing:-.02em;max-width:940px;
+  margin:18px 0 16px;font-size:clamp(38px,5.2vw,68px);line-height:1.05;
+  font-weight:800;letter-spacing:-.02em;max-width:980px;
 }
 #portada .subtitulo{
-  font-size:clamp(16px,1.6vw,25px);font-weight:300;line-height:1.35;
-  color:rgba(255,255,255,.82);max-width:840px;
+  font-size:clamp(18px,1.75vw,27px);font-weight:400;line-height:1.38;
+  color:rgba(255,255,255,.88);max-width:880px;
 }
-#portada .temas{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+#portada .temas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 #portada .temas a{
-  display:inline-flex;align-items:center;gap:9px;
-  padding:9px 16px;border-radius:999px;text-decoration:none;
-  font-size:13.5px;font-weight:600;color:#fff;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:11px 18px;border-radius:999px;text-decoration:none;
+  font-size:15px;font-weight:600;color:#fff;
   background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
   transition:background .16s ease,border-color .16s ease,transform .16s ease;
 }
 #portada .temas a:hover{background:rgba(var(--secondary-rgb),.26);border-color:var(--secondary);transform:translateY(-1px)}
-#portada .temas .n{font-size:11px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
-#portada .abajo{
-  margin-top:auto;padding:30px 0 0;font-size:13px;color:rgba(255,255,255,.58);
-}
+#portada .temas .n{font-size:12px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
 #portada .brillo{
   position:absolute;right:-14%;top:-22%;width:58%;height:88%;
   background:radial-gradient(circle at 40% 40%,rgba(var(--secondary-rgb),.30) 0%,rgba(var(--secondary-rgb),0) 62%);
@@ -254,7 +244,7 @@ body{
   <div class="cab">
     <div class="institucion">Universidad Santo Tomás</div>
     <div class="asignatura">Consultoría Estadística · Observatorio MinCiencias</div>
-    <span class="chip">Presentación · 23 de octubre</span>
+    <span class="chip">Informe de resultados · 26 de octubre de 2026</span>
   </div>
 
   <nav id="menu" aria-label="Paneles disponibles">
@@ -265,7 +255,7 @@ body{
        data-titulo="Fase 2 · Diversidad, redes, territorio y migración">
       <span class="num" aria-hidden="true">01</span>
       <span class="txt">Fase 2
-        <span class="sub">Análisis pendientes · incluye el mapa de migración</span>
+        <span class="sub">Análisis de movilidad, redes y territorios</span>
       </span>
     </a>
 
@@ -274,7 +264,7 @@ body{
        data-titulo="EDA · Análisis exploratorio de datos">
       <span class="num" aria-hidden="true">02</span>
       <span class="txt">EDA
-        <span class="sub">Univariado, bivariado, varianza y diagnósticos</span>
+        <span class="sub">Perfilamiento y diagnóstico del censo</span>
       </span>
     </a>
 
@@ -283,24 +273,21 @@ body{
        data-titulo="Trayectorias · Investigadores reconocidos 2013–2021">
       <span class="num" aria-hidden="true">03</span>
       <span class="txt">Trayectorias
-        <span class="sub">Historia individual de cada investigador</span>
+        <span class="sub">Consulta individual de historial académico</span>
       </span>
     </a>
 
     <a class="item-seccion" href="dashboard_modelo.html" target="_blank" rel="noopener"
        data-destino="dashboard_modelo.html" data-clave="modelo"
-       data-titulo="Modelo de ML · Transición de categoría de investigador (F1 baja 0,4234, 26-oct-2026)">
+       data-titulo="Modelo de ML · Predicción de descensos de categoría (XGBoost)">
       <span class="num" aria-hidden="true">04</span>
       <span class="txt">Modelo de ML
-        <span class="sub">Transición de categoría · F1 baja 0,4234 · techo del dato</span>
+        <span class="sub">Predicción de descensos de categoría (XGBoost)</span>
       </span>
     </a>
   </nav>
 
   <div class="pie-barra">
-    <div class="pista">
-      <kbd>←</kbd> <kbd>→</kbd> cambian de panel · <kbd>Esc</kbd> vuelve a la portada
-    </div>
     <div class="firma">Kevin · Valentina · Paula</div>
     <div class="barra-grad" aria-hidden="true"></div>
   </div>
@@ -322,11 +309,8 @@ body{
   </header>
 
   <div id="franja-file" role="status">
-    <strong>Estás abriendo este archivo con doble clic (<code>file://</code>).</strong>
-    El navegador no permite incrustar páginas locales, así que los paneles se abrirán
-    en una pestaña nueva. Para verlos dentro de esta página, ejecuta
-    <code>servir_presentacion.bat</code> y entra en
-    <code>http://localhost:8000/presentacion.html</code>.
+    <strong>Vista sin servidor local (<code>file://</code>).</strong>
+    Los paneles se abren en una pestaña nueva; para verlos integrados hace falta el servidor local.
   </div>
 
   <div id="area">
@@ -335,11 +319,9 @@ body{
       <div class="brillo" aria-hidden="true"></div>
       <div class="hueco">
         <div class="antetitulo">Universidad Santo Tomás · 2026-II</div>
-        <h1>Observatorio de investigadores MinCiencias</h1>
+        <h1>Observatorio MinCiencias · Panel de Resultados</h1>
         <div class="subtitulo">
-          Un solo punto de entrada a los cuatro paneles del proyecto: el análisis de
-          la Fase 2, el exploratorio del repositorio auditado, la herramienta de
-          trayectorias individuales y el dashboard del modelo de machine learning.
+          Auditoría estadística y modelo predictivo de movilidad de investigadores (2013–2021).
         </div>
         <div class="temas">
           <a href="dashboard_fase2.html" target="_blank" rel="noopener"
@@ -354,10 +336,6 @@ body{
           <a href="dashboard_modelo.html" target="_blank" rel="noopener"
              data-destino="dashboard_modelo.html" data-clave="modelo">
             <span class="n">04</span> Modelo de ML</a>
-        </div>
-        <div class="abajo">
-          Elige un panel en la barra de la izquierda. Cada uno se abre aquí mismo,
-          sin salir de esta página.
         </div>
       </div>
       <div class="barra-grad" aria-hidden="true"></div>
