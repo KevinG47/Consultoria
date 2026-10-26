@@ -37,7 +37,6 @@ SALIDA = RAIZ / "02_dashboards" / "dashboard_modelo.html"
 CLASES = ("baja", "se_mantiene", "sube")
 T_FINAL = 0.15
 UMBRALES = (0.06, 0.08, 0.10, 0.12, 0.15, 0.18, 0.20)
-CONTACTO = "kevin47gremory@gmail.com"
 REPO = "https://github.com/KevinG47/Consultoria"
 
 AVISOS: list[str] = []
@@ -456,26 +455,26 @@ def main() -> int:
       <h3>Features</h3>
       <p><b>{n_feats}</b> variables de producción (volumen, clase de producto, tipología y
       categoría/calidad), sin <code>ano</code>.</p>
-      <p>En el modelo final, <b>{n_gain_pos}</b> tienen gain &gt; 0 y <b>{n_gain0}</b> no se usan
-      nunca. (En el fold más pequeño solo se activan 43: por eso la ficha del modelo cita 43;
-      el número depende de cuánta historia se use para entrenar.)</p>
-      <p class="nota">Se probó añadir demografía, trayectoria y red: ninguna superó el +2 pp
-      exigido para volver a test (ver §8).</p>
+      <p>El modelo final utiliza <b>{n_gain_pos}</b> variables con ganancia predictiva; las
+      <b>{n_gain0}</b> restantes son ignoradas por el algoritmo de boosting.</p>
+      <p class="nota">Demografía, trayectoria y red se evaluaron como extensiones: ninguna
+      superó el umbral de +2 pp exigido para modificar el modelo operativo (ver §8).</p>
     </div>
   </div>
-  <h3>¿Por qué XGBoost y no otro modelo?</h3>
-  <p>Porque el problema es tabular, con muchas variables correlacionadas y pocas filas
-  (≈20 mil): los árboles con boosting manejan bien esa combinación sin supuestos de
-  distribución. Se comparó con regresión logística (F1 macro 0,35) y con un bayesiano
-  jerárquico (que gana en calibración pero pierde con el <code>argmax</code>; ver §7).</p>
+  <h3>Criterio de selección del algoritmo</h3>
+  <p>El problema es tabular, con variables correlacionadas y cerca de 20 mil observaciones;
+  los árboles con boosting manejan esa combinación sin supuestos distribucionales. La
+  comparación incluyó regresión logística (F1 macro 0,35) y un modelo bayesiano jerárquico,
+  con mejor calibración pero menor capacidad de clasificación (§7).</p>
 </section>
 
 <section id="validacion">
   <h2>5 · Validación temporal</h2>
-  <p>No se usa validación aleatoria: barajar filas mezclaría cohortes y dejaría al modelo
-  «ver el futuro». Se usan <b>folds temporales</b>: entrenar con el pasado y evaluar con la
-  cohorte siguiente.</p>
-  {tabla(['Fold', 'Entrena con', 'Elige umbral en', 'Evalúa en'],
+  <p>El modelo se entrena con las transiciones de 2014 a 2017 (19 838 casos). Para evitar
+  sesgos, el umbral de decisión no se elige en test, sino mediante validación interna en 2019.
+  Finalmente, el desempeño se mide una única vez sobre la cohorte <i>out-of-time</i> de 2021
+  (13 355 casos), simulando el uso real del sistema.</p>
+  {tabla(['Fold', 'Entrena con', 'Ajusta umbral en', 'Evalúa en'],
          [('F1', '2014', '2015', '2017'),
           ('F2', '2014, 2015', '2017', '2019'),
           ('F3', '2015', '2017', '2019')])}
@@ -486,10 +485,10 @@ def main() -> int:
     <div class="cohorte"><b>2017 → 2019</b><span>9 994 · validación</span></div>
     <div class="cohorte activa"><b>2019 → 2021</b><span>13 355 · test (una vez)</span></div>
   </div>
-  <p><b>Regla de oro:</b> el test se toca <b>una sola vez</b>. Todos los experimentos de
-  mejora (§8) se decidieron con los folds, nunca con el test. La evaluación final usa el
-  umbral fijado como <b>mediana de los umbrales de los folds</b>
-  ({fmt(exp_d['umbral_mediana'], 2)}), no un umbral elegido en test.</p>
+  <p><b>Protocolo:</b> el test se evalúa <b>una sola vez</b>. Los experimentos de mejora (§8)
+  se decidieron con los folds, nunca con el test. La evaluación final aplica el umbral fijado
+  como <b>mediana de los umbrales de los folds</b> ({fmt(exp_d['umbral_mediana'], 2)}), no un
+  umbral elegido en test.</p>
   <p class="nota">Umbrales por fold: {", ".join(fmt(u, 2) for u in exp_d['umbrales_folds'])}.
   El umbral es la decisión más frágil del sistema: moverlo cambia el recall entre 0,54 y 0,89.</p>
 </section>
@@ -506,8 +505,8 @@ def main() -> int:
   <div class="grid2">
     <div>
       <h3>Matriz de confusión</h3>
-      <p class="nota">Pase el cursor por una celda para ver el detalle. Filas = clase real,
-      columnas = clase predicha (umbral 0,15).</p>
+      <p class="nota">Filas: clase real; columnas: clase predicha (umbral 0,15). El número de
+      casos de cada celda aparece en la etiqueta emergente del gráfico.</p>
       {graf_conf}
       <p class="nota"><b>Matriz de confusión del modelo operativo (ronda 2: 100 árboles,
       gamma=0.1, umbral 0.15).</b> La ronda 1 (200 árboles, sin gamma) daba una matriz
@@ -534,10 +533,10 @@ def main() -> int:
          filas_cmp, numericas=(1, 2, 3, 4, 5))}
   <p class="nota">Todas las filas con umbral optimizado sobre la misma validación; el test solo
   se usó para la fila operativa.</p>
-  <h3>¿Por qué el bayesiano tiene mejor AUC (0,82) y peor F1 (0,29)?</h3>
-  <p>Porque su <code>argmax</code> nunca elige «baja»: sus probabilidades están encogidas hacia
-  las prevalencias y el punto de corte queda mal puesto. Con umbral optimizado su F1 «baja» sube
-  a 0,286 — sigue por debajo del XGBoost (0,423) pero con <b>mejor Brier (0,437 vs 0,469)</b>.
+  <h3>El bayesiano: mejor calibración, menor capacidad de clasificación</h3>
+  <p>Su <code>argmax</code> no selecciona «baja»: las probabilidades están encogidas hacia
+  las prevalencias y el punto de corte queda desplazado. Con umbral optimizado su F1 «baja»
+  sube a 0,286 — por debajo del XGBoost (0,423) pero con <b>mejor Brier (0,437 vs 0,469)</b>.
   Es un modelo mejor calibrado y peor clasificador: se documenta como <b>capa de
   incertidumbre</b>, no como modelo operativo.</p>
 </section>
@@ -559,11 +558,12 @@ def main() -> int:
 </section>
 
 <section id="limitaciones" class="alerta">
-  <h2>9 · Limitaciones (leer antes de usar el modelo)</h2>
+  <h2>9 · Limitaciones del modelo</h2>
   <ul>
     <li><b>Las probabilidades no son confiables.</b> Brier 0,4692, peor que una constante con
-    las prevalencias de entrenamiento (0,4419). Usar el <b>ranking</b> y el umbral, no el valor
-    puntual. La corrección por prior shift se probó y empeoró el Brier (0,4917–0,6054).</li>
+    las prevalencias de entrenamiento (0,4419). El uso previsto es el <b>ranking</b> y el
+    umbral, no el valor puntual. La corrección por prior shift se evaluó y empeoró el Brier
+    (0,4917–0,6054).</li>
     <li><b>Sobreajuste.</b> F1 macro 0,83 en train frente a 0,50 en validación: el modelo
     memoriza. Con 100 árboles y <code>gamma</code>=0,1 se atenúa, no desaparece.</li>
     <li><b>{n_gain0} de las {n_feats} features tienen gain 0</b> en el modelo final (43 se
@@ -577,34 +577,23 @@ def main() -> int:
     <li><b>Cambio de régimen 2019–2021.</b> La prevalencia de «baja» pasa de 5,2 % a 10,2 % y
     cambia la composición de quiénes bajan: por eso el Brier empeora aunque el F1 mejore.</li>
     <li><b>Umbral sensible a la cohorte.</b> El óptimo por fold va de 0,08 a 0,29; se fija 0,15
-    por mediana. Recalcularlo con cada cohorte nueva.</li>
+    por mediana. Debe recalcularse con cada cohorte nueva.</li>
   </ul>
 </section>
 
-<section id="preguntas">
-  <h2>10 · Qué necesito que revises</h2>
-  <ol>
-    <li><b>¿La formulación del problema es la correcta para Minciencias?</b> Predecimos la
-    transición t→t+1 por persona. ¿Debería ser otra unidad (grupo, institución, región) o otro
-    horizonte (dos convocatorias)?</li>
-    <li><b>¿El umbral 0,15 es el trade-off adecuado?</b> Con 0,15 se detectan 79 % de los
-    descensos y 1 de cada 3,4 alertas es correcta. Con 0,08 se detectan 84 % pero baja la
-    precisión; con 0,20 se detecta 54 % y la precisión sube a 25 %. ¿Qué cuesta más en la
-    práctica: un descenso no anticipado o una alerta falsa?</li>
-    <li><b>¿Faltan features que el censo no tiene y la literatura de movilidad académica sí
-    usa?</b> Financiación captada, participación en proyectos, patentes, movilidad
-    internacional, dirección de tesis. Sin ellas el modelo no puede pasar de donde está.</li>
-    <li><b>¿El techo del dato es convincente o hay otra palanca?</b> Probamos tuning,
-    selección de features, demografía, trayectoria y red. ¿Se le ocurre otra vía con los datos
-    disponibles?</li>
-    <li><b>¿El bayesiano debería ser el modelo operativo por su calibración?</b> Tiene mejor
-    Brier (0,437) y mejor AUC (0,82), pero peor F1 con umbral (0,286 vs 0,423). ¿Priorizamos
-    calibración o capacidad de detectar descensos?</li>
-  </ol>
-  <p><b>Contacto para comentarios:</b> <a href="mailto:{CONTACTO}">{CONTACTO}</a> ·
-  <a href="{REPO}/issues">Issues del repositorio</a>.
-  Si prefieres, anota tus respuestas en el PDF impreso: cada sección está numerada para
-  citarla.</p>
+<section id="conclusiones">
+  <h2>10 · Conclusiones y recomendaciones</h2>
+  <ul>
+    <li><b>Uso operativo.</b> El modelo debe implementarse como un sistema de alerta temprana
+    para priorizar revisiones humanas, no como un clasificador automático, dado que su
+    calibración probabilística (Brier 0,4692) es superada por una línea base de prevalencia.</li>
+    <li><b>Decisión de umbral.</b> El umbral 0,15 es una política operativa. Si la institución
+    prioriza no dejar pasar descensos, el umbral óptimo es 0,08 (detecta 80 %; en 0,06 sube a
+    84 %). Si prioriza minimizar falsas alarmas, es 0,20 (precisión 25 %).</li>
+    <li><b>Trabajo futuro.</b> Superar el techo predictivo (F1 = 0,42) requiere incorporar
+    variables ausentes en el censo: financiación captada, patentes, movilidad internacional y
+    redes de coautoría.</li>
+  </ul>
 </section>
 
 <section id="repro">

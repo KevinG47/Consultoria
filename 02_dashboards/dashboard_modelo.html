@@ -3775,26 +3775,26 @@ return Plotly;
       <h3>Features</h3>
       <p><b>172</b> variables de producción (volumen, clase de producto, tipología y
       categoría/calidad), sin <code>ano</code>.</p>
-      <p>En el modelo final, <b>111</b> tienen gain &gt; 0 y <b>61</b> no se usan
-      nunca. (En el fold más pequeño solo se activan 43: por eso la ficha del modelo cita 43;
-      el número depende de cuánta historia se use para entrenar.)</p>
-      <p class="nota">Se probó añadir demografía, trayectoria y red: ninguna superó el +2 pp
-      exigido para volver a test (ver §8).</p>
+      <p>El modelo final utiliza <b>111</b> variables con ganancia predictiva; las
+      <b>61</b> restantes son ignoradas por el algoritmo de boosting.</p>
+      <p class="nota">Demografía, trayectoria y red se evaluaron como extensiones: ninguna
+      superó el umbral de +2 pp exigido para modificar el modelo operativo (ver §8).</p>
     </div>
   </div>
-  <h3>¿Por qué XGBoost y no otro modelo?</h3>
-  <p>Porque el problema es tabular, con muchas variables correlacionadas y pocas filas
-  (≈20 mil): los árboles con boosting manejan bien esa combinación sin supuestos de
-  distribución. Se comparó con regresión logística (F1 macro 0,35) y con un bayesiano
-  jerárquico (que gana en calibración pero pierde con el <code>argmax</code>; ver §7).</p>
+  <h3>Criterio de selección del algoritmo</h3>
+  <p>El problema es tabular, con variables correlacionadas y cerca de 20 mil observaciones;
+  los árboles con boosting manejan esa combinación sin supuestos distribucionales. La
+  comparación incluyó regresión logística (F1 macro 0,35) y un modelo bayesiano jerárquico,
+  con mejor calibración pero menor capacidad de clasificación (§7).</p>
 </section>
 
 <section id="validacion">
   <h2>5 · Validación temporal</h2>
-  <p>No se usa validación aleatoria: barajar filas mezclaría cohortes y dejaría al modelo
-  «ver el futuro». Se usan <b>folds temporales</b>: entrenar con el pasado y evaluar con la
-  cohorte siguiente.</p>
-  <table><thead><tr><th class="">Fold</th><th class="">Entrena con</th><th class="">Elige umbral en</th><th class="">Evalúa en</th></tr></thead><tbody><tr><td class="">F1</td><td class="">2014</td><td class="">2015</td><td class="">2017</td></tr><tr><td class="">F2</td><td class="">2014, 2015</td><td class="">2017</td><td class="">2019</td></tr><tr><td class="">F3</td><td class="">2015</td><td class="">2017</td><td class="">2019</td></tr></tbody></table>
+  <p>El modelo se entrena con las transiciones de 2014 a 2017 (19 838 casos). Para evitar
+  sesgos, el umbral de decisión no se elige en test, sino mediante validación interna en 2019.
+  Finalmente, el desempeño se mide una única vez sobre la cohorte <i>out-of-time</i> de 2021
+  (13 355 casos), simulando el uso real del sistema.</p>
+  <table><thead><tr><th class="">Fold</th><th class="">Entrena con</th><th class="">Ajusta umbral en</th><th class="">Evalúa en</th></tr></thead><tbody><tr><td class="">F1</td><td class="">2014</td><td class="">2015</td><td class="">2017</td></tr><tr><td class="">F2</td><td class="">2014, 2015</td><td class="">2017</td><td class="">2019</td></tr><tr><td class="">F3</td><td class="">2015</td><td class="">2017</td><td class="">2019</td></tr></tbody></table>
   <div class="tl">
     <div class="cohorte"><b>2013 → 2014</b><span>4 817 transiciones</span></div>
     <div class="cohorte"><b>2014 → 2015</b><span>6 857</span></div>
@@ -3802,10 +3802,10 @@ return Plotly;
     <div class="cohorte"><b>2017 → 2019</b><span>9 994 · validación</span></div>
     <div class="cohorte activa"><b>2019 → 2021</b><span>13 355 · test (una vez)</span></div>
   </div>
-  <p><b>Regla de oro:</b> el test se toca <b>una sola vez</b>. Todos los experimentos de
-  mejora (§8) se decidieron con los folds, nunca con el test. La evaluación final usa el
-  umbral fijado como <b>mediana de los umbrales de los folds</b>
-  (0,15), no un umbral elegido en test.</p>
+  <p><b>Protocolo:</b> el test se evalúa <b>una sola vez</b>. Los experimentos de mejora (§8)
+  se decidieron con los folds, nunca con el test. La evaluación final aplica el umbral fijado
+  como <b>mediana de los umbrales de los folds</b> (0,15), no un
+  umbral elegido en test.</p>
   <p class="nota">Umbrales por fold: 0,12, 0,27, 0,15.
   El umbral es la decisión más frágil del sistema: moverlo cambia el recall entre 0,54 y 0,89.</p>
 </section>
@@ -3822,8 +3822,8 @@ return Plotly;
   <div class="grid2">
     <div>
       <h3>Matriz de confusión</h3>
-      <p class="nota">Pase el cursor por una celda para ver el detalle. Filas = clase real,
-      columnas = clase predicha (umbral 0,15).</p>
+      <p class="nota">Filas: clase real; columnas: clase predicha (umbral 0,15). El número de
+      casos de cada celda aparece en la etiqueta emergente del gráfico.</p>
       <div style="height:380px; width:100%;">                            <div id="g_conf" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("g_conf")) {                    Plotly.newPlot(                        "g_conf",                        [{"colorscale":[[0,"#F8FAFC"],[0.35,"#E6DFC8"],[0.7,"#8F6D0A"],[1,"#1E3780"]],"hovertemplate":"real %{y} \u00b7 predicho %{x}\u003cbr\u003e%{z} casos\u003cextra\u003e\u003c\u002fextra\u003e","showscale":false,"text":[["1 073","195","94"],["2 294","5 334","2 029"],["339","741","1 256"]],"textfont":{"color":"#1E293B","size":16},"texttemplate":"%{text}","x":["baja","se_mantiene","sube"],"xgap":3,"y":["baja","se_mantiene","sube"],"ygap":3,"z":{"dtype":"i2","bdata":"MQTDAF4A9gjWFO0HUwHlAugE","shape":"3, 3"},"type":"heatmap"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05}}},"margin":{"l":10,"r":10,"t":10,"b":10},"font":{"family":"system-ui, Segoe UI, Arial","size":13,"color":"#1E293B"},"height":380,"xaxis":{"title":{"text":"predicho"}},"yaxis":{"title":{"text":"real"}},"paper_bgcolor":"#FFFFFF","plot_bgcolor":"#FFFFFF"},                        {"displayModeBar": false, "responsive": true}                    )                };            </script>        </div>
       <p class="nota"><b>Matriz de confusión del modelo operativo (ronda 2: 100 árboles,
       gamma=0.1, umbral 0.15).</b> La ronda 1 (200 árboles, sin gamma) daba una matriz
@@ -3848,10 +3848,10 @@ return Plotly;
   <table><thead><tr><th class="">Modelo</th><th class="n">F1 «baja»</th><th class="n">Recall</th><th class="n">Precisión</th><th class="n">F1 macro</th><th class="n">Brier</th></tr></thead><tbody><tr><td class="">Línea base (prevalencia)</td><td class="n">0,1851</td><td class="n">1,0000</td><td class="n">0,1020</td><td class="n">0,0617</td><td class="n">0,4419</td></tr><tr><td class="">XGBoost ronda 1</td><td class="n">0,1550</td><td class="n">0,3658</td><td class="n">0,0983</td><td class="n">0,3939</td><td class="n">0,5479</td></tr><tr><td class="">Bayesiano mínimo (umbral)</td><td class="n">0,2861</td><td class="n">0,6260</td><td class="n">0,1854</td><td class="n">0,2945</td><td class="n">0,4370</td></tr><tr><td class="">**XGBoost ronda 2 (operativo)**</td><td class="n">0,4234</td><td class="n">0,7878</td><td class="n">0,2895</td><td class="n">0,5109</td><td class="n">0,4692</td></tr></tbody></table>
   <p class="nota">Todas las filas con umbral optimizado sobre la misma validación; el test solo
   se usó para la fila operativa.</p>
-  <h3>¿Por qué el bayesiano tiene mejor AUC (0,82) y peor F1 (0,29)?</h3>
-  <p>Porque su <code>argmax</code> nunca elige «baja»: sus probabilidades están encogidas hacia
-  las prevalencias y el punto de corte queda mal puesto. Con umbral optimizado su F1 «baja» sube
-  a 0,286 — sigue por debajo del XGBoost (0,423) pero con <b>mejor Brier (0,437 vs 0,469)</b>.
+  <h3>El bayesiano: mejor calibración, menor capacidad de clasificación</h3>
+  <p>Su <code>argmax</code> no selecciona «baja»: las probabilidades están encogidas hacia
+  las prevalencias y el punto de corte queda desplazado. Con umbral optimizado su F1 «baja»
+  sube a 0,286 — por debajo del XGBoost (0,423) pero con <b>mejor Brier (0,437 vs 0,469)</b>.
   Es un modelo mejor calibrado y peor clasificador: se documenta como <b>capa de
   incertidumbre</b>, no como modelo operativo.</p>
 </section>
@@ -3866,11 +3866,12 @@ return Plotly;
 </section>
 
 <section id="limitaciones" class="alerta">
-  <h2>9 · Limitaciones (leer antes de usar el modelo)</h2>
+  <h2>9 · Limitaciones del modelo</h2>
   <ul>
     <li><b>Las probabilidades no son confiables.</b> Brier 0,4692, peor que una constante con
-    las prevalencias de entrenamiento (0,4419). Usar el <b>ranking</b> y el umbral, no el valor
-    puntual. La corrección por prior shift se probó y empeoró el Brier (0,4917–0,6054).</li>
+    las prevalencias de entrenamiento (0,4419). El uso previsto es el <b>ranking</b> y el
+    umbral, no el valor puntual. La corrección por prior shift se evaluó y empeoró el Brier
+    (0,4917–0,6054).</li>
     <li><b>Sobreajuste.</b> F1 macro 0,83 en train frente a 0,50 en validación: el modelo
     memoriza. Con 100 árboles y <code>gamma</code>=0,1 se atenúa, no desaparece.</li>
     <li><b>61 de las 172 features tienen gain 0</b> en el modelo final (43 se
@@ -3884,34 +3885,23 @@ return Plotly;
     <li><b>Cambio de régimen 2019–2021.</b> La prevalencia de «baja» pasa de 5,2 % a 10,2 % y
     cambia la composición de quiénes bajan: por eso el Brier empeora aunque el F1 mejore.</li>
     <li><b>Umbral sensible a la cohorte.</b> El óptimo por fold va de 0,08 a 0,29; se fija 0,15
-    por mediana. Recalcularlo con cada cohorte nueva.</li>
+    por mediana. Debe recalcularse con cada cohorte nueva.</li>
   </ul>
 </section>
 
-<section id="preguntas">
-  <h2>10 · Qué necesito que revises</h2>
-  <ol>
-    <li><b>¿La formulación del problema es la correcta para Minciencias?</b> Predecimos la
-    transición t→t+1 por persona. ¿Debería ser otra unidad (grupo, institución, región) o otro
-    horizonte (dos convocatorias)?</li>
-    <li><b>¿El umbral 0,15 es el trade-off adecuado?</b> Con 0,15 se detectan 79 % de los
-    descensos y 1 de cada 3,4 alertas es correcta. Con 0,08 se detectan 84 % pero baja la
-    precisión; con 0,20 se detecta 54 % y la precisión sube a 25 %. ¿Qué cuesta más en la
-    práctica: un descenso no anticipado o una alerta falsa?</li>
-    <li><b>¿Faltan features que el censo no tiene y la literatura de movilidad académica sí
-    usa?</b> Financiación captada, participación en proyectos, patentes, movilidad
-    internacional, dirección de tesis. Sin ellas el modelo no puede pasar de donde está.</li>
-    <li><b>¿El techo del dato es convincente o hay otra palanca?</b> Probamos tuning,
-    selección de features, demografía, trayectoria y red. ¿Se le ocurre otra vía con los datos
-    disponibles?</li>
-    <li><b>¿El bayesiano debería ser el modelo operativo por su calibración?</b> Tiene mejor
-    Brier (0,437) y mejor AUC (0,82), pero peor F1 con umbral (0,286 vs 0,423). ¿Priorizamos
-    calibración o capacidad de detectar descensos?</li>
-  </ol>
-  <p><b>Contacto para comentarios:</b> <a href="mailto:kevin47gremory@gmail.com">kevin47gremory@gmail.com</a> ·
-  <a href="https://github.com/KevinG47/Consultoria/issues">Issues del repositorio</a>.
-  Si prefieres, anota tus respuestas en el PDF impreso: cada sección está numerada para
-  citarla.</p>
+<section id="conclusiones">
+  <h2>10 · Conclusiones y recomendaciones</h2>
+  <ul>
+    <li><b>Uso operativo.</b> El modelo debe implementarse como un sistema de alerta temprana
+    para priorizar revisiones humanas, no como un clasificador automático, dado que su
+    calibración probabilística (Brier 0,4692) es superada por una línea base de prevalencia.</li>
+    <li><b>Decisión de umbral.</b> El umbral 0,15 es una política operativa. Si la institución
+    prioriza no dejar pasar descensos, el umbral óptimo es 0,08 (detecta 80 %; en 0,06 sube a
+    84 %). Si prioriza minimizar falsas alarmas, es 0,20 (precisión 25 %).</li>
+    <li><b>Trabajo futuro.</b> Superar el techo predictivo (F1 = 0,42) requiere incorporar
+    variables ausentes en el censo: financiación captada, patentes, movilidad internacional y
+    redes de coautoría.</li>
+  </ul>
 </section>
 
 <section id="repro">
@@ -3936,7 +3926,7 @@ return Plotly;
 </section>
 
 <div class="pie">
-  Dashboard generado automáticamente el 26/10/2026 01:33 desde
+  Dashboard generado automáticamente el 26/10/2026 14:08 desde
   <code>07_modelo/dashboard/generar_dashboard_modelo.py</code>. Todas las cifras provienen de
   <code>07_modelo/modelado/resultados/*.json</code> o se recalculan de los parquet; la matriz de
   confusión y el barrido de umbrales se recalculan en cada generación y se contrastan contra el

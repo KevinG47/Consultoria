@@ -385,14 +385,14 @@ kbd{background:#EEF2F8;border:1px solid var(--borde);border-bottom-width:2px;
           <button id="btnBuscar">Buscar</button>
           <button class="mini" id="btnEjemplo">Ver un ejemplo</button>
         </div>
-        <div class="nota">Se aceptan los 10 dígitos con ceros a la izquierda. Si escribes
-          solo la parte numérica, se completa con ceros automáticamente.</div>
+        <div class="nota">Se aceptan los 10 dígitos con ceros a la izquierda; la parte
+          numérica se completa con ceros automáticamente.</div>
       </div>
 
       <div class="card">
         <h2>2. Listar por institución</h2>
         <label for="inst">Institución de filiación (INST_FILIA)</label>
-        <input id="inst" list="listaInst" placeholder="Escribe parte del nombre…"
+        <input id="inst" list="listaInst" placeholder="Parte del nombre…"
                autocomplete="off">
         <datalist id="listaInst"></datalist>
         <div class="fila">
@@ -420,7 +420,7 @@ kbd{background:#EEF2F8;border:1px solid var(--borde);border-bottom-width:2px;
           <button id="btnFiltro" class="dorado">Listar IDs</button>
           <button class="mini" id="btnLimpiarFiltro">Limpiar</button>
         </div>
-        <div class="nota">Deja un campo en «(cualquiera)» para no restringirlo.</div>
+        <div class="nota">Un campo en «(cualquiera)» no restringe el listado.</div>
       </div>
 
     </div>
@@ -430,17 +430,17 @@ kbd{background:#EEF2F8;border:1px solid var(--borde);border-bottom-width:2px;
       <div class="card" id="cardResultados" style="display:none">
         <h2>Resultados <span id="resumenRes" class="nota"></span></h2>
         <div class="ids" id="listaIds"></div>
-        <div class="nota">Haz clic en cualquier ID para abrir su ficha en este mismo panel.
-          El botón «Volver a la lista» de la ficha devuelve a estos resultados.</div>
+        <div class="nota">Cada ID abre su ficha en este mismo panel; el botón «Volver a la
+          lista» de la ficha regresa a estos resultados.</div>
       </div>
 
       <div id="panelFicha">
         <div class="card">
           <div class="info">
-            Escribe un ID y pulsa <strong>Buscar</strong>, o lista por institución, área,
-            categoría y año: los resultados y la ficha aparecen <strong>aquí, a la
-            derecha</strong>. Al hacer clic en un identificador de la lista, la lista se
-            reemplaza por la ficha de esa persona.
+            La búsqueda por ID o el listado por institución, área, categoría y año se
+            muestran en este panel derecho: los resultados y la ficha aparecen aquí. Al
+            seleccionar un identificador de la lista, la lista se reemplaza por la ficha de
+            esa persona.
           </div>
         </div>
       </div>
@@ -866,7 +866,7 @@ function montar(){
   };
   $("btnInst").onclick = function(){
     const t = $("inst").value;
-    if(!normalizar(t)){ alert("Escribe parte del nombre de una institución."); return; }
+    if(!normalizar(t)){ alert("Indique parte del nombre de una institución."); return; }
     const insts = institucionesQueCoinciden(t);
     let etq;
     if(insts.length===0){

@@ -1943,10 +1943,9 @@ def bloque_indice() -> str:
         f"<div class='concepto' data-texto=\"{_html.escape((t + ' ' + d).lower(), quote=True)}\">"
         f"<h4>{_html.escape(t)}<span class='tag'>pestaña {p}</span></h4>"
         f"<p>{d}</p></div>" for t, d, p in CONCEPTOS)
-    return (f"<div class='seccion' id='indice'><div class='titulo'>Índice de conceptos — "
-            f"material de estudio</div>"
-            f"<p class='desc-indice'>Escribe para filtrar los {len(CONCEPTOS)} conceptos que "
-            f"sostienen los análisis. Cada uno indica la pestaña donde se aplica.</p>"
+    return (f"<div class='seccion' id='indice'><div class='titulo'>Glosario de conceptos</div>"
+            f"<p class='desc-indice'>Los {len(CONCEPTOS)} conceptos que sostienen los "
+            f"análisis, con la pestaña en la que se aplican.</p>"
             f"<input id='buscador' type='text' placeholder='Buscar: Theil, Wilson, censura, "
             f"entre/dentro…' autocomplete='off'>"
             f"<p id='sin-resultados' class='sin-resultados' style='display:none'>"
