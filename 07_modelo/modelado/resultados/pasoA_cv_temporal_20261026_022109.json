@@ -1,0 +1,118 @@
+{
+  "fecha_utc": "2026-10-26T02:21:09+00:00",
+  "paso": "A",
+  "modelo": "XGBoost mascaras sin 'ano'",
+  "n_features": 172,
+  "folds": {
+    "Fold 1": {
+      "fold": "Fold 1",
+      "descripcion": "13->14 + 14->15 | val 15->17 | eval 17->19",
+      "n_train": 11674,
+      "n_val": 8164,
+      "n_eval": 9994,
+      "umbral": 0.14,
+      "f1_baja_oos": 0.3332017370706672,
+      "f1_macro_oos": 0.49164169839657873,
+      "brier_oos": 0.43224906829294385,
+      "precision_baja": 0.23405435385468662,
+      "recall_baja": 0.5780821917808219,
+      "f1_baja_en_val": 0.2581818181818182,
+      "confusion": [
+        [
+          422,
+          292,
+          16
+        ],
+        [
+          1176,
+          5162,
+          680
+        ],
+        [
+          205,
+          1321,
+          720
+        ]
+      ]
+    },
+    "Fold 2": {
+      "fold": "Fold 2",
+      "descripcion": "13->14 + 14->15 + 15->17 | val 17->19 | eval 19->21",
+      "n_train": 19838,
+      "n_val": 9994,
+      "n_eval": 13355,
+      "umbral": 0.08,
+      "f1_baja_oos": 0.43335521996060405,
+      "f1_macro_oos": 0.5231028123638514,
+      "brier_oos": 0.439658436675571,
+      "precision_baja": 0.3086997193638915,
+      "recall_baja": 0.7268722466960352,
+      "f1_baja_en_val": 0.3449911084765857,
+      "confusion": [
+        [
+          990,
+          331,
+          41
+        ],
+        [
+          1908,
+          6238,
+          1511
+        ],
+        [
+          309,
+          1017,
+          1010
+        ]
+      ]
+    },
+    "Fold 3": {
+      "fold": "Fold 3",
+      "descripcion": "hasta 17->19 | val 19->21 | eval 19->21 (en muestra)",
+      "n_train": 29832,
+      "n_val": 13355,
+      "n_eval": 13355,
+      "umbral": 0.13,
+      "f1_baja_oos": 0.42459546925566344,
+      "f1_macro_oos": 0.5214296801918484,
+      "brier_oos": 0.4592127937649881,
+      "precision_baja": 0.3006416131989001,
+      "recall_baja": 0.7224669603524229,
+      "f1_baja_en_val": 0.42459546925566344,
+      "confusion": [
+        [
+          984,
+          292,
+          86
+        ],
+        [
+          1986,
+          5769,
+          1902
+        ],
+        [
+          303,
+          808,
+          1225
+        ]
+      ]
+    }
+  },
+  "fold3_alternativo": {
+    "umbral_usado": 0.08,
+    "f1_baja": 0.4206200971236459,
+    "f1_macro": 0.508253966707147,
+    "brier": 0.4592127937649881,
+    "precision_baja": 0.282064128256513,
+    "recall_baja": 0.8267254038179148
+  },
+  "resumen": {
+    "f1_baja_media_2_oos": 0.3832784785156356,
+    "f1_baja_desv_2_oos": 0.05007674144496843,
+    "f1_baja_media_3_oos": 0.3957256847183057,
+    "f1_baja_desv_3_oos": 0.04451575646518571,
+    "criterio_media_025_desv_008_3folds": true,
+    "criterio_media_025_desv_008_2folds": true
+  },
+  "umbral_medio_folds": 0.11666666666666668
+}

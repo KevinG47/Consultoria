@@ -1,0 +1,76 @@
+{
+  "fecha_utc": "2026-10-26T01:45:35+00:00",
+  "trace": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\modelado\\modelos\\trace_bayesiano_minimo.nc",
+  "draws_usados": {
+    "total": 2000,
+    "usados_para_ic": 400
+  },
+  "n_val": 9994,
+  "metricas": {
+    "f1_macro": 0.2945434441948379,
+    "accuracy": 0.7049229537722633,
+    "f1_por_clase": {
+      "baja": 0.0027359781121751026,
+      "se_mantiene": 0.8255752055361685,
+      "sube": 0.05531914893617021
+    },
+    "auc_ovr": {
+      "baja": 0.8174103023635462,
+      "se_mantiene": 0.5618568046605197,
+      "sube": 0.6723059488307326
+    },
+    "brier": 0.4370192964774961
+  },
+  "intervalos": {
+    "baja": {
+      "media": 0.05898679649550468,
+      "ic80_agregado": [
+        0.034239042177796365,
+        0.08175119981169701
+      ],
+      "ic95_agregado": [
+        0.02259784364141524,
+        0.13268642276525489
+      ],
+      "ancho_medio_ic80_por_obs": 0.047943388160669106,
+      "ancho_medio_ic95_por_obs": 0.14017590644875502
+    },
+    "se_mantiene": {
+      "media": 0.7687411292940378,
+      "ic80_agregado": [
+        0.7295374810695648,
+        0.8022969424724579
+      ],
+      "ic95_agregado": [
+        0.6525678306818008,
+        0.8078236863017082
+      ],
+      "ancho_medio_ic80_por_obs": 0.10314940841600807,
+      "ancho_medio_ic95_por_obs": 0.2337343557306122
+    },
+    "sube": {
+      "media": 0.1722720753942849,
+      "ic80_agregado": [
+        0.1138169065117836,
+        0.23213552087545397
+      ],
+      "ic95_agregado": [
+        0.0691351043060422,
+        0.30768670439720136
+      ],
+      "ancho_medio_ic80_por_obs": 0.11902458781322155,
+      "ancho_medio_ic95_por_obs": 0.2444848811983786
+    }
+  },
+  "xgboost_r1": {
+    "f1_macro": 0.3939,
+    "f1_baja": 0.132,
+    "auc_baja": 0.563,
+    "brier": 0.5479
+  },
+  "comparacion": {
+    "delta_f1_macro_pp": -9.94,
+    "delta_brier": -0.1109,
+    "delta_auc_baja": 0.2544
+  }
+}

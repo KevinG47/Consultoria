@@ -1,0 +1,55 @@
+{
+  "fecha_utc": "2026-10-26T02:24:13+00:00",
+  "paso": "E",
+  "modelo": "XGBoost mascaras sin 'ano'",
+  "umbral": 0.11666666666666668,
+  "umbrales_folds": [
+    0.14,
+    0.08,
+    0.13
+  ],
+  "n_train": 29832,
+  "n_test": 13355,
+  "metricas": {
+    "f1_macro": 0.518104763896228,
+    "f1_por_clase": {
+      "baja": 0.42234730039608087,
+      "se_mantiene": 0.6932081453481282,
+      "sube": 0.4387588459444747
+    },
+    "precision_baja": 0.2949053857350801,
+    "recall_baja": 0.7437591776798825,
+    "auc_ovr": {
+      "baja": 0.8631463985415868,
+      "se_mantiene": 0.6774741676272793,
+      "sube": 0.7604127817207389
+    },
+    "auc_baja": 0.8631463985415868,
+    "brier": 0.4592127937649881,
+    "exactitud": 0.5920628977910894,
+    "pred_baja_pct": 0.2572070385623362,
+    "confusion": [
+      [
+        1013,
+        265,
+        84
+      ],
+      [
+        2090,
+        5685,
+        1882
+      ],
+      [
+        332,
+        795,
+        1209
+      ]
+    ]
+  },
+  "argmax": {
+    "f1_macro": 0.49171497212536747,
+    "f1_baja": 0.2707979626485569,
+    "brier": 0.4592127937649881
+  },
+  "nota": "evaluacion unica; test no se vuelve a usar en esta ronda"
+}

@@ -41,7 +41,7 @@ origen:
     la regla DOCUMENTADA, que es la correcta.
 
 alcance:
-  fuente: datos_originales/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
+  fuente: 01_datos/datos_fuente/Investigadores_Reconocidos_por_convocatoria_20261006.csv
   granularidad: persona x convocatoria
   comparacion: pares_consecutivos
   nota: >

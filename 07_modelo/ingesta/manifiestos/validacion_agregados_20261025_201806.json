@@ -1,0 +1,176 @@
+{
+  "fecha_utc": "2026-10-25T20:18:06+00:00",
+  "ventana": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\features_ventana_t.parquet",
+    "sha256": "cbdbc82303962fc3a85a6d7044fce29d0f25a3d2d477b4358c464ce375f802ac",
+    "filas": 129140,
+    "columnas": 278
+  },
+  "acumulado": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\features_acumulado_t.parquet",
+    "sha256": "55174e0e192380b1690dc3acb60555ee3e9917c9362b33965b8081b234bf9547",
+    "filas": 129140,
+    "columnas": 278
+  },
+  "censo": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\01_datos\\datos_fuente\\Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+    "filas": 77237,
+    "personas": 30086
+  },
+  "contrato": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\ingesta\\contrato_produccion.json",
+  "checks": [
+    {
+      "id": "V01",
+      "nombre": "sum_n_filas_por_convocatoria",
+      "esperado": {
+        "2013": 183868,
+        "2014": 265385,
+        "2015": 294200,
+        "2017": 410709,
+        "2019": 568487,
+        "2021": 659106
+      },
+      "observado": {
+        "2013": 183868,
+        "2014": 265385,
+        "2015": 294200,
+        "2017": 410709,
+        "2019": 568487,
+        "2021": 659106
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V02",
+      "nombre": "personas_con_produccion",
+      "esperado": 28590,
+      "observado": 28590,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V03",
+      "nombre": "personas_sin_produccion",
+      "esperado": 1496,
+      "observado": 1496,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V04",
+      "nombre": "personas_multi_presentes",
+      "esperado": 19215,
+      "observado": 19215,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V05",
+      "nombre": "duplicados_llave_ventana",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V06",
+      "nombre": "duplicados_llave_acumulado",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V07",
+      "nombre": "pares_fuera_censo",
+      "esperado": 51903,
+      "observado": 51903,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V08",
+      "nombre": "mismas_claves_ventana_acumulado",
+      "esperado": 129140,
+      "observado": 129140,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V09",
+      "nombre": "acumulado_ge_ventana",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V10",
+      "nombre": "acumulado_no_decreciente_por_persona",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V11",
+      "nombre": "suma_categoria_igual_n_productos",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V12",
+      "nombre": "suma_tipologia_igual_n_productos",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V13",
+      "nombre": "suma_categoria_igual_n_productos_acumulado",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V14",
+      "nombre": "suma_tipologia_igual_n_productos_acumulado",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V15",
+      "nombre": "suma_clase_igual_n_productos",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V16",
+      "nombre": "suma_clase_igual_n_productos_acumulado",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true,
+      "detalle": null
+    }
+  ],
+  "addendum_duplicados": {
+    "disponible": true,
+    "alcance": "autores del censo",
+    "grupos_duplicados": 55678,
+    "filas_extra": 59572,
+    "grupos_cambia_tipologia": 0,
+    "grupos_cambia_categoria": 0,
+    "grupos_cambia_grupo": 55678,
+    "grupos_todas_columnas_identicas": 0
+  },
+  "resultado": "OK"
+}

@@ -1,0 +1,189 @@
+{
+  "fecha_utc": "2026-10-26T02:38:16+00:00",
+  "experimento": "B",
+  "config_A": {
+    "i": 3,
+    "n_estimators": 100,
+    "min_child_weight": 1,
+    "gamma": 0.1,
+    "subsample": 0.8,
+    "f1_baja_folds": [
+      0.2728,
+      0.3076,
+      0.315
+    ],
+    "media": 0.2985,
+    "desv": 0.0184,
+    "f1_macro_medio": 0.487,
+    "brier_medio": 0.4196,
+    "umbrales": [
+      0.12,
+      0.27,
+      0.15
+    ]
+  },
+  "resultados": {
+    "172": {
+      "k": 172,
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ],
+      "top5_por_fold": [
+        [
+          "n_filas",
+          "n_productos",
+          "n_grupos_distintos",
+          "dias_desde_ultimo",
+          "n_clase_APROPIACI_N_SOCIAL_DEL_CONOCIMIENTO"
+        ],
+        [
+          "n_filas",
+          "n_productos",
+          "n_grupos_distintos",
+          "dias_desde_ultimo",
+          "n_clase_APROPIACI_N_SOCIAL_DEL_CONOCIMIENTO"
+        ],
+        [
+          "n_filas",
+          "n_productos",
+          "n_grupos_distintos",
+          "dias_desde_ultimo",
+          "n_clase_APROPIACI_N_SOCIAL_DEL_CONOCIMIENTO"
+        ]
+      ]
+    },
+    "120": {
+      "k": 120,
+      "f1_baja_folds": [
+        0.2694,
+        0.3055,
+        0.2709
+      ],
+      "media": 0.2819,
+      "desv": 0.0167,
+      "f1_macro_medio": 0.4863,
+      "brier_medio": 0.4203,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.27
+      ],
+      "top5_por_fold": [
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_productos",
+          "n_tipologia_TESIS_DE_DOCTORADO",
+          "n_tipologia_DOCUMENTO_DE_TRABAJO",
+          "n_tipologia_ART_CULOS_DE_INVESTIGACI_N"
+        ],
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_tipologia_TESIS_DE_DOCTORADO",
+          "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA4",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_tipologia_RED_DE_CONOCIMIENTO_ESPECIALIZADO"
+        ],
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_productos",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_B"
+        ]
+      ]
+    },
+    "80": {
+      "k": 80,
+      "f1_baja_folds": [
+        0.2694,
+        0.3055,
+        0.2709
+      ],
+      "media": 0.2819,
+      "desv": 0.0167,
+      "f1_macro_medio": 0.4863,
+      "brier_medio": 0.4202,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.27
+      ],
+      "top5_por_fold": [
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_productos",
+          "n_tipologia_TESIS_DE_DOCTORADO",
+          "n_tipologia_DOCUMENTO_DE_TRABAJO",
+          "n_tipologia_ART_CULOS_DE_INVESTIGACI_N"
+        ],
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_tipologia_TESIS_DE_DOCTORADO",
+          "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA4",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_tipologia_RED_DE_CONOCIMIENTO_ESPECIALIZADO"
+        ],
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_productos",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_B"
+        ]
+      ]
+    },
+    "50": {
+      "k": 50,
+      "f1_baja_folds": [
+        0.2706,
+        0.3276,
+        0.2876
+      ],
+      "media": 0.2953,
+      "desv": 0.0239,
+      "f1_macro_medio": 0.4892,
+      "brier_medio": 0.4208,
+      "umbrales": [
+        0.12,
+        0.2,
+        0.24
+      ],
+      "top5_por_fold": [
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_productos",
+          "n_tipologia_TESIS_DE_DOCTORADO",
+          "n_tipologia_DOCUMENTO_DE_TRABAJO",
+          "n_tipologia_ART_CULOS_DE_INVESTIGACI_N"
+        ],
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_tipologia_TESIS_DE_DOCTORADO",
+          "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA4",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_tipologia_RED_DE_CONOCIMIENTO_ESPECIALIZADO"
+        ],
+        [
+          "n_tipologia_TESIS_DE_MAESTRIA",
+          "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_productos",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+          "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_B"
+        ]
+      ]
+    }
+  },
+  "mejor_k": 172,
+  "nota": "el top-k se calcula con el gain del train de cada fold"
+}

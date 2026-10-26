@@ -1,0 +1,78 @@
+{
+  "fecha_utc": "2026-10-26T03:26:51+00:00",
+  "filas": 43187,
+  "features": [
+    "tiempo_en_categoria",
+    "historial_bajas",
+    "historial_subidas",
+    "momentum_produccion",
+    "produccion_normalizada"
+  ],
+  "momentum_con_t_menos_1": 0.5805219163174103,
+  "estadisticos": {
+    "tiempo_en_categoria": {
+      "min": 1.0,
+      "mediana": 1.0,
+      "max": 5.0,
+      "nulos": 0
+    },
+    "historial_bajas": {
+      "min": 0.0,
+      "mediana": 0.0,
+      "max": 3.0,
+      "nulos": 0
+    },
+    "historial_subidas": {
+      "min": 0.0,
+      "mediana": 0.0,
+      "max": 3.0,
+      "nulos": 0
+    },
+    "momentum_produccion": {
+      "min": 0.0,
+      "mediana": 1.0,
+      "max": 166.0,
+      "nulos": 0
+    },
+    "produccion_normalizada": {
+      "min": 0.0,
+      "mediana": 1.0,
+      "max": 34.90909194946289,
+      "nulos": 0
+    }
+  },
+  "correlacion_spearman_ordinal": {
+    "tiempo_en_categoria": 0.05775938517369697,
+    "historial_bajas": 0.08746892534243968,
+    "historial_subidas": -0.12392008780150254,
+    "momentum_produccion": 0.044792442613405634,
+    "produccion_normalizada": 0.18153940990447326
+  },
+  "media_por_clase": {
+    "tiempo_en_categoria": {
+      "baja": 1.5510597229003906,
+      "se_mantiene": 1.674485206604004,
+      "sube": 1.7812539339065552
+    },
+    "historial_bajas": {
+      "baja": 0.04527938365936279,
+      "se_mantiene": 0.0524170957505703,
+      "sube": 0.11391446739435196
+    },
+    "historial_subidas": {
+      "baja": 0.474951833486557,
+      "se_mantiene": 0.21324580907821655,
+      "sube": 0.1576889157295227
+    },
+    "momentum_produccion": {
+      "baja": 1.4804925918579102,
+      "se_mantiene": 1.4359397888183594,
+      "sube": 1.6490427255630493
+    },
+    "produccion_normalizada": {
+      "baja": 0.9796930551528931,
+      "se_mantiene": 1.2114416360855103,
+      "sube": 1.7483410835266113
+    }
+  }
+}

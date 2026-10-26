@@ -66,7 +66,7 @@ evaluación del banco de preguntas.
 
 **D008 · Corregir el indexador.** El indexador limpiaba mal el LaTeX y perdía documentos con
 el mismo nombre de sección. Tras el arreglo, el índice pasó de 145 fragmentos / 105 167
-palabras a **150 fragmentos / 116 277 palabras**.
+palabras a **151 fragmentos / 123 505 palabras**.
 
 **D009 · Cerrar el ciclo de D008.** El cambio de cifras dejó números obsoletos en varios
 documentos y nada lo detectaba. Se actualizaron los 6 sitios y se añadió la regla **R17**,

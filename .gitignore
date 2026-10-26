@@ -115,3 +115,8 @@ documentacion_auditoria/slides_nada_sin_fuente/
 #    naranja #FF6600) que sirvieron para el shell 02_dashboards/presentacion.html.
 #    Pesan 4,8 MB y son material de un tercero: se quedan en disco, no en git.
 02_dashboards/_referencia/
+
+# Entorno de la fase de modelado (872 MB de venv) y caches de librerias:
+# se regeneran con pip install; nunca se versionan.
+.venv-*/
+.cache/

@@ -1,0 +1,223 @@
+{
+  "fecha_utc": "2026-10-26T02:23:39+00:00",
+  "paso": "D",
+  "modelo": "XGBoost mascaras sin 'ano'",
+  "n_features": 172,
+  "top20": [
+    {
+      "rank": 1,
+      "feature": "n_tipologia_TESIS_DE_MAESTRIA",
+      "gain_pct": 4.213,
+      "familia": "tipologia"
+    },
+    {
+      "rank": 2,
+      "feature": "n_tipologia_TESIS_DE_DOCTORADO",
+      "gain_pct": 2.62,
+      "familia": "tipologia"
+    },
+    {
+      "rank": 3,
+      "feature": "n_clase_NUEVO_CONOCIMIENTO",
+      "gain_pct": 2.031,
+      "familia": "clase_producto"
+    },
+    {
+      "rank": 4,
+      "feature": "n_clase_FORMACI_N_DE_RECURSO_HUMANO",
+      "gain_pct": 1.927,
+      "familia": "clase_producto"
+    },
+    {
+      "rank": 5,
+      "feature": "n_tipologia_SPIN_OFF",
+      "gain_pct": 1.768,
+      "familia": "tipologia"
+    },
+    {
+      "rank": 6,
+      "feature": "n_tipologia_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI",
+      "gain_pct": 1.763,
+      "familia": "tipologia"
+    },
+    {
+      "rank": 7,
+      "feature": "n_productos",
+      "gain_pct": 1.683,
+      "familia": "produccion"
+    },
+    {
+      "rank": 8,
+      "feature": "n_clase_DESARROLLO_TECNOL_GICO_E_INNOVACI_N",
+      "gain_pct": 1.672,
+      "familia": "clase_producto"
+    },
+    {
+      "rank": 9,
+      "feature": "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+      "gain_pct": 1.512,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 10,
+      "feature": "n_categoria_TESIS_DE_DOCTORADO_CON_CALIDAD_B",
+      "gain_pct": 1.504,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 11,
+      "feature": "n_tipologia_PATENTE_DE_INVENCI_N",
+      "gain_pct": 1.422,
+      "familia": "tipologia"
+    },
+    {
+      "rank": 12,
+      "feature": "n_categoria_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO_CON_CALIDAD_B",
+      "gain_pct": 1.414,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 13,
+      "feature": "n_tipologia_ASESOR_A_AL_PROGRAMA_ONDAS",
+      "gain_pct": 1.409,
+      "familia": "tipologia"
+    },
+    {
+      "rank": 14,
+      "feature": "n_categoria_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N_CON_CALIDAD_B",
+      "gain_pct": 1.372,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 15,
+      "feature": "n_categoria_TESIS_DE_MAESTRIA_CON_CALIDAD_B",
+      "gain_pct": 1.37,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 16,
+      "feature": "n_tipologia_TESIS_DE_PREGRADO",
+      "gain_pct": 1.35,
+      "familia": "tipologia"
+    },
+    {
+      "rank": 17,
+      "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA4",
+      "gain_pct": 1.344,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 18,
+      "feature": "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_B",
+      "gain_pct": 1.344,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 19,
+      "feature": "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+      "gain_pct": 1.302,
+      "familia": "categoria_calidad"
+    },
+    {
+      "rank": 20,
+      "feature": "n_tipologia_CONSULTOR_A_CIENT_FICO_T_CNICA",
+      "gain_pct": 1.272,
+      "familia": "tipologia"
+    }
+  ],
+  "familias": [
+    {
+      "familia": "tipologia",
+      "gain_pct": 50.799,
+      "n_features": 58
+    },
+    {
+      "familia": "categoria_calidad",
+      "gain_pct": 36.96,
+      "n_features": 105
+    },
+    {
+      "familia": "clase_producto",
+      "gain_pct": 7.348,
+      "n_features": 5
+    },
+    {
+      "familia": "produccion",
+      "gain_pct": 4.893,
+      "n_features": 4
+    }
+  ],
+  "familia_dominante": "tipologia",
+  "demografia": {
+    "n_features": 0,
+    "nota": "el feature set del r1 no contiene variables demograficas"
+  },
+  "top5_por_modelo": {
+    "IJ": [
+      {
+        "feature": "n_tipologia_TESIS_DE_MAESTRIA",
+        "gain_pct": 7.353
+      },
+      {
+        "feature": "n_clase_FORMACI_N_DE_RECURSO_HUMANO",
+        "gain_pct": 3.498
+      },
+      {
+        "feature": "n_tipologia_TESIS_DE_DOCTORADO",
+        "gain_pct": 2.852
+      },
+      {
+        "feature": "n_productos",
+        "gain_pct": 2.564
+      },
+      {
+        "feature": "n_categoria_EMPRESA_DE_BASE_TECNOL_GICA_CON_CALIDAD_A",
+        "gain_pct": 1.993
+      }
+    ],
+    "I": [
+      {
+        "feature": "n_tipologia_TESIS_DE_MAESTRIA",
+        "gain_pct": 4.183
+      },
+      {
+        "feature": "n_tipologia_TESIS_DE_DOCTORADO",
+        "gain_pct": 2.621
+      },
+      {
+        "feature": "n_clase_NUEVO_CONOCIMIENTO",
+        "gain_pct": 2.351
+      },
+      {
+        "feature": "n_tipologia_TESIS_DE_PREGRADO",
+        "gain_pct": 1.742
+      },
+      {
+        "feature": "n_clase_DESARROLLO_TECNOL_GICO_E_INNOVACI_N",
+        "gain_pct": 1.726
+      }
+    ],
+    "IS": [
+      {
+        "feature": "n_tipologia_SPIN_OFF",
+        "gain_pct": 3.809
+      },
+      {
+        "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA1",
+        "gain_pct": 3.43
+      },
+      {
+        "feature": "n_categoria_TESIS_DE_DOCTORADO_CON_CALIDAD_B",
+        "gain_pct": 3.102
+      },
+      {
+        "feature": "n_tipologia_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI",
+        "gain_pct": 2.999
+      },
+      {
+        "feature": "n_tipologia_PATENTE_DE_INVENCI_N",
+        "gain_pct": 2.451
+      }
+    ]
+  }
+}

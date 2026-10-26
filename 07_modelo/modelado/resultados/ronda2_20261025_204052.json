@@ -1,0 +1,869 @@
+{
+  "fecha_utc": "2026-10-25T20:39:58+00:00",
+  "interprete": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\Agente\\venv-agente\\Scripts\\python.exe",
+  "versiones": {
+    "xgboost": "3.2.0",
+    "pandas": "3.0.5",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.0",
+    "joblib": "1.5.3",
+    "pyarrow": "24.0.0"
+  },
+  "ano_fuera": false,
+  "datasets": {
+    "ventana_contiguo": {
+      "n_train": 19838,
+      "n_val": 9994,
+      "variantes": {
+        "r1": {
+          "f1_macro": 0.39392654119597387,
+          "f1_por_clase": {
+            "baja": 0.1323451561672843,
+            "se_mantiene": 0.708975243350962,
+            "sube": 0.3404592240696754
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5626704195944827,
+            "se_mantiene": 0.6260473739569831,
+            "sube": 0.5814652826271544
+          },
+          "brier_multiclase": 0.5478968620300293,
+          "n_features": 173,
+          "params": {
+            "max_depth": 7,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 0.8
+          },
+          "segundos": null,
+          "confusion": null,
+          "nota": "ronda 1 (con ano), tomado del config"
+        },
+        "sin_ano": {
+          "f1_macro": 0.2790858758393215,
+          "f1_por_clase": {
+            "baja": 0.0,
+            "se_mantiene": 0.8249499352102722,
+            "sube": 0.012307692307692308
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5828339780443372,
+            "se_mantiene": 0.638133566681069,
+            "sube": 0.6172848845949273
+          },
+          "brier_multiclase": 0.45189398527145386,
+          "n_features": 172,
+          "params": {
+            "max_depth": 7,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 0.8
+          },
+          "segundos": 6.62,
+          "confusion": [
+            [
+              0,
+              728,
+              2
+            ],
+            [
+              2,
+              7003,
+              13
+            ],
+            [
+              3,
+              2229,
+              14
+            ]
+          ],
+          "nota": "ablacion: sin ano"
+        },
+        "cost_sensitive": {
+          "f1_macro": 0.36408749953382413,
+          "f1_por_clase": {
+            "baja": 0.06608357628765792,
+            "se_mantiene": 0.7994364754098361,
+            "sube": 0.22674244690397846
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5672236171244707,
+            "se_mantiene": 0.6326695065223986,
+            "sube": 0.5959221774866441
+          },
+          "brier_multiclase": 0.468734472990036,
+          "n_features": 172,
+          "params": {
+            "max_depth": 7,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 0.8
+          },
+          "segundos": 6.89,
+          "confusion": [
+            [
+              34,
+              588,
+              108
+            ],
+            [
+              166,
+              6242,
+              610
+            ],
+            [
+              99,
+              1768,
+              379
+            ]
+          ],
+          "nota": "costos C=[[0.0, 5.0, 5.0], [1.0, 0.0, 1.0], [3.0, 3.0, 0.0]], pesos=[1.667, 0.333, 1.0]"
+        },
+        "raras": {
+          "f1_macro": 0.3603446318045937,
+          "f1_por_clase": {
+            "baja": 0.0647693817468106,
+            "se_mantiene": 0.8009931245225362,
+            "sube": 0.21527138914443422
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5709692993351787,
+            "se_mantiene": 0.6322809367693519,
+            "sube": 0.5952569381648372
+          },
+          "brier_multiclase": 0.4681338667869568,
+          "n_features": 102,
+          "params": {
+            "max_depth": 7,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 0.8
+          },
+          "segundos": 5.12,
+          "confusion": [
+            [
+              33,
+              596,
+              101
+            ],
+            [
+              164,
+              6291,
+              563
+            ],
+            [
+              92,
+              1803,
+              351
+            ]
+          ],
+          "nota": "base=cost_sensitive; 73 columnas raras -> ['otras_clase', 'otras_tipologia', 'otras_categoria']"
+        },
+        "ordinal": {
+          "f1_macro": 0.27977313706051726,
+          "f1_por_clase": {
+            "baja": 0.0,
+            "se_mantiene": 0.825247291568535,
+            "sube": 0.014072119613016711
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.46193040670026264,
+            "se_mantiene": 0.5603725740185759,
+            "sube": 0.5415141746860478
+          },
+          "brier_multiclase": null,
+          "n_features": 172,
+          "params": {
+            "max_depth": 7,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 0.8
+          },
+          "segundos": 2.95,
+          "confusion": [
+            [
+              0,
+              728,
+              2
+            ],
+            [
+              0,
+              7008,
+              10
+            ],
+            [
+              0,
+              2230,
+              16
+            ]
+          ],
+          "nota": "XGBRegressor reg:squarederror; cortes 0.5/1.5; Brier no aplica"
+        },
+        "umbral_macro": {
+          "f1_macro": 0.371459428697731,
+          "f1_por_clase": {
+            "baja": 0.11462450592885376,
+            "se_mantiene": 0.7883163767640302,
+            "sube": 0.21143740340030912
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5709692993351787,
+            "se_mantiene": 0.6322809367693519,
+            "sube": 0.5952569381648372
+          },
+          "brier_multiclase": 0.4681338667869568,
+          "n_features": 102,
+          "params": {
+            "max_depth": 7,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 0.8
+          },
+          "segundos": null,
+          "confusion": [
+            [
+              87,
+              543,
+              100
+            ],
+            [
+              466,
+              6005,
+              547
+            ],
+            [
+              235,
+              1669,
+              342
+            ]
+          ],
+          "nota": "umbral p(baja)>=0.29 sobre raras"
+        },
+        "umbral_baja": {
+          "f1_macro": 0.31694648647325335,
+          "f1_por_clase": {
+            "baja": 0.15739202657807308,
+            "se_mantiene": 0.6763269554078937,
+            "sube": 0.11712047743379336
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5709692993351787,
+            "se_mantiene": 0.6322809367693519,
+            "sube": 0.5952569381648372
+          },
+          "brier_multiclase": 0.4681338667869568,
+          "n_features": 102,
+          "params": {
+            "max_depth": 7,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 0.8
+          },
+          "segundos": null,
+          "confusion": [
+            [
+              379,
+              307,
+              44
+            ],
+            [
+              2560,
+              4224,
+              234
+            ],
+            [
+              1147,
+              942,
+              157
+            ]
+          ],
+          "nota": "umbral p(baja)>=0.11 sobre raras"
+        }
+      },
+      "umbrales": {
+        "base": "raras",
+        "macro": {
+          "umbral": 0.29,
+          "f1_macro": 0.371459428697731,
+          "f1_baja": 0.11462450592885376,
+          "confusion": [
+            [
+              87,
+              543,
+              100
+            ],
+            [
+              466,
+              6005,
+              547
+            ],
+            [
+              235,
+              1669,
+              342
+            ]
+          ]
+        },
+        "baja": {
+          "umbral": 0.11,
+          "f1_macro": 0.31694648647325335,
+          "f1_baja": 0.15739202657807308,
+          "confusion": [
+            [
+              379,
+              307,
+              44
+            ],
+            [
+              2560,
+              4224,
+              234
+            ],
+            [
+              1147,
+              942,
+              157
+            ]
+          ]
+        },
+        "argmax": {
+          "f1_macro": 0.3603446318045937,
+          "f1_baja": 0.0647693817468106,
+          "confusion": [
+            [
+              33,
+              596,
+              101
+            ],
+            [
+              164,
+              6291,
+              563
+            ],
+            [
+              92,
+              1803,
+              351
+            ]
+          ]
+        }
+      },
+      "mejor": "umbral_macro",
+      "por_origen": {
+        "12": {
+          "categoria": "IJ (Junior)",
+          "n": 5275,
+          "n_baja_real": 0,
+          "n_pred_baja": 343,
+          "f1_baja": 0.0,
+          "f1_macro": 0.3525501882612367,
+          "confusion": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              186,
+              3402,
+              209
+            ],
+            [
+              157,
+              1094,
+              227
+            ]
+          ]
+        },
+        "13": {
+          "categoria": "I (Asociado)",
+          "n": 3090,
+          "n_baja_real": 558,
+          "n_pred_baja": 396,
+          "f1_baja": 0.16771488469601678,
+          "f1_macro": 0.33611265237810456,
+          "confusion": [
+            [
+              80,
+              403,
+              75
+            ],
+            [
+              241,
+              1313,
+              239
+            ],
+            [
+              75,
+              551,
+              113
+            ]
+          ]
+        },
+        "14": {
+          "categoria": "IS (Senior)",
+          "n": 1629,
+          "n_baja_real": 172,
+          "n_pred_baja": 49,
+          "f1_baja": 0.06334841628959276,
+          "f1_macro": 0.3281221754909777,
+          "confusion": [
+            [
+              7,
+              140,
+              25
+            ],
+            [
+              39,
+              1290,
+              99
+            ],
+            [
+              3,
+              24,
+              2
+            ]
+          ]
+        }
+      },
+      "features_raras": {
+        "n_raras": 73,
+        "nuevas": [
+          "otras_clase",
+          "otras_tipologia",
+          "otras_categoria"
+        ],
+        "n_features_final": 102
+      }
+    },
+    "acumulado_contiguo": {
+      "n_train": 19838,
+      "n_val": 9994,
+      "variantes": {
+        "r1": {
+          "f1_macro": 0.38436508705137146,
+          "f1_por_clase": {
+            "baja": 0.15313582146979607,
+            "se_mantiene": 0.6537340770959953,
+            "sube": 0.3462253625883228
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5795078015946247,
+            "se_mantiene": 0.6359792082264653,
+            "sube": 0.5993374442765456
+          },
+          "brier_multiclase": 0.5699901580810547,
+          "n_features": 173,
+          "params": {
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 1.0
+          },
+          "segundos": null,
+          "confusion": null,
+          "nota": "ronda 1 (con ano), tomado del config"
+        },
+        "sin_ano": {
+          "f1_macro": 0.27641661143042484,
+          "f1_por_clase": {
+            "baja": 0.0,
+            "se_mantiene": 0.8239797420646605,
+            "sube": 0.005270092226613966
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5824427153571344,
+            "se_mantiene": 0.6401341347288233,
+            "sube": 0.6199109321177187
+          },
+          "brier_multiclase": 0.44766098260879517,
+          "n_features": 172,
+          "params": {
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 1.0
+          },
+          "segundos": 5.76,
+          "confusion": [
+            [
+              0,
+              727,
+              3
+            ],
+            [
+              0,
+              6996,
+              22
+            ],
+            [
+              0,
+              2240,
+              6
+            ]
+          ],
+          "nota": "ablacion: sin ano"
+        },
+        "cost_sensitive": {
+          "f1_macro": 0.36150476950142946,
+          "f1_por_clase": {
+            "baja": 0.029180695847362513,
+            "se_mantiene": 0.787513906157974,
+            "sube": 0.26781970649895176
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5779063010149763,
+            "se_mantiene": 0.6388166460208312,
+            "sube": 0.6105345429102205
+          },
+          "brier_multiclase": 0.47691309452056885,
+          "n_features": 172,
+          "params": {
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 1.0
+          },
+          "segundos": 4.52,
+          "confusion": [
+            [
+              13,
+              561,
+              156
+            ],
+            [
+              98,
+              6017,
+              903
+            ],
+            [
+              50,
+              1685,
+              511
+            ]
+          ],
+          "nota": "costos C=[[0.0, 5.0, 5.0], [1.0, 0.0, 1.0], [3.0, 3.0, 0.0]], pesos=[1.667, 0.333, 1.0]"
+        },
+        "raras": {
+          "f1_macro": 0.36061452291620727,
+          "f1_por_clase": {
+            "baja": 0.028921023359288096,
+            "se_mantiene": 0.7869539590018992,
+            "sube": 0.26596858638743454
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5763323780963873,
+            "se_mantiene": 0.638734100983033,
+            "sube": 0.609730440303211
+          },
+          "brier_multiclase": 0.4773911237716675,
+          "n_features": 104,
+          "params": {
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 1.0
+          },
+          "segundos": 3.47,
+          "confusion": [
+            [
+              13,
+              553,
+              164
+            ],
+            [
+              108,
+              6008,
+              902
+            ],
+            [
+              48,
+              1690,
+              508
+            ]
+          ],
+          "nota": "base=cost_sensitive; 71 columnas raras -> ['otras_clase', 'otras_tipologia', 'otras_categoria']"
+        },
+        "ordinal": {
+          "f1_macro": 0.27851819410310374,
+          "f1_por_clase": {
+            "baja": 0.0,
+            "se_mantiene": 0.8241810040065991,
+            "sube": 0.011373578302712161
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.43140496723211963,
+            "se_mantiene": 0.578472225414219,
+            "sube": 0.5639009877480805
+          },
+          "brier_multiclase": null,
+          "n_features": 172,
+          "params": {
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 1.0
+          },
+          "segundos": 1.89,
+          "confusion": [
+            [
+              0,
+              727,
+              3
+            ],
+            [
+              0,
+              6994,
+              24
+            ],
+            [
+              0,
+              2233,
+              13
+            ]
+          ],
+          "nota": "XGBRegressor reg:squarederror; cortes 0.5/1.5; Brier no aplica"
+        },
+        "umbral_macro": {
+          "f1_macro": 0.3765504257514456,
+          "f1_por_clase": {
+            "baja": 0.13263358778625955,
+            "se_mantiene": 0.7539237668161435,
+            "sube": 0.2430939226519337
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5763323780963873,
+            "se_mantiene": 0.638734100983033,
+            "sube": 0.609730440303211
+          },
+          "brier_multiclase": 0.4773911237716675,
+          "n_features": 104,
+          "params": {
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 1.0
+          },
+          "segundos": null,
+          "confusion": [
+            [
+              139,
+              450,
+              141
+            ],
+            [
+              845,
+              5380,
+              793
+            ],
+            [
+              382,
+              1424,
+              440
+            ]
+          ],
+          "nota": "umbral p(baja)>=0.25 sobre raras"
+        },
+        "umbral_baja": {
+          "f1_macro": 0.31505712262666197,
+          "f1_por_clase": {
+            "baja": 0.16107122064816612,
+            "se_mantiene": 0.6531392931392931,
+            "sube": 0.1309608540925267
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5763323780963873,
+            "se_mantiene": 0.638734100983033,
+            "sube": 0.609730440303211
+          },
+          "brier_multiclase": 0.4773911237716675,
+          "n_features": 104,
+          "params": {
+            "max_depth": 5,
+            "learning_rate": 0.05,
+            "n_estimators": 200,
+            "subsample": 1.0
+          },
+          "segundos": null,
+          "confusion": [
+            [
+              415,
+              257,
+              58
+            ],
+            [
+              2769,
+              3927,
+              322
+            ],
+            [
+              1239,
+              823,
+              184
+            ]
+          ],
+          "nota": "umbral p(baja)>=0.13 sobre raras"
+        }
+      },
+      "umbrales": {
+        "base": "raras",
+        "macro": {
+          "umbral": 0.25,
+          "f1_macro": 0.3765504257514456,
+          "f1_baja": 0.13263358778625955,
+          "confusion": [
+            [
+              139,
+              450,
+              141
+            ],
+            [
+              845,
+              5380,
+              793
+            ],
+            [
+              382,
+              1424,
+              440
+            ]
+          ]
+        },
+        "baja": {
+          "umbral": 0.13,
+          "f1_macro": 0.31505712262666197,
+          "f1_baja": 0.16107122064816612,
+          "confusion": [
+            [
+              415,
+              257,
+              58
+            ],
+            [
+              2769,
+              3927,
+              322
+            ],
+            [
+              1239,
+              823,
+              184
+            ]
+          ]
+        },
+        "argmax": {
+          "f1_macro": 0.36061452291620727,
+          "f1_baja": 0.028921023359288096,
+          "confusion": [
+            [
+              13,
+              553,
+              164
+            ],
+            [
+              108,
+              6008,
+              902
+            ],
+            [
+              48,
+              1690,
+              508
+            ]
+          ]
+        }
+      },
+      "mejor": "umbral_macro",
+      "por_origen": {
+        "12": {
+          "categoria": "IJ (Junior)",
+          "n": 5275,
+          "n_baja_real": 0,
+          "n_pred_baja": 671,
+          "f1_baja": 0.0,
+          "f1_macro": 0.3540486722032359,
+          "confusion": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              405,
+              3093,
+              299
+            ],
+            [
+              266,
+              933,
+              279
+            ]
+          ]
+        },
+        "13": {
+          "categoria": "I (Asociado)",
+          "n": 3090,
+          "n_baja_real": 558,
+          "n_pred_baja": 623,
+          "f1_baja": 0.20999153259949196,
+          "f1_macro": 0.33865355464151786,
+          "confusion": [
+            [
+              124,
+              319,
+              115
+            ],
+            [
+              385,
+              1044,
+              364
+            ],
+            [
+              114,
+              467,
+              158
+            ]
+          ]
+        },
+        "14": {
+          "categoria": "IS (Senior)",
+          "n": 1629,
+          "n_baja_real": 172,
+          "n_pred_baja": 72,
+          "f1_baja": 0.12295081967213115,
+          "f1_macro": 0.3448514396974693,
+          "confusion": [
+            [
+              15,
+              131,
+              26
+            ],
+            [
+              55,
+              1243,
+              130
+            ],
+            [
+              2,
+              24,
+              3
+            ]
+          ]
+        }
+      },
+      "features_raras": {
+        "n_raras": 71,
+        "nuevas": [
+          "otras_clase",
+          "otras_tipologia",
+          "otras_categoria"
+        ],
+        "n_features_final": 104
+      }
+    }
+  },
+  "delta_sin_ano": {
+    "ventana_contiguo": -0.1148,
+    "acumulado_contiguo": -0.1079
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "fecha_utc": "2026-10-26T02:12:16+00:00",
+  "paso": 2,
+  "api_calibracion": "FrozenEstimator",
+  "metodo": "sigmoid",
+  "ajuste_calibrador": "sobre val (en muestra); declarado",
+  "n_val": 9994,
+  "n_features": 173,
+  "antes": {
+    "f1_macro": 0.39392654119597387,
+    "f1_por_clase": {
+      "baja": 0.1323451561672843,
+      "se_mantiene": 0.708975243350962,
+      "sube": 0.3404592240696754
+    },
+    "precision_baja": 0.10785159620362382,
+    "recall_baja": 0.17123287671232876,
+    "auc_ovr": {
+      "baja": 0.5626704195944827,
+      "se_mantiene": 0.6260473739569831,
+      "sube": 0.5814652826271544
+    },
+    "auc_baja": 0.5626704195944827,
+    "brier": 0.5478968485833725,
+    "exactitud": 0.5613368020812487,
+    "pred_baja_pct": 0.11596958174904944,
+    "confusion": [
+      [
+        125,
+        349,
+        256
+      ],
+      [
+        703,
+        4625,
+        1690
+      ],
+      [
+        331,
+        1055,
+        860
+      ]
+    ]
+  },
+  "despues": {
+    "f1_macro": 0.2750215534132769,
+    "f1_por_clase": {
+      "baja": 0.0,
+      "se_mantiene": 0.8250646602398307,
+      "sube": 0.0
+    },
+    "precision_baja": 0.0,
+    "recall_baja": 0.0,
+    "auc_ovr": {
+      "baja": 0.568050799086758,
+      "se_mantiene": 0.6252452411157791,
+      "sube": 0.5993459203098861
+    },
+    "auc_baja": 0.568050799086758,
+    "brier": 0.4392469286788674,
+    "exactitud": 0.7022213327996798,
+    "pred_baja_pct": 0.0,
+    "confusion": [
+      [
+        0,
+        730,
+        0
+      ],
+      [
+        0,
+        7018,
+        0
+      ],
+      [
+        0,
+        2246,
+        0
+      ]
+    ]
+  },
+  "umbral_f1_baja": {
+    "f1_macro": 0.26859102382451816,
+    "f1_por_clase": {
+      "baja": 0.1492361927144536,
+      "se_mantiene": 0.6565368787591009,
+      "sube": 0.0
+    },
+    "precision_baja": 0.08706581352833638,
+    "recall_baja": 0.5219178082191781,
+    "auc_ovr": {
+      "baja": 0.568050799086758,
+      "se_mantiene": 0.6252452411157791,
+      "sube": 0.5993459203098861
+    },
+    "auc_baja": 0.568050799086758,
+    "brier": 0.4392469286788674,
+    "exactitud": 0.45317190314188516,
+    "pred_baja_pct": 0.4378627176305783,
+    "confusion": [
+      [
+        381,
+        349,
+        0
+      ],
+      [
+        2870,
+        4148,
+        0
+      ],
+      [
+        1125,
+        1121,
+        0
+      ]
+    ],
+    "umbral": 0.07,
+    "f1_baja_umbral": 0.14923619271445357,
+    "precision_baja_umbral": 0.08706581352833638,
+    "recall_baja_umbral": 0.5219178082191781
+  },
+  "constante_brier_referencia": 0.451,
+  "aceptable_para_planificar": true
+}

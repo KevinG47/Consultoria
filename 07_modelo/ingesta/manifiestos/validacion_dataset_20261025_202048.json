@@ -1,0 +1,139 @@
+{
+  "fecha_utc": "2026-10-25T20:20:48+00:00",
+  "target": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\target.parquet",
+    "filas": 77237,
+    "sha256": "5cddd35b6d2305549e226ff550d29b62694b564cc466f46492a3b4a4ffef2d35"
+  },
+  "ventana": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_ventana.parquet",
+    "filas": 47151,
+    "sha256": "b81fd8ae104425a7b1e1db888fb62489cbb72c198584f5b82fe57de8954c9401"
+  },
+  "acumulado": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_acumulado.parquet",
+    "filas": 47151,
+    "sha256": "06cbd1cc8f2e13d451d03fc49762ae73f1b1df199536484edae69655ca470be8"
+  },
+  "censo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\01_datos\\datos_fuente\\Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+  "checks": [
+    {
+      "id": "V01",
+      "nombre": "filas_modelo",
+      "esperado": 47151,
+      "observado": {
+        "ventana": 47151,
+        "acumulado": 47151
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V02",
+      "nombre": "matrices_transicion",
+      "esperado": [
+        {
+          "sube": 2336,
+          "se_mantiene": 9657,
+          "baja": 1362
+        },
+        {
+          "sube": 2246,
+          "se_mantiene": 7018,
+          "baja": 730
+        }
+      ],
+      "observado": [
+        {
+          "sube": 2336,
+          "se_mantiene": 9657,
+          "baja": 1362
+        },
+        {
+          "sube": 2246,
+          "se_mantiene": 7018,
+          "baja": 730
+        }
+      ],
+      "ok": true,
+      "detalle": [
+        "2019->2021",
+        "2017->2019"
+      ]
+    },
+    {
+      "id": "V03",
+      "nombre": "nulos_en_llaves",
+      "esperado": {
+        "target": 0,
+        "ventana": 0,
+        "acumulado": 0
+      },
+      "observado": {
+        "target": 0,
+        "ventana": 0,
+        "acumulado": 0
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V04",
+      "nombre": "duplicados_llaves",
+      "esperado": {
+        "target": 0,
+        "ventana": 0,
+        "acumulado": 0
+      },
+      "observado": {
+        "target": 0,
+        "ventana": 0,
+        "acumulado": 0
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V05",
+      "nombre": "censo_completo_en_target",
+      "esperado": 77237,
+      "observado": {
+        "filas": 77237,
+        "pares": 77237,
+        "coincide": true
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V06",
+      "nombre": "anti_leakage",
+      "esperado": 0,
+      "observado": {
+        "ventana": {
+          "merge_filas": 47151,
+          "merge_sin_target": 0,
+          "merge_clase_distinta": 0,
+          "merge_split_distinto": 0,
+          "recompuesto_clase_distinta": 0,
+          "recompuesto_split_distinto": 0,
+          "recompuesto_conv_sin_siguiente": 0,
+          "recompuesto_orden_distinto": 0
+        },
+        "acumulado": {
+          "merge_filas": 47151,
+          "merge_sin_target": 0,
+          "merge_clase_distinta": 0,
+          "merge_split_distinto": 0,
+          "recompuesto_clase_distinta": 0,
+          "recompuesto_split_distinto": 0,
+          "recompuesto_conv_sin_siguiente": 0,
+          "recompuesto_orden_distinto": 0
+        }
+      },
+      "ok": true,
+      "detalle": null
+    }
+  ],
+  "resultado": "OK"
+}

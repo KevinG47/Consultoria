@@ -1,0 +1,121 @@
+{
+  "fecha_utc": "2026-10-25T20:20:06+00:00",
+  "version": 1,
+  "censo": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\01_datos\\datos_fuente\\Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+    "sha256": "9a55dd87f5f571b1b82a834372f2f037c521ae4f02536f164d427d1c16ca9565"
+  },
+  "target": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\target.parquet",
+    "filas": 77237,
+    "columnas": 6,
+    "sha256": "5cddd35b6d2305549e226ff550d29b62694b564cc466f46492a3b4a4ffef2d35"
+  },
+  "ventana": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_ventana.parquet",
+    "filas": 47151,
+    "columnas": 282,
+    "sha256": "b81fd8ae104425a7b1e1db888fb62489cbb72c198584f5b82fe57de8954c9401"
+  },
+  "acumulado": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_acumulado.parquet",
+    "filas": 47151,
+    "columnas": 282,
+    "sha256": "06cbd1cc8f2e13d451d03fc49762ae73f1b1df199536484edae69655ca470be8"
+  },
+  "split_destino": {
+    "17": "train",
+    "18": "train",
+    "19": "train",
+    "20": "val",
+    "21": "test"
+  },
+  "distribucion_target": {
+    "train": {
+      "n": 21401,
+      "clases": {
+        "se_mantiene": 16455,
+        "sube": 3838,
+        "baja": 1108
+      }
+    },
+    "val": {
+      "n": 10946,
+      "clases": {
+        "se_mantiene": 7616,
+        "sube": 2530,
+        "baja": 800
+      }
+    },
+    "test": {
+      "n": 14804,
+      "clases": {
+        "se_mantiene": 10637,
+        "sube": 2644,
+        "baja": 1523
+      }
+    },
+    "n/a": {
+      "n": 30086,
+      "clases": {
+        "sin_siguiente": 30086
+      }
+    }
+  },
+  "distribucion_ventana": {
+    "train": {
+      "n": 21401,
+      "clases": {
+        "se_mantiene": 16455,
+        "sube": 3838,
+        "baja": 1108
+      }
+    },
+    "val": {
+      "n": 10946,
+      "clases": {
+        "se_mantiene": 7616,
+        "sube": 2530,
+        "baja": 800
+      }
+    },
+    "test": {
+      "n": 14804,
+      "clases": {
+        "se_mantiene": 10637,
+        "sube": 2644,
+        "baja": 1523
+      }
+    }
+  },
+  "distribucion_acumulado": {
+    "train": {
+      "n": 21401,
+      "clases": {
+        "se_mantiene": 16455,
+        "sube": 3838,
+        "baja": 1108
+      }
+    },
+    "val": {
+      "n": 10946,
+      "clases": {
+        "se_mantiene": 7616,
+        "sube": 2530,
+        "baja": 800
+      }
+    },
+    "test": {
+      "n": 14804,
+      "clases": {
+        "se_mantiene": 10637,
+        "sube": 2644,
+        "baja": 1523
+      }
+    }
+  },
+  "negativos_dias": {
+    "ventana": 109,
+    "acumulado": 109
+  }
+}

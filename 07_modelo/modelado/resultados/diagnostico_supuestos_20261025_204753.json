@@ -1,0 +1,82 @@
+{
+  "ventana_contiguo": {
+    "numericas": [
+      "ano",
+      "n_filas",
+      "n_productos",
+      "n_grupos_distintos",
+      "dias_desde_ultimo"
+    ],
+    "vif": {
+      "ano": 1.0137874304309238,
+      "n_filas": 38.19806581468925,
+      "n_productos": 37.23442475049979,
+      "n_grupos_distintos": 1.1922504720061233,
+      "dias_desde_ultimo": 1.1023973458045222
+    },
+    "vif_alto": {
+      "n_filas": 38.19806581468925,
+      "n_productos": 37.23442475049979
+    },
+    "box_tidwell_baja": {
+      "ano": NaN,
+      "n_filas": 0.3668055405610775,
+      "n_productos": 0.5723962205601412,
+      "n_grupos_distintos": 0.7475936458391317,
+      "dias_desde_ultimo": 0.7135992127337313
+    },
+    "box_tidwell_sube": {
+      "ano": 1.1092607323777613e-113,
+      "n_filas": 0.712522620964382,
+      "n_productos": 0.25411825951476374,
+      "n_grupos_distintos": 0.308426670933996,
+      "dias_desde_ultimo": 0.017658823124297302
+    },
+    "autocorrelacion": {
+      "personas_val_con_2_o_mas": 2204,
+      "icc_p_baja": 0.2510196485175636,
+      "icc_p_sube": 0.14635332030311152,
+      "pct_clase_constante": 34.07441016333938
+    }
+  },
+  "acumulado_contiguo": {
+    "numericas": [
+      "ano",
+      "n_filas",
+      "n_productos",
+      "n_grupos_distintos",
+      "dias_desde_ultimo"
+    ],
+    "vif": {
+      "ano": 1.204803274548896,
+      "n_filas": 11.051035927392041,
+      "n_productos": 10.625537588604114,
+      "n_grupos_distintos": 1.0726255682154358,
+      "dias_desde_ultimo": 1.1055493355198671
+    },
+    "vif_alto": {
+      "n_filas": 11.051035927392041,
+      "n_productos": 10.625537588604114
+    },
+    "box_tidwell_baja": {
+      "ano": 0.003469377502588031,
+      "n_filas": 5.333987996881006e-16,
+      "n_productos": 0.0005529595457118279,
+      "n_grupos_distintos": 0.10310860239352888,
+      "dias_desde_ultimo": 0.9288502982148428
+    },
+    "box_tidwell_sube": {
+      "ano": 1.7820306863028323e-141,
+      "n_filas": 0.00013975354819866545,
+      "n_productos": 0.4176512206878278,
+      "n_grupos_distintos": 0.0243576590245248,
+      "dias_desde_ultimo": 0.008062395473768386
+    },
+    "autocorrelacion": {
+      "personas_val_con_2_o_mas": 2204,
+      "icc_p_baja": 0.35272826523730383,
+      "icc_p_sube": 0.18129283483845024,
+      "pct_clase_constante": 37.15970961887477
+    }
+  }
+}

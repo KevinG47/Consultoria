@@ -16,9 +16,9 @@ Las 17 reglas están en `documentacion_auditoria/src/memoria/reglas.py` y se eje
 **17 reglas → 15 PASA · 0 FALLA · 2 ADVERTENCIA**
 
 Las dos advertencias son R12 (una sección compartida entre documentos completo y LITE,
-deliberada) y R15 (la migración a embeddings está registrada como pendiente, así que el
-código y la decisión vigente no coinciden todavía). El mismo resultado se obtiene en local y
-dentro del contenedor Docker.
+deliberada) y R15 (D007 implementada con embeddings locales, Granite; migración por API key
+declarada como deuda y vigilada por R15, así que el código y la decisión vigente no coinciden
+todavía). El mismo resultado se obtiene en local y dentro del contenedor Docker.
 
 ## Qué vigila cada regla
 

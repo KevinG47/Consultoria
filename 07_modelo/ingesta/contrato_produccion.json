@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "nombre": "contrato_produccion",
+  "descripcion": "Contrato de validacion de la descarga del dataset de Produccion de Grupos de MinCiencias (Socrata 33dq-ab5a). Fase 2 del plan de ingesta: si una sola comprobacion falla, el pipeline se detiene y no se construyen agregados por persona ni dataset de modelo.",
+  "dataset": "33dq-ab5a",
+  "url": "https://www.datos.gov.co/resource/33dq-ab5a.csv",
+  "metodo": "API paginada: $limit=50000, $offset, $order=:id",
+  "fuente_esperada": "04_auditoria/repo_original/evidencias/produccion_*.{csv,json} (snapshot auditado 1528939)",
+  "mapa_convocatorias": {
+    "16": 2013,
+    "17": 2014,
+    "18": 2015,
+    "19": 2017,
+    "20": 2019,
+    "21": 2021
+  },
+  "tolerancia": 0,
+  "criterio_parada": "Si CUALQUIERA de las 12 comprobaciones (C01-C12), de la comprobacion adicional (A01) o de las estructurales (E01-E05) falla, el pipeline se detiene: no se construyen agregados por persona ni dataset de modelo hasta explicar y resolver la diferencia. No hay tolerancia: se exige coincidencia exacta.",
+  "checks": [
+    {
+      "id": "C01",
+      "nombre": "filas_totales",
+      "esperado": 3166629,
+      "fuente": "produccion_cobertura_por_convocatoria.csv (suma de n_productos) y catalogo.yaml:215-227"
+    },
+    {
+      "id": "C02",
+      "nombre": "filas_2013",
+      "ano": 2013,
+      "esperado": 238407,
+      "fuente": "produccion_cobertura_por_convocatoria.csv: n_productos"
+    },
+    {
+      "id": "C03",
+      "nombre": "filas_2014",
+      "ano": 2014,
+      "esperado": 342160,
+      "fuente": "produccion_cobertura_por_convocatoria.csv: n_productos"
+    },
+    {
+      "id": "C04",
+      "nombre": "filas_2015",
+      "ano": 2015,
+      "esperado": 376653,
+      "fuente": "produccion_cobertura_por_convocatoria.csv: n_productos"
+    },
+    {
+      "id": "C05",
+      "nombre": "filas_2017",
+      "ano": 2017,
+      "esperado": 536648,
+      "fuente": "produccion_cobertura_por_convocatoria.csv: n_productos"
+    },
+    {
+      "id": "C06",
+      "nombre": "filas_2019",
+      "ano": 2019,
+      "esperado": 762719,
+      "fuente": "produccion_cobertura_por_convocatoria.csv: n_productos"
+    },
+    {
+      "id": "C07",
+      "nombre": "filas_2021",
+      "ano": 2021,
+      "esperado": 910042,
+      "fuente": "produccion_cobertura_por_convocatoria.csv: n_productos"
+    },
+    {
+      "id": "C08",
+      "nombre": "autores_unicos",
+      "esperado": 77401,
+      "fuente": "produccion_resumen_cobertura.json: autores_unicos_total"
+    },
+    {
+      "id": "C09",
+      "nombre": "censo_con_produccion",
+      "esperado": 28590,
+      "fuente": "produccion_resumen_cobertura.json: reconocidos_que_aparecen_en_produccion"
+    },
+    {
+      "id": "C10",
+      "nombre": "censo_sin_produccion",
+      "esperado": 1496,
+      "fuente": "produccion_resumen_cobertura.json: reconocidos_sin_produccion"
+    },
+    {
+      "id": "C11",
+      "nombre": "productos_reconocidos_por_ano",
+      "esperado": {
+        "2013": 183868,
+        "2014": 265385,
+        "2015": 294200,
+        "2017": 410709,
+        "2019": 568487,
+        "2021": 659106
+      },
+      "fuente": "produccion_cobertura_por_convocatoria.csv: n_reconocidos (productos)"
+    },
+    {
+      "id": "C12",
+      "nombre": "reconocidos_por_ano",
+      "esperado": {
+        "2013": 8016,
+        "2014": 8280,
+        "2015": 10050,
+        "2017": 13001,
+        "2019": 16796,
+        "2021": 21094
+      },
+      "fuente": "produccion_reconocidos_sin_produccion.csv: n_reconocidos (personas del censo por convocatoria)",
+      "nota": "Es la cifra del CENSO por convocatoria, no la de produccion. Su contraparte en produccion (personas reconocidas que si aparecen) es A01."
+    }
+  ],
+  "comprobaciones_adicionales": [
+    {
+      "id": "A01",
+      "nombre": "reconocidos_con_produccion_por_ano",
+      "esperado": {
+        "2013": 6784,
+        "2014": 7586,
+        "2015": 9219,
+        "2017": 12149,
+        "2019": 15872,
+        "2021": 19937
+      },
+      "fuente": "produccion_reconocidos_sin_produccion.csv: n_con_produccion",
+      "nota": "Distinto de C12: C12 cuenta las personas del censo por convocatoria (8016...); A01 cuenta las que ademas aparecen en produccion (6784...). A01 se calcula intersectando el censo DEL ANO con la produccion DEL ANO."
+    }
+  ],
+  "comprobaciones_informativas": [
+    {
+      "id": "A01_global",
+      "nombre": "reconocidos_con_produccion_por_ano_censo_global",
+      "informativa": true,
+      "esperado": null,
+      "fuente": "logica anterior del validador: produccion del ano intersectada con el censo GLOBAL (todas las convocatorias)",
+      "nota": "Se conserva solo para documentar la diferencia. Da 15025/16464/18654/21945/25118/26244 y NO es comparable con A01, que usa el censo POR ANO (6784...). No bloquea el pipeline."
+    }
+  ],
+  "comprobaciones_estructurales": [
+    {
+      "id": "E01",
+      "nombre": "formato_id_persona_pd",
+      "regla": "todo id_persona_pd no vacio debe ser 10 caracteres numericos",
+      "esperado": 0
+    },
+    {
+      "id": "E02",
+      "nombre": "nulos_en_clave",
+      "regla": "0 nulos en id_persona_pd o id_convocatoria",
+      "esperado": 0
+    },
+    {
+      "id": "E03",
+      "nombre": "anio_indeterminable",
+      "regla": "0 filas sin ano (ni por ano_convo ni por id_convocatoria)",
+      "esperado": 0
+    },
+    {
+      "id": "E04",
+      "nombre": "anio_inesperado",
+      "regla": "0 anos fuera del conjunto {2013,2014,2015,2017,2019,2021}",
+      "esperado": 0
+    },
+    {
+      "id": "E05",
+      "nombre": "hash_vs_manifiesto",
+      "regla": "si existe manifiesto de descarga para el archivo, su sha256 y bytes deben coincidir",
+      "esperado": 0
+    }
+  ]
+}

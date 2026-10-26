@@ -1,0 +1,222 @@
+{
+  "fecha_utc": "2026-10-25T20:24:17+00:00",
+  "checks": [
+    {
+      "id": "V01",
+      "nombre": "filas_contiguo",
+      "esperado": 43187,
+      "observado": {
+        "ventana_contiguo": 43187,
+        "acumulado_contiguo": 43187,
+        "ventana_completo": 47151,
+        "acumulado_completo": 47151
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V02",
+      "nombre": "matrices_transicion",
+      "esperado": [
+        {
+          "sube": 2336,
+          "se_mantiene": 9657,
+          "baja": 1362
+        },
+        {
+          "sube": 2246,
+          "se_mantiene": 7018,
+          "baja": 730
+        }
+      ],
+      "observado": [
+        {
+          "sube": 2336,
+          "se_mantiene": 9657,
+          "baja": 1362
+        },
+        {
+          "sube": 2246,
+          "se_mantiene": 7018,
+          "baja": 730
+        }
+      ],
+      "ok": true,
+      "detalle": [
+        "2019->2021",
+        "2017->2019"
+      ]
+    },
+    {
+      "id": "V03",
+      "nombre": "nulos_en_llaves",
+      "esperado": {
+        "target": 0,
+        "ventana_contiguo": 0,
+        "ventana_completo": 0,
+        "acumulado_contiguo": 0,
+        "acumulado_completo": 0
+      },
+      "observado": {
+        "target": 0,
+        "ventana_contiguo": 0,
+        "ventana_completo": 0,
+        "acumulado_contiguo": 0,
+        "acumulado_completo": 0
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V04",
+      "nombre": "duplicados_llaves",
+      "esperado": {
+        "target": 0,
+        "ventana_contiguo": 0,
+        "ventana_completo": 0,
+        "acumulado_contiguo": 0,
+        "acumulado_completo": 0
+      },
+      "observado": {
+        "target": 0,
+        "ventana_contiguo": 0,
+        "ventana_completo": 0,
+        "acumulado_contiguo": 0,
+        "acumulado_completo": 0
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V05",
+      "nombre": "censo_completo_en_target",
+      "esperado": 77237,
+      "observado": {
+        "filas": 77237,
+        "pares": 77237,
+        "coincide": true
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V06",
+      "nombre": "anti_leakage",
+      "esperado": 0,
+      "observado": {
+        "ventana_contiguo": {
+          "merge_filas": 43187,
+          "merge_sin_target": 0,
+          "merge_clase_distinta": 0,
+          "merge_split_distinto": 0,
+          "recompuesto_clase_distinta": 0,
+          "recompuesto_split_distinto": 0,
+          "recompuesto_conv_sin_siguiente": 0,
+          "recompuesto_orden_distinto": 0
+        },
+        "ventana_completo": {
+          "merge_filas": 47151,
+          "merge_sin_target": 0,
+          "merge_clase_distinta": 0,
+          "merge_split_distinto": 0,
+          "recompuesto_clase_distinta": 0,
+          "recompuesto_split_distinto": 0,
+          "recompuesto_conv_sin_siguiente": 0,
+          "recompuesto_orden_distinto": 0
+        },
+        "acumulado_contiguo": {
+          "merge_filas": 43187,
+          "merge_sin_target": 0,
+          "merge_clase_distinta": 0,
+          "merge_split_distinto": 0,
+          "recompuesto_clase_distinta": 0,
+          "recompuesto_split_distinto": 0,
+          "recompuesto_conv_sin_siguiente": 0,
+          "recompuesto_orden_distinto": 0
+        },
+        "acumulado_completo": {
+          "merge_filas": 47151,
+          "merge_sin_target": 0,
+          "merge_clase_distinta": 0,
+          "merge_split_distinto": 0,
+          "recompuesto_clase_distinta": 0,
+          "recompuesto_split_distinto": 0,
+          "recompuesto_conv_sin_siguiente": 0,
+          "recompuesto_orden_distinto": 0
+        }
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V07",
+      "nombre": "contiguo_gap_igual_1",
+      "esperado": {
+        "ventana_contiguo": 0,
+        "acumulado_contiguo": 0
+      },
+      "observado": {
+        "ventana_contiguo": 0,
+        "acumulado_contiguo": 0
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V08",
+      "nombre": "contiguo_split_por_destino",
+      "esperado": {
+        "ventana_contiguo": 0,
+        "acumulado_contiguo": 0
+      },
+      "observado": {
+        "ventana_contiguo": 0,
+        "acumulado_contiguo": 0
+      },
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "id": "V09",
+      "nombre": "contiguo_sin_gap_mayor_1",
+      "esperado": {
+        "ventana_contiguo": 0,
+        "acumulado_contiguo": 0
+      },
+      "observado": {
+        "ventana_contiguo": 0,
+        "acumulado_contiguo": 0
+      },
+      "ok": true,
+      "detalle": null
+    }
+  ],
+  "resultado": "OK",
+  "archivos": {
+    "target": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\target.parquet",
+      "filas": 77237,
+      "sha256": "663c89ef577de75b145d5ddb70bdb1b89447e8ce659dc4661bce37449555b87a"
+    },
+    "ventana_contiguo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_ventana_contiguo.parquet",
+      "filas": 43187,
+      "sha256": "97289128afd5d87e6c60daa85ae85f8a48fef30cb539a98622c31f45025d3376"
+    },
+    "ventana_completo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_ventana_completo.parquet",
+      "filas": 47151,
+      "sha256": "d1d99d4f0c109cd4fda27c2d8d5463214bc1f4cdf16dc55e80d265bf4be76eff"
+    },
+    "acumulado_contiguo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_acumulado_contiguo.parquet",
+      "filas": 43187,
+      "sha256": "9e3e83a72791fa87b3579c04d2b64f101ac26c0be984e5d87438ccb3d89ecb0a"
+    },
+    "acumulado_completo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_acumulado_completo.parquet",
+      "filas": 47151,
+      "sha256": "847614fffde0534c67c9dbbe2278508b525d5be693f98f1e4657c8c19c759e2e"
+    }
+  }
+}

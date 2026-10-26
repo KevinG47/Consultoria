@@ -1,0 +1,11 @@
+{
+  "fecha_utc": "2026-10-25T20:41:11+00:00",
+  "fuente": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\modelado\\resultados\\ronda2_20261025_204052.json",
+  "mejor_global": {
+    "dataset": "ventana_contiguo",
+    "variante": "r1",
+    "f1_macro": 0.39392654119597387,
+    "delta_pp_vs_r1": 0.0
+  },
+  "recomendacion": "bayesiano"
+}

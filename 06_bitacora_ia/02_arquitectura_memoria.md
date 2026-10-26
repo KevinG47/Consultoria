@@ -54,7 +54,7 @@ auditado funcionen incluso en un clon limpio, sin depender de la red.
 
 Secciones LaTeX de los documentos de auditoría (completos y LITE), el documento maestro, el
 anteproyecto y los informes de validación. Tras el arreglo del indexador (decisión D008) el
-índice quedó en **150 fragmentos / 116 277 palabras**.
+índice quedó en **151 fragmentos / 123 505 palabras**.
 
 ## Estados de una regla
 
@@ -65,8 +65,9 @@ estado actual es **15 PASA · 0 FALLA · 2 ADVERTENCIA**.
 ## Diseño y límites
 
 - **TF-IDF, no embeddings** (D002, superada por D007): con un corpus pequeño y homogéneo,
-  TF-IDF da resultados defendibles sin dependencias ni salida de datos. La migración a
-  embeddings está pendiente y registrada como deuda.
+  TF-IDF da resultados defendibles sin dependencias ni salida de datos. **D007 implementada
+  con embeddings locales (Granite)**; la migración por API key queda declarada como deuda y
+  vigilada por R15.
 - **networkx, no Neo4j** (D003): la escala es de cientos de nodos; un motor externo sería
   infraestructura desproporcionada.
 - **El grafo se alimenta del repositorio auditado real** (D005), clonado dentro del repo de

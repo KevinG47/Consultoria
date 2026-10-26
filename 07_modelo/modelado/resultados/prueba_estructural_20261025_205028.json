@@ -1,0 +1,152 @@
+{
+  "ventana_contiguo": {
+    "12": {
+      "categoria": "IJ (Junior)",
+      "n_train": 11414,
+      "n_val": 5275,
+      "n_baja_real": 0,
+      "clases_train": [
+        "se_mantiene",
+        "sube"
+      ],
+      "labels_eval": [
+        "se_mantiene",
+        "sube"
+      ],
+      "global_f1_macro": 0.5883829399372804,
+      "global_f1_baja": null,
+      "local_f1_macro": 0.663353490567353,
+      "local_f1_baja": null,
+      "delta_macro_pp": 7.5,
+      "delta_baja_pp": null,
+      "nota": null
+    },
+    "13": {
+      "categoria": "I (Asociado)",
+      "n_train": 5735,
+      "n_val": 3090,
+      "n_baja_real": 558,
+      "clases_train": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "labels_eval": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "global_f1_macro": 0.32996118348319214,
+      "global_f1_baja": 0.19291014014839242,
+      "local_f1_macro": 0.4301167302312818,
+      "local_f1_baja": 0.2439516129032258,
+      "delta_macro_pp": 10.02,
+      "delta_baja_pp": 5.1,
+      "nota": null
+    },
+    "14": {
+      "categoria": "IS (Senior)",
+      "n_train": 2689,
+      "n_val": 1629,
+      "n_baja_real": 172,
+      "clases_train": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "labels_eval": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "global_f1_macro": 0.30441375459338804,
+      "global_f1_baja": 0.06477732793522267,
+      "local_f1_macro": 0.3512428890535431,
+      "local_f1_baja": 0.10256410256410256,
+      "delta_macro_pp": 4.68,
+      "delta_baja_pp": 3.78,
+      "nota": null
+    },
+    "15": {
+      "categoria": "IE (Emerito)",
+      "n_train": 0,
+      "n_val": 0,
+      "nota": "sin filas en val (estado terminal o sin transicion)"
+    }
+  },
+  "acumulado_contiguo": {
+    "12": {
+      "categoria": "IJ (Junior)",
+      "n_train": 11414,
+      "n_val": 5275,
+      "n_baja_real": 0,
+      "clases_train": [
+        "se_mantiene",
+        "sube"
+      ],
+      "labels_eval": [
+        "se_mantiene",
+        "sube"
+      ],
+      "global_f1_macro": 0.5681243579149247,
+      "global_f1_baja": null,
+      "local_f1_macro": 0.6451048311057156,
+      "local_f1_baja": null,
+      "delta_macro_pp": 7.7,
+      "delta_baja_pp": null,
+      "nota": null
+    },
+    "13": {
+      "categoria": "I (Asociado)",
+      "n_train": 5735,
+      "n_val": 3090,
+      "n_baja_real": 558,
+      "clases_train": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "labels_eval": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "global_f1_macro": 0.29596107097705454,
+      "global_f1_baja": 0.23106546854942234,
+      "local_f1_macro": 0.4433684444788401,
+      "local_f1_baja": 0.2782152230971129,
+      "delta_macro_pp": 14.74,
+      "delta_baja_pp": 4.71,
+      "nota": null
+    },
+    "14": {
+      "categoria": "IS (Senior)",
+      "n_train": 2689,
+      "n_val": 1629,
+      "n_baja_real": 172,
+      "clases_train": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "labels_eval": [
+        "baja",
+        "se_mantiene",
+        "sube"
+      ],
+      "global_f1_macro": 0.31461643140850554,
+      "global_f1_baja": 0.13013698630136986,
+      "local_f1_macro": 0.3960238035168655,
+      "local_f1_baja": 0.2188449848024316,
+      "delta_macro_pp": 8.14,
+      "delta_baja_pp": 8.87,
+      "nota": null
+    },
+    "15": {
+      "categoria": "IE (Emerito)",
+      "n_train": 0,
+      "n_val": 0,
+      "nota": "sin filas en val (estado terminal o sin transicion)"
+    }
+  }
+}

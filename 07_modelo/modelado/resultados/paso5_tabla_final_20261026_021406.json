@@ -1,0 +1,195 @@
+{
+  "fecha_utc": "2026-10-26T02:14:06+00:00",
+  "paso": 5,
+  "n_val": 9994,
+  "metrica_principal": "f1_baja con umbral optimizado sobre val",
+  "modelos": {
+    "xgb_r1": {
+      "nombre": "XGBoost r1",
+      "f1_macro_argmax": 0.39392654119597387,
+      "f1_macro_umbral": 0.3717012121798699,
+      "f1_macro_pesos": 0.39392654119597387,
+      "f1_baja_umbral": 0.15496227510156702,
+      "f1_baja_argmax": 0.1323451561672843,
+      "umbral": 0.23,
+      "precision_baja": 0.09830633284241531,
+      "recall_baja": 0.36575342465753424,
+      "auc_baja": 0.5626704195944827,
+      "auc_baja_clase": {
+        "baja": 0.5626704195944827,
+        "se_mantiene": 0.6260473739569831,
+        "sube": 0.5814652826271544
+      },
+      "brier": 0.5478968485833725,
+      "pred_baja_pct": 0.27176305783470084,
+      "confusion": [
+        [
+          267,
+          281,
+          182
+        ],
+        [
+          1708,
+          4095,
+          1215
+        ],
+        [
+          741,
+          880,
+          625
+        ]
+      ]
+    },
+    "xgb_cal": {
+      "nombre": "XGBoost calibrado (sigmoid, en val)",
+      "f1_macro_argmax": 0.2750215534132769,
+      "f1_macro_umbral": 0.26859102382451816,
+      "f1_macro_pesos": 0.3936266889641645,
+      "f1_baja_umbral": 0.14923619271445357,
+      "f1_baja_argmax": 0.0,
+      "umbral": 0.07,
+      "precision_baja": 0.08706581352833638,
+      "recall_baja": 0.5219178082191781,
+      "auc_baja": 0.568050799086758,
+      "auc_baja_clase": {
+        "baja": 0.568050799086758,
+        "se_mantiene": 0.6252452411157791,
+        "sube": 0.5993459203098861
+      },
+      "brier": 0.4392469286788674,
+      "pred_baja_pct": 0.4378627176305783,
+      "confusion": [
+        [
+          381,
+          349,
+          0
+        ],
+        [
+          2870,
+          4148,
+          0
+        ],
+        [
+          1125,
+          1121,
+          0
+        ]
+      ]
+    },
+    "bayes_umbral": {
+      "nombre": "Bayesiano minimo (umbral)",
+      "f1_macro_argmax": 0.2945434441948379,
+      "f1_macro_umbral": 0.3566367140544457,
+      "f1_macro_pesos": 0.4704491231180457,
+      "f1_baja_umbral": 0.2860719874804382,
+      "f1_baja_argmax": 0.0027359781121751026,
+      "umbral": 0.08,
+      "precision_baja": 0.18539553752535498,
+      "recall_baja": 0.626027397260274,
+      "auc_baja": 0.8174103023635462,
+      "auc_baja_clase": {
+        "baja": 0.8174103023635462,
+        "se_mantiene": 0.5618568046605197,
+        "sube": 0.6723059488307326
+      },
+      "brier": 0.4370192964774961,
+      "pred_baja_pct": 0.24664798879327596,
+      "confusion": [
+        [
+          457,
+          273,
+          0
+        ],
+        [
+          1718,
+          5261,
+          39
+        ],
+        [
+          290,
+          1891,
+          65
+        ]
+      ]
+    },
+    "xgb_mascaras": {
+      "nombre": "XGBoost con mascaras (sin 'ano')",
+      "f1_macro_argmax": 0.4981093789690559,
+      "f1_macro_umbral": 0.5022169032473548,
+      "f1_macro_pesos": 0.5235486091066742,
+      "f1_baja_umbral": 0.3449911084765857,
+      "f1_baja_argmax": 0.24386503067484663,
+      "umbral": 0.08,
+      "precision_baja": 0.2201210287443268,
+      "recall_baja": 0.7972602739726027,
+      "auc_baja": 0.8593952581209928,
+      "auc_baja_clase": {
+        "baja": 0.8593952581209928,
+        "se_mantiene": 0.686409294686168,
+        "sube": 0.745829849061097
+      },
+      "brier": 0.4259510403434588,
+      "pred_baja_pct": 0.2645587352411447,
+      "confusion": [
+        [
+          582,
+          140,
+          8
+        ],
+        [
+          1719,
+          4477,
+          822
+        ],
+        [
+          343,
+          1002,
+          901
+        ]
+      ]
+    },
+    "ensamble": {
+      "nombre": "Ensamble bayesiano + XGB calibrado",
+      "f1_macro_argmax": 0.2755771395113123,
+      "f1_macro_umbral": 0.34473353965815895,
+      "f1_macro_pesos": 0.47895306019590195,
+      "f1_baja_umbral": 0.2957702994751466,
+      "f1_baja_argmax": 0.0,
+      "umbral": 0.08,
+      "precision_baja": 0.1909127142287764,
+      "recall_baja": 0.6561643835616439,
+      "auc_baja": 0.8120522511652116,
+      "auc_baja_clase": {
+        "baja": 0.8120522511652116,
+        "se_mantiene": 0.6294472336112669,
+        "sube": 0.6892308060081342
+      },
+      "brier": 0.4292079504797308,
+      "pred_baja_pct": 0.25105063037822695,
+      "confusion": [
+        [
+          479,
+          251,
+          0
+        ],
+        [
+          1675,
+          5340,
+          3
+        ],
+        [
+          355,
+          1889,
+          2
+        ]
+      ]
+    }
+  },
+  "mejor_por_metrica_principal": "xgb_mascaras",
+  "recomendacion": "XGBoost con mascaras estructurales y sin 'ano' es el mejor modelo para el objetivo de anticipar descensos: maximiza F1 de 'baja' con umbral (0.345) y su recall (0.797), ademas del F1 macro (0.498) y el Brier (0.426). El AUC de 'baja' (0.859) esta inflada por la mascara IJ (que no puede 'baja'); dentro de las categorias donde 'baja' existe el AUC es 0.672 (Asociado) y 0.634 (Senior).",
+  "advertencias": [
+    "los umbrales se eligen sobre el mismo val en el que se reportan (en muestra)",
+    "la AUC/Brier global del modelo con mascaras se beneficia de la restriccion IJ",
+    "el calibrador sigmoid del paso 2 se ajusta sobre val (en muestra)"
+  ]
+}

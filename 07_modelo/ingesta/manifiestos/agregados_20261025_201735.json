@@ -1,0 +1,53 @@
+{
+  "fecha_utc": "2026-10-25T20:17:31+00:00",
+  "version": 1,
+  "produccion": {
+    "archivo": "C:\\datos_externos\\minciencias\\33dq-ab5a\\2026-10-25\\produccion_grupos.csv",
+    "sha256": "99a66ae6ff2d60fb4dcde16d044464cf2bd43690fa05d3af90c5120a336d6aaa"
+  },
+  "censo": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\01_datos\\datos_fuente\\Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+    "sha256": "9a55dd87f5f571b1b82a834372f2f037c521ae4f02536f164d427d1c16ca9565"
+  },
+  "normalizacion": {
+    "id": "string 10 caracteres con zfill(10)",
+    "id_convocatoria": "int(float(x)) -> 16..21",
+    "mapa_convocatorias": {
+      "16": 2013,
+      "17": 2014,
+      "18": 2015,
+      "19": 2017,
+      "20": 2019,
+      "21": 2021
+    }
+  },
+  "ventana": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\features_ventana_t.parquet",
+    "filas": 129140,
+    "columnas": 278,
+    "bytes": 3874775,
+    "sha256": "cbdbc82303962fc3a85a6d7044fce29d0f25a3d2d477b4358c464ce375f802ac"
+  },
+  "acumulado": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\features_acumulado_t.parquet",
+    "filas": 129140,
+    "columnas": 278,
+    "bytes": 3887381,
+    "sha256": "55174e0e192380b1690dc3acb60555ee3e9917c9362b33965b8081b234bf9547"
+  },
+  "resumen": {
+    "personas": 30086,
+    "pares": 129140,
+    "pares_censo": 77237,
+    "pares_fuera_censo": 51903,
+    "personas_con_produccion": 28590,
+    "personas_sin_produccion": 1496,
+    "columnas_one_hot": 269
+  },
+  "notas": [
+    "n_filas cuadra con C11 (filas producto-autor).",
+    "n_productos = nunique(id_producto_pd); su suma no cuadra con C11 a proposito.",
+    "n_por_clase, n_por_tipologia y n_por_categoria cuentan productos unicos por valor (nunique), no filas: las filas duplicadas solo difieren en cod_grupo_gr.",
+    "dias_desde_ultimo puede ser negativo (128 filas con fcreacion > convocatoria) y hay 2 filas con fcreacion < 1900."
+  ]
+}

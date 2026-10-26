@@ -1,0 +1,28 @@
+{
+  "fecha_utc": "2026-10-26T02:39:50+00:00",
+  "experimento": "D",
+  "config": {
+    "n_estimators": 100,
+    "min_child_weight": 1,
+    "gamma": 0.1,
+    "subsample": 0.8,
+    "max_depth": 7,
+    "learning_rate": 0.05
+  },
+  "top_k": 172,
+  "usar_demografia": false,
+  "umbral_mediana": 0.15,
+  "umbrales_folds": [
+    0.12,
+    0.27,
+    0.15
+  ],
+  "f1_baja_oos_media": 0.3054,
+  "f1_baja_oos_desv": 0.0295,
+  "f1_baja_oos_folds": [
+    0.2655,
+    0.3357,
+    0.315
+  ],
+  "f1_baja_con_umbral_propio_media": 0.2985
+}

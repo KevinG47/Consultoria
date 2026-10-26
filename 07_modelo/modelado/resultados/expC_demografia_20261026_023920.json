@@ -1,0 +1,92 @@
+{
+  "fecha_utc": "2026-10-26T02:39:20+00:00",
+  "experimento": "C",
+  "config_A": {
+    "i": 3,
+    "n_estimators": 100,
+    "min_child_weight": 1,
+    "gamma": 0.1,
+    "subsample": 0.8,
+    "f1_baja_folds": [
+      0.2728,
+      0.3076,
+      0.315
+    ],
+    "media": 0.2985,
+    "desv": 0.0184,
+    "f1_macro_medio": 0.487,
+    "brier_medio": 0.4196,
+    "umbrales": [
+      0.12,
+      0.27,
+      0.15
+    ]
+  },
+  "top_k": 172,
+  "columnas_demografia": [
+    "genero_masculino",
+    "genero_femenino",
+    "genero_desconocido",
+    "edad_faltante",
+    "edad",
+    "depto_0",
+    "depto_1",
+    "depto_2",
+    "depto_3",
+    "depto_4",
+    "depto_5",
+    "depto_6",
+    "depto_7",
+    "depto_otras",
+    "depto_faltante",
+    "inst_0",
+    "inst_1",
+    "inst_2",
+    "inst_3",
+    "inst_4",
+    "inst_5",
+    "inst_6",
+    "inst_7",
+    "inst_8",
+    "inst_9",
+    "inst_otras",
+    "inst_faltante"
+  ],
+  "resultados": {
+    "sin_demografia": {
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "con_demografia": {
+      "f1_baja_folds": [
+        0.2567,
+        0.3213,
+        0.3171
+      ],
+      "media": 0.2983,
+      "desv": 0.0295,
+      "f1_macro_medio": 0.4873,
+      "brier_medio": 0.4141,
+      "umbrales": [
+        0.11,
+        0.26,
+        0.14
+      ]
+    }
+  },
+  "delta_pp": -0.02,
+  "se_queda": false,
+  "criterio_pp": 2.0
+}

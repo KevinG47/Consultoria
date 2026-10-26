@@ -1,0 +1,24 @@
+{
+  "fecha_utc": "2026-10-26T04:06:39+00:00",
+  "hallazgo_coautoria_por_producto": {
+    "productos_distintos": 1642283,
+    "autores_por_producto_media": 1.02,
+    "autores_por_producto_max": 6,
+    "pares_coautoria_totales": 72226,
+    "conclusion": "productos personales: la coautoria por producto es degenerada; la red se construye sobre grupo de investigacion (co-membresia)"
+  },
+  "filas_red": 246694,
+  "cobertura_dataset": 0.9438256882858268,
+  "cotejo_n_grupos": {
+    "correlacion": 1.0,
+    "igualdad_exacta": 1.0
+  },
+  "features": [
+    "n_companeros_distintos",
+    "companeros_que_subieron",
+    "companeros_que_bajaron",
+    "centralidad_grado",
+    "n_grupos_distintos_red",
+    "companero_categoria_modal"
+  ]
+}

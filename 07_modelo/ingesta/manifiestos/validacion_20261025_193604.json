@@ -1,0 +1,215 @@
+{
+  "fecha_utc": "2026-10-25T19:36:04+00:00",
+  "archivo": "C:\\datos_externos\\minciencias\\33dq-ab5a\\2026-10-25\\produccion_grupos.csv",
+  "bytes": 1352074732,
+  "sha256": "99a66ae6ff2d60fb4dcde16d044464cf2bd43690fa05d3af90c5120a336d6aaa",
+  "contrato": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\ingesta\\contrato_produccion.json",
+  "contrato_version": 1,
+  "censo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\01_datos\\datos_fuente\\Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+  "censo_ids": 30086,
+  "manifiesto": "C:\\datos_externos\\minciencias\\33dq-ab5a\\2026-10-25\\produccion_grupos.csv",
+  "checks": [
+    {
+      "id": "C01",
+      "nombre": "filas_totales",
+      "esperado": 3166629,
+      "observado": 3166629,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C02",
+      "nombre": "filas_2013",
+      "esperado": 238407,
+      "observado": 238407,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C03",
+      "nombre": "filas_2014",
+      "esperado": 342160,
+      "observado": 342160,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C04",
+      "nombre": "filas_2015",
+      "esperado": 376653,
+      "observado": 376653,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C05",
+      "nombre": "filas_2017",
+      "esperado": 536648,
+      "observado": 536648,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C06",
+      "nombre": "filas_2019",
+      "esperado": 762719,
+      "observado": 762719,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C07",
+      "nombre": "filas_2021",
+      "esperado": 910042,
+      "observado": 910042,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C08",
+      "nombre": "autores_unicos",
+      "esperado": 77401,
+      "observado": 77401,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C09",
+      "nombre": "censo_con_produccion",
+      "esperado": 28590,
+      "observado": 28590,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C10",
+      "nombre": "censo_sin_produccion",
+      "esperado": 1496,
+      "observado": 1496,
+      "ok": true,
+      "delta": 0
+    },
+    {
+      "id": "C11",
+      "nombre": "productos_reconocidos_por_ano",
+      "esperado": {
+        "2013": 183868,
+        "2014": 265385,
+        "2015": 294200,
+        "2017": 410709,
+        "2019": 568487,
+        "2021": 659106
+      },
+      "observado": {
+        "2013": 183868,
+        "2014": 265385,
+        "2015": 294200,
+        "2017": 410709,
+        "2019": 568487,
+        "2021": 659106
+      },
+      "ok": true,
+      "delta": null
+    },
+    {
+      "id": "C12",
+      "nombre": "reconocidos_por_ano",
+      "esperado": {
+        "2013": 8016,
+        "2014": 8280,
+        "2015": 10050,
+        "2017": 13001,
+        "2019": 16796,
+        "2021": 21094
+      },
+      "observado": {
+        "2013": 8016,
+        "2014": 8280,
+        "2015": 10050,
+        "2017": 13001,
+        "2019": 16796,
+        "2021": 21094
+      },
+      "ok": true,
+      "delta": null
+    }
+  ],
+  "adicionales": [
+    {
+      "id": "A01",
+      "nombre": "reconocidos_con_produccion_por_ano",
+      "esperado": {
+        "2013": 6784,
+        "2014": 7586,
+        "2015": 9219,
+        "2017": 12149,
+        "2019": 15872,
+        "2021": 19937
+      },
+      "observado": {
+        "2013": 6784,
+        "2014": 7586,
+        "2015": 9219,
+        "2017": 12149,
+        "2019": 15872,
+        "2021": 19937
+      },
+      "ok": true,
+      "delta": null
+    }
+  ],
+  "informativas": [
+    {
+      "id": "A01_global",
+      "nombre": "reconocidos_con_produccion_por_ano_censo_global",
+      "informativa": true,
+      "observado": {
+        "2013": 15025,
+        "2014": 16464,
+        "2015": 18654,
+        "2017": 21945,
+        "2019": 25118,
+        "2021": 26244
+      },
+      "ok": true
+    }
+  ],
+  "estructurales": [
+    {
+      "id": "E01",
+      "nombre": "formato_id_persona_pd",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true
+    },
+    {
+      "id": "E02",
+      "nombre": "nulos_en_clave",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true
+    },
+    {
+      "id": "E03",
+      "nombre": "anio_indeterminable",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true
+    },
+    {
+      "id": "E04",
+      "nombre": "anio_inesperado",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true
+    },
+    {
+      "id": "E05",
+      "nombre": "hash_vs_manifiesto",
+      "esperado": 0,
+      "observado": 0,
+      "ok": true
+    }
+  ],
+  "resultado": "OK"
+}

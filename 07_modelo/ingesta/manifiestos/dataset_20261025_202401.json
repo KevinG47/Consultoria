@@ -1,0 +1,190 @@
+{
+  "fecha_utc": "2026-10-25T20:24:01+00:00",
+  "version": 2,
+  "primario": "contiguo (gap == 1)",
+  "censo": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\01_datos\\datos_fuente\\Investigadores_Reconocidos_por_convocatoria_20261006.csv",
+    "sha256": "9a55dd87f5f571b1b82a834372f2f037c521ae4f02536f164d427d1c16ca9565"
+  },
+  "target": {
+    "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\target.parquet",
+    "filas": 77237,
+    "columnas": 9,
+    "sha256": "663c89ef577de75b145d5ddb70bdb1b89447e8ce659dc4661bce37449555b87a"
+  },
+  "split_destino": {
+    "17": "train",
+    "18": "train",
+    "19": "train",
+    "20": "val",
+    "21": "test"
+  },
+  "distribucion_target": {
+    "train": {
+      "n": 21401,
+      "clases": {
+        "se_mantiene": 16455,
+        "sube": 3838,
+        "baja": 1108
+      }
+    },
+    "val": {
+      "n": 10946,
+      "clases": {
+        "se_mantiene": 7616,
+        "sube": 2530,
+        "baja": 800
+      }
+    },
+    "test": {
+      "n": 14804,
+      "clases": {
+        "se_mantiene": 10637,
+        "sube": 2644,
+        "baja": 1523
+      }
+    },
+    "n/a": {
+      "n": 30086,
+      "clases": {
+        "sin_siguiente": 30086
+      }
+    }
+  },
+  "modelos": {
+    "ventana_contiguo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_ventana_contiguo.parquet",
+      "filas": 43187,
+      "columnas": 285,
+      "sha256": "97289128afd5d87e6c60daa85ae85f8a48fef30cb539a98622c31f45025d3376",
+      "distribucion": {
+        "train": {
+          "n": 19838,
+          "clases": {
+            "se_mantiene": 15471,
+            "sube": 3345,
+            "baja": 1022
+          }
+        },
+        "val": {
+          "n": 9994,
+          "clases": {
+            "se_mantiene": 7018,
+            "sube": 2246,
+            "baja": 730
+          }
+        },
+        "test": {
+          "n": 13355,
+          "clases": {
+            "se_mantiene": 9657,
+            "sube": 2336,
+            "baja": 1362
+          }
+        }
+      }
+    },
+    "ventana_completo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_ventana_completo.parquet",
+      "filas": 47151,
+      "columnas": 285,
+      "sha256": "d1d99d4f0c109cd4fda27c2d8d5463214bc1f4cdf16dc55e80d265bf4be76eff",
+      "distribucion": {
+        "train": {
+          "n": 21401,
+          "clases": {
+            "se_mantiene": 16455,
+            "sube": 3838,
+            "baja": 1108
+          }
+        },
+        "val": {
+          "n": 10946,
+          "clases": {
+            "se_mantiene": 7616,
+            "sube": 2530,
+            "baja": 800
+          }
+        },
+        "test": {
+          "n": 14804,
+          "clases": {
+            "se_mantiene": 10637,
+            "sube": 2644,
+            "baja": 1523
+          }
+        }
+      }
+    },
+    "acumulado_contiguo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_acumulado_contiguo.parquet",
+      "filas": 43187,
+      "columnas": 285,
+      "sha256": "9e3e83a72791fa87b3579c04d2b64f101ac26c0be984e5d87438ccb3d89ecb0a",
+      "distribucion": {
+        "train": {
+          "n": 19838,
+          "clases": {
+            "se_mantiene": 15471,
+            "sube": 3345,
+            "baja": 1022
+          }
+        },
+        "val": {
+          "n": 9994,
+          "clases": {
+            "se_mantiene": 7018,
+            "sube": 2246,
+            "baja": 730
+          }
+        },
+        "test": {
+          "n": 13355,
+          "clases": {
+            "se_mantiene": 9657,
+            "sube": 2336,
+            "baja": 1362
+          }
+        }
+      }
+    },
+    "acumulado_completo": {
+      "archivo": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\datos\\derivados\\modelo_dataset_acumulado_completo.parquet",
+      "filas": 47151,
+      "columnas": 285,
+      "sha256": "847614fffde0534c67c9dbbe2278508b525d5be693f98f1e4657c8c19c759e2e",
+      "distribucion": {
+        "train": {
+          "n": 21401,
+          "clases": {
+            "se_mantiene": 16455,
+            "sube": 3838,
+            "baja": 1108
+          }
+        },
+        "val": {
+          "n": 10946,
+          "clases": {
+            "se_mantiene": 7616,
+            "sube": 2530,
+            "baja": 800
+          }
+        },
+        "test": {
+          "n": 14804,
+          "clases": {
+            "se_mantiene": 10637,
+            "sube": 2644,
+            "baja": 1523
+          }
+        }
+      }
+    }
+  },
+  "negativos_dias": {
+    "ventana_contiguo": 104,
+    "ventana_completo": 109,
+    "acumulado_contiguo": 104,
+    "acumulado_completo": 109
+  }
+}

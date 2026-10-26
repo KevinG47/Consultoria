@@ -1,0 +1,219 @@
+{
+  "fecha_utc": "2026-10-25T20:35:43+00:00",
+  "regla": "evaluacion en val (destino 2019); test no usado",
+  "clases": [
+    "baja",
+    "se_mantiene",
+    "sube"
+  ],
+  "resultados": {
+    "ventana_contiguo": {
+      "filas_val": 9994,
+      "modelos": {
+        "baseline": {
+          "f1_macro": 0.2750215534132769,
+          "f1_por_clase": {
+            "baja": 0.0,
+            "se_mantiene": 0.8250646602398307,
+            "sube": 0.0
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5,
+            "se_mantiene": 0.5,
+            "sube": 0.5
+          },
+          "brier_multiclase": 0.5955573344006404,
+          "confusion": [
+            [
+              0,
+              730,
+              0
+            ],
+            [
+              0,
+              7018,
+              0
+            ],
+            [
+              0,
+              2246,
+              0
+            ]
+          ]
+        },
+        "logistica": {
+          "f1_macro": 0.3505221098198015,
+          "f1_por_clase": {
+            "baja": 0.054380664652567974,
+            "se_mantiene": 0.6383426397993041,
+            "sube": 0.3588430250075324
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.4867746261859134,
+            "se_mantiene": 0.5669333484250942,
+            "sube": 0.5664737655562507
+          },
+          "brier_multiclase": 0.5924042053487489,
+          "confusion": [
+            [
+              27,
+              394,
+              309
+            ],
+            [
+              182,
+              3944,
+              2892
+            ],
+            [
+              54,
+              1001,
+              1191
+            ]
+          ]
+        },
+        "xgboost": {
+          "f1_macro": 0.39392654119597387,
+          "f1_por_clase": {
+            "baja": 0.1323451561672843,
+            "se_mantiene": 0.708975243350962,
+            "sube": 0.3404592240696754
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5626704195944827,
+            "se_mantiene": 0.6260473739569831,
+            "sube": 0.5814652826271544
+          },
+          "brier_multiclase": 0.5478968620300293,
+          "confusion": [
+            [
+              125,
+              349,
+              256
+            ],
+            [
+              703,
+              4625,
+              1690
+            ],
+            [
+              331,
+              1055,
+              860
+            ]
+          ]
+        }
+      },
+      "xgboost_params": {
+        "max_depth": 7,
+        "learning_rate": 0.05,
+        "n_estimators": 200,
+        "subsample": 0.8
+      }
+    },
+    "acumulado_contiguo": {
+      "filas_val": 9994,
+      "modelos": {
+        "baseline": {
+          "f1_macro": 0.2750215534132769,
+          "f1_por_clase": {
+            "baja": 0.0,
+            "se_mantiene": 0.8250646602398307,
+            "sube": 0.0
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5,
+            "se_mantiene": 0.5,
+            "sube": 0.5
+          },
+          "brier_multiclase": 0.5955573344006404,
+          "confusion": [
+            [
+              0,
+              730,
+              0
+            ],
+            [
+              0,
+              7018,
+              0
+            ],
+            [
+              0,
+              2246,
+              0
+            ]
+          ]
+        },
+        "logistica": {
+          "f1_macro": 0.3673737134244724,
+          "f1_por_clase": {
+            "baja": 0.06504065040650407,
+            "se_mantiene": 0.7136314067611778,
+            "sube": 0.32344908310573545
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.4856148857264533,
+            "se_mantiene": 0.5629462650955914,
+            "sube": 0.5739431334590812
+          },
+          "brier_multiclase": 0.5720314101363205,
+          "confusion": [
+            [
+              36,
+              491,
+              203
+            ],
+            [
+              262,
+              4908,
+              1848
+            ],
+            [
+              79,
+              1338,
+              829
+            ]
+          ]
+        },
+        "xgboost": {
+          "f1_macro": 0.38436508705137146,
+          "f1_por_clase": {
+            "baja": 0.15313582146979607,
+            "se_mantiene": 0.6537340770959953,
+            "sube": 0.3462253625883228
+          },
+          "auc_ovr_por_clase": {
+            "baja": 0.5795078015946247,
+            "se_mantiene": 0.6359792082264653,
+            "sube": 0.5993374442765456
+          },
+          "brier_multiclase": 0.5699901580810547,
+          "confusion": [
+            [
+              199,
+              257,
+              274
+            ],
+            [
+              1165,
+              3926,
+              1927
+            ],
+            [
+              505,
+              810,
+              931
+            ]
+          ]
+        }
+      },
+      "xgboost_params": {
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "n_estimators": 200,
+        "subsample": 1.0
+      }
+    }
+  }
+}

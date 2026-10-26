@@ -1,0 +1,68 @@
+{
+  "fecha_utc": "2026-10-25T22:28:59+00:00",
+  "dataset": "ventana_contiguo",
+  "interprete": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\.venv-bayes\\Scripts\\python.exe",
+  "pymc": "5.28.5",
+  "arviz": "0.23.4",
+  "sampler": "nutpie",
+  "pytensor_flags": "cxx=,base_compiledir=C:/Users/INFOPE~1/AppData/Local/Temp/dsh-pzrtl8/dsh_bayes/pytensor",
+  "chains": 1,
+  "tune": 500,
+  "draws": 500,
+  "target_accept": 0.9,
+  "n_train": 19838,
+  "n_val": 9994,
+  "predictores": [
+    "log_filas",
+    "log_productos",
+    "log_grupos",
+    "dias",
+    "sin_produccion",
+    "share_clase_0",
+    "share_clase_1",
+    "share_clase_2",
+    "share_clase_3",
+    "share_clase_4",
+    "share_clase_otras",
+    "share_tip_0",
+    "share_tip_1",
+    "share_tip_2",
+    "share_tip_3",
+    "share_cat_0",
+    "share_cat_1",
+    "share_cat_2",
+    "share_cat_otras",
+    "genero_masculino",
+    "genero_desconocido",
+    "edad",
+    "edad_faltante",
+    "depto_bogota",
+    "depto_antioquia"
+  ],
+  "estandarizacion": {
+    "media": {
+      "log_filas": 2.632791272949448,
+      "log_productos": 2.604591349524485,
+      "log_grupos": 0.7802534227063825,
+      "dias": 354.7206371610041,
+      "edad": 44.55812733138421
+    },
+    "desv": {
+      "log_filas": 1.134313795270992,
+      "log_productos": 1.120945650821702,
+      "log_grupos": 0.3114976823526725,
+      "dias": 338.13597618341703,
+      "edad": 9.76842886273598
+    }
+  },
+  "diagnosticos": {
+    "r_hat_max": NaN,
+    "ess_min": 129.12514108398724,
+    "divergencias": 1,
+    "iteraciones": 500,
+    "pct_divergencias": 0.2
+  },
+  "convergencia_ok": false,
+  "segundos": 967.6,
+  "trace": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\modelado\\modelos\\trace_bayesiano.nc"
+}

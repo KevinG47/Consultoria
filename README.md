@@ -114,6 +114,7 @@ respaldo. El sistema las muestra en lugar de esconderlas, y no bloquea la compil
 | `failed to connect to the docker API` | Docker Desktop no está en marcha | Abre Docker Desktop y espera a que diga «running» |
 | Se generan 12 PDFs de golpe | `compilar.py` sin nombre de proyecto compila **todos** | Pasa siempre el proyecto: `compilar.py objetivo_1` |
 | Aparecen dos JSON modificados tras validar | `memoria validar` reescribe su propio estado (solo el campo `fecha`) | `git checkout -- documentacion_auditoria/data/memoria/grafo_resumen.json documentacion_auditoria/data/memoria/validacion_reglas.json` |
+| El panel dice «el CSV de 1,2 GB **con las revistas**» y debería decir «con los productos publicados, con la revista de cada uno» | Texto literal en `documentacion_auditoria/src/generar_dashboard_fase2.py`, compilado dentro de `02_dashboards/dashboard_fase2.html` (4 apariciones). **No corregible sin recompilar** el panel (5,6 MB, 8 pestañas): no hay edición segura del HTML sin pasar `verificar_dashboard_fase2.py` | Editar el literal en el generador, recompilar con `python documentacion_auditoria/src/generar_dashboard_fase2.py` y validar con `verificar_dashboard_fase2.py` |
 
 ## Dónde seguir leyendo
 

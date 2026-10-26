@@ -1,0 +1,17 @@
+{
+  "dataset": "33dq-ab5a",
+  "url": "https://www.datos.gov.co/resource/33dq-ab5a.csv",
+  "metodo": "API paginada ($limit=50000, $order=:id)",
+  "fecha_descarga_utc": "2026-10-25T19:32:18+00:00",
+  "archivo": "C:\\datos_externos\\minciencias\\33dq-ab5a\\2026-10-25\\produccion_grupos.csv",
+  "bytes": 1352074732,
+  "filas": 3166629,
+  "sha256": "99a66ae6ff2d60fb4dcde16d044464cf2bd43690fa05d3af90c5120a336d6aaa",
+  "paginas": 64,
+  "page_size": 50000,
+  "script": "C:\\Users\\InfoPersonal\\OneDrive - Universidad Santo Tomás\\Escritorio\\consultoria\\07_modelo\\ingesta\\descargar_produccion.py",
+  "script_sha256": "08576220743586224e895ceb142edb55ed69b347f0c23b9773646e42bedce164",
+  "token_usado": false,
+  "descarga_parcial": false,
+  "notas": "Descarga completa; filas contadas con csv.reader (sin cabecera). Hash verificado releyendo el archivo."
+}

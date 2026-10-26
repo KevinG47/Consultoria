@@ -1,0 +1,152 @@
+{
+  "fecha_utc": "2026-10-26T04:07:47+00:00",
+  "experimento": "G",
+  "n_base": 172,
+  "n_red": 6,
+  "n_total": 178,
+  "cobertura_red": 0.9438256882858268,
+  "nota": "red construida sobre co-membresia de grupo (cod_grupo_gr): el CSV no tiene listas de coautores (1,02 autores/producto)",
+  "resultados": {
+    "sin_red": {
+      "variante": "sin_red (172)",
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "a_companeros": {
+      "variante": "a_companeros (+1)",
+      "f1_baja_folds": [
+        0.2692,
+        0.3127,
+        0.2978
+      ],
+      "media": 0.2932,
+      "desv": 0.0181,
+      "f1_macro_medio": 0.4898,
+      "brier_medio": 0.4187,
+      "umbrales": [
+        0.13,
+        0.24,
+        0.22
+      ]
+    },
+    "b_movilidad_pares": {
+      "variante": "b_movilidad_pares (+2)",
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "d_centralidad": {
+      "variante": "d_centralidad (+1)",
+      "f1_baja_folds": [
+        0.2695,
+        0.3212,
+        0.3035
+      ],
+      "media": 0.2981,
+      "desv": 0.0214,
+      "f1_macro_medio": 0.4894,
+      "brier_medio": 0.4192,
+      "umbrales": [
+        0.12,
+        0.25,
+        0.19
+      ]
+    },
+    "e_grupos": {
+      "variante": "e_grupos (+1)",
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "f_categoria_par": {
+      "variante": "f_categoria_par (+1)",
+      "f1_baja_folds": [
+        0.2677,
+        0.3264,
+        0.2816
+      ],
+      "media": 0.2919,
+      "desv": 0.0251,
+      "f1_macro_medio": 0.4901,
+      "brier_medio": 0.4189,
+      "umbrales": [
+        0.14,
+        0.22,
+        0.26
+      ]
+    },
+    "todas": {
+      "variante": "todas (+6)",
+      "f1_baja_folds": [
+        0.2741,
+        0.3044,
+        0.3047
+      ],
+      "media": 0.2944,
+      "desv": 0.0144,
+      "f1_macro_medio": 0.4896,
+      "brier_medio": 0.4179,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.21
+      ]
+    }
+  },
+  "mejor": {
+    "variante": "b_movilidad_pares (+2)",
+    "f1_baja_folds": [
+      0.2728,
+      0.3076,
+      0.315
+    ],
+    "media": 0.2985,
+    "desv": 0.0184,
+    "f1_macro_medio": 0.487,
+    "brier_medio": 0.4196,
+    "umbrales": [
+      0.12,
+      0.27,
+      0.15
+    ]
+  },
+  "base_f1_baja_oos": 0.2985,
+  "delta_pp": 0.0,
+  "criterio_test": 0.3185,
+  "toco_test": false,
+  "test": null
+}

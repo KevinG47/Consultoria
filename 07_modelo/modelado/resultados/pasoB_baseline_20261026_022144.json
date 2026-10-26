@@ -1,0 +1,37 @@
+{
+  "fecha_utc": "2026-10-26T02:21:44+00:00",
+  "paso": "B",
+  "prevalencias_train": {
+    "baja": 0.051517290049400144,
+    "se_mantiene": 0.779866922068757,
+    "sube": 0.16861578788184292
+  },
+  "prevalencias_val": [
+    0.073,
+    0.7022,
+    0.2247
+  ],
+  "prevalencias_test": [
+    0.102,
+    0.7231,
+    0.1749
+  ],
+  "baseline": {
+    "umbral": 0.01,
+    "val_f1_baja": 0.1361432301380082,
+    "test_f1_baja": 0.18509207039478154,
+    "test_precision": 0.10198427555222762,
+    "test_recall": 1.0,
+    "test_f1_macro": 0.061697356798260515,
+    "test_brier": 0.44193922191809565,
+    "test_argmax_f1_macro": 0.27976707804623674
+  },
+  "xgb_mascaras": {
+    "umbral": 0.08,
+    "test_f1_baja": 0.43335521996060405,
+    "test_precision": 0.3086997193638915,
+    "test_recall": 0.7268722466960352,
+    "test_f1_macro": 0.5231028123638514,
+    "test_brier": 0.439658436675571
+  }
+}
