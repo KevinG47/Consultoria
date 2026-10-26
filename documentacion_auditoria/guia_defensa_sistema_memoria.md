@@ -32,9 +32,9 @@ Se usa coseno y no distancia normal porque los textos tienen largos distintos y 
 favorecemos a los fragmentos largos.
 
 ### Los 4 pasos reales del sistema
-1. **Indexar** (`python -m memoria indexar`): parte el corpus en **151 fragmentos**
-   (25 documentos: 6 criterios + sus LITE + maestro + 11 informes de validación + el
-   anteproyecto), limpia el LaTeX, construye el vocabulario (**49 749 términos**) y
+1. **Indexar** (`python -m memoria indexar`): parte el corpus en **195 fragmentos**
+   (28 documentos: 6 criterios + sus LITE + maestro + 11 informes de validación + el
+   anteproyecto), limpia el LaTeX, construye el vocabulario (**53 047 términos**) y
    calcula la matriz de pesos TF-IDF.
 2. **Consultar**: la pregunta se limpia y se pesa **igual** que el corpus.
 3. **Comparar**: se calcula el coseno contra **todos** los fragmentos y se ordenan.
@@ -42,7 +42,7 @@ favorecemos a los fragmentos largos.
    consulta queda en la bitácora `data/memoria/consultas_rag.jsonl` (auditable).
 
 ### Por qué TF-IDF y no embeddings (responde la pregunta obvia)
-Con 151 fragmentos y vocabulario técnico estable, TF-IDF resuelve sin proveedor externo,
+Con 195 fragmentos y vocabulario técnico estable, TF-IDF resuelve sin proveedor externo,
 sin red, sin costo, y es **determinista y explicable** (puedo mostrar qué términos
 pesaron). **Pero el docente decidió migrar a embeddings** (decisión D007) por
 transferibilidad; esa migración está **pendiente de implementación** y el sistema lo
@@ -155,7 +155,7 @@ python -m memoria consultar "el consolidado versionado solo tiene 3 de 6 convoca
 ```
 **Debe verse** (salida real):
 ```
-[RAG] consulta: 'el consolidado versionado solo tiene 3 de 6 convocatorias'  (índice: 151 fragmentos)
+[RAG] consulta: 'el consolidado versionado solo tiene 3 de 6 convocatorias'  (índice: 195 fragmentos)
 [RAG] términos que pesan: [('tiene convocatorias', 0.4687), ('versionado solo', 0.4274), ...]
   1. cos=0.3057  objetivo_2_lite::03_datos  [criterio_lite, 69 palabras]
      ...Veredicto: Datos correctos y suficientes en origen ... pero el consolidado

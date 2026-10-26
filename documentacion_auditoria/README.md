@@ -132,7 +132,7 @@ python -m memoria validar                    # 17 reglas (exit 1 si alguna FALLA
 python -m memoria evidencia                  # informe legible de la última ejecución
 ```
 
-- **Memoria semántica:** 151 fragmentos de 25 documentos (6 criterios + LITE +
+- **Memoria semántica:** 195 fragmentos de 28 documentos (6 criterios + LITE +
   maestro + 11 informes de validación + **el anteproyecto**). Bitácora en
   `data/memoria/consultas_rag.jsonl`.
 - **Memoria estructural:** grafo de 255 nodos / 500 aristas construido desde los

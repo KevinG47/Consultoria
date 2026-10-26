@@ -20,8 +20,8 @@ tres piezas, todas ejecutables y ejecutadas sobre los datos reales:
 
 **(i) Memoria semántica (RAG).** Indexamos el corpus documental —las secciones
 LaTeX de los seis criterios, sus versiones LITE, el documento maestro, los once
-informes de validación y este anteproyecto— en **151 fragmentos de 25 documentos**
-(≈123 505 palabras). En su primera versión la recuperación se resolvió con
+informes de validación y este anteproyecto— en **195 fragmentos de 28 documentos**
+(≈128 974 palabras). En su primera versión la recuperación se resolvió con
 **TF-IDF (1–2 gramas, `sublinear_tf`) y similitud coseno** (decisión **D002**),
 suficiente a esa escala y sin dependencias externas. **El docente decidió después
 migrar a *embeddings* vía API key** (decisión **D007**) para que el proyecto sea
@@ -100,11 +100,11 @@ con tres piezas, todas ejecutables y ejecutadas sobre los datos reales.
 
 \textbf{(i) Memoria semántica (RAG ligero).} Indexamos el corpus ya redactado
 ---secciones de los seis criterios, sus versiones LITE, el documento maestro y
-los once informes de validación--- en \textbf{151 fragmentos de 25 documentos}
-($\approx$123\,505 palabras). La recuperación usa \textbf{TF-IDF (1--2 gramas,
+los once informes de validación--- en \textbf{195 fragmentos de 28 documentos}
+($\approx$128\,974 palabras). La recuperación usa \textbf{TF-IDF (1--2 gramas,
 \texttt{sublinear\_tf}) con similitud coseno} (scikit-learn). Se eligió TF-IDF y
 no \emph{embeddings} por cuatro razones a esta escala: el corpus es pequeño
-(151 fragmentos), el vocabulario es técnico y estable, no se depende de un
+(195 fragmentos), el vocabulario es técnico y estable, no se depende de un
 proveedor externo ni de red, y el resultado es determinista y explicable.
 Antes de redactar, el generador consulta esta memoria y registra los
 antecedentes (\texttt{data/memoria/consultas\_rag.jsonl}); si la similitud supera

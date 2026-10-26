@@ -288,8 +288,37 @@ def _chunks_validacion() -> list[Fragmento]:
     return frags
 
 
+def _chunks_modelado() -> list[Fragmento]:
+    """Documentos de la fase de modelado: 07_modelo/modelado/*.md."""
+    frags: list[Fragmento] = []
+    d = config.RAIZ / "07_modelo" / "modelado"
+    if not d.exists():
+        return frags
+    for md in sorted(d.glob("*.md")):
+        crudo = md.read_text(encoding="utf-8", errors="replace")
+        partes = re.split(r"(?m)^##\s+", crudo)
+        for i, parte in enumerate(partes):
+            lineas = parte.strip().splitlines()
+            if not lineas:
+                continue
+            titulo = lineas[0][:90] if i > 0 else "encabezado"
+            texto = limpiar_markdown(parte)
+            if len(texto.split()) < 25:
+                continue
+            frags.append(Fragmento(
+                id=f"modelado::{md.name}::h{i}",
+                coleccion="modelado",
+                documento=md.name,
+                seccion=titulo,
+                ruta=str(md.relative_to(config.RAIZ)),
+                texto=texto,
+                n_palabras=len(texto.split()),
+            ))
+    return frags
+
+
 def construir_fragmentos() -> list[Fragmento]:
-    return _chunks_latex() + _chunks_validacion()
+    return _chunks_latex() + _chunks_validacion() + _chunks_modelado()
 
 
 # --------------------------------------------------------------------------

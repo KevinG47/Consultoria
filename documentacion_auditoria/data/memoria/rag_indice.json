@@ -1,20 +1,23 @@
 {
-  "fecha_construccion": "2026-10-22T20:10:03",
-  "n_fragmentos": 151,
-  "n_documentos": 25,
+  "fecha_construccion": "2026-10-26T00:45:52",
+  "n_fragmentos": 195,
+  "n_documentos": 28,
   "por_coleccion": {
     "criterio_completo": 25,
     "criterio_lite": 24,
     "maestro": 8,
     "anteproyecto": 8,
-    "validacion": 86
+    "validacion": 86,
+    "modelado": 44
   },
-  "palabras_totales": 123505,
+  "palabras_totales": 128974,
   "tecnica": "TF-IDF (1-2 gramas, sublinear_tf) + similitud coseno",
   "metodo": "tfidf",
   "corpus": [
     "anteproyecto",
+    "diseno_bayesiano.md",
     "maestro_auditoria",
+    "model_card.md",
     "objetivo_1",
     "objetivo_1_lite",
     "objetivo_2",
@@ -34,11 +37,12 @@
     "validacion_factica.md",
     "validacion_final_D.md",
     "validacion_final_S.md",
+    "validacion_honesta.md",
     "validacion_reglas.md",
     "validacion_rubrica.md",
     "validacion_sota_cobertura.md",
     "validacion_sota_referencias.md"
   ],
-  "hash_corpus": "f3d66ededfab9e9e",
-  "n_terminos_vocabulario": 49749
+  "hash_corpus": "929e3304aa435ac6",
+  "n_terminos_vocabulario": 53047
 }
