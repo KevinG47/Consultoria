@@ -41,8 +41,9 @@ la **transición** de un individuo entre dos convocatorias consecutivas.
 | Emérito (IE) | **excluido** | sin transiciones en los datos |
 
 - **172 features** de producción: volumen (4), clase de producto (5),
-  tipología (58) y categoría/calidad (105). Sin `ano`. **Solo 43 tienen
-  gain > 0**; las otras 129 el boosting las ignora.
+  tipología (58) y categoría/calidad (105). Sin `ano`. **111 tienen gain > 0 en el
+  modelo final (43 en el fold más pequeño, entrenado solo con la cohorte 17)**; las
+  otras 61 no se usan.
 - Configuración: `n_estimators=100`, `max_depth=7`, `learning_rate=0.05`,
   `subsample=0.8`, `gamma=0.1`, `min_child_weight=1`, `tree_method=hist`,
   pesos de clase balanceados, `random_state=42`.
@@ -92,7 +93,8 @@ nivel. **El Brier honesto es 0,4692.**
    Se fija 0,15 por mediana; moverlo cambia el recall entre 0,54 y 0,89.
 3. **Sobreajuste train-val**: F1 macro **0,83 en train vs 0,50 en val**
    (brecha +0,33). Con 100 árboles y `gamma=0,1` se atenúa, no desaparece.
-4. **129 de 172 features con gain 0**: el modelo efectivo usa ~43 variables.
+4. **61 de 172 features con gain 0 en el modelo final** (111 activas; en el fold
+   más pequeño, entrenado solo con la cohorte 17, se activan 43).
 5. **No hay coautorías en el dato**: `produccion_grupos.csv` registra **1,02
    autores por producto** (máx. 6) porque `id_producto_pd` es personal; solo
    existen 72 226 pares de coautoría en todo el censo. La red de grupos tampoco

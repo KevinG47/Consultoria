@@ -15,7 +15,8 @@ convocatoria siguiente su categoría **sube**, **se mantiene** o **baja**.
   binario (sube / se mantiene, porque IJ no puede bajar), Asociado y Senior
   tricótomos, Emérito excluido (sin transiciones).
 - **172 features** de producción (volumen, clase de producto, tipología,
-  categoría/calidad), sin `ano`. **Solo 43 tienen gain > 0.**
+  categoría/calidad), sin `ano`. **111 tienen gain > 0 en el modelo final**
+  (43 en el fold más pequeño, entrenado solo con la cohorte 17).
 - Configuración: 100 árboles, `gamma=0.1`, `subsample=0.8`, `max_depth=7`,
   `learning_rate=0.05`, `min_child_weight=1`, pesos balanceados, semilla 42.
 - Umbral de «baja»: **0,15** (mediana de los folds temporales).
@@ -60,7 +61,8 @@ y **Brier 0,437**. Mejores probabilidades, peor `argmax`.
    oráculo). No se aplica.
 2. **Umbral sensible a la cohorte**: el óptimo por fold va de 0,08 a 0,29.
 3. **Sobreajuste train-val**: F1 macro 0,83 en train vs 0,50 en val.
-4. **129 de 172 features con gain 0**: el modelo efectivo usa ~43 variables.
+4. **61 de 172 features con gain 0 en el modelo final** (111 activas; en el fold
+   más pequeño se activan 43).
 5. **No hay coautorías en el dato**: 1,02 autores por producto; solo 72 226
    pares de coautoría en todo el censo. La red de grupos tampoco aporta.
 6. **Solo 5 cohortes históricas**: no alcanza para validar estabilidad.

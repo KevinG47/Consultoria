@@ -135,8 +135,10 @@ filas en `resultados/expA_grid_20261026_023713.json`.
 | 80 | 0,2819 | 0,0167 |
 | 50 | 0,2953 | 0,0239 |
 
-Se queda **k = 172**. Dato relevante: solo **43 de las 172 features tienen gain
-> 0**; por eso top-120 y top-80 dan predicciones idénticas (máx. |Δp| = 0,0).
+Se queda **k = 172**. Dato relevante: en el fold más pequeño (solo cohorte 17) solo
+**43 de las 172 features tienen gain > 0**; en el modelo final (17–20) son **111**
+activas y **61 en cero**. En aquel fold, por eso, top-120 y top-80 daban predicciones
+idénticas (máx. |Δp| = 0,0).
 
 ## C. Demografía (género, edad, departamento, institución; 27 columnas)
 
@@ -339,7 +341,8 @@ Umbral de decisión para volver a test: **0,3185** (+2 pp). **Nunca se alcanzó.
    suficiente historia para separar tendencia de ruido.
 2. **El censo no publica las variables que la literatura usa** (financiación,
    movilidad internacional, productividad por proyecto). Las 172 features son
-   todas de producción y **solo 43 tienen gain > 0**.
+   todas de producción y **111 tienen gain > 0 en el modelo final** (43 en el fold
+   más pequeño, entrenado solo con la cohorte 17).
 3. **No existen coautorías** en el dato: 1,02 autores por producto.
 4. **Cambio de régimen 2019→2021**: la prevalencia de «baja» pasa de 5,2 % a
    10,2 % y quiénes bajan cambia de composición. Ni el reweighting ni más

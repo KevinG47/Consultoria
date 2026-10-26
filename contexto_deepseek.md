@@ -131,8 +131,9 @@ Este documento es el contexto de un proyecto que veníamos trabajando en otros c
 **Qué se hizo.** XGBoost con **máscaras estructurales** por categoría de origen
 (Junior: binario sube/se mantiene, porque IJ no puede bajar; Asociado y Senior:
 tricótomos; Emérito excluido). Sobre **43 187 transiciones contiguas** (5
-cohortes 2013→2021), con **172 features** de producción de las que **solo 43
-tienen gain > 0**. Configuración final: **100 árboles**, `gamma=0.1`,
+cohortes 2013→2021), con **172 features** de producción de las que **111 tienen
+gain > 0 en el modelo final** (43 en el fold más pequeño, entrenado solo con la
+cohorte 17). Configuración final: **100 árboles**, `gamma=0.1`,
 `subsample=0.8`, `max_depth=7`, `learning_rate=0.05`, umbral de «baja» 0,15.
 
 **Métricas en test** (13 355 filas, evaluadas **una sola vez**, cohorte
