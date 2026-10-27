@@ -1,0 +1,118 @@
+{
+  "fecha_utc": "2026-10-27T19:42:54+00:00",
+  "experimento": "M_lags_dos_periodos",
+  "n_base": 172,
+  "n_lag1": 8,
+  "n_lag2": 8,
+  "columnas_rezagadas": [
+    "n_productos",
+    "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+    "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A2",
+    "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_B",
+    "n_tipologia_TESIS_DE_DOCTORADO",
+    "n_tipologia_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO",
+    "n_grupos_distintos"
+  ],
+  "cobertura_lag1": 0.5674,
+  "cobertura_lag2": 0.3181,
+  "config": {
+    "n_estimators": 100,
+    "min_child_weight": 1,
+    "gamma": 0.1,
+    "subsample": 0.8,
+    "max_depth": 7,
+    "learning_rate": 0.05
+  },
+  "variantes": {
+    "base_172": {
+      "variante": "base_172",
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "lag1": {
+      "variante": "lag1",
+      "f1_baja_folds": [
+        0.2728,
+        0.3314,
+        0.3106
+      ],
+      "media": 0.3049,
+      "desv": 0.0243,
+      "f1_macro_medio": 0.4902,
+      "brier_medio": 0.418,
+      "umbrales": [
+        0.12,
+        0.21,
+        0.19
+      ]
+    },
+    "lag2": {
+      "variante": "lag2",
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "ambos_lags": {
+      "variante": "ambos_lags",
+      "f1_baja_folds": [
+        0.2728,
+        0.3314,
+        0.3106
+      ],
+      "media": 0.3049,
+      "desv": 0.0243,
+      "f1_macro_medio": 0.4902,
+      "brier_medio": 0.418,
+      "umbrales": [
+        0.12,
+        0.21,
+        0.19
+      ]
+    }
+  },
+  "mejor": {
+    "variante": "lag1",
+    "f1_baja_folds": [
+      0.2728,
+      0.3314,
+      0.3106
+    ],
+    "media": 0.3049,
+    "desv": 0.0243,
+    "f1_macro_medio": 0.4902,
+    "brier_medio": 0.418,
+    "umbrales": [
+      0.12,
+      0.21,
+      0.19
+    ]
+  },
+  "base_f1_baja_oos": 0.2985,
+  "delta_pp": 0.64,
+  "criterio_test": 0.3185,
+  "toco_test": false,
+  "test": null
+}

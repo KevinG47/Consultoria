@@ -1,0 +1,118 @@
+{
+  "fecha": "2026-10-26",
+  "iteracion": "laya_open_weights",
+  "criterio_pp": 2.0,
+  "base_f1_baja_oos": 0.2985,
+  "experimentos": {
+    "1_hhi": {
+      "archivo": "expI_hhi_*.json",
+      "resultados": {
+        "base_172": {
+          "variante": "base_172",
+          "f1_baja_folds": [
+            0.2728,
+            0.3076,
+            0.315
+          ],
+          "media": 0.2985,
+          "desv": 0.0184,
+          "f1_macro_medio": 0.487,
+          "brier_medio": 0.4196,
+          "umbrales": [
+            0.12,
+            0.27,
+            0.15
+          ]
+        },
+        "hhi": {
+          "variante": "hhi",
+          "f1_baja_folds": [
+            0.2728,
+            0.3275,
+            0.3036
+          ],
+          "media": 0.3013,
+          "desv": 0.0224,
+          "f1_macro_medio": 0.4859,
+          "brier_medio": 0.4146,
+          "umbrales": [
+            0.12,
+            0.19,
+            0.15
+          ]
+        },
+        "movilidad": {
+          "variante": "movilidad",
+          "f1_baja_folds": [
+            0.2728,
+            0.3392,
+            0.2896
+          ],
+          "media": 0.3005,
+          "desv": 0.0282,
+          "f1_macro_medio": 0.4899,
+          "brier_medio": 0.4203,
+          "umbrales": [
+            0.12,
+            0.18,
+            0.25
+          ]
+        },
+        "hhi_movilidad": {
+          "variante": "hhi_movilidad",
+          "f1_baja_folds": [
+            0.2728,
+            0.335,
+            0.302
+          ],
+          "media": 0.3032,
+          "desv": 0.0254,
+          "f1_macro_medio": 0.4865,
+          "brier_medio": 0.4144,
+          "umbrales": [
+            0.12,
+            0.14,
+            0.19
+          ]
+        }
+      },
+      "mejor": "hhi_movilidad",
+      "delta_pp": 0.47,
+      "toco_test": false
+    },
+    "2_tabicl": {
+      "modelo": "TabICLv2",
+      "licencia": "BSD-3-Clause",
+      "folds_500_100": {
+        "F2": 0.1415,
+        "F1": 0.1031,
+        "F3": 0.136
+      },
+      "media": 0.1269,
+      "desv": 0.017,
+      "delta_pp": -17.16,
+      "nota": "contexto limitado a 500 filas por RAM/CPU; F1 a 1500 dio 0.1024 (sin mejora)"
+    },
+    "3_laya": {
+      "correlaciones": {
+        "spearman_score_vs_y": 0.075,
+        "pearson_score_vs_y": 0.1035,
+        "spearman_p": 0.4583900090514819,
+        "spearman_score_vs_sube_bin": 0.0568,
+        "media_score_baja": 0.778,
+        "media_score_mantiene": 0.802,
+        "media_score_sube": 0.855,
+        "n_validas": 100,
+        "n_errores": 0
+      },
+      "n": 100,
+      "segundos": 344.7,
+      "senal": false
+    }
+  },
+  "decision": {
+    "alguna_palanca_supera_2pp": false,
+    "test_tocado": false,
+    "siguiente": "lags de 2 periodos (palanca 4) sin tocar test"
+  }
+}

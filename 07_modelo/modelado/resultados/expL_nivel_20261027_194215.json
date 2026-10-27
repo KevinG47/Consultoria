@@ -1,0 +1,119 @@
+{
+  "fecha_utc": "2026-10-27T19:42:15+00:00",
+  "experimento": "L_nivel_formacion",
+  "variable": "NME_NIV_FORM_PR (censo)",
+  "n_base": 172,
+  "config": {
+    "n_estimators": 100,
+    "min_child_weight": 1,
+    "gamma": 0.1,
+    "subsample": 0.8,
+    "max_depth": 7,
+    "learning_rate": 0.05
+  },
+  "cobertura": 1.0,
+  "distribucion_censo": {
+    "Doctorado": 22534,
+    "Maestría/Magister": 14846,
+    "Postdoctorado": 3616,
+    "Especialidad Médica": 995,
+    "Especialización": 600,
+    "Pregrado/Universitario": 577,
+    "No disponible": 14,
+    "Cursos de corta duración": 2,
+    "Secundario": 2,
+    "Perfeccionamiento": 1
+  },
+  "variantes": {
+    "base_172": {
+      "variante": "base_172",
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "ordinal": {
+      "variante": "ordinal",
+      "f1_baja_folds": [
+        0.2627,
+        0.3292,
+        0.2823
+      ],
+      "media": 0.2914,
+      "desv": 0.0279,
+      "f1_macro_medio": 0.4873,
+      "brier_medio": 0.4151,
+      "umbrales": [
+        0.09,
+        0.17,
+        0.23
+      ]
+    },
+    "onehot": {
+      "variante": "onehot",
+      "f1_baja_folds": [
+        0.2709,
+        0.3278,
+        0.2974
+      ],
+      "media": 0.2987,
+      "desv": 0.0232,
+      "f1_macro_medio": 0.4899,
+      "brier_medio": 0.413,
+      "umbrales": [
+        0.12,
+        0.17,
+        0.2
+      ]
+    },
+    "ordinal_binario": {
+      "variante": "ordinal_binario",
+      "f1_baja_folds": [
+        0.2627,
+        0.3292,
+        0.2823
+      ],
+      "media": 0.2914,
+      "desv": 0.0279,
+      "f1_macro_medio": 0.4873,
+      "brier_medio": 0.4151,
+      "umbrales": [
+        0.09,
+        0.17,
+        0.23
+      ]
+    }
+  },
+  "mejor": {
+    "variante": "onehot",
+    "f1_baja_folds": [
+      0.2709,
+      0.3278,
+      0.2974
+    ],
+    "media": 0.2987,
+    "desv": 0.0232,
+    "f1_macro_medio": 0.4899,
+    "brier_medio": 0.413,
+    "umbrales": [
+      0.12,
+      0.17,
+      0.2
+    ]
+  },
+  "base_f1_baja_oos": 0.2985,
+  "delta_pp": 0.02,
+  "criterio_test": 0.3185,
+  "toco_test": false,
+  "test": null
+}

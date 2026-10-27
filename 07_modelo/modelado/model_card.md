@@ -101,6 +101,11 @@ nivel. **El Brier honesto es 0,4692.**
    aporta (+0,00 pp).
 6. **Solo 5 cohortes históricas**: no alcanza para validar estabilidad del
    umbral ni del Brier entre regímenes.
+7. **Nueve palancas probadas y ninguna supera el +2 pp**: regularización,
+   selección de features, demografía, trayectoria (+0,78 pp, la mejor), HHI
+   institucional + movilidad (+0,47 pp), TabICLv2 (−17,16 pp), Laya zero-shot
+   (sin señal), nivel de formación (+0,02 pp) y lags de dos períodos (+0,64 pp).
+   El cierre está documentado en `validacion_honesta.md` § «Cierre definitivo».
 
 ## 6. Uso recomendado
 
@@ -138,6 +143,7 @@ pandas 3.1.0 · numpy 2.4.6 · venv `07_modelo/.venv-bayes` · semilla 42.
 
 **Piezas:** `opt_comun.py` (features y folds), `expE_test.py` (entrenamiento y
 evaluación final), `pasoA_cv_temporal.py`/`expA_grid.py`–`expD_umbral_mediana.py`
-(validación y umbral), `expH_prior_shift.py` (prior shift, descartado).
+(validación y umbral), `expH_prior_shift.py` (prior shift, descartado) y
+`expI_hhi.py`–`expM_lags2.py` (palancas 5 a 9 de la iteración de cierre).
 Resultados en `07_modelo/modelado/resultados/*.json`. Bitácora:
 `07_modelo/modelado/validacion_honesta.md`.

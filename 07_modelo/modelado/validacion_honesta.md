@@ -358,7 +358,103 @@ umbral 0,15. Test (13 355 filas): **F1 «baja» 0,4234 · recall 0,7878 ·
 precisión 0,2895 · F1 macro 0,5109 · Brier 0,4692**. Documentado en
 `model_card.md`.
 
+# Cierre definitivo: nueve palancas y ninguna supera el umbral (27-oct-2026)
 
+Con esta iteración se completan las nueve palancas que el plan contemplaba. El
+criterio de adopción nunca cambió: una palanca se adopta solo si mejora el F1
+«baja» fuera de muestra en **>= 2 pp**, es decir, media OOS **>= 0,3185** sobre
+0,2985. **Ninguna lo logró.** El test (cohorte 21) sigue evaluado una sola vez
+con el modelo de la Ronda 2.
 
+## Las nueve palancas
 
+| # | Palanca | Mejor F1 "baja" OOS | Desv. | Δ vs 0,2985 | Veredicto |
+|---|---|---|---|---|---|
+| 1 | Regularización (54 configuraciones) | 0,2985 | 0,0184 | 0,00 | define la base de la Ronda 2 |
+| 2 | Selección de features (top 50/80/120) | 0,2985 | 0,0184 | 0,00 | sin efecto |
+| 3 | Demografía (género, edad, depto, institución) | 0,2983 | 0,0295 | −0,02 pp | descartada |
+| 4 | Trayectoria (5 features) | 0,3063 | 0,0246 | +0,78 pp | no alcanza |
+| 5 | HHI institucional + movilidad (Godoy et al.) | 0,3032 | 0,0254 | +0,47 pp | no alcanza |
+| 6 | TabICLv2 zero-shot (modelo de fundación) | 0,1269 | 0,0170 | −17,16 pp | no competitivo |
+| 7 | Laya zero-shot (100 filas) | ρ = 0,075 (p = 0,458) | — | sin señal | no aporta |
+| 8 | Nivel de formación (`NME_NIV_FORM_PR`) | 0,2987 | 0,0232 | +0,02 pp | sin efecto |
+| 9 | Lags de dos períodos (t−1 y t−2) | 0,3049 | 0,0243 | +0,64 pp | no alcanza |
 
+Fuera de la tabla quedan dos ensayos que no son palancas de F1: la **red de
+grupos** (Ronda 4, +0,00 pp) y la **corrección de prior shift** (ataca el Brier,
+no el F1, y lo empeoró: 0,4917/0,4851 frente a 0,4692).
+
+## Salidas literales de las dos últimas palancas
+
+**Palanca 8 — nivel de formación** (`expL_nivel_formacion.py`):
+
+```
+distribucion de nivel de formacion en el censo (persona x convocatoria):
+Doctorado                   22534
+Maestria/Magister           14846
+Postdoctorado                3616
+Especialidad Medica           995
+Especializacion               600
+Pregrado/Universitario        577
+No disponible                  14
+Cursos de corta duracion        2
+Secundario                      2
+Perfeccionamiento               1
+faltantes (no disponible o sin registro): 0 (0.00% de las filas del dataset)
+cobertura del cruce: 100.00% de las filas
+
+variante         folds                       media   desv  F1macro   Brier  t
+base_172         [0.2728, 0.3076, 0.315]    0.2985 0.0184   0.4870  0.4196  [0.12, 0.27, 0.15]
+ordinal          [0.2627, 0.3292, 0.2823]   0.2914 0.0279   0.4873  0.4151  [0.09, 0.17, 0.23]
+onehot           [0.2709, 0.3278, 0.2974]   0.2987 0.0232   0.4899  0.4130  [0.12, 0.17, 0.2]
+ordinal_binario  [0.2627, 0.3292, 0.2823]   0.2914 0.0279   0.4873  0.4151  [0.09, 0.17, 0.23]
+
+MEJOR: onehot -> media 0.2987 (base 0.2985, delta +0.02 pp)
+NO cumple: test NO se toca.
+```
+
+**Palanca 9 — lags de dos períodos** (`expM_lags2.py`):
+
+```
+base: 172 features | lag1: 8 | lag2: 8
+cobertura lag1: 56.7% | cobertura lag2: 31.8%
+
+variante         folds                       media   desv  F1macro   Brier  t
+base_172         [0.2728, 0.3076, 0.315]    0.2985 0.0184   0.4870  0.4196  [0.12, 0.27, 0.15]
+lag1             [0.2728, 0.3314, 0.3106]   0.3049 0.0243   0.4902  0.4180  [0.12, 0.21, 0.19]
+lag2             [0.2728, 0.3076, 0.315]    0.2985 0.0184   0.4870  0.4196  [0.12, 0.27, 0.15]
+ambos_lags       [0.2728, 0.3314, 0.3106]   0.3049 0.0243   0.4902  0.4180  [0.12, 0.21, 0.19]
+
+MEJOR: lag1 -> media 0.3049 (base 0.2985, delta +0.64 pp)
+NO cumple: test NO se toca.
+```
+
+## Lectura
+
+1. **El nivel de formación no aporta nada** (+0,02 pp con one-hot; con código
+   ordinal incluso empeora −0,71 pp). La razón es estructural: el 52,2 % de las
+   observaciones del dataset son doctorado y el 86,6 % son doctorado o maestría,
+   de modo que la variable es casi constante en la población reconocida. Era la
+   última variable del censo con anclaje directo en los criterios de Minciencias
+   (`documentacion/criterios_minciencias.md`) y quedó descartada con evidencia.
+2. **Los lags de dos períodos tampoco.** El lag de t−1 aporta +0,64 pp y el de
+   t−2 **no lo usa el modelo**: la variante con ambos rezagos reproduce
+   exactamente el resultado de lag1, y la de solo lag2 reproduce la base. Con
+   68,2 % de valores imputados en t−2, la señal no existe.
+3. **El orden de magnitud es el mismo en las nueve palancas**: entre −0,02 y
+   +0,78 pp cuando la palanca era razonable, y negativo cuando se cambió de
+   familia de modelo (TabICLv2) o de representación (Laya). El techo es del dato.
+
+## Decisión final
+
+**El modelo se cierra con la Ronda 2** (XGBoost con máscaras estructurales, 100
+árboles, `gamma=0,1`, `subsample=0,8`, umbral 0,15). No hay plan de evaluación en
+test para ninguna palanca nueva: el test ya se consumió una vez con la Ronda 2 y
+no hay nada que justifique volver a él.
+
+Métricas de cierre (Ronda 2, test cohorte 2021, n = 13 355): **F1 «baja»
+0,4234 · recall 0,7878 · precisión 0,2895 · F1 macro 0,5109 · Brier 0,4692**.
+
+Cualquier mejora futura tendría que venir de **datos nuevos** (financiación de
+proyectos, coautoría real, vinculación contractual), no de más features sobre el
+mismo censo.

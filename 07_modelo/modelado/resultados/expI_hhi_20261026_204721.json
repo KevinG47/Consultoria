@@ -1,0 +1,110 @@
+{
+  "fecha_utc": "2026-10-26T20:47:21+00:00",
+  "experimento": "I_hhi_institucional",
+  "fuente_metodologica": "Godoy, Abramo, D'Angelo & Cortés (2026), Scientometrics 131(9):5803-5824",
+  "n_base": 172,
+  "n_nuevas": 6,
+  "n_total": 178,
+  "cobertura_hhi_lag1": 0.7487,
+  "tasa_movilidad_institucional": 0.1389,
+  "config": {
+    "n_estimators": 100,
+    "min_child_weight": 1,
+    "gamma": 0.1,
+    "subsample": 0.8,
+    "max_depth": 7,
+    "learning_rate": 0.05
+  },
+  "resultados": {
+    "base_172": {
+      "variante": "base_172",
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "hhi": {
+      "variante": "hhi",
+      "f1_baja_folds": [
+        0.2728,
+        0.3275,
+        0.3036
+      ],
+      "media": 0.3013,
+      "desv": 0.0224,
+      "f1_macro_medio": 0.4859,
+      "brier_medio": 0.4146,
+      "umbrales": [
+        0.12,
+        0.19,
+        0.15
+      ]
+    },
+    "movilidad": {
+      "variante": "movilidad",
+      "f1_baja_folds": [
+        0.2728,
+        0.3392,
+        0.2896
+      ],
+      "media": 0.3005,
+      "desv": 0.0282,
+      "f1_macro_medio": 0.4899,
+      "brier_medio": 0.4203,
+      "umbrales": [
+        0.12,
+        0.18,
+        0.25
+      ]
+    },
+    "hhi_movilidad": {
+      "variante": "hhi_movilidad",
+      "f1_baja_folds": [
+        0.2728,
+        0.335,
+        0.302
+      ],
+      "media": 0.3032,
+      "desv": 0.0254,
+      "f1_macro_medio": 0.4865,
+      "brier_medio": 0.4144,
+      "umbrales": [
+        0.12,
+        0.14,
+        0.19
+      ]
+    }
+  },
+  "mejor": {
+    "variante": "hhi_movilidad",
+    "f1_baja_folds": [
+      0.2728,
+      0.335,
+      0.302
+    ],
+    "media": 0.3032,
+    "desv": 0.0254,
+    "f1_macro_medio": 0.4865,
+    "brier_medio": 0.4144,
+    "umbrales": [
+      0.12,
+      0.14,
+      0.19
+    ]
+  },
+  "base_f1_baja_oos": 0.2985,
+  "delta_pp": 0.47,
+  "criterio_test": 0.3185,
+  "toco_test": false,
+  "test": null
+}

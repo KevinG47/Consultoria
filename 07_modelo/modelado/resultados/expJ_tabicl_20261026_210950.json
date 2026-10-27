@@ -1,0 +1,41 @@
+{
+  "fecha_utc": "2026-10-26T21:09:50+00:00",
+  "experimento": "J_tabicl_v2",
+  "modelo": "TabICLv2 (Qu, Holzmuller, Varoquaux & Le Morvan, 2026, ICML; arXiv:2602.11139)",
+  "licencia": "BSD-3-Clause",
+  "parametros": {
+    "context": 500,
+    "estimators": 1,
+    "features": 100,
+    "batch_size": 4,
+    "device": "cpu"
+  },
+  "nota": "contexto = submuestra estratificada del train por fold; TabICL es O(n^2) y en CPU no cabe el train completo",
+  "folds": [
+    {
+      "fold": "F3",
+      "n_context": 500,
+      "n_val": 8164,
+      "n_eval": 9994,
+      "umbral": 0.04,
+      "f1_val": 0.1123,
+      "f1_baja_eval": 0.136,
+      "f1_macro": 0.2867,
+      "brier": 0.4785,
+      "segundos": 93.1
+    }
+  ],
+  "f1_baja_folds": [
+    0.136
+  ],
+  "media": 0.136,
+  "desv": 0.0,
+  "f1_macro_medio": 0.2867,
+  "brier_medio": 0.4785,
+  "umbrales": [
+    0.04
+  ],
+  "base_f1_baja_oos": 0.2985,
+  "delta_pp": -16.25,
+  "toco_test": false
+}
