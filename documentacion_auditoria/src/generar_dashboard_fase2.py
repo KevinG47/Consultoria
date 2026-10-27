@@ -724,18 +724,28 @@ def fig_red(G, nx) -> go.Figure:
     gy = [pos[n][1] for n in nodos]
     grado = np.array([G.degree(n, weight="weight") for n in nodos], dtype=float)
 
+    # Nodos legibles sobre fondo blanco: el extremo bajo de la escala anterior
+    # (#EAF0F9) era casi blanco y el borde también era blanco, de modo que las
+    # instituciones con grado 1 se perdían. Se usa una escala local más oscura,
+    # borde azul marino y un tamaño mínimo mayor. No cambia el dato ni la red:
+    # solo el contraste, el borde y el tamaño de los marcadores.
+    escala_nodos = [[0.0, "#9FB6D1"], [0.35, "#6D93BF"],
+                    [0.7, "#35639C"], [1.0, "#0F1F4D"]]
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=xs, y=ys, mode="lines", name="Co-filiación",
-                             line=dict(color=PALETA["gris_claro"], width=0.7),
+                             line=dict(color="#B7C4D4", width=0.75),
                              hoverinfo="skip"))
     nombres = [n if len(n) <= 34 else n[:32] + "…" for n in nodos]
     fig.add_trace(go.Scatter(
         x=gx, y=gy, mode="markers", name="Institución",
-        marker=dict(size=6 + 2.2 * np.sqrt(grado), color=grado,
-                    colorscale=ESCALA_AZUL, showscale=True,
+        marker=dict(size=np.minimum(10 + 2.4 * np.sqrt(grado), 46),
+                    opacity=1.0,
+                    color=grado,
+                    colorscale=escala_nodos, showscale=True,
                     colorbar=dict(title="Grado<br>ponderado", thickness=12,
                                   len=0.6),
-                    line=dict(width=0.6, color=BLANCO)),
+                    line=dict(width=1.0, color="#16324F")),
         customdata=list(zip(nombres, grado)),
         hovertemplate="<b>%{customdata[0]}</b><br>Grado ponderado %{customdata[1]:.0f}"
                       "<extra></extra>"))
