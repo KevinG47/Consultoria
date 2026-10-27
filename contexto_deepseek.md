@@ -1,6 +1,6 @@
 # Contexto del proyecto — Auditoría estadística del Observatorio MinCiencias
 
-> **Actualizado al 26-oct-2026.**
+> **Actualizado al 27-oct-2026.**
 >
 > **Nota de migración (26-oct-2026):** este archivo se creó en la raíz del repo a partir de la copia de markitdwon (9 secciones). El traspaso actualizado del 25-oct-2026 tiene 16 secciones; las secciones §10–§16 están en el chat de esa fecha y pendientes de migrar aquí. Markitdwon conserva la versión vieja (9 secciones).
 
@@ -157,4 +157,43 @@ un cambio de prevalencia de «baja» del **5,2 % → 10,2 %** entre train y test
 
 **Artefactos:** `07_modelo/modelado/model_card.md` (ficha del modelo) y
 `07_modelo/modelado/validacion_honesta.md` (bitácora de validación y del techo
-del dato). Resumen compacto: `07_modelo/CONTEXTO_FASE_ML.md`.
+del dato). Resumen compacto: `07_modelo/documentacion/CONTEXTO_FASE_ML.md`.
+
+
+---
+
+## 18. Auditoría de datos y modelo limpio (27-oct-2026)
+
+**Fuga por identidad.** El split es temporal (train 2014/15/17, val 2019, test
+2021) y no hay fuga de etiqueta: las nueve comprobaciones V01–V09 del manifiesto
+pasan. Pero **el 64,31 % de las personas de test (8 589 de 13 355) ya aparecían
+en train o val**, porque un panel comparte individuos entre periodos. Es
+estructural al diseño y **no invalida el uso operativo** (puntuar a quienes ya
+están en ScienTI), aunque impide afirmar generalización a investigadores nuevos.
+Benchmark de entidad disjunta (B, sin IDs compartidos): **F1 «baja» 0,4016** frente
+a 0,4234 del operativo, es decir **delta A−B = +2,18 pp**. El control de volumen
+(mismas 5 005 filas, identidad permitida) da 0,4222: **el efecto es de identidad
+(+2,06 pp), no de volumen (+0,12 pp)**. Con delta < 5 pp el modelo se considera
+robusto y se cierra.
+
+**EDA de diagnóstico.** Sobre las 172 features: **49 redundantes** (34 duplicados
+exactos con r = 1,00000 y 15 con VIF > 10; tras la limpieza quedan 123 con VIF
+máximo 4,95), **86 features con > 99 % de ceros** (132 con > 90 %, 66 con gain = 0
+en el modelo base) y **3 features con drift severo (PSI > 0,25)**: proyecto de I+D
+con calidad (0,384), artículos (0,316) y artículos de generación de contenido
+(0,316). Además, 628 filas (1,45 %) superan el p99 de `n_productos` (105; máx.
+613) y hay 128 filas con fecha de producto posterior a la convocatoria (0,004 %,
+concentradas en 2013-2014 y ausentes en 2019-2021).
+
+**Modelo limpio (solo folds, test intacto).** Quitando las 49 redundantes, las 86
+muertas y winsorizando `n_productos` al p99: **F1 «baja» OOS 0,2877 con 123
+features (−1,08 pp)** y **0,2834 con 56 (−1,51 pp)**, con Brier 0,4223 frente a
+0,4196. Es decir, **la limpieza no mejora: baja el F1, sube la desviación entre
+folds y empeora el Brier**. Se descarta; las features redundantes actuaban como
+regularización implícita.
+
+**Conclusión.** El modelo **Ronda 2 con 172 features es el óptimo** de este
+conjunto de datos: F1 «baja» 0,4234 · recall 0,7878 · precisión 0,2895 · F1 macro
+0,5109 · Brier 0,4692 en test. El EDA queda como documentación y deuda de
+robustez, no como palanca. Detalle completo en
+`07_modelo/documentacion/auditoria_base_datos.md` (§2, §6 y §7).

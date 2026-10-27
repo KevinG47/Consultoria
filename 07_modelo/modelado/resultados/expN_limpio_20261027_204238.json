@@ -1,0 +1,92 @@
+{
+  "fecha_utc": "2026-10-27T20:42:38+00:00",
+  "experimento": "N_modelo_limpio",
+  "auditoria": "auditoria_eda_20261027_201914.json",
+  "limpieza": {
+    "redundantes": 49,
+    "duplicados_exactos": 34,
+    "vif_mayor_10": 15,
+    "muertas_99": 86,
+    "interseccion": 19,
+    "n_base": 172,
+    "n_vif": 123,
+    "n_limpio": 56,
+    "p99_n_productos": 105.0,
+    "filas_winsorizadas": 628,
+    "winsorizadas_por_split": {
+      "train": 194,
+      "val": 146,
+      "test": 288
+    }
+  },
+  "config": {
+    "n_estimators": 100,
+    "min_child_weight": 1,
+    "gamma": 0.1,
+    "subsample": 0.8,
+    "max_depth": 7,
+    "learning_rate": 0.05
+  },
+  "resultados": {
+    "base_172": {
+      "variante": "base_172",
+      "n_features": 172,
+      "f1_baja_folds": [
+        0.2728,
+        0.3076,
+        0.315
+      ],
+      "media": 0.2985,
+      "desv": 0.0184,
+      "f1_macro_medio": 0.487,
+      "brier_medio": 0.4196,
+      "umbrales": [
+        0.12,
+        0.27,
+        0.15
+      ]
+    },
+    "vif_123": {
+      "variante": "vif_123",
+      "n_features": 123,
+      "f1_baja_folds": [
+        0.2593,
+        0.3333,
+        0.2704
+      ],
+      "media": 0.2877,
+      "desv": 0.0326,
+      "f1_macro_medio": 0.4862,
+      "brier_medio": 0.4223,
+      "umbrales": [
+        0.09,
+        0.19,
+        0.29
+      ]
+    },
+    "limpio_56": {
+      "variante": "limpio_56",
+      "n_features": 56,
+      "f1_baja_folds": [
+        0.2476,
+        0.3182,
+        0.2844
+      ],
+      "media": 0.2834,
+      "desv": 0.0288,
+      "f1_macro_medio": 0.4904,
+      "brier_medio": 0.4223,
+      "umbrales": [
+        0.29,
+        0.24,
+        0.25
+      ]
+    }
+  },
+  "mejor": "vif_123",
+  "base_f1_baja_oos": 0.2985,
+  "delta_pp": -1.08,
+  "criterio_test": 0.3185,
+  "toco_test": false,
+  "dataset_limpio": "modelo_dataset_ventana_contiguo_limpio.parquet"
+}

@@ -1,0 +1,1899 @@
+{
+ "fecha_utc": "2026-10-27T20:19:14+00:00",
+ "a_chi2": {
+  "tabla": {
+   "baja": {
+    "test": 1362,
+    "train": 1022,
+    "val": 730
+   },
+   "se_mantiene": {
+    "test": 9657,
+    "train": 15471,
+    "val": 7018
+   },
+   "sube": {
+    "test": 2336,
+    "train": 3345,
+    "val": 2246
+   }
+  },
+  "chi2": 469.53,
+  "gl": 4,
+  "p": 2.6070449496387764e-100,
+  "v_cramer": 0.0737,
+  "esperados_min": 720.62,
+  "pares": {
+   "train_vs_val": {
+    "chi2": 217.27,
+    "p": 6.624814485342767e-48,
+    "v_cramer": 0.0853
+   },
+   "train_vs_test": {
+    "chi2": 318.87,
+    "p": 5.734923149208426e-70,
+    "v_cramer": 0.098
+   },
+   "val_vs_test": {
+    "chi2": 129.22,
+    "p": 8.706417931447494e-29,
+    "v_cramer": 0.0744
+   }
+  }
+ },
+ "b_psi_ks": [
+  {
+   "feature": "n_categoria_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO_CON_CALIDAD_C",
+   "psi": 0.3844,
+   "ks": 0.2847,
+   "ks_p": 0.0,
+   "media_train": 0.49,
+   "media_test": 1.342
+  },
+  {
+   "feature": "n_tipologia_ART_CULOS",
+   "psi": 0.3162,
+   "ks": 0.2405,
+   "ks_p": 0.0,
+   "media_train": 3.003,
+   "media_test": 1.389
+  },
+  {
+   "feature": "n_categoria_ART_CULOS_DE_GENERACI_N_DE_CONTENIDO",
+   "psi": 0.3162,
+   "ks": 0.2405,
+   "ks_p": 0.0,
+   "media_train": 3.003,
+   "media_test": 1.389
+  },
+  {
+   "feature": "n_categoria_EVENTO_CIENT_FICO_CON_CALIDAD_A",
+   "psi": 0.2033,
+   "ks": 0.2101,
+   "ks_p": 1.40479712698649e-309,
+   "media_train": 2.61,
+   "media_test": 4.467
+  },
+  {
+   "feature": "n_tipologia_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N",
+   "psi": 0.1686,
+   "ks": 0.1647,
+   "ks_p": 1.0617044636651347e-189,
+   "media_train": 0.351,
+   "media_test": 0.918
+  },
+  {
+   "feature": "n_tipologia_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO",
+   "psi": 0.1613,
+   "ks": 0.1935,
+   "ks_p": 3.7335414879499174e-262,
+   "media_train": 1.028,
+   "media_test": 1.733
+  },
+  {
+   "feature": "n_categoria_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N_CON_CALIDAD_B",
+   "psi": 0.1598,
+   "ks": 0.1593,
+   "ks_p": 1.7919337444309028e-177,
+   "media_train": 0.346,
+   "media_test": 0.868
+  },
+  {
+   "feature": "n_tipologia_EVENTO_CIENT_FICO",
+   "psi": 0.1443,
+   "ks": 0.1735,
+   "ks_p": 1.1426897889367823e-210,
+   "media_train": 3.194,
+   "media_test": 4.959
+  },
+  {
+   "feature": "n_productos",
+   "psi": 0.1125,
+   "ks": 0.1464,
+   "ks_p": 7.957455248101119e-150,
+   "media_train": 21.255,
+   "media_test": 28.949
+  },
+  {
+   "feature": "n_clase_APROPIACI_N_SOCIAL_DEL_CONOCIMIENTO",
+   "psi": 0.1107,
+   "ks": 0.13,
+   "ks_p": 3.6571121334029404e-118,
+   "media_train": 7.228,
+   "media_test": 10.872
+  },
+  {
+   "feature": "n_filas",
+   "psi": 0.1033,
+   "ks": 0.1422,
+   "ks_p": 3.3602502260292675e-141,
+   "media_train": 22.156,
+   "media_test": 29.742
+  },
+  {
+   "feature": "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_D",
+   "psi": 0.1006,
+   "ks": 0.1566,
+   "ks_p": 2.2534006546800634e-171,
+   "media_train": 1.057,
+   "media_test": 1.495
+  },
+  {
+   "feature": "n_tipologia_CAP_TULOS_DE_LIBRO",
+   "psi": 0.0953,
+   "ks": 0.1042,
+   "ks_p": 7.179641492139243e-76,
+   "media_train": 0.607,
+   "media_test": 0.207
+  },
+  {
+   "feature": "n_categoria_CAP_TULOS_DE_LIBRO_DE_GENERACI_N_DE_CONTENIDO",
+   "psi": 0.0953,
+   "ks": 0.1042,
+   "ks_p": 7.179641492139243e-76,
+   "media_train": 0.607,
+   "media_test": 0.207
+  },
+  {
+   "feature": "n_clase_FORMACI_N_DE_RECURSO_HUMANO",
+   "psi": 0.0797,
+   "ks": 0.1212,
+   "ks_p": 1.2655783232560618e-102,
+   "media_train": 6.417,
+   "media_test": 8.681
+  },
+  {
+   "feature": "n_tipologia_LIBROS_DE_INVESTIGACI_N",
+   "psi": 0.0629,
+   "ks": 0.0962,
+   "ks_p": 1.1103417252906265e-64,
+   "media_train": 0.293,
+   "media_test": 0.524
+  },
+  {
+   "feature": "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_B",
+   "psi": 0.0626,
+   "ks": 0.1151,
+   "ks_p": 1.4404468452442152e-92,
+   "media_train": 0.968,
+   "media_test": 1.416
+  },
+  {
+   "feature": "n_tipologia_INFORME_FINAL_DE_INVESTIGACI_N",
+   "psi": 0.0599,
+   "ks": 0.0961,
+   "ks_p": 1.1530447926889327e-64,
+   "media_train": 0.51,
+   "media_test": 0.884
+  },
+  {
+   "feature": "n_categoria_INFORME_FINAL_DE_INVESTIGACI_N_CON_CALIDAD",
+   "psi": 0.0599,
+   "ks": 0.0961,
+   "ks_p": 1.1530447926889327e-64,
+   "media_train": 0.51,
+   "media_test": 0.884
+  },
+  {
+   "feature": "n_clase_NUEVO_CONOCIMIENTO",
+   "psi": 0.0511,
+   "ks": 0.1044,
+   "ks_p": 2.939337005933681e-76,
+   "media_train": 7.229,
+   "media_test": 8.151
+  },
+  {
+   "feature": "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_B",
+   "psi": 0.0504,
+   "ks": 0.0844,
+   "ks_p": 6.384398281913753e-50,
+   "media_train": 0.28,
+   "media_test": 0.468
+  },
+  {
+   "feature": "n_tipologia_ART_CULOS_DE_INVESTIGACI_N",
+   "psi": 0.0418,
+   "ks": 0.0922,
+   "ks_p": 1.8614370460423199e-59,
+   "media_train": 5.318,
+   "media_test": 6.444
+  },
+  {
+   "feature": "n_tipologia_TESIS_DE_PREGRADO",
+   "psi": 0.0303,
+   "ks": 0.0696,
+   "ks_p": 4.386620589439228e-34,
+   "media_train": 3.257,
+   "media_test": 4.373
+  },
+  {
+   "feature": "n_grupos_distintos",
+   "psi": 0.0281,
+   "ks": 0.061,
+   "ks_p": 2.6638012462314235e-26,
+   "media_train": 1.289,
+   "media_test": 1.435
+  },
+  {
+   "feature": "n_categoria_TESIS_DE_PREGRADO_CON_CALIDAD_B",
+   "psi": 0.0278,
+   "ks": 0.0657,
+   "ks_p": 2.0107894200361134e-30,
+   "media_train": 2.913,
+   "media_test": 3.882
+  },
+  {
+   "feature": "n_categoria_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO_CON_CALIDAD_B",
+   "psi": 0.0185,
+   "ks": 0.0373,
+   "ks_p": 4.2119993902582515e-10,
+   "media_train": 0.492,
+   "media_test": 0.327
+  },
+  {
+   "feature": "n_categoria_TESIS_DE_PREGRADO_CON_CALIDAD_A",
+   "psi": 0.0109,
+   "ks": 0.0384,
+   "ks_p": 1.163597056339431e-10,
+   "media_train": 0.344,
+   "media_test": 0.491
+  },
+  {
+   "feature": "n_tipologia_LIBROS",
+   "psi": 0.0075,
+   "ks": 0.0341,
+   "ks_p": 1.651591433861022e-08,
+   "media_train": 0.422,
+   "media_test": 0.352
+  },
+  {
+   "feature": "n_categoria_LIBROS_DE_GENERACI_N_DE_CONTENIDO",
+   "psi": 0.0075,
+   "ks": 0.0341,
+   "ks_p": 1.651591433861022e-08,
+   "media_train": 0.422,
+   "media_test": 0.352
+  },
+  {
+   "feature": "n_categoria_EVENTO_CIENT_FICO_CON_CALIDAD_B",
+   "psi": 0.0042,
+   "ks": 0.0193,
+   "ks_p": 0.005184984636941822,
+   "media_train": 0.584,
+   "media_test": 0.492
+  },
+  {
+   "feature": "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_C",
+   "psi": 0.0039,
+   "ks": 0.0196,
+   "ks_p": 0.004398897293857369,
+   "media_train": 1.005,
+   "media_test": 0.934
+  },
+  {
+   "feature": "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+   "psi": 0.0033,
+   "ks": 0.0221,
+   "ks_p": 0.0008379976191534755,
+   "media_train": 1.399,
+   "media_test": 1.633
+  },
+  {
+   "feature": "n_tipologia_TESIS_DE_MAESTRIA",
+   "psi": 0.0026,
+   "ks": 0.0246,
+   "ks_p": 0.00012459303660084902,
+   "media_train": 1.887,
+   "media_test": 2.034
+  },
+  {
+   "feature": "n_categoria_TESIS_DE_MAESTRIA_CON_CALIDAD_B",
+   "psi": 0.0025,
+   "ks": 0.0242,
+   "ks_p": 0.00016681448234775206,
+   "media_train": 1.59,
+   "media_test": 1.744
+  },
+  {
+   "feature": "n_categoria_ART_CULOS_DE_INVESTIGACI_N_CON_CALIDAD_A2",
+   "psi": 0.0011,
+   "ks": 0.0146,
+   "ks_p": 0.06526902650613042,
+   "media_train": 0.89,
+   "media_test": 0.966
+  },
+  {
+   "feature": "n_categoria_TESIS_DE_MAESTRIA_CON_CALIDAD_A",
+   "psi": 0.0,
+   "ks": 0.0024,
+   "ks_p": 0.9999999999121592,
+   "media_train": 0.297,
+   "media_test": 0.289
+  },
+  {
+   "feature": "dias_desde_ultimo",
+   "psi": NaN,
+   "ks": NaN,
+   "ks_p": NaN,
+   "media_train": NaN,
+   "media_test": NaN
+  },
+  {
+   "feature": "n_clase_DESARROLLO_TECNOL_GICO_E_INNOVACI_N",
+   "psi": NaN,
+   "ks": 0.1237,
+   "ks_p": 7.586251122408175e-107,
+   "media_train": 0.377,
+   "media_test": 1.241
+  },
+  {
+   "feature": "n_clase_NO_CATEGORIZADO",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_tipologia_ASESOR_A_AL_PROGRAMA_ONDAS",
+   "psi": NaN,
+   "ks": 0.0082,
+   "ks_p": 0.6576542082615735,
+   "media_train": 0.004,
+   "media_test": 0.025
+  },
+  {
+   "feature": "n_tipologia_BOLET_N_DIVULGATIVO_DE_RESULTADO_DE_INVESTIGACI_N",
+   "psi": NaN,
+   "ks": 0.0195,
+   "ks_p": 0.0045954561145162415,
+   "media_train": 0.019,
+   "media_test": 0.094
+  },
+  {
+   "feature": "n_tipologia_CONSULTORIAS",
+   "psi": NaN,
+   "ks": 0.0115,
+   "ks_p": 0.23611216576516625,
+   "media_train": 0.051,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_tipologia_CONSULTOR_A_CIENT_FICO_T_CNICA",
+   "psi": NaN,
+   "ks": 0.0883,
+   "ks_p": 1.2954807959504977e-54,
+   "media_train": 0.101,
+   "media_test": 0.474
+  },
+  {
+   "feature": "n_tipologia_CONSULTOR_A_EN_ARTES_ARQUITECTURA_Y_DISE_O",
+   "psi": NaN,
+   "ks": 0.0041,
+   "ks_p": 0.9992967620627138,
+   "media_train": 0.002,
+   "media_test": 0.017
+  },
+  {
+   "feature": "n_tipologia_DISE_O_INDUSTRIAL",
+   "psi": NaN,
+   "ks": 0.0014,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.006
+  },
+  {
+   "feature": "n_tipologia_DOCUMENTO_DE_TRABAJO",
+   "psi": NaN,
+   "ks": 0.0334,
+   "ks_p": 3.7161170076373644e-08,
+   "media_train": 0.343,
+   "media_test": 0.476
+  },
+  {
+   "feature": "n_tipologia_EDICION",
+   "psi": NaN,
+   "ks": 0.0533,
+   "ks_p": 3.924425457072423e-20,
+   "media_train": 0.172,
+   "media_test": 0.38
+  },
+  {
+   "feature": "n_tipologia_EMPRESA_DE_BASE_TECNOL_GICA",
+   "psi": NaN,
+   "ks": 0.0136,
+   "ks_p": 0.10423309668051317,
+   "media_train": 0.008,
+   "media_test": 0.054
+  },
+  {
+   "feature": "n_tipologia_EMPRESAS_CREATIVAS_Y_CULTURALES",
+   "psi": NaN,
+   "ks": 0.0021,
+   "ks_p": 0.9999999999999364,
+   "media_train": 0.0,
+   "media_test": 0.004
+  },
+  {
+   "feature": "n_tipologia_ESPACIOS_DE_PARTICIPACI_N_CIUDADANA",
+   "psi": NaN,
+   "ks": 0.0278,
+   "ks_p": 8.4214711048344e-06,
+   "media_train": 0.008,
+   "media_test": 0.099
+  },
+  {
+   "feature": "n_tipologia_ESQUEMA_DE_CIRCUITO_INTEGRADO",
+   "psi": NaN,
+   "ks": 0.0001,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_tipologia_ESTRATEGIA_DE_COMUNICACI_N_DEL_CONOCIMIENTO",
+   "psi": NaN,
+   "ks": 0.0257,
+   "ks_p": 4.9882479136561604e-05,
+   "media_train": 0.007,
+   "media_test": 0.083
+  },
+  {
+   "feature": "n_tipologia_ESTRATEGIAS_PEDAG_GICAS_PARA_EL_FOMENTO_A_LA_CTI",
+   "psi": NaN,
+   "ks": 0.1164,
+   "ks_p": 9.666161103887742e-95,
+   "media_train": 0.039,
+   "media_test": 0.345
+  },
+  {
+   "feature": "n_tipologia_EVENTOS_ART_STICOS",
+   "psi": NaN,
+   "ks": 0.0151,
+   "ks_p": 0.0521735657429927,
+   "media_train": 0.003,
+   "media_test": 0.064
+  },
+  {
+   "feature": "n_tipologia_GENERACI_N_DE_CONTENIDO_IMPRESA",
+   "psi": NaN,
+   "ks": 0.0156,
+   "ks_p": 0.04004207538916027,
+   "media_train": 0.019,
+   "media_test": 0.058
+  },
+  {
+   "feature": "n_tipologia_GENERACI_N_DE_CONTENIDO_MULTIMEDIA",
+   "psi": NaN,
+   "ks": 0.0514,
+   "ks_p": 9.729463709077378e-19,
+   "media_train": 0.043,
+   "media_test": 0.373
+  },
+  {
+   "feature": "n_tipologia_GENERACI_N_DE_CONTENIDO_VIRTUAL",
+   "psi": NaN,
+   "ks": 0.0278,
+   "ks_p": 8.696923260865296e-06,
+   "media_train": 0.01,
+   "media_test": 0.133
+  },
+  {
+   "feature": "n_tipologia_INFORME_T_CNICO_FINAL",
+   "psi": NaN,
+   "ks": 0.0157,
+   "ks_p": 0.03896779019693419,
+   "media_train": 0.031,
+   "media_test": 0.106
+  },
+  {
+   "feature": "n_tipologia_INNOVACION_DE_GESTION_EMPRESARIAL",
+   "psi": NaN,
+   "ks": 0.0281,
+   "ks_p": 6.4006872502592875e-06,
+   "media_train": 0.007,
+   "media_test": 0.166
+  },
+  {
+   "feature": "n_tipologia_INNOVACIONES_EN_PROCEDIMIENTO_Y_SERVICIO",
+   "psi": NaN,
+   "ks": 0.0456,
+   "ks_p": 7.62566641525572e-15,
+   "media_train": 0.007,
+   "media_test": 0.19
+  },
+  {
+   "feature": "n_tipologia_INNOVACI_N_DE_PROCEDIMIENTO",
+   "psi": NaN,
+   "ks": 0.0013,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_tipologia_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O",
+   "psi": NaN,
+   "ks": 0.0242,
+   "ks_p": 0.00017329258918565935,
+   "media_train": 0.015,
+   "media_test": 0.199
+  },
+  {
+   "feature": "n_tipologia_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI",
+   "psi": NaN,
+   "ks": 0.0164,
+   "ks_p": 0.02747194600088876,
+   "media_train": 0.005,
+   "media_test": 0.042
+  },
+  {
+   "feature": "n_tipologia_PATENTE_DE_INVENCI_N",
+   "psi": NaN,
+   "ks": 0.0085,
+   "ks_p": 0.6092076418377691,
+   "media_train": 0.024,
+   "media_test": 0.036
+  },
+  {
+   "feature": "n_tipologia_PATENTE_MODELO_DE_UTILIDAD",
+   "psi": NaN,
+   "ks": 0.0004,
+   "ks_p": 1.0,
+   "media_train": 0.006,
+   "media_test": 0.007
+  },
+  {
+   "feature": "n_tipologia_PLANTA_PILOTO",
+   "psi": NaN,
+   "ks": 0.0032,
+   "ks_p": 0.9999959337734079,
+   "media_train": 0.001,
+   "media_test": 0.005
+  },
+  {
+   "feature": "n_tipologia_PROTOTIPO_INDUSTRIAL",
+   "psi": NaN,
+   "ks": 0.0472,
+   "ks_p": 6.335211197650404e-16,
+   "media_train": 0.021,
+   "media_test": 0.183
+  },
+  {
+   "feature": "n_tipologia_PROYECTO_ID_I_CON_FORMACI_N",
+   "psi": NaN,
+   "ks": 0.0148,
+   "ks_p": 0.05914882904919161,
+   "media_train": 0.019,
+   "media_test": 0.056
+  },
+  {
+   "feature": "n_tipologia_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N",
+   "psi": NaN,
+   "ks": 0.015,
+   "ks_p": 0.05476555077291034,
+   "media_train": 0.001,
+   "media_test": 0.026
+  },
+  {
+   "feature": "n_tipologia_PROYECTO_DE_EXTENSI_N",
+   "psi": NaN,
+   "ks": 0.1014,
+   "ks_p": 6.142114984396863e-72,
+   "media_train": 0.019,
+   "media_test": 0.251
+  },
+  {
+   "feature": "n_tipologia_PROYECTO_DE_EXTENSI_N_Y_RESPONSABILIDAD_SOCIAL_EN_CTI",
+   "psi": NaN,
+   "ks": 0.007,
+   "ks_p": 0.8319433786995144,
+   "media_train": 0.016,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_tipologia_RED_DE_CONOCIMIENTO_ESPECIALIZADO",
+   "psi": NaN,
+   "ks": 0.0726,
+   "ks_p": 4.8413359603122655e-37,
+   "media_train": 0.056,
+   "media_test": 0.203
+  },
+  {
+   "feature": "n_tipologia_REGISTRO_GENERAL",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_tipologia_REGISTROS_DE_ACUERDOS_DE_LICENCIA_PARA_LA_EXPLOTACI_N_DE_OBRAS",
+   "psi": NaN,
+   "ks": 0.0029,
+   "ks_p": 0.9999997839939185,
+   "media_train": 0.0,
+   "media_test": 0.055
+  },
+  {
+   "feature": "n_tipologia_REGULACI_N_NORMA_O_REGLAMENTO",
+   "psi": NaN,
+   "ks": 0.005,
+   "ks_p": 0.9867070157728905,
+   "media_train": 0.017,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_tipologia_REGULACI_N_Y_NORMA",
+   "psi": NaN,
+   "ks": 0.0084,
+   "ks_p": 0.6176482927294222,
+   "media_train": 0.017,
+   "media_test": 0.041
+  },
+  {
+   "feature": "n_tipologia_REGULACI_N_Y_NORMA_PROYECTO_DE_LEY",
+   "psi": NaN,
+   "ks": 0.0021,
+   "ks_p": 0.9999999999999364,
+   "media_train": 0.0,
+   "media_test": 0.005
+  },
+  {
+   "feature": "n_tipologia_REGULACI_N_Y_NORMA_PR_CTICA_CL_NICA",
+   "psi": NaN,
+   "ks": 0.003,
+   "ks_p": 0.9999996313337747,
+   "media_train": 0.002,
+   "media_test": 0.01
+  },
+  {
+   "feature": "n_tipologia_SECRETO_EMPRESARIAL",
+   "psi": NaN,
+   "ks": 0.0181,
+   "ks_p": 0.010827755407862183,
+   "media_train": 0.02,
+   "media_test": 0.127
+  },
+  {
+   "feature": "n_tipologia_SIGNOS_DISTINTIVOS",
+   "psi": NaN,
+   "ks": 0.009,
+   "ks_p": 0.5283679177256734,
+   "media_train": 0.003,
+   "media_test": 0.03
+  },
+  {
+   "feature": "n_tipologia_SOFTWARE",
+   "psi": NaN,
+   "ks": 0.0194,
+   "ks_p": 0.004788228203164079,
+   "media_train": 0.061,
+   "media_test": 0.141
+  },
+  {
+   "feature": "n_tipologia_SPIN_OFF",
+   "psi": NaN,
+   "ks": 0.0019,
+   "ks_p": 1.0,
+   "media_train": 0.002,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_tipologia_TALLERES_DE_CREACI_N",
+   "psi": NaN,
+   "ks": 0.0062,
+   "ks_p": 0.9133250002846925,
+   "media_train": 0.001,
+   "media_test": 0.016
+  },
+  {
+   "feature": "n_tipologia_TESIS_DE_DOCTORADO",
+   "psi": NaN,
+   "ks": 0.0084,
+   "ks_p": 0.6203742470140012,
+   "media_train": 0.184,
+   "media_test": 0.183
+  },
+  {
+   "feature": "n_tipologia_VARIEDAD_ANIMAL",
+   "psi": NaN,
+   "ks": 0.0001,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.001
+  },
+  {
+   "feature": "n_tipologia_VARIEDAD_VEGETAL",
+   "psi": NaN,
+   "ks": 0.0019,
+   "ks_p": 1.0,
+   "media_train": 0.008,
+   "media_test": 0.011
+  },
+  {
+   "feature": "n_categoria_ASESOR_A_AL_PROGRAMA_ONDAS_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0082,
+   "ks_p": 0.6576542082615735,
+   "media_train": 0.004,
+   "media_test": 0.025
+  },
+  {
+   "feature": "n_categoria_BOLET_N_DIVULGATIVO_DE_RESULTADO_DE_INVESTIGACI_N_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0195,
+   "ks_p": 0.0045954561145162415,
+   "media_train": 0.019,
+   "media_test": 0.094
+  },
+  {
+   "feature": "n_categoria_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0044,
+   "ks_p": 0.9974691082832393,
+   "media_train": 0.002,
+   "media_test": 0.008
+  },
+  {
+   "feature": "n_categoria_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+   "psi": NaN,
+   "ks": 0.0201,
+   "ks_p": 0.0031799066379910265,
+   "media_train": 0.003,
+   "media_test": 0.042
+  },
+  {
+   "feature": "n_categoria_CONSULTORIAS_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0115,
+   "ks_p": 0.23611216576516625,
+   "media_train": 0.051,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_CONSULTOR_A_CIENT_FICO_T_CNICA_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0883,
+   "ks_p": 1.2954807959504977e-54,
+   "media_train": 0.101,
+   "media_test": 0.474
+  },
+  {
+   "feature": "n_categoria_CONSULTOR_A_EN_ARTES_ARQUITECTURA_Y_DISE_O_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0041,
+   "ks_p": 0.9992967620627138,
+   "media_train": 0.002,
+   "media_test": 0.017
+  },
+  {
+   "feature": "n_categoria_DISE_O_INDUSTRIAL_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.002
+  },
+  {
+   "feature": "n_categoria_DISE_O_INDUSTRIAL_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0012,
+   "ks_p": 1.0,
+   "media_train": 0.002,
+   "media_test": 0.004
+  },
+  {
+   "feature": "n_categoria_DOCUMENTO_DE_TRABAJO_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0334,
+   "ks_p": 3.7161170076373644e-08,
+   "media_train": 0.343,
+   "media_test": 0.476
+  },
+  {
+   "feature": "n_categoria_EDICION_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0533,
+   "ks_p": 3.924425457072423e-20,
+   "media_train": 0.172,
+   "media_test": 0.38
+  },
+  {
+   "feature": "n_categoria_EMPRESA_DE_BASE_TECNOL_GICA_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0104,
+   "ks_p": 0.3551607811290711,
+   "media_train": 0.006,
+   "media_test": 0.043
+  },
+  {
+   "feature": "n_categoria_EMPRESA_DE_BASE_TECNOL_GICA_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0042,
+   "ks_p": 0.9990259738645044,
+   "media_train": 0.001,
+   "media_test": 0.01
+  },
+  {
+   "feature": "n_categoria_EMPRESAS_CREATIVAS_Y_CULTURALES_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0018,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.004
+  },
+  {
+   "feature": "n_categoria_ESPACIOS_DE_PARTICIPACI_N_CIUDADANA_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0278,
+   "ks_p": 8.4214711048344e-06,
+   "media_train": 0.008,
+   "media_test": 0.099
+  },
+  {
+   "feature": "n_categoria_ESQUEMA_DE_CIRCUITO_INTEGRADO_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0001,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_ESTRATEGIA_DE_COMUNICACI_N_DEL_CONOCIMIENTO_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0257,
+   "ks_p": 4.9882479136561604e-05,
+   "media_train": 0.007,
+   "media_test": 0.083
+  },
+  {
+   "feature": "n_categoria_ESTRATEGIAS_PEDAG_GICAS_PARA_EL_FOMENTO_A_LA_CTI_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.1164,
+   "ks_p": 9.666161103887742e-95,
+   "media_train": 0.039,
+   "media_test": 0.345
+  },
+  {
+   "feature": "n_categoria_EVENTOS_ART_STICOS_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0009,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_GENERACI_N_DE_CONTENIDO_IMPRESA_DE_GENERACI_N_DE_CONTENIDO",
+   "psi": NaN,
+   "ks": 0.0156,
+   "ks_p": 0.04004207538916027,
+   "media_train": 0.019,
+   "media_test": 0.058
+  },
+  {
+   "feature": "n_categoria_GENERACI_N_DE_CONTENIDO_MULTIMEDIA_DE_GENERACI_N_DE_CONTENIDO",
+   "psi": NaN,
+   "ks": 0.0514,
+   "ks_p": 9.729463709077378e-19,
+   "media_train": 0.043,
+   "media_test": 0.373
+  },
+  {
+   "feature": "n_categoria_GENERACI_N_DE_CONTENIDO_VIRTUAL_DE_GENERACI_N_DE_CONTENIDO",
+   "psi": NaN,
+   "ks": 0.0278,
+   "ks_p": 8.696923260865296e-06,
+   "media_train": 0.01,
+   "media_test": 0.133
+  },
+  {
+   "feature": "n_categoria_INFORME_T_CNICO_FINAL_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0157,
+   "ks_p": 0.03896779019693419,
+   "media_train": 0.031,
+   "media_test": 0.106
+  },
+  {
+   "feature": "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_A1",
+   "psi": NaN,
+   "ks": 0.0098,
+   "ks_p": 0.42090903043073813,
+   "media_train": 0.001,
+   "media_test": 0.041
+  },
+  {
+   "feature": "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_A2",
+   "psi": NaN,
+   "ks": 0.0185,
+   "ks_p": 0.008467979359449453,
+   "media_train": 0.004,
+   "media_test": 0.097
+  },
+  {
+   "feature": "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_B1",
+   "psi": NaN,
+   "ks": 0.0022,
+   "ks_p": 0.9999999999990479,
+   "media_train": 0.001,
+   "media_test": 0.013
+  },
+  {
+   "feature": "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_B2",
+   "psi": NaN,
+   "ks": 0.0046,
+   "ks_p": 0.9951565494073379,
+   "media_train": 0.001,
+   "media_test": 0.015
+  },
+  {
+   "feature": "n_categoria_INNOVACIONES_EN_PROCEDIMIENTO_Y_SERVICIO_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0456,
+   "ks_p": 7.62566641525572e-15,
+   "media_train": 0.007,
+   "media_test": 0.19
+  },
+  {
+   "feature": "n_categoria_INNOVACI_N_DE_PROCEDIMIENTO_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0013,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0066,
+   "ks_p": 0.8808910819235866,
+   "media_train": 0.008,
+   "media_test": 0.017
+  },
+  {
+   "feature": "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A1",
+   "psi": NaN,
+   "ks": 0.0241,
+   "ks_p": 0.0001906513189446646,
+   "media_train": 0.004,
+   "media_test": 0.039
+  },
+  {
+   "feature": "n_categoria_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0083,
+   "ks_p": 0.6417976655641855,
+   "media_train": 0.002,
+   "media_test": 0.026
+  },
+  {
+   "feature": "n_categoria_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O_CON_CALIDAD_A1",
+   "psi": NaN,
+   "ks": 0.0015,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_categoria_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0064,
+   "ks_p": 0.8963394190151747,
+   "media_train": 0.005,
+   "media_test": 0.028
+  },
+  {
+   "feature": "n_categoria_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O_CON_CALIDAD_C",
+   "psi": NaN,
+   "ks": 0.0222,
+   "ks_p": 0.0007459100972241477,
+   "media_train": 0.008,
+   "media_test": 0.142
+  },
+  {
+   "feature": "n_categoria_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0164,
+   "ks_p": 0.02747194600088876,
+   "media_train": 0.005,
+   "media_test": 0.042
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA1",
+   "psi": NaN,
+   "ks": 0.0002,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA2",
+   "psi": NaN,
+   "ks": 0.0001,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.001
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA3",
+   "psi": NaN,
+   "ks": 0.0013,
+   "ks_p": 1.0,
+   "media_train": 0.002,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA4",
+   "psi": NaN,
+   "ks": 0.0075,
+   "ks_p": 0.7547761419463026,
+   "media_train": 0.015,
+   "media_test": 0.027
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB1",
+   "psi": NaN,
+   "ks": 0.0001,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB2",
+   "psi": NaN,
+   "ks": 0.0002,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB4",
+   "psi": NaN,
+   "ks": 0.0006,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.002
+  },
+  {
+   "feature": "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB5",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.004,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MA2",
+   "psi": NaN,
+   "ks": 0.0002,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MA3",
+   "psi": NaN,
+   "ks": 0.0,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MA4",
+   "psi": NaN,
+   "ks": 0.0007,
+   "ks_p": 1.0,
+   "media_train": 0.004,
+   "media_test": 0.006
+  },
+  {
+   "feature": "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MB5",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_PLANTA_PILOTO_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0032,
+   "ks_p": 0.9999959337734079,
+   "media_train": 0.001,
+   "media_test": 0.005
+  },
+  {
+   "feature": "n_categoria_PROTOTIPO_INDUSTRIAL_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0472,
+   "ks_p": 6.335211197650404e-16,
+   "media_train": 0.021,
+   "media_test": 0.183
+  },
+  {
+   "feature": "n_categoria_PROYECTO_ID_I_CON_FORMACI_N_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0078,
+   "ks_p": 0.7132774790792894,
+   "media_train": 0.013,
+   "media_test": 0.038
+  },
+  {
+   "feature": "n_categoria_PROYECTO_ID_I_CON_FORMACI_N_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0074,
+   "ks_p": 0.7747907010790049,
+   "media_train": 0.006,
+   "media_test": 0.018
+  },
+  {
+   "feature": "n_categoria_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0173,
+   "ks_p": 0.017084630942275348,
+   "media_train": 0.046,
+   "media_test": 0.064
+  },
+  {
+   "feature": "n_categoria_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0029,
+   "ks_p": 0.9999999120454837,
+   "media_train": 0.0,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_categoria_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N_CON_CALIDAD_C",
+   "psi": NaN,
+   "ks": 0.013,
+   "ks_p": 0.1350973759081342,
+   "media_train": 0.001,
+   "media_test": 0.022
+  },
+  {
+   "feature": "n_categoria_PROYECTO_DE_EXTENSI_N_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.1014,
+   "ks_p": 6.142114984396863e-72,
+   "media_train": 0.019,
+   "media_test": 0.251
+  },
+  {
+   "feature": "n_categoria_PROYECTO_DE_EXTENSI_N_Y_RESPONSABILIDAD_SOCIAL_EN_CTI_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.007,
+   "ks_p": 0.8319433786995144,
+   "media_train": 0.016,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_RED_DE_CONOCIMIENTO_ESPECIALIZADO_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0726,
+   "ks_p": 4.8413359603122655e-37,
+   "media_train": 0.056,
+   "media_test": 0.203
+  },
+  {
+   "feature": "n_categoria_REGISTRO_GENERAL_CON_CALIDAD_CC",
+   "psi": NaN,
+   "ks": 0.0013,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_REGISTROS_DE_ACUERDOS_DE_LICENCIA_PARA_LA_EXPLOTACI_N_DE_OBRAS_CON_CAL",
+   "psi": NaN,
+   "ks": 0.0029,
+   "ks_p": 0.9999997839939185,
+   "media_train": 0.0,
+   "media_test": 0.055
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0008,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_RNL_A",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_RNL_B",
+   "psi": NaN,
+   "ks": 0.0036,
+   "ks_p": 0.9999296503826945,
+   "media_train": 0.011,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_RNL_C",
+   "psi": NaN,
+   "ks": 0.0013,
+   "ks_p": 1.0,
+   "media_train": 0.002,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_Y_NORMA_CON_CALIDAD_RNL_A",
+   "psi": NaN,
+   "ks": 0.0001,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_Y_NORMA_CON_CALIDAD_RNL_B",
+   "psi": NaN,
+   "ks": 0.0078,
+   "ks_p": 0.7104393255137631,
+   "media_train": 0.016,
+   "media_test": 0.037
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_Y_NORMA_CON_CALIDAD_RNT",
+   "psi": NaN,
+   "ks": 0.0007,
+   "ks_p": 1.0,
+   "media_train": 0.002,
+   "media_test": 0.002
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_Y_NORMA_PROYECTO_DE_LEY_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0021,
+   "ks_p": 0.9999999999999364,
+   "media_train": 0.0,
+   "media_test": 0.005
+  },
+  {
+   "feature": "n_categoria_REGULACI_N_Y_NORMA_PR_CTICA_CL_NICA_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.003,
+   "ks_p": 0.9999996313337747,
+   "media_train": 0.002,
+   "media_test": 0.01
+  },
+  {
+   "feature": "n_categoria_SECRETO_EMPRESARIAL_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.0181,
+   "ks_p": 0.010827755407862183,
+   "media_train": 0.02,
+   "media_test": 0.127
+  },
+  {
+   "feature": "n_categoria_SIGNOS_DISTINTIVOS_CON_CALIDAD",
+   "psi": NaN,
+   "ks": 0.009,
+   "ks_p": 0.5283679177256734,
+   "media_train": 0.003,
+   "media_test": 0.03
+  },
+  {
+   "feature": "n_categoria_SOFTWARE_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0203,
+   "ks_p": 0.0027798831231687685,
+   "media_train": 0.058,
+   "media_test": 0.141
+  },
+  {
+   "feature": "n_categoria_SOFTWARE_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0012,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_SPIN_OFF_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0016,
+   "ks_p": 1.0,
+   "media_train": 0.002,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_SPIN_OFF_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0005,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_TALLERES_DE_CREACI_N_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0017,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_categoria_TALLERES_DE_CREACI_N_CON_CALIDAD_C",
+   "psi": NaN,
+   "ks": 0.004,
+   "ks_p": 0.9995772421644032,
+   "media_train": 0.001,
+   "media_test": 0.01
+  },
+  {
+   "feature": "n_categoria_TESIS_DE_DOCTORADO_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0079,
+   "ks_p": 0.6979576298086718,
+   "media_train": 0.065,
+   "media_test": 0.074
+  },
+  {
+   "feature": "n_categoria_TESIS_DE_DOCTORADO_CON_CALIDAD_B",
+   "psi": NaN,
+   "ks": 0.0027,
+   "ks_p": 0.9999999905433105,
+   "media_train": 0.12,
+   "media_test": 0.109
+  },
+  {
+   "feature": "n_categoria_VARIEDAD_ANIMAL_CON_CALIDAD_A",
+   "psi": NaN,
+   "ks": 0.0001,
+   "ks_p": 1.0,
+   "media_train": 0.0,
+   "media_test": 0.001
+  },
+  {
+   "feature": "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_A2",
+   "psi": NaN,
+   "ks": 0.0002,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.0
+  },
+  {
+   "feature": "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_A3",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.003,
+   "media_test": 0.001
+  },
+  {
+   "feature": "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_A4",
+   "psi": NaN,
+   "ks": 0.0006,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.002
+  },
+  {
+   "feature": "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_B2",
+   "psi": NaN,
+   "ks": 0.0003,
+   "ks_p": 1.0,
+   "media_train": 0.002,
+   "media_test": 0.002
+  },
+  {
+   "feature": "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_B3",
+   "psi": NaN,
+   "ks": 0.0012,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.003
+  },
+  {
+   "feature": "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_B4",
+   "psi": NaN,
+   "ks": 0.0004,
+   "ks_p": 1.0,
+   "media_train": 0.001,
+   "media_test": 0.001
+  }
+ ],
+ "c_atipicos": {
+  "q1": 8.0,
+  "q3": 33.0,
+  "iqr": 25.0,
+  "limite_superior_iqr": 70.5,
+  "max": 613.0,
+  "p99_train": 105.0,
+  "filas_sobre_iqr": 2039,
+  "filas_sobre_p99_train": 628,
+  "filas_sobre_p99_por_split": {
+   "train": 194,
+   "val": 146,
+   "test": 288
+  },
+  "pct_sobre_iqr": 4.72,
+  "pct_sobre_p99": 1.45,
+  "media_antes": 24.59,
+  "media_winsorizada_p99": 23.83,
+  "std_antes": 26.43,
+  "std_winsorizada": 21.84
+ },
+ "d_vif": {
+  "n_inicial": 172,
+  "n_final": 123,
+  "n_eliminadas": 49,
+  "umbral": 10.0,
+  "max_vif_final": 4.95,
+  "metodo": "inv",
+  "eliminadas": [
+   {
+    "feature": "n_tipologia_REGISTRO_GENERAL",
+    "vif": null,
+    "motivo": "duplicado exacto de n_clase_NO_CATEGORIZADO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_ART_CULOS_DE_GENERACI_N_DE_CONTENIDO",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_ART_CULOS (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_ASESOR_A_AL_PROGRAMA_ONDAS_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_ASESOR_A_AL_PROGRAMA_ONDAS (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_CAP_TULOS_DE_LIBRO_DE_GENERACI_N_DE_CONTENIDO",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_CAP_TULOS_DE_LIBRO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_CONSULTORIAS_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_CONSULTORIAS (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_CONSULTOR_A_CIENT_FICO_T_CNICA_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_CONSULTOR_A_CIENT_FICO_T_CNICA (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_CONSULTOR_A_EN_ARTES_ARQUITECTURA_Y_DISE_O_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_CONSULTOR_A_EN_ARTES_ARQUITECTURA_Y_DISE_O (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_DOCUMENTO_DE_TRABAJO_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_DOCUMENTO_DE_TRABAJO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_EDICION_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_EDICION (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_ESQUEMA_DE_CIRCUITO_INTEGRADO_CON_CALIDAD_A",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_ESQUEMA_DE_CIRCUITO_INTEGRADO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_ESTRATEGIA_DE_COMUNICACI_N_DEL_CONOCIMIENTO_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_ESTRATEGIA_DE_COMUNICACI_N_DEL_CONOCIMIENTO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_ESTRATEGIAS_PEDAG_GICAS_PARA_EL_FOMENTO_A_LA_CTI_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_ESTRATEGIAS_PEDAG_GICAS_PARA_EL_FOMENTO_A_LA_CTI (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_GENERACI_N_DE_CONTENIDO_IMPRESA_DE_GENERACI_N_DE_CONTENIDO",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_GENERACI_N_DE_CONTENIDO_IMPRESA (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_GENERACI_N_DE_CONTENIDO_MULTIMEDIA_DE_GENERACI_N_DE_CONTENIDO",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_GENERACI_N_DE_CONTENIDO_MULTIMEDIA (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_GENERACI_N_DE_CONTENIDO_VIRTUAL_DE_GENERACI_N_DE_CONTENIDO",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_GENERACI_N_DE_CONTENIDO_VIRTUAL (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_INFORME_FINAL_DE_INVESTIGACI_N_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_INFORME_FINAL_DE_INVESTIGACI_N (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_INFORME_T_CNICO_FINAL_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_INFORME_T_CNICO_FINAL (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_INNOVACIONES_EN_PROCEDIMIENTO_Y_SERVICIO_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_INNOVACIONES_EN_PROCEDIMIENTO_Y_SERVICIO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_LIBROS_DE_GENERACI_N_DE_CONTENIDO",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_LIBROS (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_PLANTA_PILOTO_CON_CALIDAD_A",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_PLANTA_PILOTO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_PROTOTIPO_INDUSTRIAL_CON_CALIDAD_A",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_PROTOTIPO_INDUSTRIAL (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_PROYECTO_DE_EXTENSI_N_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_PROYECTO_DE_EXTENSI_N (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_PROYECTO_DE_EXTENSI_N_Y_RESPONSABILIDAD_SOCIAL_EN_CTI_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_PROYECTO_DE_EXTENSI_N_Y_RESPONSABILIDAD_SOCIAL_EN_CTI (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_REGISTROS_DE_ACUERDOS_DE_LICENCIA_PARA_LA_EXPLOTACI_N_DE_OBRAS_CON_CAL",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_REGISTROS_DE_ACUERDOS_DE_LICENCIA_PARA_LA_EXPLOTACI_N_DE_OBRAS (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_REGULACI_N_Y_NORMA_PROYECTO_DE_LEY_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_REGULACI_N_Y_NORMA_PROYECTO_DE_LEY (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_SIGNOS_DISTINTIVOS_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_SIGNOS_DISTINTIVOS (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_BOLET_N_DIVULGATIVO_DE_RESULTADO_DE_INVESTIGACI_N_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_BOLET_N_DIVULGATIVO_DE_RESULTADO_DE_INVESTIGACI_N (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_INNOVACI_N_DE_PROCEDIMIENTO_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_INNOVACI_N_DE_PROCEDIMIENTO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_SECRETO_EMPRESARIAL_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_SECRETO_EMPRESARIAL (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_ESPACIOS_DE_PARTICIPACI_N_CIUDADANA_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_ESPACIOS_DE_PARTICIPACI_N_CIUDADANA (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_RED_DE_CONOCIMIENTO_ESPECIALIZADO_CON_CALIDAD_A",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_RED_DE_CONOCIMIENTO_ESPECIALIZADO (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_REGULACI_N_Y_NORMA_PR_CTICA_CL_NICA_CON_CALIDAD",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_REGULACI_N_Y_NORMA_PR_CTICA_CL_NICA (r=1.00000)"
+   },
+   {
+    "feature": "n_categoria_VARIEDAD_ANIMAL_CON_CALIDAD_A",
+    "vif": null,
+    "motivo": "duplicado exacto de n_tipologia_VARIEDAD_ANIMAL (r=1.00000)"
+   },
+   {
+    "feature": "n_tipologia_LIBROS_DE_INVESTIGACI_N",
+    "vif": 461161837423594.0,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_SOFTWARE",
+    "vif": 152420478071307.12,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_EVENTO_CIENT_FICO",
+    "vif": 3.4376820383080656e+16,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO",
+    "vif": 1229412345607037.8,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N",
+    "vif": 410338792213617.94,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_TESIS_DE_DOCTORADO",
+    "vif": 160400871152816.38,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_PATENTE_MODELO_DE_UTILIDAD",
+    "vif": 71613644404745.5,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_categoria_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO_CON_CALIDAD_C",
+    "vif": 8433143147388.33,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_REGULACI_N_Y_NORMA",
+    "vif": 767.03,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_PATENTE_DE_INVENCI_N",
+    "vif": 367.92,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_VARIEDAD_VEGETAL",
+    "vif": 361.05,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N",
+    "vif": 118.46,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_filas",
+    "vif": 50.09,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_EMPRESAS_CREATIVAS_Y_CULTURALES",
+    "vif": 28.25,
+    "motivo": "VIF"
+   },
+   {
+    "feature": "n_tipologia_TALLERES_DE_CREACI_N",
+    "vif": 12.03,
+    "motivo": "VIF"
+   }
+  ],
+  "segundos": 3.7
+ },
+ "e_muertas": {
+  "n_features": 172,
+  "n_mas_90_ceros": 132,
+  "n_mas_99_ceros": 86,
+  "n_todas_cero": 0,
+  "n_gain_0": 66,
+  "por_familia_90": {
+   "clase": 1,
+   "tipologia": 46,
+   "categoria": 85
+  },
+  "por_familia_99": {
+   "clase": 1,
+   "tipologia": 23,
+   "categoria": 62
+  },
+  "ejemplos_99": [
+   "n_clase_NO_CATEGORIZADO",
+   "n_tipologia_ASESOR_A_AL_PROGRAMA_ONDAS",
+   "n_tipologia_CONSULTORIAS",
+   "n_tipologia_CONSULTOR_A_EN_ARTES_ARQUITECTURA_Y_DISE_O",
+   "n_tipologia_DISE_O_INDUSTRIAL",
+   "n_tipologia_EMPRESAS_CREATIVAS_Y_CULTURALES",
+   "n_tipologia_ESQUEMA_DE_CIRCUITO_INTEGRADO",
+   "n_tipologia_EVENTOS_ART_STICOS",
+   "n_tipologia_INNOVACI_N_DE_PROCEDIMIENTO",
+   "n_tipologia_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI",
+   "n_tipologia_PATENTE_MODELO_DE_UTILIDAD",
+   "n_tipologia_PLANTA_PILOTO",
+   "n_tipologia_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N",
+   "n_tipologia_PROYECTO_DE_EXTENSI_N_Y_RESPONSABILIDAD_SOCIAL_EN_CTI",
+   "n_tipologia_REGISTRO_GENERAL"
+  ],
+  "propuesta_poda": [
+   "n_clase_NO_CATEGORIZADO",
+   "n_tipologia_ASESOR_A_AL_PROGRAMA_ONDAS",
+   "n_tipologia_CONSULTORIAS",
+   "n_tipologia_CONSULTOR_A_EN_ARTES_ARQUITECTURA_Y_DISE_O",
+   "n_tipologia_DISE_O_INDUSTRIAL",
+   "n_tipologia_EMPRESAS_CREATIVAS_Y_CULTURALES",
+   "n_tipologia_ESQUEMA_DE_CIRCUITO_INTEGRADO",
+   "n_tipologia_EVENTOS_ART_STICOS",
+   "n_tipologia_INNOVACI_N_DE_PROCEDIMIENTO",
+   "n_tipologia_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI",
+   "n_tipologia_PATENTE_MODELO_DE_UTILIDAD",
+   "n_tipologia_PLANTA_PILOTO",
+   "n_tipologia_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N",
+   "n_tipologia_PROYECTO_DE_EXTENSI_N_Y_RESPONSABILIDAD_SOCIAL_EN_CTI",
+   "n_tipologia_REGISTRO_GENERAL",
+   "n_tipologia_REGISTROS_DE_ACUERDOS_DE_LICENCIA_PARA_LA_EXPLOTACI_N_DE_OBRAS",
+   "n_tipologia_REGULACI_N_NORMA_O_REGLAMENTO",
+   "n_tipologia_REGULACI_N_Y_NORMA_PROYECTO_DE_LEY",
+   "n_tipologia_REGULACI_N_Y_NORMA_PR_CTICA_CL_NICA",
+   "n_tipologia_SIGNOS_DISTINTIVOS",
+   "n_tipologia_SPIN_OFF",
+   "n_tipologia_TALLERES_DE_CREACI_N",
+   "n_tipologia_VARIEDAD_ANIMAL",
+   "n_tipologia_VARIEDAD_VEGETAL",
+   "n_categoria_ASESOR_A_AL_PROGRAMA_ONDAS_CON_CALIDAD",
+   "n_categoria_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N_CON_CALIDAD_A",
+   "n_categoria_CONSULTORIAS_CON_CALIDAD",
+   "n_categoria_CONSULTOR_A_EN_ARTES_ARQUITECTURA_Y_DISE_O_CON_CALIDAD",
+   "n_categoria_DISE_O_INDUSTRIAL_CON_CALIDAD_A",
+   "n_categoria_DISE_O_INDUSTRIAL_CON_CALIDAD_B",
+   "n_categoria_EMPRESA_DE_BASE_TECNOL_GICA_CON_CALIDAD_A",
+   "n_categoria_EMPRESA_DE_BASE_TECNOL_GICA_CON_CALIDAD_B",
+   "n_categoria_EMPRESAS_CREATIVAS_Y_CULTURALES_CON_CALIDAD_A",
+   "n_categoria_ESQUEMA_DE_CIRCUITO_INTEGRADO_CON_CALIDAD_A",
+   "n_categoria_EVENTOS_ART_STICOS_CON_CALIDAD",
+   "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_A1",
+   "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_A2",
+   "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_B1",
+   "n_categoria_INNOVACION_DE_GESTION_EMPRESARIAL_CON_CALIDAD_B2",
+   "n_categoria_INNOVACI_N_DE_PROCEDIMIENTO_CON_CALIDAD",
+   "n_categoria_LIBROS_DE_INVESTIGACI_N_CON_CALIDAD_A",
+   "n_categoria_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O_CON_CALIDAD_A",
+   "n_categoria_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O_CON_CALIDAD_A1",
+   "n_categoria_OBRAS_O_PRODUCTOS_DE_ARTE_ARQUITECTURA_Y_DISE_O_CON_CALIDAD_B",
+   "n_categoria_PARTICIPACI_N_CIUDADANA_EN_PROYECTOS_DE_CTI_CON_CALIDAD",
+   "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA1",
+   "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA2",
+   "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PA3",
+   "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB1",
+   "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB2",
+   "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB4",
+   "n_categoria_PATENTE_DE_INVENCI_N_CON_CALIDAD_PB5",
+   "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MA2",
+   "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MA3",
+   "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MA4",
+   "n_categoria_PATENTE_MODELO_DE_UTILIDAD_CON_CALIDAD_MB5",
+   "n_categoria_PLANTA_PILOTO_CON_CALIDAD_A",
+   "n_categoria_PROYECTO_ID_I_CON_FORMACI_N_CON_CALIDAD_A",
+   "n_categoria_PROYECTO_ID_I_CON_FORMACI_N_CON_CALIDAD_B",
+   "n_categoria_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N_CON_CALIDAD_B",
+   "n_categoria_PROYECTO_DE_INVESTIGACI_N_Y_CREACI_N_CON_CALIDAD_C",
+   "n_categoria_PROYECTO_DE_EXTENSI_N_Y_RESPONSABILIDAD_SOCIAL_EN_CTI_CON_CALIDAD",
+   "n_categoria_REGISTRO_GENERAL_CON_CALIDAD_CC",
+   "n_categoria_REGISTROS_DE_ACUERDOS_DE_LICENCIA_PARA_LA_EXPLOTACI_N_DE_OBRAS_CON_CAL",
+   "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_A",
+   "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_RNL_A",
+   "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_RNL_B",
+   "n_categoria_REGULACI_N_NORMA_O_REGLAMENTO_CON_CALIDAD_RNL_C",
+   "n_categoria_REGULACI_N_Y_NORMA_CON_CALIDAD_RNL_A",
+   "n_categoria_REGULACI_N_Y_NORMA_CON_CALIDAD_RNL_B",
+   "n_categoria_REGULACI_N_Y_NORMA_CON_CALIDAD_RNT",
+   "n_categoria_REGULACI_N_Y_NORMA_PROYECTO_DE_LEY_CON_CALIDAD",
+   "n_categoria_REGULACI_N_Y_NORMA_PR_CTICA_CL_NICA_CON_CALIDAD",
+   "n_categoria_SIGNOS_DISTINTIVOS_CON_CALIDAD",
+   "n_categoria_SOFTWARE_CON_CALIDAD_B",
+   "n_categoria_SPIN_OFF_CON_CALIDAD_A",
+   "n_categoria_SPIN_OFF_CON_CALIDAD_B",
+   "n_categoria_TALLERES_DE_CREACI_N_CON_CALIDAD_A",
+   "n_categoria_TALLERES_DE_CREACI_N_CON_CALIDAD_C",
+   "n_categoria_VARIEDAD_ANIMAL_CON_CALIDAD_A",
+   "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_A2",
+   "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_A3",
+   "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_A4",
+   "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_B2",
+   "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_B3",
+   "n_categoria_VARIEDAD_VEGETAL_CON_CALIDAD_B4"
+  ],
+  "propuesta_poda_n": 86
+ },
+ "f_fechas": {
+  "archivo": "C:\\datos_externos\\minciencias\\33dq-ab5a\\2026-10-25\\produccion_grupos.csv",
+  "filas_leidas": 3166629,
+  "por_convocatoria": [
+   {
+    "convocatoria": 16,
+    "ano": 2013,
+    "filas": 238407,
+    "filas_tarde": 10,
+    "pct_filas_tarde": 0.0042,
+    "productos": 228425,
+    "productos_tarde": 10,
+    "personas": 27323,
+    "personas_con_al_menos_uno_tarde": 9
+   },
+   {
+    "convocatoria": 17,
+    "ano": 2014,
+    "filas": 342160,
+    "filas_tarde": 103,
+    "pct_filas_tarde": 0.0301,
+    "productos": 332393,
+    "productos_tarde": 99,
+    "personas": 29876,
+    "personas_con_al_menos_uno_tarde": 96
+   },
+   {
+    "convocatoria": 18,
+    "ano": 2015,
+    "filas": 376653,
+    "filas_tarde": 14,
+    "pct_filas_tarde": 0.0037,
+    "productos": 367429,
+    "productos_tarde": 14,
+    "personas": 33578,
+    "personas_con_al_menos_uno_tarde": 14
+   },
+   {
+    "convocatoria": 19,
+    "ano": 2017,
+    "filas": 536648,
+    "filas_tarde": 1,
+    "pct_filas_tarde": 0.0002,
+    "productos": 521191,
+    "productos_tarde": 1,
+    "personas": 42518,
+    "personas_con_al_menos_uno_tarde": 1
+   },
+   {
+    "convocatoria": 20,
+    "ano": 2019,
+    "filas": 762719,
+    "filas_tarde": 0,
+    "pct_filas_tarde": 0.0,
+    "productos": 748223,
+    "productos_tarde": 0,
+    "personas": 53470,
+    "personas_con_al_menos_uno_tarde": 0
+   },
+   {
+    "convocatoria": 21,
+    "ano": 2021,
+    "filas": 910042,
+    "filas_tarde": 0,
+    "pct_filas_tarde": 0.0,
+    "productos": 901273,
+    "productos_tarde": 0,
+    "personas": 59935,
+    "personas_con_al_menos_uno_tarde": 0
+   }
+  ],
+  "pares_persona_convocatoria": 246700,
+  "pares_con_al_menos_uno_tarde": 120,
+  "share_medio_de_productos_tarde": 0.0932,
+  "pares_100pct_tarde": 3,
+  "segundos": 40.7
+ }
+}

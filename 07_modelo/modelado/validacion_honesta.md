@@ -458,3 +458,20 @@ Métricas de cierre (Ronda 2, test cohorte 2021, n = 13 355): **F1 «baja»
 Cualquier mejora futura tendría que venir de **datos nuevos** (financiación de
 proyectos, coautoría real, vinculación contractual), no de más features sobre el
 mismo censo.
+
+## Prueba posterior: modelo limpio (27-oct-2026)
+
+Salida del EDA de diagnóstico se probó un modelo sin las 49 features redundantes
+(VIF y duplicados), sin las 86 con > 99 % de ceros y con `n_productos`
+winsorizada en el p99 de train (105). Solo folds, test intacto:
+
+| Variante | Features | F1 «baja» OOS | Desv. | Brier |
+|---|---|---|---|---|
+| Base (Ronda 2) | 172 | **0,2985** | 0,0184 | **0,4196** |
+| Solo VIF | 123 | 0,2877 | 0,0326 | 0,4223 |
+| Limpio completo | 56 | 0,2834 | 0,0288 | 0,4223 |
+
+La limpieza **no mejora**: baja el F1 (1,1-1,5 pp), sube la desviación entre
+folds y empeora el Brier (+0,27 %). El modelo se mantiene con la Ronda 2; el
+detalle y las hipótesis están en `documentacion/auditoria_base_datos.md` §7.
+

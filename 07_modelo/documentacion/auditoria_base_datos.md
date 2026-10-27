@@ -140,7 +140,7 @@ solapamiento.
 | Afirmación | ¿Soportada? |
 |---|---|
 | «El modelo detecta el 79 % de los descensos en la cohorte 2021» | **Sí**, para la población con historia previa (8 589 personas) |
-| «El modelo generaliza a investigadores nuevos» | **No.** No hay benchmark de entidad disjunta |
+| «El modelo generaliza a investigadores nuevos» | **Medido en §6 (benchmark B):** F1 0,4016, es decir −2,18 pp frente al operativo. No es «no generaliza»; es «generaliza 2,18 pp peor» |
 | «El F1 0,4234 es comparable con literatura que usa splits aleatorios» | **No.** Nuestro split es más exigente en el tiempo, pero menos exigente en identidad; no son comparables sin declararlo |
 | «No hay fuga de etiqueta» | **Sí**, verificado por V06/V08 |
 
@@ -363,6 +363,289 @@ impresiones.
 
 ---
 
+---
+
+## §6 · Resultados del EDA faltante (27-oct-2026)
+
+Se ejecutaron los siete análisis de §4.4 **sin reentrenar el modelo operativo**.
+Scripts: `07_modelo/modelado/auditoria_eda.py` (a–f),
+`benchmark_B.py` (g) y `control_volumen.py` (control de g). Salidas en
+`resultados/auditoria_eda_*.json`, `resultados/benchmark_B_*.json` y
+`resultados/control_volumen_*.json`.
+
+### a) χ² de homogeneidad de `target_class`
+
+```
+chi2 = 469.53 | gl = 4 | p = 2.6e-100 | V de Cramér = 0.0737 | esperado mínimo = 720.62
+pares: train_vs_val  chi2=217.27  p=6.6e-48  V=0.0853
+       train_vs_test chi2=318.87  p=5.7e-70  V=0.0980
+       val_vs_test   chi2=129.22  p=8.7e-29  V=0.0744
+```
+
+**Lectura:** la distribución **no es homogénea** (p ínfimo), pero el tamaño del
+efecto es **pequeño** (V < 0,10 en los tres pares). El desajuste lo explica la
+prevalencia de «baja» (5,15 % → 7,30 % → 10,20 %), no un cambio de forma. Es
+consistente con el cambio de régimen ya documentado y con el Brier peor que la
+constante; **no invalida la comparación entre splits**, pero obliga a reportar
+las métricas por cohorte.
+
+### b) PSI y KS por feature (train vs test)
+
+```
+features con PSI > 0.25: 3
+features con PSI > 0.20: 4
+features con PSI > 0.10: 12
+KS p<0,01: 69 de 172
+top-10 por PSI:
+  n_categoria_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO_CON_CALIDAD   PSI=0.384  KS=0.285
+  n_tipologia_ART_CULOS                                            PSI=0.316  KS=0.240
+  n_categoria_ART_CULOS_DE_GENERACI_N_DE_CONTENIDO                 PSI=0.316  KS=0.240
+  n_categoria_EVENTO_CIENT_FICO_CON_CALIDAD_A                      PSI=0.203  KS=0.210
+  n_tipologia_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N                  PSI=0.169  KS=0.165
+  n_tipologia_PROYECTO_DE_INVESTIGACION_Y_DESARROLLO               PSI=0.161  KS=0.194
+  n_categoria_CAP_TULOS_DE_LIBRO_DE_INVESTIGACI_N_CON_CALIDAD_A    PSI=0.160  KS=0.159
+  n_tipologia_EVENTO_CIENT_FICO                                    PSI=0.144  KS=0.173
+  n_productos                                                      PSI=0.113  KS=0.146
+  n_clase_APROPIACI_N_SOCIAL_DEL_CONOCIMIENTO                      PSI=0.111  KS=0.130
+```
+
+**Lectura:** **3 features con drift severo** (PSI > 0,25) y **4 con drift
+moderado-severo** (PSI > 0,20): son las de proyectos de I+D, artículos y eventos
+científicos, justamente las que crecieron entre 2019 y 2021. El resto se mueve
+poco (`n_productos` PSI 0,113). El KS detecta diferencias en 69 de 172 features,
+pero con 19 838 vs 13 355 observaciones el KS rechaza casi cualquier diferencia
+trivial; por eso la decisión debe tomarse con PSI, no con el p-valor del KS.
+
+### c) Atípicos de `n_productos` y winsorización al p99
+
+```
+Q1=8 | Q3=33 | IQR=25 | límite superior IQR=70.5 | máx=613
+p99 (train) = 105
+filas sobre el límite IQR: 2039 (4.72 %)
+filas sobre p99(train):    628 (1.45 %)  -> train 194 | val 146 | test 288
+media 24.59 -> 23.83 (winsorizada)   |   desv 26.43 -> 21.84 (-17.4 %)
+```
+
+**Lectura:** el 4,72 % de las filas supera el cerco de Tukey y el 1,45 % supera
+el p99 de train. La winsorización al p99 **no cambia la media** (−3,1 %) pero
+**reduce la desviación un 17,4 %**: la cola domina la dispersión. Se propone
+winsorizar en los **folds** (nunca en test) y medir el efecto; no se aplicó al
+modelo operativo.
+
+### d) VIF iterativo sobre las 172 features
+
+```
+n_inicial=172 | n_final=123 | n_eliminadas=49 | max_vif_final=4.95 | método=inv | 3.7 s
+```
+
+Composición de las 49 eliminadas: **34 duplicados exactos** (r = 1,00000; p. ej.
+`n_tipologia_ART_CULOS` ≡ `n_categoria_ART_CULOS_DE_GENERACI_N_DE_CONTENIDO`) y
+**15 eliminadas por VIF > 10**. Tras el proceso, **todas las 123 restantes
+quedan con VIF ≤ 4,95**.
+
+**Lectura:** la mitad de la «redundancia» es literal: hay columnas que son la
+misma variable con otro nombre. El modelo con 172 features está sobreparametrizado
+por construcción; con 123 se conserva la información y se gana interpretabilidad.
+
+### e) Features muertas
+
+```
+n_features=172 | >90 % ceros: 132 | >99 % ceros: 86 | todas cero: 0
+por familia (>90 %): clase 1 | tipología 46 | categoría 85
+por familia (>99 %): clase 1 | tipología 23 | categoría 62
+gain = 0 en el modelo base (173 features): 66   (61 en el modelo final de la Ronda 2)
+```
+
+**Propuesta de poda:** eliminar las **86 features con > 99 % ceros** y las 13
+duplicadas exactas del punto d. Las 86 incluyen categorías legítimas pero
+rarísimas (patentes, variedades, regulaciones); su valor está en la cola, no en
+el promedio, así que **la poda debe probarse en los folds** antes de adoptarla.
+
+### f) Fechas posteriores a la convocatoria
+
+```
+filas leídas: 3 166 629
+conv  año  filas   filas_tarde  %      pares persona-conv con algún producto tardío
+16    2013 238 407   10        0.0042   9
+17    2014 342 160  103        0.0301  96
+18    2015 376 653   14        0.0037  14
+19    2017 536 648    1        0.0002   1
+20    2019 762 719    0        0        0
+21    2021 910 042    0        0        0
+
+total: 128 filas tardías | 120 pares persona-convocatoria afectados
+share medio de productos tardíos entre los pares afectados: 9.32 %
+pares con el 100 % de sus productos tardíos: 3
+```
+
+**Lectura:** el artefacto existe (128 filas, 0,004 % del total), está concentrado
+en 2013-2014 y **desaparece en 2019 y 2021**. El impacto sobre `n_productos` es
+marginal (≈ 2 productos en los 120 pares afectados, 9,3 % de su producción), y
+como el recorte a 0 ya está aplicado, **no compromete el test**. Se recomienda
+excluir esos productos en una futura reconstrucción, no ahora.
+
+### g) Delta A − B: inflación por identidad
+
+Benchmark B = mismo diseño temporal, pero se eliminan del train y de la validación
+las personas que aparecen en el conjunto de evaluación.
+
+```
+=== Benchmark B: entidad disjunta (cold start) ===
+  F1: train= 713 val=1197 eval=8164 | F1 baja=0.2604 | t=0.07
+  F2: train=2254 val=1693 eval=9994 | F1 baja=0.2647 | t=0.29
+  F3: train=1197 val=1693 eval=9994 | F1 baja=0.2873 | t=0.10
+B folds: media 0.2708 (desv 0.0118) | A folds 0.2985 | delta +2.77 pp
+  TEST: train=5005 val=1723 eval=13355 | F1 baja=0.4016 | t=0.17 | macro=0.4412 | brier=0.4969
+  delta A-B en test: +2.18 pp
+```
+
+**Control de volumen** (misma cantidad de filas que B, 5 005, pero sin excluir
+personas; mismo val de 1 723 y mismo test):
+
+```
+control: F1 baja=0.4222 | recall=0.7416 | precision=0.2951 | macro=0.5022 | brier=0.4400 | t=0.07
+B      : F1 baja=0.4016 | recall=0.6153 | precision=0.2981 | macro=0.4412 | brier=0.4969 | t=0.17
+A      : F1 baja=0.4234 | recall=0.7878 | precision=0.2895 | macro=0.5109 | brier=0.4692 | t=0.15
+```
+
+**Descomposición del delta de 2,18 pp:**
+
+| Componente | Cálculo | Valor |
+|---|---|---|
+| Efecto **identidad** (a volumen fijo) | control 0,4222 − B 0,4016 | **+2,06 pp** |
+| Efecto **volumen** (con identidad permitida) | A 0,4234 − control 0,4222 | **+0,12 pp** |
+| **Delta total A − B** | 0,4234 − 0,4016 | **+2,18 pp** |
+
+Dos hallazgos que importan:
+
+1. **La inflación por identidad es de ~2,1 pp, no de decenas de puntos.** Con
+   5 005 filas y personas compartidas se llega a 0,4222; el modelo operativo con
+   29 832 filas llega a 0,4234. Es decir, **casi todo el desempeño se sostiene
+   con una sexta parte de los datos**: el modelo aprende patrones de producción
+   que se repiten, no «caras».
+2. **El perfil operativo sí cambia:** B tiene **recall 0,6153** frente a 0,7416
+   del control y 0,7878 de A. Sin historia previa, el modelo alerta menos. La
+   precisión es estable (~0,29), así que la diferencia está en cuántos descensos
+   se detectan, no en la calidad de las alertas.
+
+### Decisión
+
+| Regla acordada | Valor observado | Decisión |
+|---|---|---|
+| delta A−B < 5 pp → modelo robusto, se cierra | **2,18 pp** (test) y 2,77 pp (folds) | **Se cierra con la Ronda 2** |
+| delta A−B > 10 pp → separar benchmarks | no aplica | — |
+| delta A−B > 15 pp → reentrenar con aprobación | no aplica | — |
+
+**El modelo operativo (Ronda 2) no se reentrena y conserva sus métricas**: F1
+«baja» 0,4234 · recall 0,7878 · precisión 0,2895 · F1 macro 0,5109 · Brier 0,4692
+en la cohorte 2021. El benchmark B queda documentado como **medida de
+generalización**: F1 0,4016, recall 0,6153, precisión 0,2981, F1 macro 0,4412,
+Brier 0,4969.
+
+**Salvedad de método:** la evaluación de B en test es un **diagnóstico**, no una
+nueva evaluación del modelo operativo; su umbral se eligió en una validación
+entidad-disjunta y no se usó para ajustar nada del modelo de producción. El test
+del modelo operativo sigue siendo el de la Ronda 2.
+
+**Consecuencia para el EDA pendiente:** con el delta medido, los análisis c, d y e
+(poda, winsorización, colinealidad) dejan de ser urgentes para la validez; pasan
+a ser mejoras de robustez e interpretabilidad, no requisitos. El único que
+conviene mantener en el radar es el **drift de las 3 features con PSI > 0,25**,
+porque afecta la calibración del próximo año.
+
+---
+
+
+---
+
+## §7 · Modelo limpio: ¿la limpieza mejora el F1? (27-oct-2026)
+
+Se construyó el dataset limpio y se evaluó **solo en folds** (test intacto),
+script `07_modelo/modelado/expN_limpio.py`.
+
+### Limpieza aplicada
+
+```
+redundantes: 49 (duplicados exactos 34 + VIF>10 15)
+muertas >99 % ceros: 86 | interseccion redundantes-muertas: 19
+winsorizacion n_productos: p99(train)=105 | filas afectadas=628 (1.45 %)
+  -> train 194 | val 146 | test 288
+features: base 172 | tras VIF 123 | limpio 56
+guardado: modelo_dataset_ventana_contiguo_limpio.parquet (43 187 × 65 columnas: 9 de metadatos + 56 features)
+```
+
+Nota sobre las columnas: el parquet original trae **101 columnas `n_*` que el modelo
+nunca usó** (quedaron de la construcción y no entraron en las 172 features); el
+dataset limpio las omite, por eso pasa de 285 a 65 columnas.
+
+Nota sobre el conteo: **123 es el resultado de quitar solo las redundantes**;
+al quitar además las 86 features con > 99 % de ceros quedan **56**, porque 67 de
+esas 86 sobrevivían al filtro de VIF.
+
+### Resultados en folds (config Ronda 2)
+
+```
+variante        n folds                       media   desv  F1macro   Brier  t
+base_172      172 [0.2728, 0.3076, 0.315]    0.2985 0.0184   0.4870  0.4196  [0.12, 0.27, 0.15]
+vif_123       123 [0.2593, 0.3333, 0.2704]   0.2877 0.0326   0.4862  0.4223  [0.09, 0.19, 0.29]
+limpio_56      56 [0.2476, 0.3182, 0.2844]   0.2834 0.0288   0.4904  0.4223  [0.29, 0.24, 0.25]
+
+MEJOR limpio: vif_123 -> 0.2877 (base 0.2985, delta -1.08 pp)
+criterio para tocar test: 0.3185
+NO cumple: test NO se toca.
+Brier base 0.4196 -> mejor limpio 0.4223 (+0.27 %)
+```
+
+| Variante | Features | F1 «baja» OOS | Desv. | F1 macro | Brier |
+|---|---|---|---|---|---|
+| Base (Ronda 2) | 172 | **0,2985** | 0,0184 | 0,4870 | **0,4196** |
+| Solo VIF | 123 | 0,2877 (**−1,08 pp**) | 0,0326 | 0,4862 | 0,4223 (+0,27 %) |
+| Limpio completo | 56 | 0,2834 (**−1,51 pp**) | 0,0288 | 0,4904 | 0,4223 (+0,27 %) |
+
+### Lectura
+
+**La limpieza no mejora nada: empeora.** El F1 «baja» cae entre 1,08 y 1,51 pp, la
+desviación entre folds **sube** (0,0184 → 0,0288-0,0326) y el Brier **también
+empeora** ligeramente (+0,0027 absoluto, +0,27 % relativo). Es lo contrario de lo
+que preveía el plan, y conviene decirlo con claridad: **la expectativa «la
+limpieza mejora el Brier y la estabilidad aunque no el F1» no se cumple en este
+dataset.**
+
+Tres explicaciones plausibles, en orden de probabilidad:
+
+1. **Las features redundantes actúan como regularización implícita.** XGBoost con
+   `subsample=0,8` y `colsample` por defecto (1,0) reparte el `gain` entre
+   columnas clonadas; al podarlas, el modelo queda más expuesto al sobreajuste
+   (de ahí que la desviación entre folds suba un 60-77 %).
+2. **Las 67 features casi vacías que se eliminaron no eran ruido puro:** son las
+   categorías raras que el modelo usa para separar «sube» en perfiles atípicos.
+   Al quitarlas, el F1 macro se mantiene (0,4870 → 0,4904) pero la cola de
+   «baja» pierde señal.
+3. **La winsorización al p99 recorta 288 filas de test** (los productores
+   extremos), que son justamente los que nunca bajan; el efecto es pequeño pero
+   va en la dirección equivocada.
+
+### Decisión
+
+| Regla | Valor | Decisión |
+|---|---|---|
+| F1 OOS ≥ 0,3185 (+2 pp) → plan de test | **0,2877** (mejor limpio) | **No se toca test** |
+
+**El modelo se cierra con la Ronda 2** (172 features, sin poda, sin
+winsorización). El dataset limpio queda guardado como evidencia y como insumo de
+una eventual reconstrucción, **no como modelo operativo**.
+
+El EDA de diagnóstico conserva su valor —documenta redundancia, atípicos y drift,
+y permitió medir el delta A−B (§6)—, pero **no se traduce en una mejora de
+desempeño**: es deuda de robustez metodológica, no una palanca de F1 ni de Brier.
+Si en el futuro se quiere podar, tendría que hacerse **por familia de producto**
+(colapsar duplicados en una sola columna suma), no eliminando columnas una a una,
+y probarse con `colsample_bytree < 1` para no perder la diversidad que hoy
+compensa la redundancia.
+
+
+---
+
 ## Anexo A · Código del cálculo de solapamiento
 
 ```python
@@ -386,3 +669,5 @@ m2 = m & df["ID_PERSONA_PR"].isin(vistos)
 print(f"transiciones test: {int(m.sum())} | de personas vistas: {int(m2.sum())} "
       f"({100 * m2.sum() / m.sum():.2f}%)")
 ```
+
+---

@@ -120,3 +120,17 @@ documentacion_auditoria/slides_nada_sin_fuente/
 # se regeneran con pip install; nunca se versionan.
 .venv-*/
 .cache/
+
+# ── Basura de ejecución local (se regenera; no se versiona) ────────────────
+# Historial y estado de R / RStudio: ruido de sesión, nunca es fuente.
+.Rhistory
+.RData
+.Rproj.user/
+# Temporales de editores, parches y respaldos
+*.tmp
+*.bak
+*.orig
+*.swp
+~$*
+# Cuadernos de Jupyter
+.ipynb_checkpoints/

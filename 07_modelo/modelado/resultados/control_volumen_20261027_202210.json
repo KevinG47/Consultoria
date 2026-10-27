@@ -1,0 +1,29 @@
+{
+  "fecha_utc": "2026-10-27T20:22:10+00:00",
+  "experimento": "control_volumen",
+  "n_train": 5005,
+  "n_val": 1723,
+  "n_eval": 13355,
+  "umbral": 0.07,
+  "metricas": {
+    "f1_baja": 0.4222408026755853,
+    "f1_macro": 0.5022075860811781,
+    "brier": 0.4400482285412273,
+    "precision_baja": 0.29514903565166567,
+    "recall_baja": 0.7415565345080763
+  },
+  "referencia_B": {
+    "f1_baja": 0.4016,
+    "recall": 0.6153,
+    "precision": 0.2981,
+    "f1_macro": 0.4412,
+    "brier": 0.4969
+  },
+  "referencia_A": {
+    "f1_baja": 0.4234,
+    "recall": 0.7878,
+    "precision": 0.2895,
+    "f1_macro": 0.5109,
+    "brier": 0.4692
+  }
+}
